@@ -1,0 +1,494 @@
+<title>Vajeeva Hybrid Layout</title>
+<style>
+/* ── Vajeeva tokens ────────────────────────────────────── */
+:root {
+  --bone:#F2EDE1;--sand:#E9E1D0;--cream:#FBF8F1;
+  --ink:#2A251E;--green:#3E6B4F;--amber:#C6902F;--clay:#B4472E;
+  --ink60:rgba(42,37,30,.6);--ink30:rgba(42,37,30,.3);--ink10:rgba(42,37,30,.1);
+  --serif:"Iowan Old Style","Book Antiqua",Palatino,Georgia,serif;
+  --sans:ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --pg:#FBF8F1;--pgt:#2A251E;--pgm:rgba(42,37,30,.55);--chrome:#1C1814;
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --pg:#18150F;--pgt:#F2EDE1;--pgm:rgba(242,237,225,.55);--chrome:#0D0B08;
+}}
+:root[data-theme="dark"]{
+  --pg:#18150F;--pgt:#F2EDE1;--pgm:rgba(242,237,225,.55);--chrome:#0D0B08;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+button{cursor:pointer;font-family:var(--sans)}
+
+/* ── Page ──────────────────────────────────────────────── */
+body{background:var(--pg);color:var(--pgt);font-family:var(--sans);
+  min-height:100vh;padding:48px 32px 72px}
+.pg-head{max-width:720px;margin:0 auto 44px}
+.pg-title{font-family:var(--serif);font-size:24px;font-weight:700;margin-bottom:6px}
+.pg-sub{font-size:12px;color:var(--pgm);line-height:1.6}
+.rule-row{display:flex;align-items:center;gap:0;margin-top:24px;
+  border:1px solid var(--sand);border-radius:8px;overflow:hidden;max-width:480px}
+.rule-cell{flex:1;padding:10px 16px;font-size:11px;text-align:center}
+.rule-cell.hi{background:rgba(62,107,79,.09);color:var(--green);font-weight:700}
+.rule-cell.lo{color:var(--ink60)}
+.rule-sep{width:1px;background:var(--sand);align-self:stretch}
+
+/* ── Phone row ─────────────────────────────────────────── */
+.pr{display:flex;gap:0;overflow-x:auto;padding:12px 0 24px;
+  align-items:flex-start;max-width:100%}
+.pw{display:flex;flex-direction:column;align-items:center;gap:18px;flex-shrink:0}
+
+/* Divider between phones */
+.div-col{display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:12px;padding:0 32px;align-self:center}
+.div-line{width:1px;height:80px;background:var(--sand)}
+.div-label{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--pgm);white-space:nowrap;writing-mode:vertical-lr;
+  transform:rotate(180deg)}
+
+.opt-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--pgm);display:flex;align-items:center;gap:8px}
+.opt-label::before,.opt-label::after{content:'';height:1px;width:20px;
+  background:currentColor;opacity:.35}
+.opt-tag{font-size:9px;font-weight:500;letter-spacing:.03em;
+  padding:2px 8px;border-radius:10px;text-transform:none}
+.opt-tag.simple{background:rgba(42,37,30,.08);color:var(--ink60)}
+.opt-tag.complex{background:rgba(62,107,79,.12);color:var(--green)}
+
+/* ── Phone chrome ──────────────────────────────────────── */
+.phone{width:292px;height:624px;background:var(--chrome);border-radius:52px;
+  padding:10px;position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),
+    0 28px 64px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.09)}
+.phone::before{content:'';position:absolute;top:18px;left:50%;
+  transform:translateX(-50%);width:88px;height:28px;
+  background:var(--chrome);border-radius:14px;z-index:20}
+.screen{width:100%;height:100%;background:var(--bone);border-radius:42px;
+  overflow:hidden;display:flex;flex-direction:column;position:relative}
+
+/* ── Status + Nav ──────────────────────────────────────── */
+.sbar{flex:0 0 auto;height:46px;padding:0 22px 0 26px;display:flex;
+  align-items:flex-end;padding-bottom:7px;background:var(--bone);
+  color:var(--ink);font-size:11px;font-weight:700;justify-content:space-between}
+.sbar-icons{display:flex;align-items:center;gap:4px;font-size:10px;opacity:.8}
+.nav{flex:0 0 auto;height:44px;padding:0 14px;display:flex;align-items:center;
+  justify-content:space-between;background:var(--bone);
+  border-bottom:1px solid var(--sand)}
+.nav-back{font-size:21px;color:var(--green);width:32px}
+.nav-title{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--ink)}
+.nav-fav{font-size:17px;width:32px;text-align:right;color:var(--ink60)}
+
+/* ── Scroll area ───────────────────────────────────────── */
+.sa{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.sa::-webkit-scrollbar{display:none}
+
+/* ── Shared components ─────────────────────────────────── */
+.hero{padding:15px 15px 12px;border-bottom:1px solid var(--sand)}
+.hero-sm{padding:11px 15px 10px;border-bottom:1px solid var(--sand);flex:0 0 auto}
+.h-title{font-family:var(--serif);font-size:19px;font-weight:700;
+  color:var(--ink);line-height:1.2;text-wrap:balance}
+.h-sk{font-family:var(--serif);font-style:italic;font-size:12px;
+  color:var(--amber);margin-top:3px}
+.h-meta{font-size:10px;color:var(--ink60);margin-top:2px}
+.htags{display:flex;flex-wrap:wrap;gap:4px;margin-top:9px}
+.tag{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;background:var(--sand);color:var(--ink60)}
+
+.sb{padding:11px 15px;border-bottom:1px solid var(--sand)}
+.sl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink30);margin-bottom:7px}
+
+.src-row{display:flex;flex-wrap:wrap;gap:5px}
+.src-pill{font-size:10px;font-family:var(--serif);font-style:italic;
+  color:var(--amber);border:1px solid rgba(198,144,47,.4);
+  padding:3px 9px;border-radius:4px;display:flex;align-items:center;gap:3px;
+  background:none;transition:background .15s}
+.src-pill:hover{background:rgba(198,144,47,.08)}
+.src-pill .ext{font-size:8px;opacity:.6;font-style:normal}
+
+.meta-row{display:flex;flex-wrap:wrap;gap:6px}
+.mb{font-size:10px;color:var(--ink60);background:var(--sand);padding:4px 10px;border-radius:4px}
+
+.cc{background:rgba(180,71,46,.07);border-left:3px solid var(--clay);
+  border-radius:0 6px 6px 0;padding:9px 12px;margin:10px 15px}
+.cc-head{font-size:9px;font-weight:700;color:var(--clay);
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px;
+  display:flex;align-items:center;gap:4px}
+.cc-list{font-size:10px;color:rgba(180,71,46,.82);line-height:1.7}
+
+.ih{display:flex;align-items:center;justify-content:space-between;padding:11px 15px 7px}
+.utog{display:flex;background:var(--sand);border-radius:6px;padding:2px;gap:2px}
+.ubtn{font-size:9px;font-weight:700;letter-spacing:.04em;padding:3px 9px;
+  border-radius:4px;border:none;background:transparent;color:var(--ink60);transition:all .15s}
+.ubtn.on{background:var(--green);color:#fff}
+
+table.it{width:100%;border-collapse:collapse;font-size:11px}
+table.it tr:nth-child(odd) td{background:rgba(233,225,208,.45)}
+table.it td{padding:7px 15px;color:var(--ink);line-height:1.3}
+table.it td:last-child{text-align:right;color:var(--ink60);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage-row td{background:transparent!important;padding:10px 15px 3px;
+  font-size:8px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--amber)}
+
+/* Aromatic powder footnote */
+.fn-row{padding:8px 15px 10px;display:flex;align-items:center;gap:6px}
+.fn-pill{font-size:9px;color:var(--amber);font-family:var(--serif);font-style:italic;
+  border:1px dashed rgba(198,144,47,.45);padding:2px 8px;border-radius:4px;
+  background:none;display:flex;align-items:center;gap:3px}
+.fn-label{font-size:9px;color:var(--ink30)}
+
+.mhead{padding:11px 15px 7px}
+ol.ml{list-style:none;padding:0 15px 12px}
+.ml li{display:flex;gap:9px;padding:7px 0;
+  border-bottom:1px solid rgba(233,225,208,.7);font-size:11px;line-height:1.5;color:var(--ink)}
+.ml li:last-child{border-bottom:none}
+.sn{flex:0 0 20px;width:20px;height:20px;border-radius:50%;
+  border:1.5px solid var(--green);color:var(--green);font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+
+.cf{flex:0 0 auto;padding:8px 15px 18px;
+  background:linear-gradient(to top,var(--bone) 65%,rgba(242,237,225,0))}
+.cook{width:100%;background:var(--green);color:#fff;border:none;
+  border-radius:10px;padding:13px;font-size:13px;font-weight:700;
+  letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:7px}
+.cook:hover{opacity:.9}
+
+/* ── Tab strip (complex only) ──────────────────────────── */
+.tabstrip{flex:0 0 auto;display:flex;background:var(--bone);
+  border-bottom:1px solid var(--sand)}
+.tb{flex:1;padding:10px 4px;font-size:10px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;border:none;
+  background:transparent;color:var(--ink60);position:relative;transition:color .15s}
+.tb.on{color:var(--green)}
+.tb.on::after{content:'';position:absolute;bottom:0;left:18%;right:18%;
+  height:2px;background:var(--green);border-radius:2px 2px 0 0}
+.tp{display:none}.tp.on{display:block}
+
+/* ── Bottom sheet (aromatic powder) ───────────────────── */
+.bsheet{position:absolute;left:0;right:0;bottom:0;
+  background:var(--cream);border-radius:20px 20px 42px 42px;
+  box-shadow:0 -4px 24px rgba(42,37,30,.18);
+  transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);
+  z-index:50;display:flex;flex-direction:column;max-height:75%}
+.bsheet.open{transform:translateY(0)}
+.bs-handle{width:36px;height:4px;background:var(--sand);border-radius:2px;
+  margin:10px auto 0}
+.bs-head{display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px 8px}
+.bs-title{font-family:var(--serif);font-size:15px;font-weight:700;color:var(--ink)}
+.bs-sk{font-family:var(--serif);font-style:italic;font-size:10px;color:var(--amber)}
+.bs-close{font-size:18px;color:var(--ink60);background:none;border:none;padding:4px}
+.bs-body{overflow-y:auto;padding:0 0 16px;scrollbar-width:none}
+.bs-body::-webkit-scrollbar{display:none}
+.bs-note{font-size:10px;color:var(--ink60);padding:4px 16px 10px;line-height:1.5}
+.bs-ingr{font-size:11px;color:var(--ink);padding:0 16px;line-height:1.9}
+.bs-ingr li{list-style:none;display:flex;justify-content:space-between;
+  padding:4px 0;border-bottom:1px solid rgba(233,225,208,.6)}
+.bs-ingr li:last-child{border-bottom:none}
+.bs-method{font-size:10px;color:var(--ink60);padding:8px 16px;line-height:1.6;
+  border-top:1px solid var(--sand);margin-top:4px}
+
+/* ── Option description ────────────────────────────────── */
+.odesc{max-width:292px;text-align:center}
+.odesc-title{font-size:13px;font-weight:700;color:var(--pgt);margin-bottom:4px}
+.odesc-text{font-size:11px;color:var(--pgm);line-height:1.55}
+
+/* ── Comparison note ───────────────────────────────────── */
+.note-row{display:flex;gap:24px;max-width:720px;margin:0 auto;
+  padding-top:28px;flex-wrap:wrap}
+.note-card{flex:1;min-width:200px;background:rgba(42,37,30,.04);
+  border:1px solid var(--sand);border-radius:8px;padding:14px 16px}
+.note-card h3{font-size:11px;font-weight:700;margin-bottom:8px;color:var(--pgt)}
+.note-card ul{list-style:none;font-size:11px;color:var(--pgm);line-height:1.8}
+.note-card ul li::before{content:'✓ ';color:var(--green)}
+.note-card ul li.x::before{content:'— ';color:var(--ink30)}
+</style>
+
+<div class="pg-head">
+  <div class="pg-title">Hybrid Layout — Smart by Complexity</div>
+  <div class="pg-sub">Option 1 (additive scroll) for simple recipes. Option 2 (tabbed) for complex ones — with the cook button always pinned outside the tabs in both cases.</div>
+  <div class="rule-row">
+    <div class="rule-cell lo">Simple &nbsp;·&nbsp; &lt; 4 steps<br><span style="font-size:9px;opacity:.7">Additive scroll · no cook mode</span></div>
+    <div class="rule-sep"></div>
+    <div class="rule-cell" style="background:transparent;color:var(--ink30);font-size:16px;padding:0 8px">→</div>
+    <div class="rule-sep"></div>
+    <div class="rule-cell hi">Complex &nbsp;·&nbsp; 4+ steps<br><span style="font-size:9px;opacity:.8">Tabbed · cook pinned</span></div>
+  </div>
+</div>
+
+<div class="pr">
+
+  <!-- ══ LEFT: SIMPLE — L-05 Sweet Elixir ══════════════════ -->
+  <div class="pw">
+    <div class="opt-label">
+      L-05 · Simple
+      <span class="opt-tag simple">2 steps</span>
+    </div>
+    <div class="phone">
+      <div class="screen" id="p1">
+        <div class="sbar">9:41<div class="sbar-icons">▲▲▲ ▮▮▮▮</div></div>
+        <div class="nav">
+          <span class="nav-back">←</span>
+          <span class="nav-title">Recipe Detail</span>
+          <span class="nav-fav">♡</span>
+        </div>
+        <div class="sa">
+          <div class="hero">
+            <div class="h-title">Sweet Elixir</div>
+            <div class="h-sk">Sharkarodak</div>
+            <div class="htags">
+              <span class="tag">L-05</span>
+              <span class="tag">Liquid</span>
+              <span class="tag">Panaka</span>
+            </div>
+          </div>
+          <div class="sb">
+            <div class="sl">Classical source</div>
+            <div class="src-row">
+              <button class="src-pill">BK · Panaka p.199 <span class="ext">↗</span></button>
+              <button class="src-pill">ICMR-NIN 2024 <span class="ext">↗</span></button>
+            </div>
+          </div>
+          <div class="sb">
+            <div class="sl">Yield</div>
+            <div class="meta-row">
+              <span class="mb">🥛 ~200 ml · 1 serving</span>
+              <span class="mb">Serve immediately</span>
+            </div>
+          </div>
+          <!-- No contraindications — section omitted -->
+          <div style="padding:10px 15px 4px;border-bottom:1px solid var(--sand)">
+            <div style="font-size:9px;color:var(--ink30);font-style:italic">No contraindications listed.</div>
+          </div>
+          <div class="ih">
+            <div class="sl" style="margin:0">Ingredients</div>
+            <div class="utog">
+              <button class="ubtn on" data-u="g" onclick="setUnit('p1','g')">g</button>
+              <button class="ubtn" data-u="cup" onclick="setUnit('p1','cup')">cup</button>
+            </div>
+          </div>
+          <table class="it">
+            <tr><td>Cold water</td><td class="qty" data-g="200 ml" data-cup="¾ cup">200 ml</td></tr>
+            <tr><td>Rock sugar</td><td class="qty" data-g="20 g" data-cup="4 tsp">20 g</td></tr>
+            <tr><td>Rock salt</td><td class="qty" data-g="to taste" data-cup="to taste">to taste</td></tr>
+            <tr><td>Aromatic powder</td><td class="qty" data-g="1–2 g" data-cup="¼ tsp">1–2 g</td></tr>
+          </table>
+          <div class="mhead"><div class="sl">Method &nbsp;·&nbsp; 2 steps</div></div>
+          <ol class="ml">
+            <li><span class="sn">1</span>Dissolve rock sugar in cold water (not refrigerated). Add aromatic powder and rock salt; stir well.</li>
+            <li><span class="sn">2</span>Serve as needed. Best fresh.</li>
+          </ol>
+          <!-- Simple: no cook mode. Informational note. -->
+          <div style="padding:12px 15px;margin:8px 15px;background:rgba(42,37,30,.04);
+            border-radius:6px;font-size:10px;color:var(--ink60);line-height:1.5">
+            Simple preparation — no cook mode needed. Method steps are shown inline.
+          </div>
+          <div style="height:20px"></div>
+        </div>
+        <!-- No cook footer for simple recipes -->
+      </div>
+    </div>
+    <div class="odesc">
+      <div class="odesc-title">Option 1 · Additive scroll</div>
+      <div class="odesc-text">All fields visible on scroll. No cook button — 2 steps reads inline. Clean and fast for the user.</div>
+    </div>
+  </div>
+
+  <!-- ── Divider ────────────────────────────────────────── -->
+  <div class="div-col">
+    <div class="div-line"></div>
+    <div class="div-label">threshold · 4 steps</div>
+    <div class="div-line"></div>
+  </div>
+
+  <!-- ══ RIGHT: COMPLEX — S-24 Bhaimi ══════════════════════ -->
+  <div class="pw">
+    <div class="opt-label">
+      S-24 · Complex
+      <span class="opt-tag complex">4 steps · 2 stages</span>
+    </div>
+    <div class="phone">
+      <div class="screen" id="p2">
+        <div class="sbar">9:41<div class="sbar-icons">▲▲▲ ▮▮▮▮</div></div>
+        <div class="nav">
+          <span class="nav-back">←</span>
+          <span class="nav-title">Recipe Detail</span>
+          <span class="nav-fav">♡</span>
+        </div>
+        <!-- Compact hero — always visible above tabs -->
+        <div class="hero-sm">
+          <div class="h-title" style="font-size:17px">Sweet Coconut Momo</div>
+          <div style="display:flex;align-items:baseline;gap:8px;flex-wrap:wrap">
+            <div class="h-sk">Bhaimi</div>
+            <div class="h-meta">S-24 · Solid · Sweet</div>
+          </div>
+        </div>
+        <!-- Tab strip -->
+        <div class="tabstrip">
+          <button class="tb on" onclick="tab2('t-ov',this)">Overview</button>
+          <button class="tb" onclick="tab2('t-ing',this)">Ingredients</button>
+          <button class="tb" onclick="tab2('t-steps',this)">Steps</button>
+        </div>
+        <!-- Tab content -->
+        <div class="sa">
+          <!-- Overview tab -->
+          <div class="tp on" id="t-ov">
+            <div class="sb">
+              <div class="sl">Classical source</div>
+              <div class="src-row">
+                <button class="src-pill">KK 10/86 <span class="ext">↗</span></button>
+                <button class="src-pill">ICMR-NIN 2024 <span class="ext">↗</span></button>
+              </div>
+            </div>
+            <div class="sb">
+              <div class="sl">Yield</div>
+              <div class="meta-row">
+                <span class="mb">🫙 2–3 medium momo</span>
+              </div>
+            </div>
+            <div class="cc">
+              <div class="cc-head">⚠ Use with caution</div>
+              <div class="cc-list">Diabetes &nbsp;·&nbsp; Overweight &nbsp;·&nbsp; Sedentary lifestyle</div>
+            </div>
+            <div class="sb" style="border-top:1px solid var(--sand)">
+              <div class="sl">Category</div>
+              <div class="htags">
+                <span class="tag">S-24</span>
+                <span class="tag">Solid</span>
+                <span class="tag">Sweet</span>
+                <span class="tag">Fried</span>
+              </div>
+            </div>
+            <div class="sb">
+              <div class="sl">Complexity</div>
+              <div style="font-size:10px;color:var(--ink60);line-height:1.6">
+                4 steps &nbsp;·&nbsp; 2 ingredient stages (Dough + Filling) &nbsp;·&nbsp; Contains shared sub-recipe
+              </div>
+            </div>
+          </div>
+          <!-- Ingredients tab -->
+          <div class="tp" id="t-ing">
+            <div class="ih">
+              <div class="sl" style="margin:0">5 ingredients · 2 stages</div>
+              <div class="utog">
+                <button class="ubtn on" data-u="g" onclick="setUnit('p2','g')">g</button>
+                <button class="ubtn" data-u="cup" onclick="setUnit('p2','cup')">cup</button>
+              </div>
+            </div>
+            <table class="it">
+              <tr class="stage-row"><td colspan="2">Dough</td></tr>
+              <tr><td>Wheat flour</td><td class="qty" data-g="50–60 g" data-cup="¼ cup">50–60 g</td></tr>
+              <tr><td>Ghee</td><td class="qty" data-g="for frying" data-cup="for frying">for frying</td></tr>
+              <tr class="stage-row"><td colspan="2">Filling</td></tr>
+              <tr><td>Grated coconut</td><td class="qty" data-g="30–40 g" data-cup="¼ cup">30–40 g</td></tr>
+              <tr><td>Dry grapes</td><td class="qty" data-g="10 g" data-cup="2 tsp">10 g</td></tr>
+              <tr><td>Chopped dates</td><td class="qty" data-g="15 g" data-cup="3 tsp">15 g</td></tr>
+              <tr><td>Rock sugar powder</td><td class="qty" data-g="10–15 g" data-cup="2–3 tsp">10–15 g</td></tr>
+            </table>
+            <!-- Aromatic powder footnote → bottom sheet -->
+            <div class="fn-row">
+              <span class="fn-label">* Contains</span>
+              <button class="fn-pill" onclick="openSheet()">Aromatic Powder Blend ↗</button>
+            </div>
+          </div>
+          <!-- Steps tab -->
+          <div class="tp" id="t-steps">
+            <div class="mhead"><div class="sl">4 steps</div></div>
+            <ol class="ml">
+              <li><span class="sn">1</span><b style="display:block;font-size:9px;color:var(--amber);margin-bottom:2px">DOUGH</b>Mix wheat flour with ghee and water; knead into a soft dough.</li>
+              <li><span class="sn">2</span><b style="display:block;font-size:9px;color:var(--amber);margin-bottom:2px">FILLING</b>Heat ghee; roast coconut, dry grapes, dates, rock sugar, and aromatic powder into a paste.</li>
+              <li><span class="sn">3</span><b style="display:block;font-size:9px;color:var(--amber);margin-bottom:2px">SHAPE</b>Roll dough thin, fill, fold and pleat edges to seal.</li>
+              <li><span class="sn">4</span><b style="display:block;font-size:9px;color:var(--amber);margin-bottom:2px">FRY</b>Deep fry in ghee on low–medium flame until golden brown.</li>
+            </ol>
+          </div>
+        </div>
+        <!-- Cook button — pinned OUTSIDE tabs, always visible -->
+        <div class="cf">
+          <button class="cook">▶&ensp;Start Cook</button>
+        </div>
+
+        <!-- ── Aromatic Powder Bottom Sheet ──────────────── -->
+        <div class="bsheet" id="bsheet">
+          <div class="bs-handle"></div>
+          <div class="bs-head">
+            <div>
+              <div class="bs-title">Aromatic Powder Blend</div>
+              <div class="bs-sk">Shared sub-recipe · used in 8 recipes</div>
+            </div>
+            <button class="bs-close" onclick="closeSheet()">✕</button>
+          </div>
+          <div class="bs-body">
+            <div class="bs-note">Grind together fine. Make in a small batch; store in an airtight jar up to 1 month.</div>
+            <ul class="bs-ingr">
+              <li><span>Cardamom pods</span><span>3–4</span></li>
+              <li><span>Cloves</span><span>2–3</span></li>
+              <li><span>Black pepper</span><span>2–3</span></li>
+              <li><span>Cinnamon</span><span>2–3 inch</span></li>
+              <li><span>Dry ginger</span><span>2–3 inch</span></li>
+              <li><span>Edible camphor</span><span>2–3 crystals</span></li>
+            </ul>
+            <div class="bs-method">
+              Grind all ingredients together to a fine powder. Store in an airtight container away from light. Use ¼–½ tsp per recipe.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="odesc">
+      <div class="odesc-title">Option 2 · Tabbed + pinned cook</div>
+      <div class="odesc-text">Compact sticky header. Tabs contain the complexity. Cook button pinned outside tabs — always reachable on any tab. Tap "Aromatic Powder Blend ↗" in Ingredients.</div>
+    </div>
+  </div>
+
+</div><!-- /phones-row -->
+
+<!-- ── What's shared ─────────────────────────────────────── -->
+<div class="note-row">
+  <div class="note-card">
+    <h3>Both layouts share</h3>
+    <ul>
+      <li>Sanskrit name always visible in header</li>
+      <li>Source citations always visible (tappable → D4)</li>
+      <li>Yield + shelf life always visible</li>
+      <li>Contraindications shown without a tap</li>
+      <li>g / cup unit toggle in ingredient section</li>
+      <li>Stage headers in ingredient table</li>
+    </ul>
+  </div>
+  <div class="note-card">
+    <h3>Complex only adds</h3>
+    <ul>
+      <li>Compact hero (name + Sanskrit only)</li>
+      <li>Tab strip: Overview · Ingredients · Steps</li>
+      <li>Cook button pinned below tabs</li>
+      <li>Phase label per step (Dough / Filling / Fry…)</li>
+      <li>Aromatic powder → bottom sheet</li>
+      <li class="x">No full scroll — each tab stays bounded</li>
+    </ul>
+  </div>
+  <div class="note-card">
+    <h3>Threshold rule</h3>
+    <ul>
+      <li>1–3 steps → Option 1 (additive)</li>
+      <li>4+ steps → Option 2 (tabbed)</li>
+      <li>Multi-stage ingredients → always stage headers</li>
+      <li>Shared sub-recipe → always bottom sheet</li>
+      <li class="x">Cook mode only in Option 2 (4+ steps)</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+function setUnit(pid,unit){
+  const p=document.getElementById(pid);
+  p.querySelectorAll('.qty').forEach(td=>{td.textContent=td.dataset[unit]});
+  p.querySelectorAll('.ubtn').forEach(b=>{b.classList.toggle('on',b.dataset.u===unit)});
+}
+function tab2(panelId,btn){
+  document.querySelectorAll('#p2 .tp').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('#p2 .tb').forEach(b=>b.classList.remove('on'));
+  document.getElementById(panelId).classList.add('on');
+  btn.classList.add('on');
+}
+function openSheet(){document.getElementById('bsheet').classList.add('open')}
+function closeSheet(){document.getElementById('bsheet').classList.remove('open')}
+</script>

@@ -1,0 +1,593 @@
+<style>
+  :root {
+    --paper:#F5F4ED; --surface:#FCFBF6; --raise:#FFFFFF;
+    --ink:#23281F; --ink-soft:#565D4E; --ink-faint:#8A907E;
+    --line:#E4E2D6; --line-strong:#D3D1C2;
+    --green:#35513C; --green-soft:#6E9075; --green-wash:#E9EEE7;
+    --amber:#B67F26; --amber-wash:#F6ECD6;
+    --danger:#A5412A; --danger-wash:#F3E2DB;
+    --shadow:0 1px 2px rgba(34,40,30,.05), 0 8px 30px rgba(34,40,30,.06);
+    --radius:14px; --radius-sm:9px;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,Charter,Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+    --measure:68ch;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --paper:#161A15; --surface:#1E241C; --raise:#232A21;
+      --ink:#ECEBDF; --ink-soft:#AAB09C; --ink-faint:#7C8271;
+      --line:#2F3629; --line-strong:#3C4433;
+      --green:#8FB596; --green-soft:#6E9075; --green-wash:#232C22;
+      --amber:#E0B15A; --amber-wash:#2E2716;
+      --danger:#E08768; --danger-wash:#33231C;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="light"]{
+    --paper:#F5F4ED; --surface:#FCFBF6; --raise:#FFFFFF;
+    --ink:#23281F; --ink-soft:#565D4E; --ink-faint:#8A907E;
+    --line:#E4E2D6; --line-strong:#D3D1C2;
+    --green:#35513C; --green-soft:#6E9075; --green-wash:#E9EEE7;
+    --amber:#B67F26; --amber-wash:#F6ECD6;
+    --danger:#A5412A; --danger-wash:#F3E2DB;
+    --shadow:0 1px 2px rgba(34,40,30,.05), 0 8px 30px rgba(34,40,30,.06);
+  }
+  :root[data-theme="dark"]{
+    --paper:#161A15; --surface:#1E241C; --raise:#232A21;
+    --ink:#ECEBDF; --ink-soft:#AAB09C; --ink-faint:#7C8271;
+    --line:#2F3629; --line-strong:#3C4433;
+    --green:#8FB596; --green-soft:#6E9075; --green-wash:#232C22;
+    --amber:#E0B15A; --amber-wash:#2E2716;
+    --danger:#E08768; --danger-wash:#33231C;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 10px 34px rgba(0,0,0,.35);
+  }
+
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+    font-size:17px;line-height:1.65;-webkit-font-smoothing:antialiased;
+    font-feature-settings:"kern" 1;}
+  ::selection{background:var(--green-soft);color:#fff}
+
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .col{max-width:var(--measure)}
+  section{padding:clamp(40px,6vw,76px) 0;border-top:1px solid var(--line)}
+  section:first-of-type{border-top:0}
+  .alt{background:var(--surface)}
+
+  h1,h2,h3{font-family:var(--serif);font-weight:600;line-height:1.12;
+    text-wrap:balance;letter-spacing:-.01em;margin:0}
+  h2{font-size:clamp(1.7rem,3.4vw,2.5rem);margin-bottom:.5em}
+  h3{font-size:1.3rem;margin:0 0 .3em}
+  p{margin:0 0 1em;color:var(--ink)}
+  a{color:var(--green);text-underline-offset:3px;text-decoration-thickness:1px}
+  strong{font-weight:650;color:var(--ink)}
+  em{font-style:italic}
+
+  .eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--green-soft);margin:0 0 1.1em;font-weight:600;
+    display:flex;align-items:center;gap:.7em}
+  .eyebrow::before{content:"";width:22px;height:1.5px;background:var(--green-soft);display:inline-block}
+  .lede{font-size:1.18rem;color:var(--ink-soft);line-height:1.6}
+
+  /* HERO */
+  .hero{padding-top:clamp(48px,8vw,96px);padding-bottom:clamp(40px,6vw,72px)}
+  .hero .kicker{font-family:var(--mono);font-size:.72rem;letter-spacing:.18em;
+    text-transform:uppercase;color:var(--amber);margin-bottom:1.6em;font-weight:600}
+  .hero h1{font-size:clamp(2.3rem,6vw,4.1rem);margin-bottom:.3em;max-width:16ch}
+  .hero .sub{font-size:clamp(1.15rem,2.4vw,1.42rem);color:var(--ink-soft);
+    max-width:40ch;line-height:1.5;font-family:var(--serif);font-style:italic}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:2.2em}
+  .tag{font-family:var(--mono);font-size:.74rem;letter-spacing:.04em;
+    padding:6px 12px;border:1px solid var(--line-strong);border-radius:100px;
+    color:var(--ink-soft);background:var(--raise)}
+
+  /* stat row */
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--radius);
+    overflow:hidden;margin-top:2.6em}
+  .stat{background:var(--surface);padding:22px 20px}
+  .stat .n{font-family:var(--serif);font-size:2.1rem;font-weight:600;color:var(--green);
+    line-height:1;font-variant-numeric:tabular-nums}
+  .stat .l{font-size:.82rem;color:var(--ink-soft);margin-top:.5em;line-height:1.35}
+  @media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+
+  /* TOC */
+  .toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:2.4em}
+  .toc a{font-size:.82rem;padding:6px 13px;border-radius:100px;text-decoration:none;
+    color:var(--ink-soft);background:var(--green-wash);border:1px solid transparent;
+    transition:border-color .15s,color .15s}
+  .toc a:hover{border-color:var(--green-soft);color:var(--green)}
+
+  /* generic grid cards */
+  .grid{display:grid;gap:16px;margin-top:2em}
+  .g2{grid-template-columns:1fr 1fr}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+  .card{background:var(--raise);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px;box-shadow:var(--shadow)}
+  .card h3{font-family:var(--sans);font-size:1.05rem;font-weight:650;margin-bottom:.4em}
+  .card p{font-size:.95rem;color:var(--ink-soft);margin:0}
+  .card .role{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--amber);margin-bottom:1em;font-weight:600}
+
+  /* principles */
+  .principles{counter-reset:p;margin-top:2em;display:grid;gap:2px;
+    border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--line)}
+  .principle{background:var(--surface);padding:20px 22px;display:grid;
+    grid-template-columns:auto 1fr;gap:18px;align-items:baseline}
+  .principle::before{counter-increment:p;content:counter(p,decimal-leading-zero);
+    font-family:var(--mono);font-size:.8rem;color:var(--green-soft);font-weight:600}
+  .principle b{font-family:var(--sans);font-weight:650;display:block;margin-bottom:.15em}
+  .principle span{color:var(--ink-soft);font-size:.96rem}
+
+  /* SCHEMA showcase */
+  .schema-lay{display:grid;grid-template-columns:minmax(0,340px) 1fr;gap:34px;
+    margin-top:2.4em;align-items:start}
+  @media(max-width:860px){.schema-lay{grid-template-columns:1fr}}
+
+  .mock{background:var(--raise);border:1px solid var(--line-strong);
+    border-radius:20px;box-shadow:var(--shadow);overflow:hidden;position:sticky;top:20px}
+  @media(max-width:860px){.mock{position:static}}
+  .mock-img{aspect-ratio:16/10;position:relative;
+    background:radial-gradient(120% 140% at 30% 20%,var(--green-wash),var(--surface))}
+  .mock-img svg{position:absolute;inset:0;width:100%;height:100%}
+  .badge{position:absolute;width:22px;height:22px;border-radius:100px;background:var(--green);
+    color:#fff;font-family:var(--mono);font-size:.72rem;font-weight:700;display:grid;
+    place-items:center;box-shadow:0 1px 4px rgba(0,0,0,.25);z-index:2}
+  :root[data-theme="dark"] .badge{color:#161A15}
+  @media (prefers-color-scheme:dark){.badge{color:#161A15}}
+  .mock-body{padding:18px 18px 20px}
+  .mock-name{font-family:var(--serif);font-size:1.32rem;font-weight:600;line-height:1.15;position:relative}
+  .mock-skt{font-family:var(--serif);font-style:italic;color:var(--green-soft);font-size:1rem;margin-top:2px}
+  .mock-src{display:flex;flex-wrap:wrap;gap:6px;margin:12px 0;position:relative}
+  .chip{font-size:.68rem;font-family:var(--mono);letter-spacing:.03em;padding:4px 9px;border-radius:100px;
+    background:var(--green-wash);color:var(--green);border:1px solid transparent;white-space:nowrap}
+  .chip.meta{background:var(--surface);border-color:var(--line-strong);color:var(--ink-soft)}
+  .mock-meta{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0;position:relative}
+  .mock-h{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);margin:16px 0 7px;position:relative}
+  .mock-ing{list-style:none;padding:0;margin:0;font-size:.85rem;color:var(--ink-soft)}
+  .mock-ing li{padding:4px 0;border-bottom:1px dashed var(--line);display:flex;justify-content:space-between;gap:10px}
+  .mock-ing b{color:var(--ink);font-weight:600}
+  .u{font-family:var(--mono);font-size:.76rem;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+  .mock-step{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.85rem;
+    color:var(--ink-soft);padding:5px 0}
+  .mock-step i{font-family:var(--mono);font-style:normal;color:var(--green-soft);font-size:.76rem}
+  .warn{margin-top:14px;background:var(--danger-wash);border:1px solid var(--danger);
+    border-radius:var(--radius-sm);padding:11px 13px;position:relative}
+  .warn b{color:var(--danger);font-size:.78rem;font-family:var(--mono);letter-spacing:.06em;
+    text-transform:uppercase;display:flex;align-items:center;gap:6px}
+  .warn p{margin:.35em 0 0;font-size:.82rem;color:var(--ink-soft)}
+
+  .legend{display:grid;gap:12px}
+  .leg{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;
+    padding-bottom:12px;border-bottom:1px solid var(--line)}
+  .leg:last-child{border-bottom:0}
+  .leg .num{width:24px;height:24px;border-radius:100px;background:var(--green);color:#fff;
+    font-family:var(--mono);font-size:.74rem;font-weight:700;display:grid;place-items:center}
+  :root[data-theme="dark"] .leg .num{color:#161A15}
+  @media (prefers-color-scheme:dark){.leg .num{color:#161A15}}
+  .leg b{font-family:var(--sans);font-weight:650;font-size:.98rem}
+  .leg b em{font-family:var(--serif);color:var(--green-soft);font-weight:400}
+  .leg p{margin:.2em 0 0;font-size:.9rem;color:var(--ink-soft)}
+
+  /* table */
+  .tbl-wrap{overflow-x:auto;margin-top:2em;border:1px solid var(--line);border-radius:var(--radius)}
+  table{border-collapse:collapse;width:100%;min-width:640px;font-size:.9rem}
+  th,td{text-align:left;padding:13px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);background:var(--surface);font-weight:600;position:sticky;top:0}
+  tr:last-child td{border-bottom:0}
+  td b{color:var(--ink)}
+  td .note{color:var(--ink-soft)}
+  .num-cell{font-variant-numeric:tabular-nums;font-family:var(--mono);color:var(--green)}
+
+  /* callout */
+  .callout{border-left:3px solid var(--amber);background:var(--amber-wash);
+    padding:16px 20px;border-radius:0 var(--radius-sm) var(--radius-sm) 0;margin:1.8em 0}
+  .callout p{margin:0;font-size:.96rem;color:var(--ink)}
+  .callout .lbl{font-family:var(--mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--amber);font-weight:700;display:block;margin-bottom:.4em}
+
+  /* IA tree */
+  .tree{font-family:var(--mono);font-size:.86rem;line-height:1.9;background:var(--surface);
+    border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-top:2em;
+    overflow-x:auto;color:var(--ink-soft)}
+  .tree .root{color:var(--green);font-weight:700}
+  .tree .lead{color:var(--ink)}
+  .tree b{color:var(--amber);font-weight:600}
+
+  /* numbered screen list */
+  .screens{margin-top:2em;display:grid;gap:2px;border:1px solid var(--line);
+    border-radius:var(--radius);overflow:hidden;background:var(--line);counter-reset:s}
+  .screen{background:var(--surface);padding:16px 20px;display:grid;
+    grid-template-columns:auto 1fr;gap:16px;align-items:baseline}
+  .screen::before{counter-increment:s;content:counter(s);font-family:var(--mono);
+    font-size:.8rem;color:var(--green);font-weight:700;min-width:1.4em}
+  .screen b{font-weight:650}
+  .screen span{color:var(--ink-soft);font-size:.94rem}
+  .screen.key{background:var(--green-wash)}
+  .screen.key b{color:var(--green)}
+
+  /* bullet list */
+  .list{margin-top:1.5em;padding:0;list-style:none;display:grid;gap:14px}
+  .list li{padding-left:26px;position:relative;color:var(--ink-soft)}
+  .list li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;
+    border-radius:2px;background:var(--green-soft)}
+  .list li b{color:var(--ink)}
+  .list.warns li::before{background:var(--danger)}
+
+  /* swatches */
+  .swatches{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:2em}
+  @media(max-width:680px){.swatches{grid-template-columns:repeat(3,1fr)}}
+  .sw{border:1px solid var(--line);border-radius:var(--radius-sm);overflow:hidden;background:var(--raise)}
+  .sw .chipc{height:64px}
+  .sw .cap{padding:8px 10px;font-size:.72rem;color:var(--ink-soft);font-family:var(--mono)}
+  .sw .cap b{display:block;color:var(--ink);font-family:var(--sans);font-size:.8rem;margin-bottom:1px}
+
+  .type-demo{margin-top:2em;display:grid;gap:16px}
+  .type-row{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px}
+  .type-row .tag2{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--green-soft);margin-bottom:.5em}
+  .moodwords{display:flex;flex-wrap:wrap;gap:10px;margin-top:1.5em}
+  .moodwords span{font-family:var(--serif);font-style:italic;font-size:1.05rem;color:var(--green);
+    padding:6px 16px;border:1px solid var(--line-strong);border-radius:100px;background:var(--raise)}
+
+  /* two-col decisions */
+  .deck{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:2em}
+  @media(max-width:760px){.deck{grid-template-columns:1fr}}
+
+  footer{padding:48px 0 64px;border-top:1px solid var(--line);color:var(--ink-faint);font-size:.86rem}
+  footer .col{display:flex;flex-direction:column;gap:6px}
+
+  .star{color:var(--amber)}
+  @media (prefers-reduced-motion:no-preference){
+    .fade{opacity:0;transform:translateY(10px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+    @keyframes rise{to{opacity:1;transform:none}}
+  }
+  :focus-visible{outline:2px solid var(--green-soft);outline-offset:3px;border-radius:3px}
+</style>
+
+<header class="hero wrap">
+  <div class="col fade">
+    <div class="kicker">Product &amp; UX Brief · for the designer</div>
+    <h1>An Ayurvedic diet app for men's reproductive health.</h1>
+    <p class="sub">Classical dietary wisdom, made discreet, credible, and genuinely cookable.</p>
+    <div class="hero-meta">
+      <span class="tag">Working title: Vajikarana Āhāra</span>
+      <span class="tag">Mobile · patient-first</span>
+      <span class="tag">Built from 3 source documents</span>
+    </div>
+  </div>
+  <div class="stats fade" style="animation-delay:.08s">
+    <div class="stat"><div class="n">83</div><div class="l">recipes, one consistent schema</div></div>
+    <div class="stat"><div class="n">44·23·16</div><div class="l">solids · liquids · semi-solids</div></div>
+    <div class="stat"><div class="n">2×</div><div class="l">sourced: classical texts + ICMR-NIN 2024</div></div>
+    <div class="stat"><div class="n">7</div><div class="l">fields per recipe = your card &amp; detail</div></div>
+  </div>
+  <nav class="toc col" aria-label="Contents">
+    <a href="#what">What &amp; why</a>
+    <a href="#who">Who you design for</a>
+    <a href="#principles">Principles</a>
+    <a href="#schema">Content model ★</a>
+    <a href="#ia">Information architecture</a>
+    <a href="#screens">Screens</a>
+    <a href="#ux">UX &amp; edge cases</a>
+    <a href="#visual">Visual direction</a>
+    <a href="#next">Next &amp; decisions</a>
+  </nav>
+</header>
+
+<section id="what">
+  <div class="wrap col">
+    <p class="eyebrow">The product</p>
+    <h2>What it is, and why it needs to exist</h2>
+    <p class="lede">A mobile app that gives men undergoing Ayurvedic treatment for infertility a clear, do-able set of supportive food preparations — <em>Vajikarana Āhāra</em> — each grounded in both classical Ayurvedic texts and modern nutrition guidance.</p>
+    <p>Today this knowledge is scattered across Sanskrit classics and verbal clinical advice — there's no single, organized, practical digital resource. The app makes it findable, understandable, and followable. In UX terms it is a <strong>curated recipe library for a sensitive health context.</strong></p>
+    <div class="callout">
+      <span class="lbl">The design tension to hold</span>
+      <p>Not a lifestyle food app. Not a clinical dashboard. It lives in between — <strong>warm heritage credibility + modern app clarity.</strong> Every screen should feel like it belongs to a trusted practitioner, never a diet-fad startup.</p>
+    </div>
+  </div>
+</section>
+
+<section id="who" class="alt">
+  <div class="wrap">
+    <div class="col">
+      <p class="eyebrow">The audience</p>
+      <h2>Who you're designing for</h2>
+      <p class="lede">Design for the patient first. The clinician is a lens on the same content, not a second app.</p>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <div class="role">Primary · the patient</div>
+        <h3>A man managing a stigmatized, stressful diagnosis</h3>
+        <p>Roughly 25–45+, mixed digital literacy, often cooking in a kitchen. He wants <b>discretion</b>, <b>reassurance</b>, and <b>“what do I make tonight”</b> — not a lecture. He is privacy-conscious about health data and may not want an account.</p>
+      </div>
+      <div class="card">
+        <div class="role">Secondary · the clinician</div>
+        <h3>Ayurvedic physician, PG scholar, or dietitian</h3>
+        <p>Counsels patients and may recommend recipes. Needs to <b>trust the sources</b> (they'll check the references), <b>point patients to specific dishes</b>, and search fast by ingredient, benefit, or classical name.</p>
+      </div>
+    </div>
+    <ul class="list">
+      <li><b>Discretion by default</b> — a neutral name &amp; icon; nothing on the lock screen, home icon, or notifications that “outs” him at a glance.</li>
+      <li><b>Kitchen-ready</b> — big text, offline access to saved recipes, keep-screen-awake, forgiving greasy-finger tap targets.</li>
+      <li><b>Calm &amp; hopeful tone</b> — encouraging, plain-language, never clinical-cold or shaming.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="principles">
+  <div class="wrap col">
+    <p class="eyebrow">North stars</p>
+    <h2>Seven design principles</h2>
+  </div>
+  <div class="wrap">
+    <div class="principles">
+      <div class="principle"><b>Discretion &amp; dignity.</b><span>The sensitive topic makes privacy the #1 differentiator. Private-feeling, neutral, never embarrassing.</span></div>
+      <div class="principle"><b>Credible, evidence-anchored.</b><span>Every recipe cites classical texts <em>and</em> modern nutrition. Make that visible — it's the trust engine.</span></div>
+      <div class="principle"><b>Calm &amp; warm, not clinical.</b><span>Grounded and reassuring. Avoid both hospital-sterile and new-age gimmick.</span></div>
+      <div class="principle"><b>Do-able above all.</b><span>He must be able to shop for and cook it. Clarity of ingredients, quantity and steps beats decoration.</span></div>
+      <div class="principle"><b>Modern heritage.</b><span>Honor Ayurvedic &amp; Sanskrit roots with restraint and taste — not clip-art mandalas.</span></div>
+      <div class="principle"><b>Safety-first.</b><span>Contraindications (diabetes, obesity, lactose…) must never be buried.</span></div>
+      <div class="principle"><b>Accessible &amp; inclusive.</b><span>Bilingual terms, readable type, works for older / low-literacy users, works offline.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="schema" class="alt">
+  <div class="wrap col">
+    <p class="eyebrow">The centerpiece <span class="star">★</span></p>
+    <h2>The content model is your recipe card</h2>
+    <p class="lede">All 83 recipes share the same seven fields. That's a gift: the schema below <em>is</em> the recipe card and detail screen, handed to you. Here's one recipe rendered — every numbered region maps to a field and a design note.</p>
+  </div>
+  <div class="wrap">
+    <div class="schema-lay">
+      <!-- MOCK -->
+      <div class="mock" aria-label="Sample recipe card">
+        <div class="mock-img">
+          <span class="badge" style="top:10px;left:10px">3</span>
+          <svg viewBox="0 0 340 210" role="img" aria-label="Illustration of laddus on a plate">
+            <defs>
+              <radialGradient id="plate" cx="50%" cy="42%" r="60%">
+                <stop offset="0%" stop-color="var(--green-soft)" stop-opacity=".25"/>
+                <stop offset="100%" stop-color="var(--green-soft)" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+            <rect width="340" height="210" fill="url(#plate)"/>
+            <ellipse cx="170" cy="150" rx="112" ry="30" fill="var(--green)" opacity=".10"/>
+            <ellipse cx="170" cy="145" rx="96" ry="24" fill="none" stroke="var(--green)" stroke-opacity=".35" stroke-width="1.5"/>
+            <g>
+              <circle cx="132" cy="128" r="30" fill="var(--amber)" opacity=".9"/>
+              <circle cx="205" cy="132" r="30" fill="var(--amber)" opacity=".78"/>
+              <circle cx="170" cy="108" r="31" fill="var(--amber)"/>
+              <g fill="var(--green)" opacity=".22">
+                <circle cx="162" cy="100" r="2"/><circle cx="176" cy="106" r="2"/><circle cx="170" cy="116" r="2"/>
+                <circle cx="128" cy="124" r="2"/><circle cx="140" cy="132" r="2"/>
+                <circle cx="200" cy="128" r="2"/><circle cx="212" cy="138" r="2"/>
+              </g>
+            </g>
+            <path d="M250 70 q10 -22 24 -6 q14 -10 10 12 q16 4 -2 16 q4 18 -16 8 q-8 16 -18 -2 q-16 6 -8 -14 q-14 -8 4 -18 z" fill="var(--green)" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="mock-body">
+          <div class="mock-name"><span class="badge" style="position:static;display:inline-grid;transform:translateY(-2px);margin-right:6px">1</span>Coconut Laddu</div>
+          <div class="mock-skt">Narikela modaka</div>
+          <div class="mock-src">
+            <span class="badge" style="position:static;display:inline-grid">2</span>
+            <span class="chip">Kṣemakutūhalam 10/54</span>
+            <span class="chip">ICMR-NIN 2024</span>
+          </div>
+          <div class="mock-meta">
+            <span class="badge" style="position:static;display:inline-grid">6</span>
+            <span class="chip meta">Yield 3–4 laddoos</span>
+            <span class="chip meta">Keeps 5–7 days</span>
+            <span class="chip meta">Sweet</span>
+          </div>
+          <div class="mock-h"><span class="badge" style="position:static;display:inline-grid;vertical-align:middle;margin-right:6px">4</span>Ingredients</div>
+          <ul class="mock-ing">
+            <li><b>Grated coconut</b> <span class="u">40–50 g · ¼ cup</span></li>
+            <li><b>Rock sugar powder</b> <span class="u">15–20 g</span></li>
+            <li><b>Ghee</b> <span class="u">10–15 ml · 2–3 tsp</span></li>
+            <li><b>Cardamom · dry ginger</b> <span class="u">2–3 g</span></li>
+          </ul>
+          <div class="mock-h"><span class="badge" style="position:static;display:inline-grid;vertical-align:middle;margin-right:6px">5</span>Method</div>
+          <div class="mock-step"><i>1</i><span>Cook coconut in milk, then roast in ghee.</span></div>
+          <div class="mock-step"><i>2</i><span>Boil sugar syrup to binding consistency.</span></div>
+          <div class="mock-step"><i>3</i><span>Combine with spices; shape into laddus.</span></div>
+          <div class="warn">
+            <span class="badge" style="top:-9px;right:-9px;left:auto;background:var(--danger)">7</span>
+            <b>⚠ Contraindications</b>
+            <p>Diabetes · Overweight/obesity · Lactose intolerance · Sedentary metabolism</p>
+          </div>
+        </div>
+      </div>
+      <!-- LEGEND -->
+      <div class="legend">
+        <div class="leg"><span class="num">1</span><div><b>Name <em>(dual)</em></b><p>Friendly English name + the classical Sanskrit name. English = approachable, Sanskrit = heritage credibility. Decide which leads. Must render diacritics (ā, ṣ, ṛ).</p></div></div>
+        <div class="leg"><span class="num">2</span><div><b>Sources</b><p>1–3 classical texts + a modern guideline. The trust signal — clinicians will check. Present but expandable, not clutter.</p></div></div>
+        <div class="leg"><span class="num">3</span><div><b>Image</b><p><span style="color:var(--danger)">⚠ Biggest visual risk.</span> Sourcing is mixed — real photos, AI-generated, and dead links. You need one plan: consistent photography, a unified illustration set (shown here), or a branded placeholder.</p></div></div>
+        <div class="leg"><span class="num">4</span><div><b>Ingredients <em>(dual units)</em></b><p>Always metric + household measure, often as ranges (“80–100 g”). Consider a units toggle; keep it scannable for shopping.</p></div></div>
+        <div class="leg"><span class="num">5</span><div><b>Method <em>(phased)</em></b><p>Sequential steps — sometimes grouped into phases (chena → dough → fry → stuff → syrup) and sometimes offering alternatives (“oven / air-fryer / pan”). Design a Cook Mode that handles both.</p></div></div>
+        <div class="leg"><span class="num">6</span><div><b>Yield &amp; time</b><p>“Total quantity” + shelf-life. Many recipes need overnight soaks or multi-day prep — surface a “start ahead” flag.</p></div></div>
+        <div class="leg"><span class="num">7</span><div><b>Contraindications</b><p>On sweets &amp; dairy. <b>Must be unmissable</b> — warning treatment, not fine print. Tie to the user's profile if personalization exists.</p></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap col">
+    <p class="eyebrow">Field reference</p>
+    <h2>Every field, with a design note</h2>
+    <p>The same seven fields as a spec — plus metadata you can <em>derive</em> from the content to power browse and filtering.</p>
+  </div>
+  <div class="wrap">
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Field</th><th>What it holds</th><th>Design note</th></tr></thead>
+        <tbody>
+          <tr><td><b>Name (dual)</b></td><td>English name + Sanskrit in parentheses</td><td class="note">Show both; support diacritics; decide the hierarchy.</td></tr>
+          <tr><td><b>References</b></td><td>Classical texts + ICMR-NIN 2024</td><td class="note">The credibility engine — visible but expandable.</td></tr>
+          <tr><td><b>Image</b></td><td>Photo / AI-generated / missing</td><td class="note">Inconsistent — pick ONE image strategy early.</td></tr>
+          <tr><td><b>Ingredients</b></td><td>Dual units, frequent ranges</td><td class="note">Metric + household; scannable; units toggle.</td></tr>
+          <tr><td><b>Method</b></td><td>Steps; phased; alt methods</td><td class="note">Cook Mode; support phases &amp; variants.</td></tr>
+          <tr><td><b>Yield</b></td><td>“Total quantity”</td><td class="note">Small consistent metadata chip.</td></tr>
+          <tr><td><b>Contraindications</b></td><td>Safety flags on sweets/dairy</td><td class="note">Prominent warning; tie to profile.</td></tr>
+          <tr><td><b>↳ Derived: main ingredient</b></td><td>barley, black gram, coconut, amla, milk…</td><td class="num-cell">→ browse facet</td></tr>
+          <tr><td><b>↳ Derived: prep-ahead time</b></td><td>overnight soaks, multi-day preserves</td><td class="num-cell">→ “start ahead” flag</td></tr>
+          <tr><td><b>↳ Derived: diet flags</b></td><td>sweet/savory, dairy, diabetic-unsafe</td><td class="num-cell">→ filters + safety</td></tr>
+          <tr><td><b>↳ Derived: method</b></td><td>steamed / fried / baked / no-cook</td><td class="num-cell">→ filter facet</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section id="ia" class="alt">
+  <div class="wrap col">
+    <p class="eyebrow">Information architecture</p>
+    <h2>Organize the way a patient thinks</h2>
+    <p class="lede">The source files are filed by <em>texture</em> — solid, liquid, semi-solid. That's the author's filing system, not how a hungry patient searches (“something for breakfast,” “a dish with amla,” “a safe sweet”).</p>
+    <p>Keep texture as <strong>one</strong> filter, but lead discovery with patient-friendly facets. 83 items is too many for a flat list, but rich enough for real filtering.</p>
+    <div class="tree" role="img" aria-label="Proposed sitemap">
+<span class="root">Home</span>
+├─ Browse by category · <span class="lead">Solids · Liquids · Semi-solids</span> <span style="color:var(--ink-faint)">(from source)</span>
+├─ Browse by main ingredient · <span class="lead">Barley · Black gram · Coconut · Amla · Milk…</span>
+├─ Browse by type · <span class="lead">Breads · Drinks · Sweets · Soups · Chutneys · Porridge</span>
+├─ Browse by meal · <span class="lead">Breakfast · Snack · Side · Drink · Dessert</span>
+├─ Filters · <b>no-cook</b> · <b>make-ahead</b> · <b>diabetic-safe</b> · <b>dairy-free</b> · <b>quick</b>
+├─ Search · <span class="lead">English name · Sanskrit name · ingredient</span>
+├─ Saved / Favorites <span style="color:var(--ink-faint)">(offline)</span>
+├─ Glossary · <span class="lead">Sanskrit &amp; ingredient terms</span>
+└─ About · Evidence · Disclaimer · Settings
+    </div>
+  </div>
+</section>
+
+<section id="screens">
+  <div class="wrap col">
+    <p class="eyebrow">Scope</p>
+    <h2>Core screens, in priority order</h2>
+    <p>Design the hero flow first: <em>home → recipe detail → cook mode → save.</em></p>
+  </div>
+  <div class="wrap">
+    <div class="screens">
+      <div class="screen key"><b>Recipe detail — the hero screen.</b><span>Renders the full content model, plus a Cook Mode: big steps, screen-awake, swipeable, offline. The app lives or dies here.</span></div>
+      <div class="screen key"><b>Recipe card.</b><span>Used in every list/grid — image, dual name, key chips (type, yield, time, safety flag).</span></div>
+      <div class="screen"><b>Home / discovery.</b><span>Calm entry: a few curated rows + the browse facets. Reassuring, not overwhelming.</span></div>
+      <div class="screen"><b>Browse / category + filters.</b><span>The faceted system from the IA.</span></div>
+      <div class="screen"><b>Search.</b><span>English + Sanskrit + ingredient; forgiving of spelling &amp; diacritics.</span></div>
+      <div class="screen"><b>Saved / Favorites.</b><span>Available offline for kitchen use.</span></div>
+      <div class="screen"><b>Onboarding (light, optional).</b><span>Sets tone &amp; privacy; optionally captures conditions to power safety filtering. Skippable, no account to browse.</span></div>
+      <div class="screen"><b>Glossary.</b><span>Sanskrit / ingredient terms with plain meaning &amp; pronunciation.</span></div>
+      <div class="screen"><b>About / Evidence / Disclaimer.</b><span>Trust + the “not a substitute for medical advice” line.</span></div>
+      <div class="screen"><b>Settings.</b><span>Units, language, text size, privacy.</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="ux" class="alt">
+  <div class="wrap col">
+    <p class="eyebrow">Watch-outs</p>
+    <h2>UX considerations &amp; edge cases</h2>
+    <p>These are specific to this content — they'll bite in hi-fi if ignored now.</p>
+    <ul class="list warns">
+      <li><b>Contraindication safety.</b> If onboarding captures conditions, warn or filter unsafe recipes. Even without a profile, keep the warning visually strong.</li>
+      <li><b>Image inconsistency.</b> Photos, AI images, and dead links are mixed together. Decide photography vs. one illustration system vs. branded placeholder — <b>before</b> hi-fi.</li>
+      <li><b>Sanskrit &amp; diacritics.</b> Names carry ā, ṣ, ṛ. Pick fonts that render them; add pronunciation to the glossary; make search diacritic-insensitive.</li>
+      <li><b>Dual measurements &amp; ranges.</b> Always metric + household, or a toggle; handle “80–100 g” gracefully.</li>
+      <li><b>Prep-ahead timings.</b> Overnight soaks, multi-day preserves — surface “start the night before” up front.</li>
+      <li><b>Alternative &amp; optional steps.</b> Content offers “OR bake / OR air-fry” and “(optional)” items — design for variants, not one rigid list.</li>
+      <li><b>Offline &amp; kitchen ergonomics.</b> Saved recipes + Cook Mode must work with no signal; screen-awake; large hit areas.</li>
+      <li><b>Privacy.</b> Minimize data, no ad-tracking, usable anonymously; be explicit about what's stored.</li>
+      <li><b>Empty / loading / error states.</b> No results, no saved items, failed image — design them; they're frequent here.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="visual">
+  <div class="wrap col">
+    <p class="eyebrow">Visual direction · a starting point, not a mandate</p>
+    <h2>“Modern Ayurveda”</h2>
+    <p class="lede">Calm · grounded · trustworthy · warm · natural. Heritage credibility with contemporary restraint — the opposite of both a spice-box cliché and a sterile clinic. <em>This very page is one interpretation; react to it, then make it yours.</em></p>
+    <div class="moodwords" aria-hidden="true">
+      <span>calm</span><span>grounded</span><span>credible</span><span>warm</span><span>discreet</span><span>natural</span>
+    </div>
+
+    <h3 style="margin-top:2em;font-family:var(--sans);font-size:1rem;color:var(--ink-soft);font-weight:650">Palette — a feel, not final hex</h3>
+  </div>
+  <div class="wrap">
+    <div class="swatches">
+      <div class="sw"><div class="chipc" style="background:var(--paper)"></div><div class="cap"><b>Warm oat</b>ground</div></div>
+      <div class="sw"><div class="chipc" style="background:var(--green)"></div><div class="cap"><b>Herbal green</b>primary</div></div>
+      <div class="sw"><div class="chipc" style="background:var(--green-soft)"></div><div class="cap"><b>Sage</b>secondary</div></div>
+      <div class="sw"><div class="chipc" style="background:var(--amber)"></div><div class="cap"><b>Turmeric</b>accent</div></div>
+      <div class="sw"><div class="chipc" style="background:var(--danger)"></div><div class="cap"><b>Clay red</b>safety only</div></div>
+      <div class="sw"><div class="chipc" style="background:var(--ink)"></div><div class="cap"><b>Green-black</b>ink</div></div>
+    </div>
+    <div class="callout" style="margin-top:1.6em">
+      <span class="lbl">Deliberately not the default</span>
+      <p>Avoid the over-used cream + terracotta + generic-serif look. This direction grounds in a deeper <strong>apothecary green</strong> with turmeric used sparingly, and reserves clay-red exclusively for safety warnings — so semantic color never fights the accent.</p>
+    </div>
+    <div class="type-demo">
+      <div class="type-row">
+        <div class="tag2">Display / heritage — a warm serif</div>
+        <div style="font-family:var(--serif);font-size:1.8rem;font-weight:600;line-height:1.15">Narikela modaka — Coconut Laddu</div>
+      </div>
+      <div class="type-row">
+        <div class="tag2">Body / UI — a humanist sans</div>
+        <div style="font-size:1.02rem;color:var(--ink-soft)">Readable at large sizes for older users and Cook Mode. Plain, warm, unfussy — carries ingredient lists and steps without strain.</div>
+      </div>
+      <div class="type-row">
+        <div class="tag2">Utility / data — mono</div>
+        <div style="font-family:var(--mono);font-size:.9rem;color:var(--green)">80–100 g · ¼ cup&nbsp;&nbsp;·&nbsp;&nbsp;YIELD 3–4&nbsp;&nbsp;·&nbsp;&nbsp;KEEPS 5–7 DAYS</div>
+      </div>
+    </div>
+    <p style="margin-top:1.6em;color:var(--ink-soft);font-size:.95rem">Imagery: one cohesive treatment (consistency &gt; realism). Iconography: simple friendly line icons; a small ingredient/step set aids low-literacy users. Motion: gentle, calming, never flashy. <em>Fonts here use reliable system serif/sans stacks so nothing silently falls back — swap for licensed brand faces in production.</em></p>
+  </div>
+</section>
+
+<section id="next" class="alt">
+  <div class="wrap col">
+    <p class="eyebrow">Moving on</p>
+    <h2>Next deliverables &amp; open decisions</h2>
+  </div>
+  <div class="wrap">
+    <div class="deck">
+      <div class="card">
+        <div class="role">Suggested next — from you</div>
+        <ul class="list" style="margin-top:.4em">
+          <li>Confirm/refine <b>IA &amp; core user flows</b>.</li>
+          <li><b>Low-fi wireframes</b> for the 10 screens — validate recipe detail + Cook Mode first.</li>
+          <li><b>Image strategy</b> decision (photo / illustration / placeholder) — blocks hi-fi.</li>
+          <li><b>Design system</b> — type scale, color, spacing, components (card, chips, step list, safety banner, source block).</li>
+          <li><b>Hi-fi</b> for the hero flow, then a <b>prototype</b> for a 3–5 user check.</li>
+        </ul>
+      </div>
+      <div class="card">
+        <div class="role">Open — needs product owner</div>
+        <ul class="list" style="margin-top:.4em">
+          <li><b>App name &amp; icon</b> — must be discreet (not chosen yet).</li>
+          <li><b>Language(s)</b> — English only or multilingual? (A Kannada term already appears.)</li>
+          <li><b>Personalization</b> — pure library, or profile → safety filtering / daily plan?</li>
+          <li><b>Accounts</b> — anonymous-first or login?</li>
+          <li><b>Clinician features in v1?</b> — recommend/share, or defer.</li>
+          <li><b>Content ownership &amp; CMS</b> — who maintains 83 recipes; image licensing.</li>
+          <li><b>v1 scope &amp; monetization</b> — browse-only MVP vs. more; free/clinic vs. paid.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap col">
+    <div style="font-family:var(--serif);font-style:italic;font-size:1.1rem;color:var(--green)">Vajikarana Āhāra — design brief</div>
+    <div>Prepared from the Solids, Liquids &amp; Semi-solid source documents · 83 recipes.</div>
+    <div>A companion Markdown version of this brief accompanies this page.</div>
+  </div>
+</footer>

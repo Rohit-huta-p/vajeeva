@@ -1,0 +1,599 @@
+<title>Recipe Detail · 3 Approaches</title>
+<style>
+/* ── Vajeeva tokens ────────────────────────────────────── */
+:root {
+  --bone:  #F2EDE1; --sand:  #E9E1D0; --cream: #FBF8F1;
+  --ink:   #2A251E; --green: #3E6B4F; --amber: #C6902F; --clay: #B4472E;
+  --ink60: rgba(42,37,30,.6); --ink30: rgba(42,37,30,.3); --ink10: rgba(42,37,30,.1);
+  --serif: "Iowan Old Style","Book Antiqua",Palatino,Georgia,serif;
+  --sans:  ui-sans-serif,system-ui,-apple-system,sans-serif;
+  /* page-level (dark-aware) */
+  --pg:    #FBF8F1; --pgt:  #2A251E; --pgm: rgba(42,37,30,.55);
+  --chrome:#1C1814;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08;
+}}
+:root[data-theme="dark"]{
+  --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08;
+}
+
+/* ── Reset ─────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+button{cursor:pointer;font-family:var(--sans)}
+
+/* ── Page ──────────────────────────────────────────────── */
+body{background:var(--pg);color:var(--pgt);font-family:var(--sans);
+  min-height:100vh;padding:48px 32px 72px}
+
+.pg-head{max-width:1040px;margin:0 auto 44px}
+.pg-title{font-family:var(--serif);font-size:24px;font-weight:700;
+  line-height:1.2;margin-bottom:6px}
+.pg-sub{font-size:12px;color:var(--pgm);line-height:1.6;max-width:560px}
+.pg-tag{display:inline-flex;align-items:center;gap:6px;margin-top:14px;
+  background:rgba(198,144,47,.1);border:1px solid rgba(198,144,47,.3);
+  color:var(--amber);font-size:11px;font-family:var(--serif);font-style:italic;
+  padding:4px 12px;border-radius:20px}
+.pg-note{margin-top:20px;font-size:11px;color:var(--pgm);
+  display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+.pg-note-item{display:flex;align-items:center;gap:5px}
+.dot{width:7px;height:7px;border-radius:50%;display:inline-block}
+
+/* ── Phones row ────────────────────────────────────────── */
+.phones-row{display:flex;gap:44px;overflow-x:auto;padding:8px 4px 24px;
+  scrollbar-width:thin;scrollbar-color:var(--sand) transparent}
+
+/* ── Phone wrap ────────────────────────────────────────── */
+.pw{display:flex;flex-direction:column;align-items:center;gap:18px;flex-shrink:0}
+
+.opt-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--pgm);display:flex;align-items:center;gap:8px}
+.opt-label::before,.opt-label::after{content:'';height:1px;width:20px;
+  background:currentColor;opacity:.35}
+
+/* ── Phone chrome ──────────────────────────────────────── */
+.phone{width:292px;height:624px;background:var(--chrome);border-radius:52px;
+  padding:10px;position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),
+    0 28px 64px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.28),
+    inset 0 1px 0 rgba(255,255,255,.09)}
+/* Dynamic island */
+.phone::before{content:'';position:absolute;top:18px;left:50%;
+  transform:translateX(-50%);width:88px;height:28px;
+  background:var(--chrome);border-radius:14px;z-index:20}
+/* Side buttons */
+.phone::after{content:'';position:absolute;right:-3px;top:110px;
+  width:3px;height:60px;background:rgba(255,255,255,.08);border-radius:2px}
+
+/* ── Screen ────────────────────────────────────────────── */
+.screen{width:100%;height:100%;background:var(--bone);border-radius:42px;
+  overflow:hidden;display:flex;flex-direction:column}
+
+/* ── Status bar ────────────────────────────────────────── */
+.sbar{flex:0 0 auto;height:46px;padding:0 22px 0 26px;
+  display:flex;align-items:flex-end;padding-bottom:7px;
+  background:var(--bone);color:var(--ink);font-size:11px;font-weight:700;
+  justify-content:space-between}
+.sbar-icons{display:flex;align-items:center;gap:4px;font-size:10px;opacity:.8}
+
+/* ── Nav bar ───────────────────────────────────────────── */
+.nav{flex:0 0 auto;height:44px;padding:0 14px;display:flex;align-items:center;
+  justify-content:space-between;background:var(--bone);
+  border-bottom:1px solid var(--sand)}
+.nav-back{font-size:21px;color:var(--green);width:32px}
+.nav-title{font-size:11px;font-weight:700;letter-spacing:.05em;
+  text-transform:uppercase;color:var(--ink)}
+.nav-fav{font-size:17px;width:32px;text-align:right;color:var(--ink60)}
+
+/* ── Scroll area ───────────────────────────────────────── */
+.sa{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.sa::-webkit-scrollbar{display:none}
+
+/* ── Recipe hero ───────────────────────────────────────── */
+.hero{padding:15px 15px 12px;border-bottom:1px solid var(--sand)}
+.hero-title{font-family:var(--serif);font-size:19px;font-weight:700;
+  color:var(--ink);line-height:1.2;text-wrap:balance}
+.hero-sk{font-family:var(--serif);font-style:italic;font-size:12px;
+  color:var(--amber);margin-top:3px}
+.hero-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+.tag{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+  padding:3px 8px;border-radius:3px;background:var(--sand);color:var(--ink60)}
+
+/* ── Section block ─────────────────────────────────────── */
+.sb{padding:11px 15px;border-bottom:1px solid var(--sand)}
+.sl{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink30);margin-bottom:7px}
+
+/* ── Source pills ──────────────────────────────────────── */
+.src-row{display:flex;flex-wrap:wrap;gap:5px}
+.src-pill{font-size:10px;font-family:var(--serif);font-style:italic;
+  color:var(--amber);border:1px solid rgba(198,144,47,.4);
+  padding:3px 9px;border-radius:4px;display:flex;align-items:center;gap:3px;
+  background:none;transition:background .15s}
+.src-pill:hover{background:rgba(198,144,47,.08)}
+.src-pill .ext{font-size:8px;opacity:.6;font-style:normal}
+
+/* ── Meta badges ───────────────────────────────────────── */
+.meta-row{display:flex;flex-wrap:wrap;gap:6px}
+.mb{font-size:10px;color:var(--ink60);background:var(--sand);
+  padding:4px 10px;border-radius:4px}
+
+/* ── Contra card ───────────────────────────────────────── */
+.cc{background:rgba(180,71,46,.07);border-left:3px solid var(--clay);
+  border-radius:0 6px 6px 0;padding:9px 12px;margin:11px 15px}
+.cc-head{font-size:9px;font-weight:700;color:var(--clay);
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px;
+  display:flex;align-items:center;gap:4px}
+.cc-list{font-size:10px;color:rgba(180,71,46,.82);line-height:1.7}
+
+/* ── Ingredient table ──────────────────────────────────── */
+.ih{display:flex;align-items:center;justify-content:space-between;
+  padding:11px 15px 7px}
+.utog{display:flex;background:var(--sand);border-radius:6px;padding:2px;gap:2px}
+.ubtn{font-size:9px;font-weight:700;letter-spacing:.04em;padding:3px 9px;
+  border-radius:4px;border:none;background:transparent;color:var(--ink60);
+  transition:all .15s}
+.ubtn.on{background:var(--green);color:#fff}
+table.it{width:100%;border-collapse:collapse;font-size:11px}
+table.it tr:nth-child(odd) td{background:rgba(233,225,208,.45)}
+table.it td{padding:7px 15px;color:var(--ink);line-height:1.3}
+table.it td:last-child{text-align:right;color:var(--ink60);
+  font-variant-numeric:tabular-nums;white-space:nowrap}
+.stage-row td{background:transparent!important;padding:10px 15px 3px;
+  font-size:8px;font-weight:800;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--amber)}
+
+/* ── Method ────────────────────────────────────────────── */
+.mhead{padding:11px 15px 7px}
+ol.ml{list-style:none;padding:0 15px 12px}
+.ml li{display:flex;gap:9px;padding:7px 0;
+  border-bottom:1px solid rgba(233,225,208,.7);
+  font-size:11px;line-height:1.5;color:var(--ink)}
+.ml li:last-child{border-bottom:none}
+.sn{flex:0 0 20px;width:20px;height:20px;border-radius:50%;
+  border:1.5px solid var(--green);color:var(--green);font-size:9px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;margin-top:1px}
+
+/* ── Cook footer ───────────────────────────────────────── */
+.cf{flex:0 0 auto;padding:8px 15px 18px;
+  background:linear-gradient(to top,var(--bone) 65%,rgba(242,237,225,0))}
+.cook{width:100%;background:var(--green);color:#fff;border:none;
+  border-radius:10px;padding:13px;font-size:13px;font-weight:700;
+  letter-spacing:.02em;display:flex;align-items:center;justify-content:center;gap:7px}
+.cook:hover{opacity:.9}
+
+/* ── Option 2: Tab strip ───────────────────────────────── */
+.tabstrip{flex:0 0 auto;display:flex;background:var(--bone);
+  border-bottom:1px solid var(--sand)}
+.tb{flex:1;padding:10px 4px;font-size:10px;font-weight:700;
+  letter-spacing:.04em;text-transform:uppercase;
+  border:none;background:transparent;color:var(--ink60);
+  position:relative;transition:color .15s}
+.tb.on{color:var(--green)}
+.tb.on::after{content:'';position:absolute;bottom:0;left:18%;right:18%;
+  height:2px;background:var(--green);border-radius:2px 2px 0 0}
+.tp{display:none}.tp.on{display:block}
+
+/* ── Option 3: Accordions ──────────────────────────────── */
+.atr{width:100%;background:none;border:none;
+  border-bottom:1px solid var(--sand);padding:11px 15px;
+  display:flex;align-items:center;justify-content:space-between}
+.atr-l{display:flex;align-items:center;gap:7px}
+.atr-name{font-size:11px;font-weight:700;color:var(--ink)}
+.atr-count{font-size:9px;color:var(--ink60);background:var(--sand);
+  padding:2px 7px;border-radius:10px}
+.atr-icon{font-size:10px;color:var(--ink30);
+  transition:transform .2s;display:inline-block}
+.atr-icon.open{transform:rotate(90deg)}
+.ab{display:none;border-bottom:1px solid var(--sand)}
+.ab.open{display:block}
+
+/* Contra trigger (opt 3) */
+.ctr{width:100%;background:rgba(180,71,46,.06);border:none;
+  border-bottom:1px solid rgba(180,71,46,.18);padding:9px 15px;
+  display:flex;align-items:center;justify-content:space-between}
+.ctr-l{display:flex;align-items:center;gap:6px;
+  font-size:10px;color:var(--clay);font-weight:700}
+.ctr-r{font-size:9px;color:rgba(180,71,46,.65)}
+.cb{display:none;background:rgba(180,71,46,.05);padding:8px 15px 10px;
+  border-bottom:1px solid rgba(180,71,46,.15)}
+.cb.open{display:block}
+.ci{font-size:10px;color:rgba(180,71,46,.82);line-height:1.9}
+.ci::before{content:'· ';opacity:.5}
+
+/* Compact meta (opt 3) */
+.cml{padding:8px 15px;display:flex;flex-wrap:wrap;gap:5px;align-items:center;
+  border-bottom:1px solid var(--sand)}
+.cp{font-size:9px;color:var(--amber);font-family:var(--serif);font-style:italic;
+  border:1px solid rgba(198,144,47,.35);padding:2px 7px;border-radius:4px;
+  background:none}
+.csep{font-size:9px;color:var(--ink30)}
+.ci2{font-size:9px;color:var(--ink60)}
+
+/* Option description */
+.odesc{max-width:292px;text-align:center}
+.odesc-title{font-size:13px;font-weight:700;color:var(--pgt);margin-bottom:4px}
+.odesc-text{font-size:11px;color:var(--pgm);line-height:1.55}
+</style>
+
+<div class="pg-head">
+  <div class="pg-title">Recipe Detail — 3 Layout Approaches</div>
+  <div class="pg-sub">Same recipe, same data, three information architectures. Tabs, accordions, and unit toggle are all interactive.</div>
+  <div class="pg-tag">Coconut Laddu · Narikela Modaka · S-23</div>
+  <div class="pg-note">
+    <span class="pg-note-item"><span class="dot" style="background:var(--amber)"></span> Source citations (tappable → D4)</span>
+    <span class="pg-note-item"><span class="dot" style="background:var(--clay)"></span> Contraindications</span>
+    <span class="pg-note-item"><span class="dot" style="background:var(--green)"></span> Cook mode (5 steps → qualifies)</span>
+    <span class="pg-note-item"><span class="dot" style="background:var(--sand);border:1px solid var(--ink30)"></span> g/cup unit toggle</span>
+  </div>
+</div>
+
+<div class="phones-row">
+
+  <!-- ══ OPTION 1 — ADDITIVE ══════════════════════════════════ -->
+  <div class="pw">
+    <div class="opt-label">Option 1 · Additive</div>
+    <div class="phone">
+      <div class="screen" id="p1">
+        <div class="sbar">9:41<div class="sbar-icons">▲▲▲ ▮▮▮▮</div></div>
+        <div class="nav">
+          <span class="nav-back">←</span>
+          <span class="nav-title">Recipe Detail</span>
+          <span class="nav-fav">♡</span>
+        </div>
+        <div class="sa">
+          <!-- Hero -->
+          <div class="hero">
+            <div class="hero-title">Coconut Laddu</div>
+            <div class="hero-sk">Narikela Modaka</div>
+            <div class="hero-tags">
+              <span class="tag">S-23</span>
+              <span class="tag">Solid</span>
+              <span class="tag">Sweet</span>
+            </div>
+          </div>
+          <!-- Sources -->
+          <div class="sb">
+            <div class="sl">Classical sources</div>
+            <div class="src-row">
+              <button class="src-pill">KK 10/54 <span class="ext">↗</span></button>
+              <button class="src-pill">ICMR-NIN 2024 <span class="ext">↗</span></button>
+            </div>
+          </div>
+          <!-- Meta -->
+          <div class="sb">
+            <div class="sl">Yield &amp; storage</div>
+            <div class="meta-row">
+              <span class="mb">🫙 Makes 3–4 laddoos</span>
+              <span class="mb">📅 5–7 days</span>
+            </div>
+          </div>
+          <!-- Contraindication -->
+          <div class="cc">
+            <div class="cc-head">⚠ Use with caution</div>
+            <div class="cc-list">
+              Diabetes &nbsp;·&nbsp; Overweight &nbsp;·&nbsp; Lactose intolerance &nbsp;·&nbsp; Sedentary lifestyle
+            </div>
+          </div>
+          <!-- Ingredients -->
+          <div class="ih">
+            <div class="sl" style="margin:0">Ingredients</div>
+            <div class="utog">
+              <button class="ubtn on" data-u="g" onclick="setUnit('p1','g')">g</button>
+              <button class="ubtn" data-u="cup" onclick="setUnit('p1','cup')">cup</button>
+            </div>
+          </div>
+          <table class="it">
+            <tr><td>Grated coconut</td><td class="qty" data-g="40–50 g" data-cup="¼ cup">40–50 g</td></tr>
+            <tr><td>Milk</td><td class="qty" data-g="30–40 ml" data-cup="2½ tbsp">30–40 ml</td></tr>
+            <tr><td>Ghee</td><td class="qty" data-g="10–15 ml" data-cup="2–3 tsp">10–15 ml</td></tr>
+            <tr><td>Rock sugar powder</td><td class="qty" data-g="15–20 g" data-cup="3–4 tsp">15–20 g</td></tr>
+            <tr><td>Cardamom powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+            <tr><td>Dry ginger powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+          </table>
+          <!-- Method -->
+          <div class="mhead"><div class="sl">Method</div></div>
+          <ol class="ml">
+            <li><span class="sn">1</span>Cook grated coconut in milk until well combined and fully absorbed.</li>
+            <li><span class="sn">2</span>Roast cooked coconut in ghee until fragrant and lightly golden.</li>
+            <li><span class="sn">3</span>Prepare rock sugar syrup to a firm binding consistency.</li>
+            <li><span class="sn">4</span>Add coconut to syrup; fold in cardamom and dry ginger powder.</li>
+            <li><span class="sn">5</span>Shape into small laddoos while the mixture is still warm.</li>
+          </ol>
+          <div style="height:64px"></div>
+        </div>
+        <div class="cf">
+          <button class="cook">▶&ensp;Start Cook</button>
+        </div>
+      </div>
+    </div>
+    <div class="odesc">
+      <div class="odesc-title">Additive — vertical scroll</div>
+      <div class="odesc-text">Every field visible on scroll. No navigation layer. Simple, familiar. Screen grows with content complexity.</div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION 2 — TABBED ════════════════════════════════════ -->
+  <div class="pw">
+    <div class="opt-label">Option 2 · Tabbed</div>
+    <div class="phone">
+      <div class="screen" id="p2">
+        <div class="sbar">9:41<div class="sbar-icons">▲▲▲ ▮▮▮▮</div></div>
+        <div class="nav">
+          <span class="nav-back">←</span>
+          <span class="nav-title">Recipe Detail</span>
+          <span class="nav-fav">♡</span>
+        </div>
+        <!-- Compact hero — always visible -->
+        <div style="padding:13px 15px 11px;border-bottom:1px solid var(--sand);flex:0 0 auto">
+          <div class="hero-title">Coconut Laddu</div>
+          <div class="hero-sk">Narikela Modaka &nbsp;·&nbsp; <span style="font-style:normal;font-size:10px;color:var(--ink60)">S-23 · Solid · Sweet</span></div>
+        </div>
+        <!-- Tab strip -->
+        <div class="tabstrip">
+          <button class="tb on" data-p="t2-ov" onclick="tab2('t2-ov',this)">Overview</button>
+          <button class="tb" data-p="t2-ing" onclick="tab2('t2-ing',this)">Ingredients</button>
+          <button class="tb" data-p="t2-steps" onclick="tab2('t2-steps',this)">Steps</button>
+        </div>
+        <!-- Tab content -->
+        <div class="sa">
+          <!-- Overview -->
+          <div class="tp on" id="t2-ov">
+            <div class="sb">
+              <div class="sl">Classical sources</div>
+              <div class="src-row">
+                <button class="src-pill">KK 10/54 <span class="ext">↗</span></button>
+                <button class="src-pill">ICMR-NIN 2024 <span class="ext">↗</span></button>
+              </div>
+            </div>
+            <div class="sb">
+              <div class="sl">Yield &amp; storage</div>
+              <div class="meta-row">
+                <span class="mb">🫙 Makes 3–4 laddoos</span>
+                <span class="mb">📅 5–7 days</span>
+              </div>
+            </div>
+            <div class="cc">
+              <div class="cc-head">⚠ Use with caution</div>
+              <div class="cc-list">Diabetes &nbsp;·&nbsp; Overweight &nbsp;·&nbsp; Lactose intolerance &nbsp;·&nbsp; Sedentary lifestyle</div>
+            </div>
+            <div class="sb" style="border-top:1px solid var(--sand)">
+              <div class="sl">Category</div>
+              <div class="hero-tags">
+                <span class="tag">S-23</span>
+                <span class="tag">Solid</span>
+                <span class="tag">Sweet</span>
+                <span class="tag">No timer needed</span>
+              </div>
+            </div>
+          </div>
+          <!-- Ingredients -->
+          <div class="tp" id="t2-ing">
+            <div class="ih">
+              <div class="sl" style="margin:0">6 ingredients</div>
+              <div class="utog">
+                <button class="ubtn on" data-u="g" onclick="setUnit('p2','g')">g</button>
+                <button class="ubtn" data-u="cup" onclick="setUnit('p2','cup')">cup</button>
+              </div>
+            </div>
+            <table class="it">
+              <tr><td>Grated coconut</td><td class="qty" data-g="40–50 g" data-cup="¼ cup">40–50 g</td></tr>
+              <tr><td>Milk</td><td class="qty" data-g="30–40 ml" data-cup="2½ tbsp">30–40 ml</td></tr>
+              <tr><td>Ghee</td><td class="qty" data-g="10–15 ml" data-cup="2–3 tsp">10–15 ml</td></tr>
+              <tr><td>Rock sugar powder</td><td class="qty" data-g="15–20 g" data-cup="3–4 tsp">15–20 g</td></tr>
+              <tr><td>Cardamom powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+              <tr><td>Dry ginger powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+            </table>
+            <div style="padding:12px 15px">
+              <div style="font-size:10px;color:var(--ink60);line-height:1.5">No staged preparation — single batch. For multi-stage recipes, ingredient groups appear with stage headers.</div>
+            </div>
+          </div>
+          <!-- Steps -->
+          <div class="tp" id="t2-steps">
+            <div class="mhead"><div class="sl">5 steps · no timer</div></div>
+            <ol class="ml">
+              <li><span class="sn">1</span>Cook grated coconut in milk until well combined and fully absorbed.</li>
+              <li><span class="sn">2</span>Roast cooked coconut in ghee until fragrant and lightly golden.</li>
+              <li><span class="sn">3</span>Prepare rock sugar syrup to a firm binding consistency.</li>
+              <li><span class="sn">4</span>Add coconut to syrup; fold in cardamom and dry ginger powder.</li>
+              <li><span class="sn">5</span>Shape into small laddoos while the mixture is still warm.</li>
+            </ol>
+            <div style="padding:12px 15px 8px">
+              <button class="cook">▶&ensp;Start Cook</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="odesc">
+      <div class="odesc-title">Tabbed sections</div>
+      <div class="odesc-text">Sticky compact header + tab strip groups fields. Three focused contexts. Cook button lives in Steps tab.</div>
+    </div>
+  </div>
+
+  <!-- ══ OPTION 3 — PROGRESSIVE ═══════════════════════════════ -->
+  <div class="pw">
+    <div class="opt-label">Option 3 · Progressive</div>
+    <div class="phone">
+      <div class="screen" id="p3">
+        <div class="sbar">9:41<div class="sbar-icons">▲▲▲ ▮▮▮▮</div></div>
+        <div class="nav">
+          <span class="nav-back">←</span>
+          <span class="nav-title">Recipe Detail</span>
+          <span class="nav-fav">♡</span>
+        </div>
+        <div class="sa">
+          <!-- Hero (compact) -->
+          <div class="hero">
+            <div class="hero-title">Coconut Laddu</div>
+            <div class="hero-sk">Narikela Modaka</div>
+          </div>
+          <!-- Compact meta line -->
+          <div class="cml">
+            <button class="cp">KK 10/54 ↗</button>
+            <button class="cp">ICMR-NIN ↗</button>
+            <span class="csep">·</span>
+            <span class="ci2">🫙 3–4 laddoos</span>
+            <span class="csep">·</span>
+            <span class="ci2">📅 5–7 days</span>
+          </div>
+          <!-- Contra trigger -->
+          <button class="ctr" id="ctr3" onclick="toggleCtr()">
+            <span class="ctr-l">⚠ Caution &nbsp;<span style="font-weight:400;opacity:.7">4 conditions</span></span>
+            <span class="ctr-r" id="ctr3-r">▼ expand</span>
+          </button>
+          <div class="cb" id="cb3">
+            <div class="ci">Diabetes</div>
+            <div class="ci">Overweight / Obesity</div>
+            <div class="ci">Lactose intolerance</div>
+            <div class="ci">Sedentary lifestyle with poor metabolism</div>
+          </div>
+          <!-- Ingredients accordion -->
+          <button class="atr" id="a-ing" onclick="toggleAcc('a-ing','ab-ing')">
+            <span class="atr-l">
+              <span class="atr-name">Ingredients</span>
+              <span class="atr-count">6</span>
+            </span>
+            <span class="atr-icon" id="ai-ing">▶</span>
+          </button>
+          <div class="ab" id="ab-ing">
+            <div class="ih" style="padding-bottom:5px">
+              <div></div>
+              <div class="utog">
+                <button class="ubtn on" data-u="g" onclick="setUnit('p3','g')">g</button>
+                <button class="ubtn" data-u="cup" onclick="setUnit('p3','cup')">cup</button>
+              </div>
+            </div>
+            <table class="it">
+              <tr><td>Grated coconut</td><td class="qty" data-g="40–50 g" data-cup="¼ cup">40–50 g</td></tr>
+              <tr><td>Milk</td><td class="qty" data-g="30–40 ml" data-cup="2½ tbsp">30–40 ml</td></tr>
+              <tr><td>Ghee</td><td class="qty" data-g="10–15 ml" data-cup="2–3 tsp">10–15 ml</td></tr>
+              <tr><td>Rock sugar powder</td><td class="qty" data-g="15–20 g" data-cup="3–4 tsp">15–20 g</td></tr>
+              <tr><td>Cardamom powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+              <tr><td>Dry ginger powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+            </table>
+            <div style="height:8px"></div>
+          </div>
+          <!-- Method accordion -->
+          <button class="atr" id="a-mth" onclick="toggleAcc('a-mth','ab-mth')">
+            <span class="atr-l">
+              <span class="atr-name">Method</span>
+              <span class="atr-count">5 steps</span>
+            </span>
+            <span class="atr-icon" id="ai-mth">▶</span>
+          </button>
+          <div class="ab" id="ab-mth">
+            <ol class="ml">
+              <li><span class="sn">1</span>Cook grated coconut in milk until well combined and fully absorbed.</li>
+              <li><span class="sn">2</span>Roast cooked coconut in ghee until fragrant and lightly golden.</li>
+              <li><span class="sn">3</span>Prepare rock sugar syrup to a firm binding consistency.</li>
+              <li><span class="sn">4</span>Add coconut to syrup; fold in cardamom and dry ginger powder.</li>
+              <li><span class="sn">5</span>Shape into small laddoos while the mixture is still warm.</li>
+            </ol>
+          </div>
+          <!-- Sources (at bottom — secondary) -->
+          <div class="sb" style="margin-top:4px">
+            <div class="sl">Category &amp; source</div>
+            <div class="hero-tags" style="margin-bottom:8px">
+              <span class="tag">S-23</span>
+              <span class="tag">Solid</span>
+              <span class="tag">Sweet</span>
+            </div>
+          </div>
+          <div style="height:68px"></div>
+        </div>
+        <!-- Cook button — always visible, not inside scroll -->
+        <div class="cf">
+          <button class="cook">▶&ensp;Start Cook</button>
+        </div>
+      </div>
+    </div>
+    <div class="odesc">
+      <div class="odesc-title">Progressive disclosure</div>
+      <div class="odesc-text">Lean header. Contraindications, ingredients, and steps collapse. Cook button always pinned at bottom.</div>
+    </div>
+  </div>
+
+</div><!-- /phones-row -->
+
+<!-- ── Comparison summary ────────────────────────────────── -->
+<div style="max-width:900px;margin:0 auto;padding-top:12px">
+  <table style="width:100%;border-collapse:collapse;font-size:11px;color:var(--pgm)">
+    <thead>
+      <tr style="border-bottom:1px solid var(--sand)">
+        <th style="text-align:left;padding:8px 12px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--pgm)">Criterion</th>
+        <th style="padding:8px 12px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--pgm)">Option 1</th>
+        <th style="padding:8px 12px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--pgm)">Option 2</th>
+        <th style="padding:8px 12px;font-size:9px;letter-spacing:.07em;text-transform:uppercase;color:var(--pgm)">Option 3</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--sand)">
+        <td style="padding:8px 12px">Contraindication visibility</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Always visible</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Overview tab only</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Collapsed, tappable</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--sand)">
+        <td style="padding:8px 12px">Cook button reach</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Scroll to bottom</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Steps tab only</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Always pinned</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--sand)">
+        <td style="padding:8px 12px">Source citations</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Always visible</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Always visible</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Compact — always visible</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--sand)">
+        <td style="padding:8px 12px">Simple recipe overhead</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Low</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Tab nav always present</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Low — stays compact</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px">Complex recipe (8 steps, staged ingr.)</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--amber)">Very long scroll</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Each tab stays bounded</td>
+        <td style="padding:8px 12px;text-align:center;color:var(--green)">Accordions contain growth</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+/* Unit toggle — scoped by phone id */
+function setUnit(pid, unit) {
+  const phone = document.getElementById(pid);
+  phone.querySelectorAll('.qty').forEach(td => { td.textContent = td.dataset[unit]; });
+  phone.querySelectorAll('.ubtn').forEach(btn => {
+    btn.classList.toggle('on', btn.dataset.u === unit);
+  });
+}
+
+/* Option 2 tab switch */
+function tab2(panelId, btn) {
+  document.querySelectorAll('#p2 .tp').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('#p2 .tb').forEach(b => b.classList.remove('on'));
+  document.getElementById(panelId).classList.add('on');
+  btn.classList.add('on');
+}
+
+/* Option 3 accordion */
+function toggleAcc(btnId, bodyId) {
+  const body = document.getElementById(bodyId);
+  const icon = document.getElementById('ai-' + btnId.split('-')[1]);
+  const open = body.classList.toggle('open');
+  icon.classList.toggle('open', open);
+  icon.textContent = open ? '▼' : '▶';
+}
+
+/* Option 3 contra */
+function toggleCtr() {
+  const body = document.getElementById('cb3');
+  const lbl  = document.getElementById('ctr3-r');
+  const open = body.classList.toggle('open');
+  lbl.textContent = open ? '▲ collapse' : '▼ expand';
+}
+</script>

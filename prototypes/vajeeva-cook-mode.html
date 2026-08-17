@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva · Cook Mode UX</title>
+<style>
+:root {
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC;
+  --green:#3E6B4F; --green-press:#335B42; --green-soft:#E4EDE3;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --shadow-lift:0 10px 28px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+body{margin:0;min-height:100vh;background:#161310;display:flex;flex-direction:column;align-items:center;padding:28px 16px 60px;font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+.proto-bar{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.proto-label{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,240,232,.28);font-weight:700}
+.reset-btn{background:none;border:1px solid rgba(245,240,232,.12);border-radius:999px;padding:5px 12px;font-family:var(--mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,240,232,.38);cursor:pointer;font-weight:700}
+.reset-btn:hover{background:rgba(245,240,232,.06)}
+
+/* Phone shell */
+.phone{position:relative;width:290px;background:#080604;border:1px solid rgba(0,0,0,.7);border-radius:40px;padding:9px;box-shadow:var(--shadow-lift)}
+.notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:98px;height:26px;background:#080604;border-radius:0 0 16px 16px;z-index:10;pointer-events:none}
+.stage{position:relative;width:272px;height:600px;border-radius:32px;overflow:hidden;background:#1C1914}
+
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;font-size:12px;line-height:1.4;transform:translateX(100%)}
+.screen::-webkit-scrollbar{width:0}
+
+.ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fl{fill:currentColor}
+.il-sand{fill:var(--sand)}.il-cream{fill:var(--cream)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+.il-green{fill:var(--green)}.il-clay{fill:var(--clay)}
+.il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+
+/* ── ENTRY SCREEN (light browse-style) ────────────────── */
+#s-entry { background:var(--bone); color:var(--ink); }
+
+.e-sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px 4px;font-size:11px;font-weight:700}
+.e-hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;background:radial-gradient(120% 90% at 50% 30%,var(--green-soft),var(--sand))}
+.e-title{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--ink)}
+.e-sk{font-family:var(--serif);font-style:italic;font-size:12px;color:var(--amber)}
+.e-foot{background:var(--bone);padding:12px 14px 18px;display:flex;flex-direction:column;gap:9px;border-top:1px solid var(--line);flex:none}
+.e-meta{display:flex;gap:5px;flex-wrap:wrap}
+.e-badge{font-size:10px;color:var(--ink-2);background:var(--sand);padding:4px 9px;border-radius:4px}
+.cta{background:var(--green);color:var(--cream);border-radius:14px;padding:14px;text-align:center;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none;width:100%;font-family:var(--sans)}
+.cta svg{width:15px;height:15px}
+.cta:active{background:var(--green-press)}
+
+/* ── COOK MODE (dark warm) ─────────────────────────────── */
+#s-cook,#s-finish{
+  --cm-bg:    #1A1814;
+  --cm-surf:  #26221C;
+  --cm-surf2: #302B24;
+  --cm-text:  #F0EAD8;
+  --cm-muted: rgba(240,234,216,.42);
+  --cm-line:  rgba(240,234,216,.08);
+  --cm-amber: #C6902F;
+  --cm-green: #5CAD78;
+  --cm-green-dim: rgba(92,173,120,.15);
+  background: var(--cm-bg);
+  color: var(--cm-text);
+}
+
+/* Ambient progress line at very top */
+.cm-prog-line{height:2px;background:rgba(240,234,216,.06);flex:none}
+.cm-prog-fill{height:100%;background:linear-gradient(90deg,var(--cm-amber),#E8B44A);border-radius:0 1px 1px 0;transition:width .5s ease}
+
+/* Status bar */
+.cm-sbar{display:flex;justify-content:space-between;align-items:center;padding:10px 18px 4px;font-size:11px;font-weight:700;color:var(--cm-muted);flex:none}
+
+/* Top control bar */
+.cm-bar{display:flex;align-items:center;gap:0;padding:6px 14px 8px;flex:none}
+.cm-x{width:32px;height:32px;border-radius:50%;background:var(--cm-surf);display:grid;place-items:center;color:var(--cm-muted);cursor:pointer;flex:none;border:1px solid var(--cm-line)}
+.cm-x svg{width:13px;height:13px}
+.cm-x:active{background:rgba(240,234,216,.08)}
+
+/* Step dots — pill-style active dot */
+.cm-dots{flex:1;display:flex;align-items:center;justify-content:center;gap:5px}
+.cm-dot{width:6px;height:6px;border-radius:3px;background:var(--cm-surf2);transition:all .22s ease;cursor:pointer}
+.cm-dot.on{width:20px;background:var(--cm-amber)}
+.cm-dot.done{background:rgba(92,173,120,.5)}
+
+.cm-label{font-family:var(--mono);font-size:10px;color:var(--cm-muted);font-weight:700;flex:none;min-width:32px;text-align:right}
+
+/* Phase label */
+.cm-phase-strip{padding:2px 18px 10px;flex:none}
+.cm-phase-text{font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--cm-amber);font-weight:700}
+
+/* Step body — swipeable zone */
+.cm-body{flex:1;overflow-y:auto;scrollbar-width:none;display:flex;flex-direction:column;gap:13px;padding:0 18px;position:relative}
+.cm-body::-webkit-scrollbar{width:0}
+
+/* Step text with animate-in */
+.cm-step-text{font-family:var(--serif);font-size:20px;font-weight:700;line-height:1.38;color:var(--cm-text);letter-spacing:-.01em}
+
+/* Phase-tinted illustration card */
+.cm-ill{height:94px;border-radius:14px;display:grid;place-items:center;flex:none;transition:background .5s ease}
+.cm-ill svg{width:76px;height:60px}
+
+/* Ingredient chips for this step */
+.cm-ing-row{flex:none}
+.cm-ing-lbl{font-size:8.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--cm-muted);margin-bottom:6px}
+.cm-ing-chips{display:flex;gap:5px;overflow-x:auto;scrollbar-width:none;padding-bottom:1px}
+.cm-ing-chips::-webkit-scrollbar{width:0;height:0}
+.cm-chip{white-space:nowrap;font-size:10px;color:var(--cm-amber);border:1px solid rgba(198,144,47,.3);border-radius:999px;padding:4px 10px;background:rgba(198,144,47,.07);flex:none;font-family:var(--sans)}
+
+/* Info row — heat + timer */
+.cm-info{display:flex;align-items:center;justify-content:space-between;flex:none}
+.cm-heat{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9.5px;color:var(--cm-muted);font-weight:700;letter-spacing:.04em}
+.cm-heat svg{width:11px;height:11px}
+
+/* Timer pill */
+.cm-timer-pill{align-self:flex-start;display:inline-flex;align-items:center;gap:7px;border:2px solid var(--cm-green);color:var(--cm-green);border-radius:999px;padding:7px 13px;font-weight:800;font-size:12px;font-family:var(--mono);cursor:pointer;white-space:nowrap}
+.cm-timer-pill svg{width:13px;height:13px}
+.cm-timer-pill:active{opacity:.8}
+.cm-timer-pill.done{border-color:rgba(92,173,120,.4);color:rgba(92,173,120,.6)}
+
+/* Navigation footer */
+.cm-foot{display:flex;gap:8px;padding:9px 13px 6px;flex:none;border-top:1px solid var(--cm-line)}
+.cm-nav{flex:1;font-weight:800;font-size:12.5px;border-radius:13px;padding:13px;display:flex;align-items:center;justify-content:center;gap:6px;border:none;cursor:pointer;font-family:var(--sans);transition:opacity .15s}
+.cm-nav svg{width:13px;height:13px}
+.cm-nav.prev{background:var(--cm-surf);color:rgba(240,234,216,.65);border:1px solid var(--cm-line)}
+.cm-nav.prev:active{background:rgba(240,234,216,.07)}
+.cm-nav.next{background:var(--cm-green);color:#0c1a10}
+.cm-nav.next:active{opacity:.82}
+
+.cm-caption{text-align:center;font-size:8px;color:var(--cm-muted);font-family:var(--mono);padding:4px 0 10px;letter-spacing:.05em;flex:none}
+
+/* Step-change animation */
+@keyframes step-r{from{transform:translateX(20px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes step-l{from{transform:translateX(-20px);opacity:0}to{transform:translateX(0);opacity:1}}
+.anim-r{animation:step-r .2s cubic-bezier(.2,0,.4,1) both}
+.anim-l{animation:step-l .2s cubic-bezier(.2,0,.4,1) both}
+
+/* ── FINISH SCREEN ─────────────────────────────────────── */
+.fin-top{display:flex;align-items:center;padding:14px 14px 8px;flex:none}
+.fin-prog{flex:1;height:2px;background:rgba(240,234,216,.08);border-radius:1px;overflow:hidden;margin:0 12px}
+.fin-prog-fill{height:100%;width:100%;background:var(--cm-green);border-radius:1px}
+
+.fin-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:0 20px 8px;text-align:center}
+.fin-ring{width:76px;height:76px;border-radius:50%;background:rgba(92,173,120,.1);border:2px solid var(--cm-green);display:grid;place-items:center;color:var(--cm-green)}
+.fin-ring svg{width:32px;height:32px}
+.fin-title{font-family:var(--serif);font-size:25px;font-weight:700;color:var(--cm-text);letter-spacing:-.01em}
+.fin-sub{font-size:11px;color:var(--cm-muted);line-height:1.55}
+.fin-card{width:100%;background:rgba(240,234,216,.04);border:1px solid rgba(240,234,216,.1);border-radius:14px;padding:12px 14px;text-align:left;display:flex;flex-direction:column;gap:7px}
+.fin-card-h{font-weight:800;font-size:12px;color:var(--cm-green)}
+.fin-card-b{font-size:10px;color:var(--cm-muted);line-height:1.5}
+.fin-cta{width:100%;background:var(--cm-green);color:#0c1a10;border-radius:14px;padding:14px;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;border:none;font-family:var(--sans)}
+.fin-cta:active{opacity:.85}
+.fin-ghost{font-size:12px;font-weight:700;color:var(--cm-muted);cursor:pointer;background:none;border:none;font-family:var(--sans);padding:4px}
+.fin-ghost:active{color:var(--cm-text)}
+.fin-shelf{font-size:8.5px;color:var(--cm-muted);font-family:var(--mono);text-align:center;padding:0 0 12px;letter-spacing:.05em;flex:none}
+
+/* ── ANNOTATION PANEL (below phone) ───────────────────── */
+.notes{width:290px;margin-top:22px;display:flex;flex-direction:column;gap:0}
+.notes-head{font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:rgba(245,240,232,.25);margin-bottom:12px}
+.note{display:flex;gap:10px;padding:9px 0;border-top:1px solid rgba(245,240,232,.07)}
+.note-n{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cm-amber);flex:none;width:16px}
+.note-body{flex:1}
+.note-title{font-size:10.5px;font-weight:700;color:rgba(245,240,232,.7);margin-bottom:2px}
+.note-desc{font-size:9.5px;color:rgba(245,240,232,.38);line-height:1.5}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path class="ln" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path class="fl" d="M8 6.5l10 5.5-10 5.5z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path class="ln" d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="ln" d="M12 8v4.3l2.8 1.7"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path class="ln" d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1.4.6-2.4 1.3-3.2C10 9 12 8 12 3z"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/>
+    <circle class="il-a" cx="32" cy="33" r="15"/>
+    <circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/>
+    <circle class="il-a2" cx="33" cy="37" r="1.6"/><circle class="il-a2" cx="26" cy="38" r="1.2"/>
+    <circle class="il-a2" cx="38" cy="34" r="1.4"/><circle class="il-a2" cx="31" cy="33" r="1.2"/>
+    <ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/>
+  </symbol>
+  <symbol id="ill-hero" viewBox="0 0 120 90">
+    <ellipse class="il-cream" cx="60" cy="62" rx="46" ry="12"/>
+    <ellipse class="il-sand" cx="60" cy="64" rx="46" ry="9"/>
+    <circle class="il-a" cx="44" cy="52" r="13"/><circle class="il-a2" cx="40" cy="50" r="1.4"/><circle class="il-a2" cx="47" cy="54" r="1.4"/><circle class="il-a2" cx="45" cy="49" r="1.2"/>
+    <circle class="il-a" cx="76" cy="52" r="13"/><circle class="il-a2" cx="72" cy="54" r="1.4"/><circle class="il-a2" cx="79" cy="50" r="1.4"/><circle class="il-a2" cx="77" cy="55" r="1.2"/>
+    <circle class="il-a" cx="60" cy="46" r="15"/><circle class="il-a2" cx="55" cy="44" r="1.5"/><circle class="il-a2" cx="64" cy="42" r="1.4"/><circle class="il-a2" cx="61" cy="49" r="1.6"/><circle class="il-a2" cx="66" cy="48" r="1.3"/>
+    <ellipse class="il-green" cx="60" cy="30" rx="4" ry="2.6"/>
+  </symbol>
+</svg>
+
+<div class="proto-bar">
+  <span class="proto-label">Vajeeva · Cook Mode UX</span>
+  <button class="reset-btn" onclick="fullReset()">↺ Reset</button>
+</div>
+
+<div class="phone">
+  <div class="notch"></div>
+  <div class="stage">
+
+    <!-- ═══ ENTRY ══════════════════════════════════════════ -->
+    <div class="screen" id="s-entry" style="transform:translateX(0)">
+      <div class="e-sbar"><span>9:41</span><span>⚬⚬⚬ ⌃ ▮</span></div>
+      <div class="e-hero">
+        <svg viewBox="0 0 120 90" style="width:160px;height:120px"><use href="#ill-hero"/></svg>
+        <div class="e-title">Coconut Laddu</div>
+        <div class="e-sk">Narikela modaka</div>
+      </div>
+      <div class="e-foot">
+        <div class="e-meta">
+          <span class="e-badge">🫙 Makes 3–4</span>
+          <span class="e-badge">📅 Keeps 5–7 days</span>
+          <span class="e-badge">5 steps · ~25 min</span>
+        </div>
+        <button class="cta" onclick="startCook()">
+          <svg><use href="#i-play"/></svg> Start Cook
+        </button>
+      </div>
+    </div>
+
+    <!-- ═══ COOK MODE ════════════════════════════════════════ -->
+    <div class="screen" id="s-cook">
+      <!-- Ambient progress line -->
+      <div class="cm-prog-line"><div class="cm-prog-fill" id="cook-prog-fill" style="width:20%"></div></div>
+
+      <!-- Status bar -->
+      <div class="cm-sbar"><span>9:41</span><span>⚬⚬⚬ ⌃ ▮</span></div>
+
+      <!-- Top bar: close · dots · step count -->
+      <div class="cm-bar">
+        <div class="cm-x" onclick="exitCook()"><svg><use href="#i-close"/></svg></div>
+        <div class="cm-dots" id="cook-dots">
+          <div class="cm-dot on" data-i="0" onclick="jumpToStep(0)"></div>
+          <div class="cm-dot"    data-i="1" onclick="jumpToStep(1)"></div>
+          <div class="cm-dot"    data-i="2" onclick="jumpToStep(2)"></div>
+          <div class="cm-dot"    data-i="3" onclick="jumpToStep(3)"></div>
+          <div class="cm-dot"    data-i="4" onclick="jumpToStep(4)"></div>
+        </div>
+        <div class="cm-label" id="cook-label">1 / 5</div>
+      </div>
+
+      <!-- Phase strip -->
+      <div class="cm-phase-strip">
+        <div class="cm-phase-text" id="cook-phase">Phase · Milk &amp; Coconut</div>
+      </div>
+
+      <!-- Swipeable step body -->
+      <div class="cm-body" id="cm-swipe">
+
+        <!-- Step instruction text -->
+        <div class="cm-step-text" id="cook-text">
+          Cook grated coconut in milk over low heat, stirring gently, until fully absorbed and well combined.
+        </div>
+
+        <!-- Phase-tinted illustration -->
+        <div class="cm-ill" id="cook-ill" style="background:#D4E6D1">
+          <svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg>
+        </div>
+
+        <!-- Ingredient chips for this step -->
+        <div class="cm-ing-row" id="cook-ing-wrap">
+          <div class="cm-ing-lbl">This step</div>
+          <div class="cm-ing-chips" id="cook-chips">
+            <span class="cm-chip">Grated coconut</span>
+            <span class="cm-chip">Whole milk</span>
+          </div>
+        </div>
+
+        <!-- Heat + timer row -->
+        <div class="cm-info">
+          <div class="cm-heat" id="cook-heat">
+            <svg viewBox="0 0 24 24"><use href="#i-flame"/></svg> Low heat
+          </div>
+          <!-- Timer: shown/hidden per step -->
+          <div id="cook-timer-wrap" style="display:none">
+            <div class="cm-timer-pill" id="timer-pill" onclick="toggleTimer()">
+              <svg viewBox="0 0 24 24"><use href="#i-clock"/></svg>
+              <span id="timer-num">10:00</span>
+              <span id="timer-hint"> · start</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spacer at bottom for scroll breathing room -->
+        <div style="height:4px;flex:none"></div>
+      </div><!-- /cm-body -->
+
+      <!-- Footer nav -->
+      <div class="cm-foot">
+        <button class="cm-nav prev" id="cook-prev" onclick="cookBack()">
+          <svg><use href="#i-back"/></svg> Back
+        </button>
+        <button class="cm-nav next" id="cook-next" onclick="cookNext()">
+          Next <svg><use href="#i-chev"/></svg>
+        </button>
+      </div>
+      <div class="cm-caption">screen stays awake · swipe to navigate · works offline</div>
+    </div>
+
+    <!-- ═══ FINISH ═══════════════════════════════════════════ -->
+    <div class="screen" id="s-finish">
+      <!-- Top bar + full progress -->
+      <div class="fin-top">
+        <div class="cm-x" onclick="go('s-entry')"><svg><use href="#i-close"/></svg></div>
+        <div class="fin-prog"><div class="fin-prog-fill"></div></div>
+        <div class="cm-label" style="color:rgba(92,173,120,.9)">Done</div>
+      </div>
+
+      <!-- Body -->
+      <div class="fin-body">
+        <div class="fin-ring">
+          <svg viewBox="0 0 24 24"><use href="#i-check"/></svg>
+        </div>
+        <div>
+          <div class="fin-title">Well made.</div>
+          <div class="fin-sub">Coconut Laddu · 5 steps<br><span id="fin-time">~25 min</span></div>
+        </div>
+        <div class="fin-card">
+          <div class="fin-card-h">Keep it in your kitchen?</div>
+          <div class="fin-card-b">Saved recipes stay on this device and work completely offline.</div>
+          <button class="fin-cta"><svg style="width:14px;height:14px"><use href="#i-heart"/></svg> Save recipe</button>
+        </div>
+        <button class="fin-ghost" onclick="go('s-entry')">Not now</button>
+      </div>
+      <div class="fin-shelf">store airtight · keeps 5–7 days</div>
+    </div>
+
+  </div><!-- /stage -->
+</div><!-- /phone -->
+
+<!-- Annotation panel -->
+<div class="notes">
+  <div class="notes-head">UX enhancements</div>
+
+  <div class="note">
+    <div class="note-n">①</div>
+    <div class="note-body">
+      <div class="note-title">Dark kitchen mode</div>
+      <div class="note-desc">Warm near-black (#1A1814) instead of bone — signals "you're cooking now", reduces screen glare in a dim kitchen</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">②</div>
+    <div class="note-body">
+      <div class="note-title">Circular countdown timer</div>
+      <div class="note-desc">Tap to start/pause/reset. SVG arc depletes as time runs. Visual at a glance — no need to read digits</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">③</div>
+    <div class="note-body">
+      <div class="note-title">Per-step ingredient chips</div>
+      <div class="note-desc">Scrollable row shows exactly what you need for this step — eliminates going back to the detail screen with oily hands</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">④</div>
+    <div class="note-body">
+      <div class="note-title">Step dots + heat badge</div>
+      <div class="note-desc">Amber pill tracks your position; tapping a past dot jumps back. Heat level (Low / Medium / Off) surfaced inline</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">⑤</div>
+    <div class="note-body">
+      <div class="note-title">Phase-tinted illustration</div>
+      <div class="note-desc">Illustration background shifts hue per cooking phase — green for milk, amber for roasting, neutral for shaping</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">⑥</div>
+    <div class="note-body">
+      <div class="note-title">Swipe + animated transition</div>
+      <div class="note-desc">Left/right swipe (touch + mouse drag) navigates steps. Text slides in from the direction of travel</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">⑦</div>
+    <div class="note-body">
+      <div class="note-title">Ambient progress line</div>
+      <div class="note-desc">2px amber rule at the very top of the screen — peripheral awareness of overall progress without cluttering the step view</div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-n">⑧</div>
+    <div class="note-body">
+      <div class="note-title">Wake Lock API</div>
+      <div class="note-desc">navigator.wakeLock.request('screen') keeps display on while cooking. Re-acquired on tab visibility change</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ── Data ────────────────────────────────────────────── */
+const STEPS = [
+  {
+    label: '1 / 5',
+    phase: 'Phase · Milk &amp; Coconut',
+    prog: 20,
+    timer: null,
+    heat: 'Low heat',
+    ingredients: ['Grated coconut', 'Whole milk'],
+    illColor: '#2A3828',   /* cool green tint */
+    text: 'Cook grated coconut in milk over low heat, stirring gently, until fully absorbed and well combined.'
+  },
+  {
+    label: '2 / 5',
+    phase: 'Phase · Roast in ghee',
+    prog: 40,
+    timer: '10:00',
+    heat: 'Low heat',
+    ingredients: ['Coconut mixture', 'Ghee'],
+    illColor: '#332B15',   /* warm amber tint */
+    text: 'Warm the ghee in a heavy pan on low heat. Add coconut; roast, stirring gently, until light golden and fragrant.'
+  },
+  {
+    label: '3 / 5',
+    phase: 'Phase · Sugar syrup',
+    prog: 60,
+    timer: '08:00',
+    heat: 'Medium heat',
+    ingredients: ['Rock sugar', 'Water'],
+    illColor: '#2E2610',   /* deeper amber */
+    text: 'Prepare a sugar syrup with rock sugar and a little water. Boil to a firm, binding consistency.'
+  },
+  {
+    label: '4 / 5',
+    phase: 'Phase · Combine',
+    prog: 80,
+    timer: null,
+    heat: 'Off heat',
+    ingredients: ['Coconut', 'Cardamom powder', 'Dry ginger'],
+    illColor: '#242019',   /* near-surface — cooled off */
+    text: 'Add roasted coconut to the syrup. Fold in cardamom and dry ginger powder; mix well off the heat.'
+  },
+  {
+    label: '5 / 5',
+    phase: 'Phase · Shape',
+    prog: 100,
+    timer: null,
+    heat: null,
+    ingredients: [],
+    illColor: '#1E2820',   /* subtle green — done */
+    text: 'While the mixture is still warm, shape into small laddoos with your palms. Allow to cool before serving.'
+  },
+];
+
+/* ── Navigation state ────────────────────────────────── */
+let current = 's-entry';
+const stack = ['s-entry'];
+let busy = false;
+let cookStep = 0;
+let cookStartTime = null;
+
+function go(id) {
+  if (busy || id === current) return;
+  busy = true;
+  const from = document.getElementById(current);
+  const to   = document.getElementById(id);
+  stack.push(id);
+  current = id;
+  to.style.transition = 'none';
+  to.style.transform  = 'translateX(100%)';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const t = 'transform .28s cubic-bezier(.4,0,.2,1)';
+    from.style.transition = to.style.transition = t;
+    from.style.transform = 'translateX(-100%)';
+    to.style.transform   = 'translateX(0)';
+    setTimeout(() => { busy = false; }, 310);
+  }));
+}
+
+function back() {
+  if (busy || stack.length <= 1) return;
+  busy = true;
+  stack.pop();
+  const fromId = current;
+  current = stack[stack.length - 1];
+  const from = document.getElementById(fromId);
+  const to   = document.getElementById(current);
+  to.style.transition = 'none';
+  to.style.transform  = 'translateX(-100%)';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    const t = 'transform .28s cubic-bezier(.4,0,.2,1)';
+    from.style.transition = to.style.transition = t;
+    from.style.transform = 'translateX(100%)';
+    to.style.transform   = 'translateX(0)';
+    setTimeout(() => { busy = false; }, 310);
+  }));
+}
+
+/* ── Timer ────────────────────────────────────────────── */
+let timerInterval = null;
+let timerRunning  = false;
+let timerTotal    = 0;
+let timerLeft     = 0;
+
+function initTimer(str) {
+  clearInterval(timerInterval);
+  timerRunning = false;
+  const [m, s] = str.split(':').map(Number);
+  timerTotal = m * 60 + s;
+  timerLeft  = timerTotal;
+  paintTimer();
+}
+
+function paintTimer() {
+  const m = Math.floor(timerLeft / 60).toString().padStart(2, '0');
+  const s = (timerLeft % 60).toString().padStart(2, '0');
+  document.getElementById('timer-num').textContent = `${m}:${s}`;
+  const pill = document.getElementById('timer-pill');
+  const hint = document.getElementById('timer-hint');
+  if (timerLeft <= 0) {
+    hint.textContent = ' · done ✓';
+    pill.classList.add('done');
+  } else {
+    pill.classList.remove('done');
+    hint.textContent = timerRunning ? ' · pause' : (timerLeft < timerTotal ? ' · resume' : ' · start');
+  }
+}
+
+function toggleTimer() {
+  if (timerLeft <= 0) {
+    /* reset */
+    timerLeft = timerTotal;
+    timerRunning = false;
+    clearInterval(timerInterval);
+    paintTimer();
+    return;
+  }
+  if (timerRunning) {
+    clearInterval(timerInterval);
+    timerRunning = false;
+  } else {
+    timerRunning = true;
+    timerInterval = setInterval(() => {
+      timerLeft--;
+      paintTimer();
+      if (timerLeft <= 0) { clearInterval(timerInterval); timerRunning = false; }
+    }, 1000);
+  }
+  paintTimer();
+}
+
+function clearTimer() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  timerRunning = false;
+}
+
+/* ── Step rendering ────────────────────────────────────── */
+function renderStep(dir) {
+  const s = STEPS[cookStep];
+  const body = document.getElementById('cm-swipe');
+
+  /* Animate text area */
+  body.classList.remove('anim-r', 'anim-l');
+  requestAnimationFrame(() => {
+    body.classList.add(dir === 'next' ? 'anim-r' : 'anim-l');
+  });
+
+  /* Label + phase */
+  document.getElementById('cook-label').textContent = s.label;
+  document.getElementById('cook-phase').innerHTML   = s.phase;
+
+  /* Step text */
+  document.getElementById('cook-text').textContent = s.text;
+
+  /* Progress line */
+  document.getElementById('cook-prog-fill').style.width = s.prog + '%';
+
+  /* Illustration tint */
+  document.getElementById('cook-ill').style.background = s.illColor;
+
+  /* Step dots */
+  document.querySelectorAll('.cm-dot').forEach((d, i) => {
+    d.className = 'cm-dot' + (i === cookStep ? ' on' : i < cookStep ? ' done' : '');
+  });
+
+  /* Ingredient chips */
+  const chipsEl = document.getElementById('cook-chips');
+  const ingWrap = document.getElementById('cook-ing-wrap');
+  if (s.ingredients.length) {
+    ingWrap.style.display = '';
+    chipsEl.innerHTML = s.ingredients.map(n =>
+      `<span class="cm-chip">${n}</span>`
+    ).join('');
+  } else {
+    ingWrap.style.display = 'none';
+  }
+
+  /* Heat badge */
+  const heatEl = document.getElementById('cook-heat');
+  if (s.heat) {
+    heatEl.style.display = '';
+    heatEl.innerHTML = `<svg viewBox="0 0 24 24" style="width:11px;height:11px"><use href="#i-flame"/></svg> ${s.heat}`;
+  } else {
+    heatEl.style.display = 'none';
+  }
+
+  /* Timer */
+  const timerWrap = document.getElementById('cook-timer-wrap');
+  clearTimer();
+  if (s.timer) {
+    timerWrap.style.display = '';
+    initTimer(s.timer);
+  } else {
+    timerWrap.style.display = 'none';
+  }
+
+  /* Prev/next buttons */
+  document.getElementById('cook-prev').style.opacity = cookStep === 0 ? '0.3' : '1';
+  const nxt = document.getElementById('cook-next');
+  if (cookStep === STEPS.length - 1) {
+    nxt.innerHTML = 'Finish <svg style="width:13px;height:13px"><use href="#i-check"/></svg>';
+  } else {
+    nxt.innerHTML = 'Next <svg style="width:13px;height:13px"><use href="#i-chev"/></svg>';
+  }
+}
+
+/* ── Cook controls ────────────────────────────────────── */
+function startCook() {
+  cookStep = 0;
+  cookStartTime = Date.now();
+  renderStep('next');
+  go('s-cook');
+  acquireWakeLock();
+}
+
+function cookNext() {
+  if (cookStep < STEPS.length - 1) {
+    cookStep++;
+    renderStep('next');
+  } else {
+    const elapsed = cookStartTime ? Math.round((Date.now() - cookStartTime) / 60000) : null;
+    document.getElementById('fin-time').textContent =
+      elapsed && elapsed > 0 ? `${elapsed} min` : '~25 min';
+    go('s-finish');
+    releaseWakeLock();
+  }
+}
+
+function cookBack() {
+  if (cookStep > 0) { cookStep--; renderStep('prev'); }
+  else { exitCook(); }
+}
+
+function exitCook() { clearTimer(); releaseWakeLock(); back(); }
+
+function jumpToStep(i) {
+  if (i >= cookStep) return; /* only jump backward */
+  const dir = i < cookStep ? 'prev' : 'next';
+  cookStep = i;
+  renderStep(dir);
+}
+
+/* ── Swipe navigation ─────────────────────────────────── */
+(function() {
+  let sx = null;
+  const zone = document.getElementById('cm-swipe');
+  zone.addEventListener('touchstart', e => { sx = e.touches[0].clientX; }, {passive:true});
+  zone.addEventListener('touchend', e => {
+    if (sx === null) return;
+    const dx = e.changedTouches[0].clientX - sx;
+    sx = null;
+    if (dx < -44) cookNext();
+    else if (dx > 44) cookBack();
+  }, {passive:true});
+  /* mouse drag for desktop testing */
+  zone.addEventListener('mousedown', e => { sx = e.clientX; });
+  window.addEventListener('mouseup', e => {
+    if (sx === null) return;
+    const dx = e.clientX - sx;
+    sx = null;
+    if (current !== 's-cook') return;
+    if (dx < -44) cookNext();
+    else if (dx > 44) cookBack();
+  });
+})();
+
+/* ── Wake Lock ─────────────────────────────────────────── */
+let wakeLock = null;
+async function acquireWakeLock() {
+  try {
+    if ('wakeLock' in navigator) {
+      wakeLock = await navigator.wakeLock.request('screen');
+    }
+  } catch(_) {}
+}
+async function releaseWakeLock() {
+  try { if (wakeLock) { await wakeLock.release(); wakeLock = null; } } catch(_) {}
+}
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible' && current === 's-cook') {
+    await acquireWakeLock();
+  }
+});
+
+/* ── Full reset ────────────────────────────────────────── */
+function fullReset() {
+  clearTimer();
+  releaseWakeLock();
+  cookStep = 0;
+  cookStartTime = null;
+  document.querySelectorAll('.screen').forEach(s => {
+    s.style.transition = 'none';
+    s.style.transform = s.id === 's-entry' ? 'translateX(0)' : 'translateX(100%)';
+  });
+  stack.length = 1; stack[0] = 's-entry';
+  current = 's-entry'; busy = false;
+  renderStep('next');
+  document.getElementById('s-cook').scrollTop = 0;
+}
+
+/* ── Init ──────────────────────────────────────────────── */
+renderStep('next');
+</script>
+</body>
+</html>

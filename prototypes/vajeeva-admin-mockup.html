@@ -1,0 +1,830 @@
+<title>Vajeeva Admin</title>
+<style>
+/* ── Reset ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:inherit}
+
+/* ── Tokens ── */
+:root{
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E;  --ink2:rgba(42,37,30,.55); --ink3:rgba(42,37,30,.18); --ink4:rgba(42,37,30,.06);
+  --green:#3E6B4F; --green-bg:#EBF2EE;
+  --amber:#C6902F; --amber-bg:#FBF3E3;
+  --clay:#B4472E;  --clay-bg:#FAEDEA;
+  --blue:#3B6BA0;  --blue-bg:#E8F0FA;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --r:8px; --sh:0 1px 3px rgba(42,37,30,.08),0 1px 2px rgba(42,37,30,.04);
+  --sh-md:0 4px 16px rgba(42,37,30,.12);
+  --sw:240px; --sw-md:64px; --th:58px;
+}
+body{font-family:var(--sans);background:#d8d2c5;color:var(--ink);font-size:14px;line-height:1.5}
+
+/* ── BP bar ── */
+.bp-bar{
+  background:var(--ink);color:rgba(255,255,255,.75);
+  padding:8px 16px;display:flex;align-items:center;gap:10px;
+  font-size:11.5px;font-family:"SF Mono",Monaco,monospace;
+  position:sticky;top:0;z-index:200;
+}
+.bp-bar-lbl{opacity:.45;margin-right:4px}
+.bp-btn{
+  padding:4px 12px;border-radius:5px;border:1px solid rgba(255,255,255,.2);
+  background:transparent;color:rgba(255,255,255,.65);cursor:pointer;font-size:11px;
+  font-family:inherit;transition:all .15s;
+}
+.bp-btn:hover{border-color:rgba(255,255,255,.5);color:#fff}
+.bp-btn.on{background:var(--green);border-color:var(--green);color:#fff}
+.bp-bar-hint{margin-left:auto;opacity:.35;font-size:10px}
+
+/* ── Outer wrapper ── */
+.outer{display:flex;justify-content:center;padding:16px 12px 24px;min-height:calc(100vh - 41px)}
+
+/* ── App shell ── */
+.app{
+  display:flex;height:calc(100vh - 73px);position:sticky;top:41px;
+  border-radius:12px;overflow:hidden;box-shadow:0 12px 48px rgba(42,37,30,.25);
+  transition:max-width .3s ease;width:100%;max-width:1280px;
+}
+.app.md{max-width:768px}
+.app.md .sidebar{width:var(--sw-md)}
+.app.md .nav-lbl,.app.md .logo-txt,.app.md .foot-name{display:none}
+.app.md .logo{justify-content:center;padding:18px 12px}
+.app.md .nav-item{justify-content:center;padding:11px}
+.app.md .sidebar-foot{justify-content:center;padding:12px}
+.app.md .editor-grid{grid-template-columns:1fr}
+.app.md .prev-col{display:none}
+.app.md .stats-row{grid-template-columns:repeat(2,1fr)}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sw);background:var(--sand);flex-shrink:0;
+  display:flex;flex-direction:column;border-right:1px solid var(--ink3);
+  overflow:hidden;transition:width .3s ease;
+}
+/* tw: w-60 md:w-16 bg-[#E9E1D0] border-r border-ink/18 flex flex-col shrink-0 */
+
+.logo{
+  display:flex;align-items:center;gap:10px;padding:18px 16px;
+  border-bottom:1px solid var(--ink3);
+}
+.logo-mark{
+  width:32px;height:32px;background:var(--green);color:#fff;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--serif);font-size:18px;font-weight:700;flex-shrink:0;
+}
+.logo-txt{font-family:var(--serif);font-size:15px;font-weight:600;white-space:nowrap}
+.logo-sub{font-size:10px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em;display:block}
+
+.sidebar-nav{flex:1;padding:8px;display:flex;flex-direction:column;gap:2px}
+.nav-section{padding:14px 12px 4px;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink3);font-weight:600}
+.nav-item{
+  display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--r);
+  cursor:pointer;color:var(--ink2);font-size:13.5px;white-space:nowrap;
+  transition:all .12s;text-decoration:none;border:none;background:none;width:100%;text-align:left;
+}
+/* tw: flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] text-ink/55 */
+.nav-item:hover{background:rgba(42,37,30,.06);color:var(--ink)}
+.nav-item.on{background:var(--green-bg);color:var(--green)}
+/* tw active: bg-[#EBF2EE] text-[#3E6B4F] */
+.nav-item svg{width:17px;height:17px;flex-shrink:0;opacity:.7}
+.nav-item.on svg{opacity:1}
+.nav-lbl{overflow:hidden}
+
+.sidebar-foot{
+  padding:12px 16px;border-top:1px solid var(--ink3);
+  display:flex;align-items:center;gap:10px;
+}
+.avatar{
+  width:32px;height:32px;background:var(--amber-bg);color:var(--amber);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:700;letter-spacing:.03em;flex-shrink:0;
+}
+.foot-name{font-size:13px;font-weight:500;white-space:nowrap;overflow:hidden}
+.foot-role{font-size:10.5px;color:var(--ink2)}
+
+/* ── Main ── */
+.app-main{flex:1;display:flex;flex-direction:column;background:var(--cream);overflow:hidden}
+
+.topbar{
+  height:var(--th);border-bottom:1px solid var(--ink3);
+  display:flex;align-items:center;padding:0 24px;gap:14px;
+  background:var(--cream);flex-shrink:0;
+}
+/* tw: h-[58px] flex items-center px-6 gap-3.5 border-b bg-[#FBF8F1] */
+.topbar-left{flex:1}
+.page-title{font-family:var(--serif);font-size:20px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px}
+
+.search-wrap{position:relative}
+.search-wrap input{
+  background:var(--bone);border:1px solid var(--ink3);border-radius:var(--r);
+  padding:7px 12px 7px 32px;font-size:13px;color:var(--ink);width:200px;
+  outline:none;transition:border-color .15s;
+}
+.search-wrap input:focus{border-color:var(--green);background:#fff}
+.search-wrap input::placeholder{color:var(--ink2)}
+.search-icon{position:absolute;left:9px;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--ink2);pointer-events:none}
+
+.btn-pri{
+  background:var(--green);color:#fff;border:none;padding:8px 16px;
+  border-radius:var(--r);font-size:13px;font-weight:500;cursor:pointer;
+  display:flex;align-items:center;gap:5px;white-space:nowrap;transition:opacity .15s;
+}
+/* tw: bg-[#3E6B4F] text-white px-4 py-2 rounded-lg text-[13px] font-medium */
+.btn-pri:hover{opacity:.87}
+.btn-sec{
+  background:transparent;color:var(--ink);border:1px solid var(--ink3);
+  padding:7px 14px;border-radius:var(--r);font-size:13px;cursor:pointer;
+  transition:border-color .15s;
+}
+.btn-sec:hover{border-color:var(--ink2)}
+
+/* ── Content ── */
+.content{flex:1;overflow-y:auto;padding:24px}
+/* tw: flex-1 overflow-y-auto p-6 */
+.view{display:none}.view.on{display:block}
+
+/* ── Stats ── */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+/* tw: grid grid-cols-4 md:grid-cols-2 gap-3 mb-6 */
+.stat-card{background:var(--bone);border:1px solid var(--ink3);border-radius:var(--r);padding:16px 20px}
+.stat-num{font-family:var(--serif);font-size:28px;font-weight:700;line-height:1}
+.stat-lbl{font-size:12px;color:var(--ink2);margin-top:3px}
+
+/* ── Filters ── */
+.filter-row{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+.filter-tabs{
+  display:flex;background:var(--bone);border:1px solid var(--ink3);
+  border-radius:var(--r);padding:3px;gap:2px;
+}
+.ftab{
+  padding:5px 14px;border:none;background:transparent;border-radius:6px;
+  font-size:13px;cursor:pointer;color:var(--ink2);transition:all .12s;white-space:nowrap;
+}
+.ftab.on{background:#fff;color:var(--ink);box-shadow:var(--sh)}
+.ftab:hover:not(.on){color:var(--ink);background:rgba(42,37,30,.04)}
+.filter-r{margin-left:auto;display:flex;gap:8px}
+.filter-sel{
+  border:1px solid var(--ink3);background:var(--bone);border-radius:var(--r);
+  padding:6px 10px;font-size:13px;color:var(--ink);cursor:pointer;outline:none;
+}
+
+/* ── Table ── */
+.recipe-table{background:#fff;border:1px solid var(--ink3);border-radius:var(--r);overflow:hidden}
+.table-hd{
+  display:grid;grid-template-columns:2fr 1fr 1fr 80px 110px;
+  padding:10px 16px;background:var(--bone);border-bottom:1px solid var(--ink3);
+  font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);
+}
+/* tw: grid grid-cols-[2fr_1fr_1fr_80px_110px] px-4 py-2.5 bg-[#F2EDE1] border-b */
+.trow{
+  display:grid;grid-template-columns:2fr 1fr 1fr 80px 110px;
+  padding:12px 16px;border-bottom:1px solid rgba(42,37,30,.06);
+  align-items:center;cursor:pointer;transition:background .1s;
+}
+/* tw: grid grid-cols-[2fr_1fr_1fr_80px_110px] px-4 py-3 border-b border-ink/6 cursor-pointer */
+.trow:last-child{border-bottom:none}
+.trow:hover{background:rgba(42,37,30,.025)}
+
+.r-name{font-family:var(--serif);font-size:14px;font-weight:600}
+.r-ta{font-size:11px;color:var(--ink2);margin-top:1px}
+.tcell{font-size:13px}
+.tcell-m{font-size:13px;color:var(--ink2)}
+
+.chip{display:inline-flex;padding:2px 9px;border-radius:4px;font-size:11px;font-weight:500}
+.chip-solid{background:var(--bone);color:var(--ink2)}
+.chip-liq{background:var(--blue-bg);color:var(--blue)}
+.chip-semi{background:var(--amber-bg);color:var(--amber)}
+
+.badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:3px 10px;border-radius:20px;font-size:11px;font-weight:500;
+}
+.badge::before{content:'';width:6px;height:6px;border-radius:50%}
+.badge-pub{background:var(--green-bg);color:var(--green)}
+.badge-pub::before{background:var(--green)}
+.badge-draft{background:var(--amber-bg);color:var(--amber)}
+.badge-draft::before{background:var(--amber)}
+
+.row-acts{display:flex;gap:5px}
+.act-btn{
+  padding:4px 10px;border:1px solid var(--ink3);background:transparent;
+  border-radius:5px;font-size:11px;cursor:pointer;color:var(--ink2);transition:all .1s;
+}
+.act-btn:hover{border-color:var(--green);color:var(--green)}
+.act-btn.del:hover{border-color:var(--clay);color:var(--clay)}
+
+/* ── Editor ── */
+.editor-hd{display:flex;align-items:center;gap:12px;margin-bottom:22px}
+.back-btn{
+  display:flex;align-items:center;gap:5px;font-size:13px;color:var(--ink2);
+  cursor:pointer;border:none;background:none;padding:6px 0;transition:color .1s;
+}
+.back-btn:hover{color:var(--ink)}
+.editor-acts{margin-left:auto;display:flex;gap:8px}
+
+.editor-grid{display:grid;grid-template-columns:1fr 360px;gap:20px;align-items:start}
+/* tw: grid grid-cols-[1fr_360px] md:grid-cols-1 gap-5 items-start */
+
+.form-card{background:#fff;border:1px solid var(--ink3);border-radius:var(--r);padding:20px;margin-bottom:14px}
+.fc-title{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;
+  color:var(--ink2);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(42,37,30,.08);
+}
+.form-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.fgrp{margin-bottom:12px}
+.fgrp:last-child{margin-bottom:0}
+.flbl{
+  display:block;font-size:11px;font-weight:600;color:var(--ink2);
+  margin-bottom:4px;text-transform:uppercase;letter-spacing:.04em;
+}
+.finput{
+  width:100%;border:1px solid var(--ink3);background:var(--bone);border-radius:var(--r);
+  padding:8px 12px;font-size:13px;color:var(--ink);outline:none;transition:border-color .15s;
+}
+.finput:focus{border-color:var(--green);background:#fff}
+.finput::placeholder{color:var(--ink3)}
+.finput.serif{font-family:var(--serif);font-size:15px}
+select.finput{cursor:pointer}
+textarea.finput{resize:vertical;min-height:76px;line-height:1.5}
+
+/* ingredient chips */
+.ing-box{
+  display:flex;flex-wrap:wrap;gap:6px;padding:10px;
+  background:var(--bone);border:1px solid var(--ink3);border-radius:var(--r);min-height:46px;
+}
+.ing-chip{
+  background:#fff;border:1px solid var(--ink3);border-radius:4px;
+  padding:4px 10px;font-size:12px;display:flex;align-items:center;gap:5px;
+}
+.chip-x{
+  width:14px;height:14px;border-radius:50%;background:var(--ink3);border:none;
+  cursor:pointer;font-size:9px;color:var(--ink2);display:flex;align-items:center;justify-content:center;
+  line-height:1;
+}
+.ing-input{
+  border:none;background:transparent;outline:none;font-size:12px;
+  min-width:110px;padding:4px;color:var(--ink);
+}
+.ing-input::placeholder{color:var(--ink3)}
+
+/* steps */
+.step-card{
+  display:flex;gap:11px;align-items:flex-start;padding:12px;
+  background:var(--bone);border:1px solid var(--ink3);border-radius:var(--r);
+  margin-bottom:7px;cursor:grab;
+}
+.step-n{
+  width:22px;height:22px;background:var(--green);color:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:10px;font-weight:700;flex-shrink:0;margin-top:1px;
+}
+.step-body{flex:1}
+.step-txt{font-size:13px;color:var(--ink);line-height:1.5}
+.step-meta{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.step-tag{font-size:10px;padding:2px 7px;border-radius:3px;background:var(--amber-bg);color:var(--amber);font-weight:500}
+.step-tag.heat{background:var(--clay-bg);color:var(--clay)}
+.drag-h{color:var(--ink3);font-size:16px;cursor:grab;user-select:none;padding:0 2px;line-height:1;margin-top:2px}
+.step-add{
+  width:100%;padding:9px;border:1px dashed var(--ink3);background:transparent;
+  border-radius:var(--r);font-size:12px;color:var(--ink2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s;
+}
+.step-add:hover{border-color:var(--green);color:var(--green)}
+
+/* health flags */
+.flag-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.flag-item{
+  display:flex;align-items:center;gap:8px;padding:8px 10px;
+  background:var(--bone);border-radius:6px;cursor:pointer;font-size:12.5px;
+}
+.flag-item input{accent-color:var(--green);width:14px;height:14px;cursor:pointer}
+.flag-item .fi-ok{color:var(--green)}
+.flag-item .fi-bad{color:var(--clay)}
+.flag-item .fi-caut{color:var(--amber)}
+
+/* publish card */
+.pub-card{background:#fff;border:1px solid var(--ink3);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
+.pub-body{padding:16px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.tgl-info .tgl-lbl{font-size:13px;font-weight:500}
+.tgl-info .tgl-sub{font-size:11px;color:var(--ink2);margin-top:2px}
+.tgl{position:relative;width:40px;height:22px}
+.tgl input{opacity:0;width:0;height:0;position:absolute}
+.tgl-track{
+  position:absolute;inset:0;background:var(--ink3);border-radius:11px;
+  cursor:pointer;transition:background .15s;
+}
+.tgl-track::after{
+  content:'';position:absolute;width:16px;height:16px;background:#fff;
+  border-radius:50%;top:3px;left:3px;transition:transform .15s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);
+}
+.tgl input:checked+.tgl-track{background:var(--green)}
+.tgl input:checked+.tgl-track::after{transform:translateX(18px)}
+.pub-divider{border:none;border-top:1px solid rgba(42,37,30,.07);margin:4px 0 14px}
+.pub-btn-row{display:flex;gap:8px}
+
+/* preview column */
+.prev-col{position:sticky;top:0}
+.prev-lbl{
+  font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink2);margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.prev-lbl::after{content:'';flex:1;height:1px;background:var(--ink3)}
+.prev-card{background:#fff;border:1px solid var(--ink3);border-radius:12px;overflow:hidden;box-shadow:var(--sh-md)}
+.prev-ill{
+  height:130px;background:#2A3828;display:flex;align-items:flex-end;padding:12px;
+  position:relative;overflow:hidden;
+}
+.prev-ill-emoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-55%);font-size:52px;opacity:.12}
+.prev-ill-name{font-family:var(--serif);font-size:16px;font-weight:600;color:#fff;text-shadow:0 1px 6px rgba(0,0,0,.4);position:relative;z-index:1}
+.prev-body{padding:14px 16px}
+.prev-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.prev-desc{font-size:12px;color:var(--ink2);line-height:1.55}
+.prev-footer{padding:12px 16px;border-top:1px solid rgba(42,37,30,.07);display:flex;gap:8px}
+.prev-f-item{font-size:11px;color:var(--ink2);display:flex;align-items:center;gap:4px}
+
+/* tw reference panel */
+.tw-panel{
+  position:fixed;right:14px;bottom:14px;
+  background:var(--ink);color:rgba(255,255,255,.8);border-radius:10px;
+  padding:14px;font-family:"SF Mono",Monaco,monospace;font-size:10px;
+  max-width:210px;box-shadow:0 4px 24px rgba(0,0,0,.3);z-index:100;
+  line-height:1.8;display:none;
+}
+.tw-panel.show{display:block}
+.tw-panel h4{font-size:9px;text-transform:uppercase;letter-spacing:.1em;opacity:.4;margin-bottom:8px;font-family:var(--sans)}
+.tw-cls{color:#7DD3FC}
+.tw-val{color:#6EE7B7}
+.tw-panel hr{border:none;border-top:1px solid rgba(255,255,255,.1);margin:8px 0}
+.tw-toggle{
+  position:fixed;right:14px;bottom:14px;
+  background:var(--ink);color:rgba(255,255,255,.8);border:none;border-radius:8px;
+  padding:8px 14px;font-size:11px;font-family:"SF Mono",Monaco,monospace;
+  cursor:pointer;z-index:101;box-shadow:0 2px 12px rgba(0,0,0,.25);
+  transition:background .15s;
+}
+.tw-toggle:hover{background:#3a342b}
+.tw-panel.show~.tw-toggle,
+.tw-toggle.panel-open{bottom:auto;top:14px;right:14px}
+
+/* ── Dashboard ── */
+.dash-hero{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+.dash-card{background:#fff;border:1px solid var(--ink3);border-radius:var(--r);padding:20px}
+.dash-card-t{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin-bottom:14px}
+.dash-big{font-family:var(--serif);font-size:42px;font-weight:700;line-height:1}
+.dash-sub{font-size:12px;color:var(--ink2);margin-top:4px}
+.cat-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.cat-bar-wrap{flex:1;height:6px;background:var(--bone);border-radius:3px;overflow:hidden}
+.cat-bar{height:100%;border-radius:3px;background:var(--green)}
+.cat-row span{font-size:12px;min-width:70px}
+.cat-row b{font-size:12px;color:var(--ink2);min-width:24px;text-align:right}
+.recent-row{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid rgba(42,37,30,.06);font-size:13px;
+}
+.recent-row:last-child{border-bottom:none}
+.recent-dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex-shrink:0}
+.recent-r{font-family:var(--serif);font-weight:600}
+.recent-meta{font-size:11px;color:var(--ink2);margin-top:1px}
+.recent-time{margin-left:auto;font-size:11px;color:var(--ink2)}
+</style>
+
+<!-- Breakpoint bar -->
+<div class="bp-bar">
+  <span class="bp-bar-lbl">Simulate:</span>
+  <button class="bp-btn" onclick="setBP('md')">md · 768px</button>
+  <button class="bp-btn on" onclick="setBP('lg')">lg · 1280px</button>
+  <span class="bp-bar-hint">tw: md:breakpoint=768 · lg:breakpoint=1024</span>
+</div>
+
+<div class="outer">
+<div class="app" id="app">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <!-- tw: w-60 md:w-16 bg-[#E9E1D0] flex flex-col border-r shrink-0 -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark">V</div>
+      <div class="logo-txt">Vajeeva<span class="logo-sub">Admin</span></div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <button class="nav-item on" onclick="gotoView('recipes',this)">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="nav-lbl">Recipes</span>
+      </button>
+      <button class="nav-item" onclick="gotoView('dashboard',this)">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+        <span class="nav-lbl">Dashboard</span>
+      </button>
+      <div class="nav-section">Manage</div>
+      <button class="nav-item" onclick="gotoView('dashboard',this)">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        <span class="nav-lbl">Users</span>
+      </button>
+      <button class="nav-item" onclick="gotoView('dashboard',this)">
+        <svg fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span class="nav-lbl">Health Flags</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="avatar">RH</div>
+      <div class="foot-name">Rohit H.<div class="foot-role">Admin</div></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="app-main">
+    <header class="topbar">
+      <div class="topbar-left">
+        <!-- tw: font-serif text-xl font-semibold -->
+        <h1 class="page-title" id="pageTitle">Recipes</h1>
+      </div>
+      <div class="topbar-right">
+        <div class="search-wrap">
+          <svg class="search-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Search recipes…">
+        </div>
+        <button class="btn-pri" onclick="openEditor()">
+          <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          New Recipe
+        </button>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ══ VIEW: RECIPES ══ -->
+      <div id="view-recipes" class="view on">
+
+        <!-- tw: grid grid-cols-4 md:grid-cols-2 gap-3 mb-6 -->
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num">83</div><div class="stat-lbl">Total Recipes</div></div>
+          <div class="stat-card"><div class="stat-num">71</div><div class="stat-lbl">Published</div></div>
+          <div class="stat-card"><div class="stat-num">12</div><div class="stat-lbl">Drafts</div></div>
+          <div class="stat-card"><div class="stat-num">3</div><div class="stat-lbl">Categories</div></div>
+        </div>
+
+        <div class="filter-row">
+          <!-- tw: flex bg-[#F2EDE1] border rounded-lg p-0.5 gap-0.5 -->
+          <div class="filter-tabs">
+            <button class="ftab on" onclick="switchTab(this)">All</button>
+            <button class="ftab" onclick="switchTab(this)">Solids</button>
+            <button class="ftab" onclick="switchTab(this)">Liquids</button>
+            <button class="ftab" onclick="switchTab(this)">Semi-solid</button>
+          </div>
+          <div class="filter-r">
+            <select class="filter-sel">
+              <option>All statuses</option>
+              <option>Published</option>
+              <option>Draft</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- tw: bg-white border rounded-lg overflow-hidden -->
+        <div class="recipe-table">
+          <div class="table-hd">
+            <div>Recipe</div><div>Category</div><div>Steps</div><div>Status</div><div>Actions</div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Coconut Burfi</div><div class="r-ta">தேங்காய் பர்ஃபி</div></div>
+            <div><span class="chip chip-semi">Semi-solid</span></div>
+            <div class="tcell-m">5 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Ragi Malt</div><div class="r-ta">ராகி மால்ட்</div></div>
+            <div><span class="chip chip-liq">Liquid</span></div>
+            <div class="tcell-m">4 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Banana Rice Porridge</div><div class="r-ta">வாழைப்பழ சோறு</div></div>
+            <div><span class="chip chip-semi">Semi-solid</span></div>
+            <div class="tcell-m">6 steps</div>
+            <div><span class="badge badge-draft">Draft</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Ghee Rice</div><div class="r-ta">நெய் சாதம்</div></div>
+            <div><span class="chip chip-solid">Solid</span></div>
+            <div class="tcell-m">5 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Tamarind Rice</div><div class="r-ta">புளி சாதம்</div></div>
+            <div><span class="chip chip-solid">Solid</span></div>
+            <div class="tcell-m">7 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Dates Ladoo</div><div class="r-ta">பேரீச்சை லட்டு</div></div>
+            <div><span class="chip chip-solid">Solid</span></div>
+            <div class="tcell-m">4 steps</div>
+            <div><span class="badge badge-draft">Draft</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Moong Dal Khichdi</div><div class="r-ta">பாசிப்பருப்பு கிச்சடி</div></div>
+            <div><span class="chip chip-semi">Semi-solid</span></div>
+            <div class="tcell-m">5 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+          <div class="trow" onclick="openEditor()">
+            <div><div class="r-name">Coconut Water Kanji</div><div class="r-ta">தேங்காய் நீர் கஞ்சி</div></div>
+            <div><span class="chip chip-liq">Liquid</span></div>
+            <div class="tcell-m">3 steps</div>
+            <div><span class="badge badge-pub">Published</span></div>
+            <div class="row-acts"><button class="act-btn" onclick="event.stopPropagation();openEditor()">Edit</button><button class="act-btn del" onclick="event.stopPropagation()">Delete</button></div>
+          </div>
+
+        </div><!-- /recipe-table -->
+      </div><!-- /view-recipes -->
+
+      <!-- ══ VIEW: EDITOR ══ -->
+      <div id="view-editor" class="view">
+        <div class="editor-hd">
+          <button class="back-btn" onclick="closeEditor()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+            All Recipes
+          </button>
+          <h2 class="editor-title" style="font-family:var(--serif)">New Recipe</h2>
+          <div class="editor-acts">
+            <button class="btn-sec">Save draft</button>
+            <button class="btn-pri">
+              <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+              Publish
+            </button>
+          </div>
+        </div>
+
+        <!-- tw: grid grid-cols-[1fr_360px] md:grid-cols-1 gap-5 items-start -->
+        <div class="editor-grid">
+
+          <!-- Left: form -->
+          <div>
+            <!-- Basic Info -->
+            <div class="form-card">
+              <div class="fc-title">Basic Info</div>
+              <div class="fgrp">
+                <label class="flbl">Recipe name (English)</label>
+                <input class="finput serif" type="text" placeholder="e.g. Coconut Burfi" value="Coconut Burfi">
+              </div>
+              <div class="fgrp">
+                <label class="flbl">Recipe name (Tamil)</label>
+                <input class="finput serif" type="text" placeholder="தமிழ்" value="தேங்காய் பர்ஃபி">
+              </div>
+              <div class="form-2">
+                <div class="fgrp">
+                  <label class="flbl">Category</label>
+                  <select class="finput"><option>Semi-solid</option><option>Solid</option><option>Liquid</option></select>
+                </div>
+                <div class="fgrp">
+                  <label class="flbl">Texture</label>
+                  <select class="finput"><option>Soft &amp; chewy</option><option>Smooth</option><option>Crispy</option><option>Creamy</option></select>
+                </div>
+              </div>
+              <div class="fgrp">
+                <label class="flbl">Short description</label>
+                <textarea class="finput" placeholder="One or two lines about this recipe…">A traditional south Indian sweet made with grated coconut, jaggery, and cardamom — soft, chewy, and naturally sweet.</textarea>
+              </div>
+            </div>
+
+            <!-- Ingredients -->
+            <div class="form-card">
+              <div class="fc-title">Ingredients</div>
+              <div class="ing-box">
+                <div class="ing-chip">Grated coconut<button class="chip-x">×</button></div>
+                <div class="ing-chip">Jaggery<button class="chip-x">×</button></div>
+                <div class="ing-chip">Cardamom powder<button class="chip-x">×</button></div>
+                <div class="ing-chip">Ghee<button class="chip-x">×</button></div>
+                <div class="ing-chip">Cashews (optional)<button class="chip-x">×</button></div>
+                <input class="ing-input" type="text" placeholder="+ Add ingredient, press Enter">
+              </div>
+            </div>
+
+            <!-- Steps -->
+            <div class="form-card">
+              <div class="fc-title">Cook Steps</div>
+
+              <div class="step-card">
+                <span class="drag-h">⠿</span>
+                <div class="step-n">1</div>
+                <div class="step-body">
+                  <div class="step-txt">Cook grated coconut in milk over low heat until the milk is fully absorbed and the mixture is fragrant.</div>
+                  <div class="step-meta"><span class="step-tag heat">Low heat</span><span class="step-tag">No timer</span></div>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <span class="drag-h">⠿</span>
+                <div class="step-n">2</div>
+                <div class="step-body">
+                  <div class="step-txt">Warm ghee in a heavy pan and roast the coconut mixture until lightly golden and aromatic.</div>
+                  <div class="step-meta"><span class="step-tag heat">Low heat</span><span class="step-tag">10:00 min</span></div>
+                </div>
+              </div>
+
+              <div class="step-card">
+                <span class="drag-h">⠿</span>
+                <div class="step-n">3</div>
+                <div class="step-body">
+                  <div class="step-txt">Prepare a sugar syrup by dissolving jaggery in water and bringing to a soft-ball stage.</div>
+                  <div class="step-meta"><span class="step-tag heat">Medium heat</span><span class="step-tag">8:00 min</span></div>
+                </div>
+              </div>
+
+              <button class="step-add">
+                <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+                Add step
+              </button>
+            </div>
+
+            <!-- Health Flags -->
+            <div class="form-card">
+              <div class="fc-title">Health Flags</div>
+              <div class="flag-grid">
+                <label class="flag-item"><input type="checkbox" checked><span class="fi-ok">✓ Safe for infants 8m+</span></label>
+                <label class="flag-item"><input type="checkbox"><span class="fi-bad">✗ Not for diabetics</span></label>
+                <label class="flag-item"><input type="checkbox" checked><span class="fi-ok">✓ Safe in pregnancy</span></label>
+                <label class="flag-item"><input type="checkbox"><span class="fi-caut">⚠ Nut allergy caution</span></label>
+                <label class="flag-item"><input type="checkbox" checked><span class="fi-ok">✓ Lactation-friendly</span></label>
+                <label class="flag-item"><input type="checkbox"><span class="fi-caut">⚠ High sugar content</span></label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: preview + publish -->
+          <!-- tw: sticky top-0 (hidden on md) -->
+          <div class="prev-col">
+            <div class="pub-card">
+              <div class="pub-body">
+                <div class="toggle-row">
+                  <div class="tgl-info">
+                    <div class="tgl-lbl">Published</div>
+                    <div class="tgl-sub">Visible in the app</div>
+                  </div>
+                  <label class="tgl"><input type="checkbox" checked><span class="tgl-track"></span></label>
+                </div>
+                <hr class="pub-divider">
+                <div class="pub-btn-row">
+                  <button class="btn-sec" style="flex:1">Save draft</button>
+                  <button class="btn-pri" style="flex:1;justify-content:center">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
+                    Publish
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="prev-lbl">App preview</div>
+            <div class="prev-card">
+              <div class="prev-ill">
+                <div class="prev-ill-emoji">🥥</div>
+                <div class="prev-ill-name">Coconut Burfi</div>
+              </div>
+              <div class="prev-body">
+                <div class="prev-chips">
+                  <span class="chip chip-semi">Semi-solid</span>
+                  <span class="chip chip-solid" style="background:var(--green-bg);color:var(--green)">Safe 8m+</span>
+                </div>
+                <div class="prev-desc">A traditional south Indian sweet made with grated coconut, jaggery, and cardamom — soft, chewy, and naturally sweet.</div>
+              </div>
+              <div class="prev-footer">
+                <div class="prev-f-item">
+                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  5 steps
+                </div>
+                <div class="prev-f-item">
+                  <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M8.56 2.9A7 7 0 0 1 19 9v4l2 3H3l2-3V9a7 7 0 0 1 .58-2.85"/></svg>
+                  Low heat
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /editor-grid -->
+      </div><!-- /view-editor -->
+
+      <!-- ══ VIEW: DASHBOARD ══ -->
+      <div id="view-dashboard" class="view">
+        <div class="dash-hero">
+          <div class="dash-card">
+            <div class="dash-card-t">Total Recipes</div>
+            <div class="dash-big">83</div>
+            <div class="dash-sub">71 published · 12 drafts</div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-t">By Category</div>
+            <div class="cat-row"><span>Solid</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:45%;background:var(--ink2)"></div></div><b>38</b></div>
+            <div class="cat-row"><span>Liquid</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:27%;background:var(--blue)"></div></div><b>22</b></div>
+            <div class="cat-row"><span>Semi-solid</span><div class="cat-bar-wrap"><div class="cat-bar" style="width:28%;background:var(--amber)"></div></div><b>23</b></div>
+          </div>
+          <div class="dash-card">
+            <div class="dash-card-t">Recent Edits</div>
+            <div class="recent-row"><div class="recent-dot"></div><div><div class="recent-r">Coconut Burfi</div><div class="recent-meta">Published</div></div><div class="recent-time">2h ago</div></div>
+            <div class="recent-row"><div class="recent-dot" style="background:var(--amber)"></div><div><div class="recent-r">Banana Porridge</div><div class="recent-meta">Draft saved</div></div><div class="recent-time">Yesterday</div></div>
+            <div class="recent-row"><div class="recent-dot"></div><div><div class="recent-r">Ragi Malt</div><div class="recent-meta">Published</div></div><div class="recent-time">3d ago</div></div>
+          </div>
+        </div>
+      </div><!-- /view-dashboard -->
+
+    </main>
+  </div><!-- /app-main -->
+</div><!-- /app -->
+</div><!-- /outer -->
+
+<!-- Tailwind reference panel -->
+<div class="tw-panel" id="twPanel">
+  <h4>Tailwind Reference</h4>
+  <span class="tw-cls">/* App shell */</span><br>
+  <span class="tw-cls">flex h-screen overflow-hidden</span><br>
+  <span class="tw-cls">bg-[#FBF8F1]</span><br>
+  <hr>
+  <span class="tw-cls">/* Sidebar */</span><br>
+  <span class="tw-cls">w-60 md:w-16</span> <span class="tw-val">← bp-md</span><br>
+  <span class="tw-cls">bg-[#E9E1D0] border-r</span><br>
+  <span class="tw-cls">flex flex-col shrink-0</span><br>
+  <hr>
+  <span class="tw-cls">/* Nav item active */</span><br>
+  <span class="tw-cls">bg-[#EBF2EE]</span><br>
+  <span class="tw-cls">text-[#3E6B4F]</span><br>
+  <hr>
+  <span class="tw-cls">/* Table header */</span><br>
+  <span class="tw-cls">grid grid-cols-[2fr_1fr</span><br>
+  <span class="tw-cls"> _1fr_80px_110px]</span><br>
+  <span class="tw-cls">px-4 py-2.5 text-[11px]</span><br>
+  <hr>
+  <span class="tw-cls">/* Badge published */</span><br>
+  <span class="tw-cls">bg-[#EBF2EE] text-[#3E6B4F]</span><br>
+  <span class="tw-cls">rounded-full px-2.5 py-0.5</span><br>
+  <hr>
+  <span class="tw-cls">/* Editor grid */</span><br>
+  <span class="tw-cls">grid grid-cols-[1fr_360px]</span><br>
+  <span class="tw-cls">md:grid-cols-1 gap-5</span>
+</div>
+<button class="tw-toggle" onclick="toggleTw()" id="twToggle">{ tw }</button>
+
+<script>
+function setBP(bp){
+  const app=document.getElementById('app');
+  app.classList.toggle('md', bp==='md');
+  document.querySelectorAll('.bp-btn').forEach(b=>{
+    b.classList.toggle('on', b.textContent.startsWith(bp));
+  });
+}
+
+function gotoView(name, btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  const titles={recipes:'Recipes',dashboard:'Dashboard',editor:'Recipe Editor'};
+  document.getElementById('pageTitle').textContent=titles[name]||'';
+  document.getElementById('view-'+name).classList.add('on');
+  if(btn) btn.classList.add('on');
+  // show/hide New Recipe btn
+  document.querySelector('.btn-pri').style.display=(name==='editor')?'none':'flex';
+}
+
+function openEditor(){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  document.getElementById('view-editor').classList.add('on');
+  document.getElementById('pageTitle').textContent='Recipe Editor';
+  document.querySelector('.btn-pri').style.display='none';
+}
+
+function closeEditor(){
+  gotoView('recipes', document.querySelector('.nav-item'));
+}
+
+function switchTab(btn){
+  btn.closest('.filter-tabs').querySelectorAll('.ftab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function toggleTw(){
+  const panel=document.getElementById('twPanel');
+  const btn=document.getElementById('twToggle');
+  panel.classList.toggle('show');
+  btn.style.bottom=panel.classList.contains('show')?'auto':'14px';
+  btn.style.top=panel.classList.contains('show')?'auto':'14px';
+}
+</script>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva · Desktop</title>
+<style>
+:root {
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line2:#D8CEBA;
+  --green:#3E6B4F; --green-s:#E4EDE3; --on-green:#FBF8F1;
+  --amber:#C6902F; --amber-s:#F4E8CE;
+  --clay:#B4472E; --clay-s:#F3E1D8;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --sh:0 2px 8px rgba(42,37,30,.07),0 1px 2px rgba(42,37,30,.05);
+  --sh2:0 6px 20px rgba(42,37,30,.1),0 2px 4px rgba(42,37,30,.06);
+  --r:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:var(--sans);background:var(--bone);color:var(--ink);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input{font-family:inherit;font-size:inherit;border:none;background:none;cursor:pointer;color:inherit}
+
+/* ── Shell ── */
+.shell{display:flex;height:100vh;overflow:hidden}
+
+/* ── Sidebar ── */
+.sidebar{width:240px;flex-shrink:0;background:var(--sand);border-right:1px solid var(--line2);display:flex;flex-direction:column;overflow:hidden}
+.logo{display:flex;align-items:center;gap:10px;padding:20px 18px 16px;border-bottom:1px solid var(--line2)}
+.logo-mark{width:34px;height:34px;background:var(--green);border-radius:9px;display:grid;place-items:center;flex-shrink:0}
+.logo-mark svg{width:20px;height:20px;color:#fff}
+.logo-name{font-family:var(--serif);font-size:16px;font-weight:700}
+.logo-sub{font-size:10px;color:var(--muted);font-family:var(--mono);letter-spacing:.06em}
+
+.sidenav{flex:1;padding:10px 8px;display:flex;flex-direction:column;gap:2px}
+.nav-sec{padding:14px 10px 4px;font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.navbtn{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:9px;color:var(--ink2);font-size:13.5px;transition:all .12s;width:100%;text-align:left}
+.navbtn svg{width:17px;height:17px;flex-shrink:0;opacity:.7}
+.navbtn:hover{background:rgba(42,37,30,.06);color:var(--ink)}
+.navbtn.on{background:var(--green-s);color:var(--green)}
+.navbtn.on svg{opacity:1}
+
+.side-foot{padding:14px 16px;border-top:1px solid var(--line2);display:flex;align-items:center;gap:10px}
+.user-av{width:34px;height:34px;border-radius:50%;background:var(--amber-s);display:grid;place-items:center;color:var(--amber);font-size:11px;font-weight:700;flex-shrink:0}
+.user-name{font-size:13px;font-weight:500}
+.user-role{font-size:10.5px;color:var(--muted)}
+
+/* ── Main ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;background:var(--cream)}
+
+.topbar{height:60px;border-bottom:1px solid var(--line);display:flex;align-items:center;padding:0 28px;gap:16px;flex-shrink:0;background:var(--cream)}
+.topbar-title{font-family:var(--serif);font-size:20px;font-weight:700;flex:1}
+.search-box{display:flex;align-items:center;gap:8px;background:var(--bone);border:1px solid var(--line2);border-radius:999px;padding:9px 14px;color:var(--muted);box-shadow:var(--sh);font-size:12.5px;min-width:220px}
+.search-box svg{width:13px;height:13px;flex-shrink:0}
+
+/* ── Views ── */
+.view-wrap{flex:1;position:relative;overflow:hidden}
+.view{position:absolute;inset:0;opacity:0;pointer-events:none;transition:opacity .2s;overflow-y:auto;padding:28px}
+.view.on{opacity:1;pointer-events:auto}
+.view::-webkit-scrollbar{width:5px}
+.view::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+
+/* ── Home view ── */
+.continue-card{display:flex;align-items:center;gap:14px;background:var(--green);color:var(--on-green);border-radius:16px;padding:14px 18px;box-shadow:var(--sh2);cursor:pointer;margin-bottom:24px}
+.continue-card:hover{opacity:.93}
+.cc-ill{width:52px;height:52px;border-radius:12px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex-shrink:0}
+.cc-ill svg{width:40px;height:40px}
+.cc-name{font-weight:800;font-size:15px}
+.cc-sub{font-size:11px;opacity:.82;margin-top:2px}
+.cc-prog{height:3px;background:rgba(255,255,255,.25);border-radius:2px;margin-top:7px;overflow:hidden}
+.cc-prog::after{content:'';display:block;width:28%;height:100%;background:var(--on-green)}
+.cc-play{width:32px;height:32px;background:var(--on-green);color:var(--green);border-radius:50%;display:grid;place-items:center;flex-shrink:0;margin-left:auto}
+.cc-play svg{width:14px;height:14px}
+
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cat-card{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:18px 16px;box-shadow:var(--sh);cursor:pointer;display:flex;flex-direction:column;gap:10px;transition:box-shadow .15s}
+.cat-card:hover{box-shadow:var(--sh2)}
+.cat-ill{width:64px;height:64px;border-radius:14px;display:grid;place-items:center}
+.cat-ill svg{width:52px;height:52px}
+.cat-n{font-family:var(--serif);font-size:18px;font-weight:700}
+.cat-s{font-size:11px;color:var(--ink2);margin-top:1px}
+.cat-c{font-family:var(--mono);font-size:9.5px;color:var(--muted);margin-top:3px}
+.trust-note{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:20px;font-family:var(--mono)}
+.trust-note svg{width:12px;height:12px;color:var(--green)}
+
+/* ── Recipe list view ── */
+.filter-row{display:flex;gap:7px;margin-bottom:20px;flex-wrap:wrap}
+.fchip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--line2);background:var(--cream);border-radius:999px;padding:6px 13px;font-size:11.5px;font-weight:700;color:var(--ink2);cursor:pointer;white-space:nowrap;transition:all .12s}
+.fchip.on{border-color:var(--green);background:var(--green-s);color:var(--green)}
+.recipe-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.rcard{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--sh);cursor:pointer;transition:box-shadow .15s;position:relative}
+.rcard:hover{box-shadow:var(--sh2)}
+.rcard-ill{height:84px;border-radius:10px;display:grid;place-items:center;margin-bottom:10px}
+.rcard-ill svg{width:62px;height:52px}
+.rcard-n{font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.2}
+.rcard-sk{font-family:var(--serif);font-style:italic;font-size:10.5px;color:var(--amber);margin-top:2px}
+.rcard-m{font-size:10px;color:var(--muted);margin-top:6px}
+.cdots{position:absolute;top:10px;right:10px;display:flex;gap:2px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--clay);opacity:.65}
+
+/* ── Detail view ── */
+.detail-back{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px;font-weight:600;cursor:pointer;margin-bottom:16px;width:fit-content;transition:color .1s}
+.detail-back:hover{color:var(--ink)}
+.detail-back svg{width:14px;height:14px}
+.detail-grid{display:grid;grid-template-columns:340px 1fr;gap:24px;align-items:start}
+.detail-hero{height:200px;border-radius:16px;background:radial-gradient(120% 90% at 50% 20%,var(--green-s),var(--sand));display:grid;place-items:center;margin-bottom:18px;position:relative;overflow:hidden}
+.detail-hero svg{width:180px;height:140px}
+.detail-title{font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.2;letter-spacing:-.01em;margin-bottom:4px}
+.detail-sk{font-family:var(--serif);font-style:italic;font-size:13px;color:var(--amber);margin-bottom:16px}
+.dslabel{font-size:9.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.32);margin-bottom:7px}
+.src-pills{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px}
+.src-pill{font-size:11px;font-family:var(--serif);font-style:italic;color:var(--amber);border:1px solid rgba(198,144,47,.4);padding:4px 10px;border-radius:5px;background:none;cursor:pointer;transition:background .12s}
+.src-pill:hover{background:var(--amber-s)}
+.dbadges{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.dbadge{font-size:11px;color:var(--ink2);background:var(--sand);padding:4px 10px;border-radius:5px}
+.dcc{background:rgba(180,71,46,.07);border-left:3px solid var(--clay);border-radius:0 8px 8px 0;padding:10px 13px;margin-bottom:16px}
+.dcc-h{font-size:9.5px;font-weight:800;color:var(--clay);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+.dcc-b{font-size:11px;color:rgba(180,71,46,.8);line-height:1.65}
+.ing-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.ing-title{font-family:var(--serif);font-size:16px;font-weight:700}
+.utog{display:flex;background:var(--sand);border-radius:6px;padding:2px;gap:2px}
+.ubtn{font-size:9.5px;font-weight:700;letter-spacing:.04em;padding:3px 10px;border-radius:4px;color:var(--muted);transition:all .15s}
+.ubtn.on{background:var(--green);color:#fff}
+table.dit{width:100%;border-collapse:collapse;font-size:12px}
+table.dit tr:nth-child(odd) td{background:rgba(233,225,208,.45)}
+table.dit td{padding:7px 12px;color:var(--ink);line-height:1.3}
+table.dit td:last-child{text-align:right;color:var(--ink2);white-space:nowrap}
+/* Right col: steps */
+.steps-title{font-family:var(--serif);font-size:18px;font-weight:700;margin-bottom:14px}
+ol.dml{list-style:none;padding:0}
+.dml li{display:flex;gap:11px;padding:12px 0;border-bottom:1px solid rgba(229,221,204,.7);font-size:12.5px;line-height:1.55;color:var(--ink)}
+.dml li:last-child{border-bottom:none}
+.dsn{flex-shrink:0;width:22px;height:22px;border-radius:50%;border:1.5px solid var(--green);color:var(--green);font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.dphase{display:block;font-size:8.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);margin-bottom:3px}
+.cta-btn{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--green);color:var(--on-green);border-radius:13px;padding:14px 20px;font-weight:800;font-size:14px;width:100%;box-shadow:var(--sh);margin-top:14px;cursor:pointer;transition:opacity .15s}
+.cta-btn:hover{opacity:.9}
+.cta-btn svg{width:15px;height:15px}
+
+/* ── Saved view ── */
+.saved-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.offline-badge{display:inline-flex;align-items:center;gap:5px;background:var(--sand);border-radius:999px;padding:5px 12px;font-size:10px;font-weight:700;color:var(--ink2);margin-bottom:18px}
+.offline-badge svg{width:12px;height:12px}
+
+/* ── Cook overlay ── */
+.cook-overlay{position:fixed;inset:0;background:#1A1814;color:#F0EAD8;display:flex;flex-direction:column;z-index:200;opacity:0;pointer-events:none;transition:opacity .25s}
+.cook-overlay.on{opacity:1;pointer-events:auto}
+.cm-prog{height:2px;background:rgba(240,234,216,.07);flex-shrink:0}
+.cm-prog-fill{height:100%;background:linear-gradient(90deg,#C6902F,#E8B44A);border-radius:0 1px 1px 0;transition:width .5s ease}
+.cm-top{display:flex;align-items:center;padding:14px 32px;gap:16px;flex-shrink:0}
+.cm-x{width:34px;height:34px;border-radius:50%;background:#26221C;border:1px solid rgba(240,234,216,.08);display:grid;place-items:center;color:rgba(240,234,216,.42);cursor:pointer;transition:background .12s}
+.cm-x:hover{background:rgba(240,234,216,.08)}
+.cm-x svg{width:14px;height:14px}
+.cm-dots{flex:1;display:flex;justify-content:center;gap:6px;align-items:center}
+.cm-dot{width:6px;height:6px;border-radius:3px;background:#302B24;transition:all .22s;cursor:pointer}
+.cm-dot.on{width:20px;background:#C6902F}
+.cm-dot.done{background:rgba(92,173,120,.5)}
+.cm-count{font-family:var(--mono);font-size:11px;color:rgba(240,234,216,.42);font-weight:700;min-width:32px;text-align:right}
+
+.cook-body{flex:1;display:flex;align-items:stretch;max-width:960px;margin:0 auto;width:100%;padding:0 28px 0}
+.cook-left{width:340px;flex-shrink:0;display:flex;flex-direction:column;gap:18px;padding:20px 32px 20px 0;border-right:1px solid rgba(240,234,216,.07)}
+.cook-right{flex:1;padding:20px 0 20px 32px;display:flex;flex-direction:column;gap:16px}
+
+.cm-phase{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:#C6902F;font-weight:700}
+.cm-text{font-family:var(--serif);font-size:22px;font-weight:700;line-height:1.4;letter-spacing:-.01em}
+.cm-ill{height:120px;border-radius:16px;background:#2A3828;display:grid;place-items:center;transition:background .5s ease;flex-shrink:0}
+.cm-ill svg{width:80px;height:64px}
+.cm-ing-lbl{font-size:9px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(240,234,216,.4);margin-bottom:8px}
+.cm-chips{display:flex;flex-wrap:wrap;gap:6px}
+.cm-chip{font-size:11px;color:#C6902F;border:1px solid rgba(198,144,47,.3);border-radius:999px;padding:5px 12px;background:rgba(198,144,47,.07)}
+.cm-heat{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;color:rgba(240,234,216,.42);font-weight:700;letter-spacing:.04em}
+.cm-heat svg{width:12px;height:12px}
+.cm-timer-pill{display:inline-flex;align-items:center;gap:8px;border:2px solid #5CAD78;color:#5CAD78;border-radius:999px;padding:9px 16px;font-weight:800;font-size:13px;font-family:var(--mono);cursor:pointer;transition:opacity .12s;white-space:nowrap}
+.cm-timer-pill:hover{opacity:.8}
+.cm-timer-pill.done{border-color:rgba(92,173,120,.35);color:rgba(92,173,120,.5)}
+.cm-timer-pill svg{width:14px;height:14px}
+.cm-nav-row{display:flex;gap:10px;padding:18px 32px;flex-shrink:0;max-width:960px;margin:0 auto;width:100%}
+.cm-nav{flex:1;font-weight:800;font-size:13px;border-radius:13px;padding:14px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-family:var(--sans);transition:opacity .12s}
+.cm-nav svg{width:14px;height:14px}
+.cm-nav.prev{background:#26221C;color:rgba(240,234,216,.65);border:1px solid rgba(240,234,216,.08)}
+.cm-nav.prev:hover{background:rgba(240,234,216,.06)}
+.cm-nav.next{background:#5CAD78;color:#0c1a10}
+.cm-nav.next:hover{opacity:.88}
+.cm-caption{text-align:center;font-size:9.5px;color:rgba(240,234,216,.28);font-family:var(--mono);padding:2px 0 14px;letter-spacing:.05em;flex-shrink:0}
+@keyframes step-r{from{transform:translateX(16px);opacity:0}to{transform:translateX(0);opacity:1}}
+@keyframes step-l{from{transform:translateX(-16px);opacity:0}to{transform:translateX(0);opacity:1}}
+.anim-r{animation:step-r .18s cubic-bezier(.2,0,.4,1) both}
+.anim-l{animation:step-l .18s cubic-bezier(.2,0,.4,1) both}
+
+/* ── Finish overlay ── */
+.fin-overlay{position:fixed;inset:0;background:#1A1814;color:#F0EAD8;display:none;flex-direction:column;align-items:center;justify-content:center;gap:18px;z-index:201;padding:32px;text-align:center}
+.fin-overlay.on{display:flex}
+.fin-ring{width:84px;height:84px;border-radius:50%;background:rgba(92,173,120,.1);border:2px solid #5CAD78;display:grid;place-items:center;color:#5CAD78}
+.fin-ring svg{width:36px;height:36px}
+.fin-title{font-family:var(--serif);font-size:30px;font-weight:700}
+.fin-sub{font-size:12px;color:rgba(240,234,216,.55);line-height:1.6}
+.fin-card{background:rgba(240,234,216,.04);border:1px solid rgba(240,234,216,.1);border-radius:16px;padding:18px 22px;max-width:380px;width:100%;text-align:left}
+.fin-card-h{font-weight:800;font-size:13px;color:#5CAD78;margin-bottom:6px}
+.fin-card-b{font-size:11px;color:rgba(240,234,216,.5);line-height:1.55;margin-bottom:14px}
+.fin-cta{width:100%;background:#5CAD78;color:#0c1a10;border-radius:12px;padding:13px;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;gap:7px;cursor:pointer;font-family:var(--sans);transition:opacity .12s}
+.fin-cta:hover{opacity:.88}
+.fin-ghost{font-size:12px;font-weight:700;color:rgba(240,234,216,.4);cursor:pointer;padding:4px;background:none;border:none;font-family:var(--sans)}
+.fin-ghost:hover{color:rgba(240,234,216,.7)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mk-sprout" viewBox="0 0 32 32"><path fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" d="M16 28V13"/><path fill="currentColor" d="M16 15c-1-5-5-6.5-8.5-6.5C7 13 10 16 16 16Z"/><path fill="currentColor" d="M16 13c1-4.5 4.5-6 7.5-6C23 11.5 20.5 14 16 14Z"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M7 4h11v16l-5.5-4L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle fill="currentColor" cx="5.5" cy="12" r="1.7"/><circle fill="currentColor" cx="12" cy="12" r="1.7"/><circle fill="currentColor" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" cx="11" cy="11" r="6.5"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path fill="currentColor" d="M8 6.5l10 5.5-10 5.5z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" cx="12" cy="12" r="8"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M12 8v4.3l2.8 1.7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1.4.6-2.4 1.3-3.2C10 9 12 8 12 3z"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64"><ellipse fill="var(--sand)" cx="32" cy="49" rx="19" ry="4.5"/><circle fill="var(--amber)" cx="32" cy="33" r="15"/><circle fill="var(--amber-2,#A9701F)" cx="27" cy="30" r="1.5"/><circle fill="var(--amber-2,#A9701F)" cx="35" cy="28" r="1.3"/><circle fill="var(--amber-2,#A9701F)" cx="33" cy="37" r="1.6"/><circle fill="var(--amber-2,#A9701F)" cx="26" cy="38" r="1.2"/><circle fill="var(--amber-2,#A9701F)" cx="38" cy="34" r="1.4"/><ellipse fill="var(--green)" cx="32" cy="19.5" rx="3.6" ry="2.3"/></symbol>
+  <symbol id="ill-cup" viewBox="0 0 64 64"><ellipse fill="var(--sand)" cx="31" cy="51" rx="17" ry="4"/><path fill="var(--cream)" d="M19 25h24l-2.6 20a4 4 0 0 1-4 3.5H25.6a4 4 0 0 1-4-3.5z"/><path fill="var(--green)" d="M20.4 25h21.2l-.7 5.4H21.1z"/></symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64"><ellipse fill="var(--sand)" cx="32" cy="50" rx="18" ry="4"/><path fill="var(--cream)" d="M15 33a17 13 0 0 0 34 0z"/><ellipse fill="var(--amber)" cx="32" cy="33" rx="15" ry="4.6"/><circle fill="var(--clay)" cx="28" cy="32" r="1.7"/><circle fill="var(--clay)" cx="36" cy="33" r="1.5"/><circle fill="var(--green)" cx="32" cy="31.5" r="1.6"/></symbol>
+  <symbol id="ill-hero" viewBox="0 0 120 90"><ellipse fill="var(--cream)" cx="60" cy="62" rx="46" ry="12"/><ellipse fill="var(--sand)" cx="60" cy="64" rx="46" ry="9"/><circle fill="var(--amber)" cx="44" cy="52" r="13"/><circle fill="var(--amber)" cx="76" cy="52" r="13"/><circle fill="var(--amber)" cx="60" cy="46" r="15"/><ellipse fill="var(--green)" cx="60" cy="30" rx="4" ry="2.6"/></symbol>
+</svg>
+
+<div class="shell">
+
+  <!-- ═══ SIDEBAR ═══ -->
+  <aside class="sidebar">
+    <div class="logo">
+      <div class="logo-mark"><svg viewBox="0 0 32 32"><use href="#mk-sprout"/></svg></div>
+      <div><div class="logo-name">Vajeeva</div><div class="logo-sub">Ayurvedic recipes</div></div>
+    </div>
+    <nav class="sidenav">
+      <button class="navbtn on" onclick="showView('home',this)">
+        <svg><use href="#i-home"/></svg> Home
+      </button>
+      <button class="navbtn" onclick="showView('list',this)">
+        <svg><use href="#i-book"/></svg> Recipes
+      </button>
+      <button class="navbtn" onclick="showView('saved',this)">
+        <svg viewBox="0 0 24 24"><use href="#i-heart"/></svg> Saved
+      </button>
+      <div class="nav-sec">Explore</div>
+      <button class="navbtn" onclick="showView('glossary',this)">
+        <svg><use href="#i-more"/></svg> Source Glossary
+      </button>
+    </nav>
+    <div class="side-foot">
+      <div class="user-av">RH</div>
+      <div><div class="user-name">Rohit H.</div><div class="user-role">Member</div></div>
+    </div>
+  </aside>
+
+  <!-- ═══ MAIN ═══ -->
+  <div class="main">
+    <div class="topbar">
+      <div class="topbar-title" id="page-title">Home</div>
+      <div class="search-box"><svg><use href="#i-search"/></svg> Search a recipe or ingredient…</div>
+    </div>
+
+    <div class="view-wrap">
+
+      <!-- ── HOME ── -->
+      <div class="view on" id="v-home">
+        <div class="continue-card" onclick="startCook()">
+          <div class="cc-ill"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+          <div style="flex:1">
+            <div class="cc-name">Continue · Coconut Laddu</div>
+            <div class="cc-sub">Step 2 of 5 · Roasting in ghee</div>
+            <div class="cc-prog"></div>
+          </div>
+          <div class="cc-play"><svg><use href="#i-play"/></svg></div>
+        </div>
+        <div style="font-family:var(--serif);font-size:19px;font-weight:700;margin-bottom:14px">What would you like today?</div>
+        <div class="cat-grid">
+          <div class="cat-card" onclick="showView('list',document.querySelector('.navbtn:nth-child(2)'))">
+            <div class="cat-ill" style="background:var(--amber-s)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="cat-n">Solid</div>
+            <div class="cat-s">Breads · sweets · snacks</div>
+            <div class="cat-c">44 recipes</div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-ill" style="background:var(--green-s)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+            <div class="cat-n">Liquid</div>
+            <div class="cat-s">Drinks · soups · buttermilk</div>
+            <div class="cat-c">23 recipes</div>
+          </div>
+          <div class="cat-card">
+            <div class="cat-ill" style="background:var(--clay-s)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div>
+            <div class="cat-n">Semi-solid</div>
+            <div class="cat-s">Porridge · puddings · chutneys</div>
+            <div class="cat-c">16 recipes</div>
+          </div>
+        </div>
+        <div class="trust-note"><svg><use href="#i-leaf"/></svg> Grounded in classical texts + ICMR-NIN 2024</div>
+      </div>
+
+      <!-- ── RECIPE LIST ── -->
+      <div class="view" id="v-list">
+        <div class="filter-row">
+          <span class="fchip on">All</span>
+          <span class="fchip">Sweets</span>
+          <span class="fchip">Breads</span>
+          <span class="fchip">Snacks</span>
+          <span class="fchip" style="color:var(--green);border-color:var(--green)">🛡 Safe for me</span>
+        </div>
+        <div class="recipe-grid">
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--amber-s)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="rcard-n">Coconut Laddu</div><div class="rcard-sk">Narikela modaka</div>
+            <div class="rcard-m">Sweet · ~25 min</div>
+            <div class="cdots"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>
+          </div>
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--amber-s)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="rcard-n">Wheat Balls</div><div class="rcard-sk">Godhuma laddu</div>
+            <div class="rcard-m">Sweet · ~30 min</div>
+            <div class="cdots"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>
+          </div>
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--green-s)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="rcard-n">Date Laddoo</div><div class="rcard-sk">Kharjur laddoo</div>
+            <div class="rcard-m">No-cook · ~15 min</div>
+          </div>
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--clay-s)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div>
+            <div class="rcard-n">Golden Grain Halwa</div><div class="rcard-sk">Lalita</div>
+            <div class="rcard-m">Sweet · ~35 min</div>
+            <div class="cdots"><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div><div class="cdot"></div></div>
+          </div>
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--green-s)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+            <div class="rcard-n">Amla Panaka</div><div class="rcard-sk">Āmalaka panaka</div>
+            <div class="rcard-m">Drink · no-cook</div>
+          </div>
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--clay-s)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div>
+            <div class="rcard-n">Barley Porridge</div><div class="rcard-sk">Yava yavagu</div>
+            <div class="rcard-m">Semi-solid · ~15 min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RECIPE DETAIL ── -->
+      <div class="view" id="v-detail">
+        <button class="detail-back" onclick="goBack()"><svg><use href="#i-back"/></svg> All Recipes</button>
+        <div class="detail-grid">
+          <div>
+            <div class="detail-hero"><svg viewBox="0 0 120 90"><use href="#ill-hero"/></svg></div>
+            <div class="detail-title">Coconut Laddu</div>
+            <div class="detail-sk">Narikela modaka</div>
+            <div class="dslabel">Classical sources</div>
+            <div class="src-pills">
+              <button class="src-pill">Ksemakutūhalam 10/54 ↗</button>
+              <button class="src-pill">ICMR-NIN 2024 ↗</button>
+            </div>
+            <div class="dbadges">
+              <span class="dbadge">🫙 Makes 3–4 laddoos</span>
+              <span class="dbadge">📅 Keeps 5–7 days</span>
+            </div>
+            <div class="dcc">
+              <div class="dcc-h">⚠ Use with caution</div>
+              <div class="dcc-b">Diabetes · Overweight / Obesity · Lactose intolerance · Sedentary lifestyle</div>
+            </div>
+            <div class="ing-head">
+              <div class="ing-title">Ingredients</div>
+              <div class="utog">
+                <button class="ubtn on" onclick="setUnit('g',this)">g</button>
+                <button class="ubtn" onclick="setUnit('cup',this)">cup</button>
+              </div>
+            </div>
+            <table class="dit">
+              <tr><td>Grated coconut</td><td class="qty" data-g="40–50 g" data-cup="¼ cup">40–50 g</td></tr>
+              <tr><td>Milk</td><td class="qty" data-g="30–40 ml" data-cup="2½ tbsp">30–40 ml</td></tr>
+              <tr><td>Ghee</td><td class="qty" data-g="10–15 ml" data-cup="2–3 tsp">10–15 ml</td></tr>
+              <tr><td>Rock sugar powder</td><td class="qty" data-g="15–20 g" data-cup="3–4 tsp">15–20 g</td></tr>
+              <tr><td>Cardamom powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+              <tr><td>Dry ginger powder</td><td class="qty" data-g="2–3 g" data-cup="½ tsp">2–3 g</td></tr>
+            </table>
+          </div>
+          <div>
+            <div class="steps-title">Method · 5 steps</div>
+            <ol class="dml">
+              <li><span class="dsn">1</span><div><span class="dphase">Milk &amp; Coconut</span>Cook grated coconut in milk over low heat, stirring gently, until fully absorbed and well combined.</div></li>
+              <li><span class="dsn">2</span><div><span class="dphase">Roast in ghee</span>Warm the ghee in a heavy pan on low heat. Add coconut; roast, stirring, until light golden and fragrant.</div></li>
+              <li><span class="dsn">3</span><div><span class="dphase">Sugar syrup</span>Prepare a sugar syrup with rock sugar and a little water. Boil to a firm, binding consistency.</div></li>
+              <li><span class="dsn">4</span><div><span class="dphase">Combine</span>Add roasted coconut to the syrup. Fold in cardamom and dry ginger powder; mix well off the heat.</div></li>
+              <li><span class="dsn">5</span><div><span class="dphase">Shape</span>While the mixture is still warm, shape into small laddoos with your palms. Cool before serving.</div></li>
+            </ol>
+            <button class="cta-btn" onclick="startCook()"><svg><use href="#i-play"/></svg> Start Cook Mode</button>
+            <div style="font-size:10px;color:var(--muted);text-align:center;margin-top:10px;font-family:var(--mono)">Supportive dietary guidance · not a substitute for medical advice</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SAVED ── -->
+      <div class="view" id="v-saved">
+        <div class="offline-badge"><svg><use href="#i-leaf"/></svg> Available offline</div>
+        <div class="saved-grid">
+          <div class="rcard" onclick="showDetail()">
+            <div class="rcard-ill" style="background:var(--amber-s)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="rcard-n">Coconut Laddu</div><div class="rcard-sk">Narikela modaka</div><div class="rcard-m">Sweet · 25 min</div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-ill" style="background:var(--green-s)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+            <div class="rcard-n">Amla Panaka</div><div class="rcard-sk">Āmalaka panaka</div><div class="rcard-m">Drink · no-cook</div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-ill" style="background:var(--clay-s)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div>
+            <div class="rcard-n">Barley Porridge</div><div class="rcard-sk">Yava yavagu</div><div class="rcard-m">Semi · 15 min</div>
+          </div>
+          <div class="rcard">
+            <div class="rcard-ill" style="background:var(--green-s)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+            <div class="rcard-n">Spiced Buttermilk</div><div class="rcard-sk">Takra</div><div class="rcard-m">Drink · 10 min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── GLOSSARY ── -->
+      <div class="view" id="v-glossary" style="max-width:680px">
+        <div style="font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);margin-bottom:6px">Classical text · ~16th century CE</div>
+        <div style="font-family:var(--serif);font-size:26px;font-weight:700;margin-bottom:4px">Ksemakutūhalam</div>
+        <div style="font-family:var(--serif);font-style:italic;font-size:13px;color:var(--ink2);margin-bottom:22px;padding-bottom:18px;border-bottom:1px solid var(--line)">Ksema Sarma · Pakavidhi · Modaka chapter</div>
+        <div style="display:flex;flex-direction:column;gap:16px">
+          <div><div class="dslabel">About this text</div><div style="font-size:13px;line-height:1.7;color:var(--ink2)">A Sanskrit treatise on Ayurvedic culinary science. Classified as a Pakavidhi — a text on food preparation, cooking methods, and the properties of prepared dishes. One of the most detailed classical sources on sweet preparations.</div></div>
+          <div><div class="dslabel">This citation</div><div style="font-size:13px;line-height:1.7;color:var(--ink2)"><strong style="color:var(--amber)">Chapter 10, verse 54</strong> — the 10th Utsava chapter covers sweet preparations (modaka). Verse 54 describes coconut-based sweets using milk, rock sugar, and warming spices as a nourishing preparation.</div></div>
+          <div><div class="dslabel">Also cited in Vajeeva</div><div style="font-size:13px;color:var(--amber);font-family:var(--serif);font-style:italic">S-23 Coconut Laddu · S-24 Bhaimi · S-44 Narikela Ksheerika · L-17 Coconut Payasa</div></div>
+        </div>
+      </div>
+
+    </div><!-- /view-wrap -->
+  </div><!-- /main -->
+</div><!-- /shell -->
+
+<!-- ═══ COOK OVERLAY ═══ -->
+<div class="cook-overlay" id="cook-overlay">
+  <div class="cm-prog"><div class="cm-prog-fill" id="cm-fill" style="width:20%"></div></div>
+  <div class="cm-top">
+    <div class="cm-x" onclick="exitCook()"><svg><use href="#i-close"/></svg></div>
+    <div class="cm-dots" id="cm-dots">
+      <div class="cm-dot on"></div><div class="cm-dot"></div><div class="cm-dot"></div><div class="cm-dot"></div><div class="cm-dot"></div>
+    </div>
+    <div class="cm-count" id="cm-count">1 / 5</div>
+  </div>
+  <div class="cook-body" id="cm-swipe">
+    <div class="cook-left">
+      <div class="cm-phase" id="cm-phase">Phase · Milk &amp; Coconut</div>
+      <div class="cm-text" id="cm-text">Cook grated coconut in milk over low heat, stirring gently, until fully absorbed and well combined.</div>
+      <div id="cm-ing-wrap">
+        <div class="cm-ing-lbl">This step</div>
+        <div class="cm-chips" id="cm-chips">
+          <span class="cm-chip">Grated coconut</span>
+          <span class="cm-chip">Whole milk</span>
+        </div>
+      </div>
+    </div>
+    <div class="cook-right">
+      <div class="cm-ill" id="cm-ill"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+      <div class="cm-heat" id="cm-heat"><svg><use href="#i-flame"/></svg> Low heat</div>
+      <div id="cm-timer-wrap" style="display:none">
+        <div class="cm-timer-pill" id="timer-pill" onclick="toggleTimer()">
+          <svg><use href="#i-clock"/></svg>
+          <span id="timer-num">10:00</span><span id="timer-hint"> · start</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="cm-nav-row">
+    <button class="cm-nav prev" id="cm-prev" onclick="cookBack()"><svg><use href="#i-back"/></svg> Back</button>
+    <button class="cm-nav next" id="cm-next" onclick="cookNext()">Next <svg><use href="#i-chev"/></svg></button>
+  </div>
+  <div class="cm-caption">⌨ arrow keys to navigate · screen stays awake · works offline</div>
+</div>
+
+<!-- ═══ FINISH OVERLAY ═══ -->
+<div class="fin-overlay" id="fin-overlay">
+  <div class="fin-ring"><svg viewBox="0 0 24 24"><use href="#i-check"/></svg></div>
+  <div>
+    <div class="fin-title">Well made.</div>
+    <div class="fin-sub">Coconut Laddu · 5 steps · <span id="fin-time">~25 min</span></div>
+  </div>
+  <div class="fin-card">
+    <div class="fin-card-h">Keep it in your kitchen?</div>
+    <div class="fin-card-b">Saved recipes stay on this device and work completely offline — no internet needed while cooking.</div>
+    <button class="fin-cta" onclick="saveAndClose()"><svg viewBox="0 0 24 24" style="width:14px;height:14px"><use href="#i-heart"/></svg> Save recipe</button>
+  </div>
+  <button class="fin-ghost" onclick="closeFinish()">Not now, go home</button>
+</div>
+
+<script>
+const STEPS = [
+  { label:'1 / 5', phase:'Phase · Milk &amp; Coconut', prog:20, timer:null, heat:'Low heat',    ing:['Grated coconut','Whole milk'],             ill:'#2A3828', text:'Cook grated coconut in milk over low heat, stirring gently, until fully absorbed and well combined.' },
+  { label:'2 / 5', phase:'Phase · Roast in ghee',      prog:40, timer:'10:00', heat:'Low heat', ing:['Coconut mixture','Ghee'],                  ill:'#332B15', text:'Warm the ghee in a heavy pan on low heat. Add coconut; roast, stirring, until light golden and fragrant.' },
+  { label:'3 / 5', phase:'Phase · Sugar syrup',        prog:60, timer:'08:00', heat:'Medium heat', ing:['Rock sugar','Water'],                   ill:'#2E2610', text:'Prepare a sugar syrup with rock sugar and a little water. Boil to a firm, binding consistency.' },
+  { label:'4 / 5', phase:'Phase · Combine',            prog:80, timer:null,    heat:'Off heat', ing:['Coconut','Cardamom powder','Dry ginger'],  ill:'#242019', text:'Add roasted coconut to the syrup. Fold in cardamom and dry ginger powder; mix well off the heat.' },
+  { label:'5 / 5', phase:'Phase · Shape',              prog:100,timer:null,    heat:null,        ing:[],                                          ill:'#1E2820', text:'While the mixture is still warm, shape into small laddoos with your palms. Cool before serving.' },
+];
+
+let currentView = 'home', prevView = null;
+let cookStep = 0, cookStart = null;
+let timerInterval = null, timerRunning = false, timerTotal = 0, timerLeft = 0;
+
+function showView(name, navBtn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('on'));
+  document.querySelectorAll('.navbtn').forEach(b => b.classList.remove('on'));
+  document.getElementById('v-' + name).classList.add('on');
+  if (navBtn) navBtn.classList.add('on');
+  const titles = {home:'Home', list:'Recipes', detail:'Coconut Laddu', saved:'Saved', glossary:'Source Glossary'};
+  document.getElementById('page-title').textContent = titles[name] || '';
+  prevView = currentView; currentView = name;
+}
+
+function showDetail() {
+  showView('detail', null);
+  document.getElementById('page-title').textContent = 'Coconut Laddu';
+}
+
+function goBack() {
+  const v = prevView || 'list';
+  showView(v, document.querySelector('.navbtn:nth-child(' + ({home:1,list:2,saved:3}[v]||2) + ')'));
+}
+
+function setUnit(u, btn) {
+  document.querySelectorAll('.qty').forEach(td => td.textContent = td.dataset[u]);
+  document.querySelectorAll('.utog .ubtn').forEach(b => b.classList.toggle('on', b === btn));
+}
+
+/* Cook mode */
+function startCook() {
+  cookStep = 0; cookStart = Date.now();
+  renderStep('next');
+  document.getElementById('cook-overlay').classList.add('on');
+  try { if ('wakeLock' in navigator) navigator.wakeLock.request('screen'); } catch(_){}
+}
+
+function renderStep(dir) {
+  const s = STEPS[cookStep];
+  const body = document.getElementById('cm-swipe');
+  body.classList.remove('anim-r','anim-l');
+  requestAnimationFrame(() => body.classList.add(dir === 'next' ? 'anim-r' : 'anim-l'));
+  document.getElementById('cm-count').textContent = s.label;
+  document.getElementById('cm-phase').innerHTML  = s.phase;
+  document.getElementById('cm-text').textContent = s.text;
+  document.getElementById('cm-fill').style.width = s.prog + '%';
+  document.getElementById('cm-ill').style.background = s.ill;
+  document.querySelectorAll('.cm-dot').forEach((d,i) => {
+    d.className = 'cm-dot' + (i === cookStep ? ' on' : i < cookStep ? ' done' : '');
+  });
+  const iw = document.getElementById('cm-ing-wrap');
+  if (s.ing.length) {
+    iw.style.display = '';
+    document.getElementById('cm-chips').innerHTML = s.ing.map(n => `<span class="cm-chip">${n}</span>`).join('');
+  } else { iw.style.display = 'none'; }
+  const he = document.getElementById('cm-heat');
+  if (s.heat) { he.style.display = ''; he.innerHTML = `<svg style="width:12px;height:12px"><use href="#i-flame"/></svg> ${s.heat}`; }
+  else { he.style.display = 'none'; }
+  clearCookTimer();
+  const tw = document.getElementById('cm-timer-wrap');
+  if (s.timer) { tw.style.display = ''; initTimer(s.timer); }
+  else { tw.style.display = 'none'; }
+  document.getElementById('cm-prev').style.opacity = cookStep === 0 ? '0.3' : '1';
+  const nx = document.getElementById('cm-next');
+  nx.innerHTML = cookStep === STEPS.length-1
+    ? 'Finish <svg style="width:14px;height:14px"><use href="#i-check"/></svg>'
+    : 'Next <svg style="width:14px;height:14px"><use href="#i-chev"/></svg>';
+}
+
+function initTimer(str) {
+  const [m,s] = str.split(':').map(Number);
+  timerTotal = m*60+s; timerLeft = timerTotal; timerRunning = false; paintTimer();
+}
+function paintTimer() {
+  const m = Math.floor(timerLeft/60).toString().padStart(2,'0');
+  const s = (timerLeft%60).toString().padStart(2,'0');
+  document.getElementById('timer-num').textContent = `${m}:${s}`;
+  const pill = document.getElementById('timer-pill');
+  const hint = document.getElementById('timer-hint');
+  if (timerLeft <= 0) { hint.textContent = ' · done ✓'; pill.classList.add('done'); }
+  else { pill.classList.remove('done'); hint.textContent = timerRunning ? ' · pause' : (timerLeft < timerTotal ? ' · resume' : ' · start'); }
+}
+function toggleTimer() {
+  if (timerLeft <= 0) { timerLeft = timerTotal; timerRunning = false; clearInterval(timerInterval); paintTimer(); return; }
+  if (timerRunning) { clearInterval(timerInterval); timerRunning = false; }
+  else { timerRunning = true; timerInterval = setInterval(() => { timerLeft--; paintTimer(); if(timerLeft<=0){clearInterval(timerInterval);timerRunning=false;} }, 1000); }
+  paintTimer();
+}
+function clearCookTimer() { clearInterval(timerInterval); timerInterval = null; timerRunning = false; }
+
+function cookNext() {
+  if (cookStep < STEPS.length-1) { cookStep++; renderStep('next'); }
+  else {
+    const mins = cookStart ? Math.round((Date.now()-cookStart)/60000) : 0;
+    document.getElementById('fin-time').textContent = mins > 0 ? `${mins} min` : '~25 min';
+    document.getElementById('cook-overlay').classList.remove('on');
+    document.getElementById('fin-overlay').classList.add('on');
+  }
+}
+function cookBack() { if (cookStep > 0) { cookStep--; renderStep('prev'); } }
+function exitCook() { clearCookTimer(); document.getElementById('cook-overlay').classList.remove('on'); }
+function closeFinish() { document.getElementById('fin-overlay').classList.remove('on'); }
+function saveAndClose() { closeFinish(); showView('saved', document.querySelector('.navbtn:nth-child(3)')); }
+
+/* Keyboard navigation in cook mode */
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('cook-overlay').classList.contains('on')) return;
+  if (e.key === 'ArrowRight') cookNext();
+  else if (e.key === 'ArrowLeft') cookBack();
+  else if (e.key === 'Escape') exitCook();
+});
+
+/* Filter chips */
+document.querySelectorAll('.filter-row .fchip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-row .fchip').forEach(c => c.classList.remove('on'));
+    chip.classList.add('on');
+  });
+});
+</script>
+</body>
+</html>

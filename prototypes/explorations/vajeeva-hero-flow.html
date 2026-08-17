@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva &#8212; Hi-fi Hero Flow</title>
+<style>
+  :root{
+    --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1; --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+    --line:#E5DDCC; --line-2:#D8CEBA;
+    --green:#3E6B4F; --green-press:#335B42; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+    --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+    --clay:#B4472E; --clay-soft:#F3E1D8;
+    --shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);
+    --shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  /* Light-locked: warm Modern Ayurveda is a light-first identity. Dark palette kept below but disabled. */
+  :root[data-theme="light"]{--bone:#F2EDE1;--sand:#E9E1D0;--cream:#FBF8F1;--ink:#2A251E;--ink-2:#6E6656;--muted:#9C9482;--line:#E5DDCC;--line-2:#D8CEBA;--green:#3E6B4F;--green-press:#335B42;--green-soft:#E4EDE3;--on-green:#FBF8F1;--amber:#C6902F;--amber-2:#A9701F;--amber-soft:#F4E8CE;--clay:#B4472E;--clay-soft:#F3E1D8;--shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);--shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);}
+  /* dark toggle maps to the same light palette, so the page stays light-locked */
+  :root[data-theme="dark"]{--bone:#F2EDE1;--sand:#E9E1D0;--cream:#FBF8F1;--ink:#2A251E;--ink-2:#6E6656;--muted:#9C9482;--line:#E5DDCC;--line-2:#D8CEBA;--green:#3E6B4F;--green-press:#335B42;--green-soft:#E4EDE3;--on-green:#FBF8F1;--amber:#C6902F;--amber-2:#A9701F;--amber-soft:#F4E8CE;--clay:#B4472E;--clay-soft:#F3E1D8;--shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);--shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);}
+
+  *{box-sizing:border-box} body{margin:0;background:var(--bone)}
+  .page{background:var(--bone);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5;padding:clamp(20px,5vw,52px) clamp(16px,5vw,40px) 76px}
+  .wrap{max-width:1160px;margin:0 auto}
+  .icon{width:20px;height:20px;display:inline-block;vertical-align:middle}
+  .ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .fl{fill:currentColor}
+  .il-cream{fill:var(--cream)}.il-sand{fill:var(--sand)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+  .il-green{fill:var(--green)}.il-clay{fill:var(--clay)}.il-ink{fill:var(--ink)}
+  .il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+  .il-steam{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round;opacity:.45}
+  .mk{fill:none;stroke:var(--green);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+  .mk-l{fill:var(--green)}
+
+  /* brand bar */
+  .brandbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;justify-content:space-between}
+  .lockup{display:flex;align-items:center;gap:12px}
+  .mark{width:46px;height:46px;border-radius:14px;background:var(--green-soft);display:grid;place-items:center;flex:none;box-shadow:var(--shadow)}
+  .mark svg{width:28px;height:28px}
+  .brandname{font-family:var(--serif);font-size:30px;font-weight:700;letter-spacing:.01em}
+  .brandsub{font-size:12px;color:var(--ink-2);margin-top:-2px}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;background:var(--cream)}
+
+  /* identity strip */
+  .identity{display:grid;grid-template-columns:1.3fr 1fr;gap:14px;margin:24px 0 6px}
+  @media(max-width:720px){.identity{grid-template-columns:1fr}}
+  .idcard{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:16px 18px;box-shadow:var(--shadow)}
+  .idlabel{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px}
+  .sw{display:flex;flex-wrap:wrap;gap:10px}
+  .swatch{display:flex;flex-direction:column;gap:5px;align-items:flex-start}
+  .chip-c{width:44px;height:44px;border-radius:11px;border:1px solid rgba(0,0,0,.06)}
+  .swatch small{font-size:9.5px;color:var(--ink-2);font-family:var(--mono)}
+  .typ{display:flex;align-items:flex-end;gap:16px;flex-wrap:wrap}
+  .typ .sp{line-height:1}
+  .typ .big-serif{font-family:var(--serif);font-size:34px;font-weight:700}
+  .typ .big-sans{font-family:var(--sans);font-size:26px;font-weight:700}
+  .typ .rl{font-size:9.5px;color:var(--muted);font-family:var(--mono);margin-top:5px}
+  .diac{font-family:var(--serif);font-size:18px;color:var(--ink-2);margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .illnote{display:flex;align-items:center;gap:10px;margin-top:6px;font-size:12px;color:var(--ink-2)}
+  .illnote svg{width:34px;height:26px;flex:none}
+
+  .flowlabel{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:34px 0 20px}
+  .flowlabel h2{font-family:var(--serif);font-size:20px;margin:0;font-weight:700}
+  .flowlabel .step{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .flowlabel .ln2{flex:1;height:1px;background:var(--line-2);min-width:20px}
+
+  /* screens */
+  .screens{display:flex;flex-wrap:wrap;gap:34px 30px;justify-content:center;align-items:flex-start}
+  .screen{width:290px;display:flex;flex-direction:column;gap:15px}
+  .phone{position:relative;width:290px;background:#0f0d0a;border:1px solid rgba(0,0,0,.4);border-radius:40px;padding:9px;box-shadow:var(--shadow-lift)}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:98px;height:26px;background:#0f0d0a;border-radius:0 0 16px 16px;z-index:5}
+  .vp{position:relative;background:var(--bone);border-radius:32px;overflow:hidden;height:600px;display:flex;flex-direction:column;font-size:12px;line-height:1.4}
+  .vp.scroll{overflow-y:auto}.vp::-webkit-scrollbar{width:0}
+  .sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 4px;color:var(--ink);font-size:11px;font-weight:700;font-family:var(--sans)}
+  .sbar .rt{display:flex;gap:5px;align-items:center}
+  .pad{padding:10px 15px}.col{display:flex;flex-direction:column}
+
+  .h-serif{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+  .muted{color:var(--ink-2)} .mut2{color:var(--muted)}
+  .row{display:flex;align-items:center;gap:10px}.grow{flex:1;min-width:0}
+
+  .icobtn{width:38px;height:38px;border-radius:50%;background:var(--cream);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow);flex:none}
+  .avatar{width:38px;height:38px;border-radius:50%;background:var(--green-soft);border:1px solid var(--line);flex:none;display:grid;place-items:center;color:var(--green)}
+  .search{display:flex;align-items:center;gap:9px;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:12px 15px;color:var(--muted);box-shadow:var(--shadow)}
+
+  .greet{font-family:var(--serif);font-size:19px;font-weight:700}
+  .greet small{display:block;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--ink-2);letter-spacing:.02em}
+  .prompt{font-family:var(--serif);font-size:17px;font-weight:700}
+
+  .pillar{display:flex;align-items:center;gap:13px;background:var(--cream);border:1px solid var(--line);border-radius:19px;padding:12px;box-shadow:var(--shadow)}
+  .ptile{width:60px;height:60px;border-radius:15px;flex:none;display:grid;place-items:center;overflow:hidden}
+  .ptile svg{width:52px;height:52px}
+  .ptile.s{background:var(--amber-soft)} .ptile.l{background:var(--green-soft)} .ptile.m{background:var(--clay-soft)}
+  .pillar .pn{font-family:var(--serif);font-size:17px;font-weight:700}
+  .pillar .ps{font-size:10.5px;color:var(--ink-2);margin-top:1px}
+  .pillar .pc{font-size:9px;color:var(--muted);font-family:var(--mono);margin-top:3px}
+  .pillar .chev{margin-left:auto;color:var(--muted)}
+
+  .contcard{display:flex;align-items:center;gap:11px;background:var(--green);color:var(--on-green);border-radius:17px;padding:11px 13px;box-shadow:var(--shadow)}
+  .contcard .ct{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
+  .contcard .ct svg{width:34px;height:34px}
+  .contcard .cl{font-weight:800;font-size:13px}
+  .contcard .cs{font-size:10.5px;opacity:.85}
+  .mprog{height:4px;border-radius:2px;background:rgba(255,255,255,.25);margin-top:5px;position:relative;overflow:hidden}
+  .mprog::after{content:"";position:absolute;inset:0 45% 0 0;background:var(--on-green)}
+  .playbtn{width:30px;height:30px;border-radius:50%;background:var(--on-green);color:var(--green);display:grid;place-items:center;flex:none}
+
+  .trust{display:flex;align-items:center;justify-content:center;gap:7px;font-size:10px;color:var(--muted);font-family:var(--mono);padding:2px}
+  .trust .lf{width:13px;height:13px;color:var(--green)}
+
+  .bnav{margin-top:auto;display:flex;justify-content:space-around;align-items:center;background:var(--cream);border-top:1px solid var(--line);padding:10px 6px 12px}
+  .nav{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px;font-weight:600}
+  .nav svg{width:21px;height:21px}
+  .nav.on{color:var(--green)}
+
+  /* detail */
+  .hero-ill{position:relative;height:172px;background:radial-gradient(120% 90% at 50% 20%,var(--green-soft),var(--sand));display:grid;place-items:center}
+  .hero-ill svg{width:180px;height:135px}
+  .hero-top{position:absolute;top:16px;left:16px;right:16px;display:flex;justify-content:space-between;z-index:2}
+  .hero-top .rt{display:flex;gap:8px}
+  .titleblock .rn{font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.1}
+  .titleblock .sn{font-family:var(--serif);font-style:italic;font-size:14px;color:var(--ink-2);margin-top:3px}
+  .pill{display:inline-flex;align-items:center;gap:5px;background:var(--sand);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:600;color:var(--ink)}
+  .pill svg{width:13px;height:13px;color:var(--ink-2)}
+  .pills{display:flex;flex-wrap:wrap;gap:7px}
+
+  .safety{display:flex;gap:11px;border:1px solid var(--clay);border-left:4px solid var(--clay);background:var(--clay-soft);border-radius:12px;padding:12px}
+  .safety .si{width:26px;height:26px;border-radius:8px;background:var(--clay);color:#fff;display:grid;place-items:center;flex:none}
+  .safety .si svg{width:16px;height:16px}
+  .safety .st{font-weight:800;font-size:11.5px;color:var(--clay)}
+  .safety .sd{font-size:11px;color:var(--ink);margin-top:2px}
+
+  .srcbar{display:flex;align-items:center;gap:9px;background:var(--amber-soft);border-radius:11px;padding:10px 12px}
+  .srcbar .sq{width:22px;height:22px;border-radius:7px;background:var(--amber);color:#fff;display:grid;place-items:center;flex:none}
+  .srcbar .sq svg{width:13px;height:13px}
+  .srcbar .stx{font-size:10.5px;color:var(--ink);flex:1}
+  .srcbar .stx b{color:var(--amber-2)}
+
+  .ing{display:flex;align-items:center;gap:11px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .cbx{width:20px;height:20px;border-radius:7px;border:2px solid var(--green);flex:none;display:grid;place-items:center;color:var(--green)}
+  .cbx svg{width:12px;height:12px}
+  .cbx.off{border-color:var(--line-2);color:transparent}
+  .toggle{display:inline-flex;background:var(--sand);border-radius:999px;padding:3px;font-size:10px;font-weight:700}
+  .toggle span{padding:4px 10px;border-radius:999px;color:var(--ink-2)}
+  .toggle .on{background:var(--cream);color:var(--green);box-shadow:var(--shadow)}
+
+  .cta{background:var(--green);color:var(--on-green);border-radius:14px;padding:15px;text-align:center;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shadow)}
+  .cta svg{width:17px;height:17px}
+  .disc{text-align:center;font-size:9.5px;color:var(--muted);padding:2px 6px}
+
+  /* ── Recipe Detail — tabbed (updated) ─────────────────── */
+  .dh{flex:none;padding:10px 13px 9px;border-bottom:1px solid var(--line)}
+  .dh-title{font-family:var(--serif);font-size:17px;font-weight:700;line-height:1.2}
+  .dh-sk{font-family:var(--serif);font-style:italic;font-size:10.5px;color:var(--amber)}
+  .dh-meta{font-size:9px;color:var(--ink-2)}
+  .dh-acts{display:flex;gap:6px;flex:none}
+  .dtabs{flex:none;display:flex;background:var(--bone);border-bottom:1px solid var(--line)}
+  .dtab{flex:1;padding:9px 4px;font-size:9.5px;font-weight:700;letter-spacing:.045em;text-transform:uppercase;border:none;background:transparent;color:var(--muted);position:relative;font-family:var(--sans)}
+  .dtab.on{color:var(--green)}
+  .dtab.on::after{content:'';position:absolute;bottom:0;left:18%;right:18%;height:2px;background:var(--green);border-radius:2px 2px 0 0}
+  .dtpwrap{flex:1;overflow:hidden;position:relative}
+  .dtp{display:none;overflow-y:auto;height:100%;scrollbar-width:none}
+  .dtp::-webkit-scrollbar{width:0}
+  .dtp.on{display:block}
+  .dsec{padding:10px 14px;border-bottom:1px solid var(--line)}
+  .dslabel{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.28);margin-bottom:7px}
+  .src-pills{display:flex;flex-wrap:wrap;gap:5px}
+  .src-pill{font-size:10px;font-family:var(--serif);font-style:italic;color:var(--amber);border:1px solid rgba(198,144,47,.42);padding:3px 9px;border-radius:4px;background:none;display:inline-flex;align-items:center;gap:3px}
+  .src-pill .ext{font-size:8px;opacity:.6;font-style:normal}
+  .dbadges{display:flex;flex-wrap:wrap;gap:5px}
+  .dbadge{font-size:10px;color:var(--ink-2);background:var(--sand);padding:4px 9px;border-radius:4px}
+  .dcc{background:rgba(180,71,46,.07);border-left:3px solid var(--clay);border-radius:0 6px 6px 0;padding:9px 11px;margin:10px 14px}
+  .dcc-h{font-size:9px;font-weight:800;color:var(--clay);letter-spacing:.05em;text-transform:uppercase;margin-bottom:4px}
+  .dcc-b{font-size:10px;color:rgba(180,71,46,.84);line-height:1.7}
+  .dtags{display:flex;flex-wrap:wrap;gap:4px}
+  .dtag{font-size:9px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--sand);color:var(--ink-2)}
+  .dcf{flex:none;padding:8px 14px 16px;background:linear-gradient(to top,var(--bone) 65%,rgba(242,237,225,0))}
+
+  /* cook mode */
+  .cm{height:100%;display:flex;flex-direction:column;background:var(--cream)}
+  .cm-top{display:flex;align-items:center;gap:12px;padding:14px 16px}
+  .cm-x{width:34px;height:34px;border-radius:50%;background:var(--sand);display:grid;place-items:center;color:var(--ink);flex:none}
+  .cm-x svg{width:15px;height:15px}
+  .cm-prog{flex:1;height:7px;border-radius:4px;background:var(--sand);overflow:hidden;position:relative}
+  .cm-prog::after{content:"";position:absolute;inset:0 50% 0 0;background:var(--green)}
+  .cm-ct{font-weight:800;font-size:11px;white-space:nowrap}
+  .cm-phase{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-2);font-weight:700;padding:14px 20px 0}
+  .cm-body{padding:8px 20px 0;display:flex;flex-direction:column;gap:16px;flex:1}
+  .cm-step{font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+  .cm-ill{height:118px;border-radius:16px;background:var(--amber-soft);display:grid;place-items:center}
+  .cm-ill svg{width:110px;height:88px}
+  .cm-timer{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;border:2px solid var(--green);color:var(--green);border-radius:999px;padding:8px 15px;font-weight:800;font-size:13px;font-family:var(--mono)}
+  .cm-timer svg{width:15px;height:15px}
+  .cm-peek{display:flex;align-items:center;gap:8px;background:var(--bone);border-radius:11px;padding:10px 12px;color:var(--ink-2);font-size:11px}
+  .cm-awake{text-align:center;font-size:9.5px;color:var(--muted);font-family:var(--mono);padding-bottom:8px}
+  .cm-foot{display:flex;gap:11px;padding:14px}
+  .cm-nav{flex:1;text-align:center;font-weight:800;font-size:13px;border-radius:14px;padding:15px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .cm-nav.prev{background:var(--sand);color:var(--ink)}
+  .cm-nav.next{background:var(--green);color:var(--on-green)}
+
+  /* saved */
+  .toast{display:flex;align-items:center;gap:9px;margin:8px 15px 0;background:var(--green);color:var(--on-green);border-radius:13px;padding:11px 13px;font-size:11.5px;font-weight:700;box-shadow:var(--shadow)}
+  .toast svg{width:16px;height:16px}
+  .toast .u{margin-left:auto;opacity:.85;font-weight:800}
+  .offbadge{display:inline-flex;align-items:center;gap:6px;background:var(--sand);border-radius:999px;padding:5px 11px;font-size:10px;font-weight:700;color:var(--ink-2)}
+  .offbadge svg{width:13px;height:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .rcard{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:8px;box-shadow:var(--shadow)}
+  .rcard .rim{height:82px;border-radius:11px;display:grid;place-items:center;overflow:hidden}
+  .rcard .rim svg{width:70px;height:60px}
+  .rcard .rn{font-family:var(--serif);font-size:13px;font-weight:700;margin-top:7px;line-height:1.15}
+  .rcard .rs{font-size:10px;color:var(--ink-2);font-style:italic;font-family:var(--serif)}
+  .rcard .rm{display:flex;align-items:center;gap:6px;margin-top:7px}
+  .flag{width:8px;height:8px;border-radius:50%;background:var(--clay);flex:none}
+  .rmeta{font-size:9.5px;color:var(--muted)}
+
+  figcaption{padding:0 2px}
+  .cap-h{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+  .cap-n{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--on-green);background:var(--green);border-radius:7px;padding:2px 8px}
+  .cap-t{font-family:var(--serif);font-size:16px;font-weight:700}
+  .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .notes li{position:relative;padding-left:16px;font-size:12px;color:var(--ink-2);line-height:1.45}
+  .notes li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:2px;background:var(--green)}
+  .notes b{color:var(--ink)}
+  .ref{font-family:var(--mono);font-size:10px;color:var(--amber-2)}
+
+  footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--line-2);font-size:12px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+
+  a{color:var(--green)}
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+  @media (prefers-reduced-motion:no-preference){
+    .screen{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+    .screens .screen:nth-child(2){animation-delay:.07s}.screens .screen:nth-child(3){animation-delay:.14s}.screens .screen:nth-child(4){animation-delay:.21s}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- brand mark: sprout -->
+  <symbol id="mk-sprout" viewBox="0 0 32 32">
+    <path class="mk" d="M16 28V13"/>
+    <path class="mk-l" d="M16 15c-1-5-5-6.5-8.5-6.5C7 13 10 16 16 16Z"/>
+    <path class="mk-l" d="M16 13c1-4.5 4.5-6 7.5-6C23 11.5 20.5 14 16 14Z"/>
+  </symbol>
+  <!-- icons -->
+  <symbol id="i-back" viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle class="ln" cx="6" cy="12" r="2.4"/><circle class="ln" cx="17" cy="6" r="2.4"/><circle class="ln" cx="17" cy="18" r="2.4"/><path class="ln" d="M8.1 11l6.8-3.8M8.1 13l6.8 3.8"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path class="ln" d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-heart-f" viewBox="0 0 24 24"><path class="fl" d="M12 20.4S4.6 15.6 4.6 9.8A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.4 2.8c0 5.8-7.4 10.6-7.4 10.6z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle class="ln" cx="11" cy="11" r="6.5"/><path class="ln" d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path class="ln" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path class="ln" d="M7 4h11v16l-5.5-4L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle class="fl" cx="5.5" cy="12" r="1.7"/><circle class="fl" cx="12" cy="12" r="1.7"/><circle class="fl" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path class="fl" d="M8 6.5l10 5.5-10 5.5z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="ln" d="M12 8v4.3l2.8 1.7"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path class="ln" d="M20 14.5A8 8 0 1 1 10 4a6.2 6.2 0 0 0 10 10.5z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path class="ln" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="8.5" r="3.3"/><path class="ln" d="M5.5 19a6.5 6.5 0 0 1 13 0"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path class="ln" d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1.4.6-2.4 1.3-3.2C10 9 12 8 12 3z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8.5"/><path class="ln" d="M12 11v5M12 8v.2"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <!-- illustrations -->
+  <symbol id="ill-laddu" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/>
+    <circle class="il-a" cx="32" cy="33" r="15"/>
+    <circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/>
+    <circle class="il-a2" cx="33" cy="37" r="1.6"/><circle class="il-a2" cx="26" cy="38" r="1.2"/>
+    <circle class="il-a2" cx="38" cy="34" r="1.4"/><circle class="il-a2" cx="31" cy="33" r="1.2"/>
+    <ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/>
+  </symbol>
+  <symbol id="ill-cup" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="31" cy="51" rx="17" ry="4"/>
+    <path class="il-cream" d="M19 25h24l-2.6 20a4 4 0 0 1-4 3.5H25.6a4 4 0 0 1-4-3.5z"/>
+    <path class="il-green" d="M20.4 25h21.2l-.7 5.4H21.1z"/>
+    <path class="il-stroke" d="M43.5 28a7 7 0 0 1 0 12"/>
+    <path class="il-steam" d="M28 20c-2-2 2-4 0-6M36 20c-2-2 2-4 0-6"/>
+  </symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="50" rx="18" ry="4"/>
+    <path class="il-cream" d="M15 33a17 13 0 0 0 34 0z"/>
+    <ellipse class="il-a" cx="32" cy="33" rx="15" ry="4.6"/>
+    <circle class="il-clay" cx="28" cy="32" r="1.7"/><circle class="il-clay" cx="36" cy="33" r="1.5"/><circle class="il-green" cx="32" cy="31.5" r="1.6"/>
+    <path class="il-stroke" d="M40 22l-6 9" stroke-width="2.6"/>
+    <ellipse class="il-green" cx="41" cy="21" rx="3" ry="2" transform="rotate(35 41 21)"/>
+  </symbol>
+  <symbol id="ill-hero" viewBox="0 0 120 90">
+    <ellipse class="il-cream" cx="60" cy="62" rx="46" ry="12"/>
+    <ellipse class="il-sand" cx="60" cy="64" rx="46" ry="9"/>
+    <g>
+      <circle class="il-a" cx="44" cy="52" r="13"/><circle class="il-a2" cx="40" cy="50" r="1.4"/><circle class="il-a2" cx="47" cy="54" r="1.4"/><circle class="il-a2" cx="45" cy="49" r="1.2"/>
+      <circle class="il-a" cx="76" cy="52" r="13"/><circle class="il-a2" cx="72" cy="54" r="1.4"/><circle class="il-a2" cx="79" cy="50" r="1.4"/><circle class="il-a2" cx="77" cy="55" r="1.2"/>
+      <circle class="il-a" cx="60" cy="46" r="15"/><circle class="il-a2" cx="55" cy="44" r="1.5"/><circle class="il-a2" cx="64" cy="42" r="1.4"/><circle class="il-a2" cx="61" cy="49" r="1.6"/><circle class="il-a2" cx="66" cy="48" r="1.3"/>
+      <ellipse class="il-green" cx="60" cy="30" rx="4" ry="2.6"/>
+    </g>
+    <path class="il-stroke" d="M92 40c-6 1-9 5-9 11" stroke-width="2.2"/>
+    <ellipse class="il-green" cx="93" cy="39" rx="4" ry="2.4" transform="rotate(-30 93 39)"/>
+  </symbol>
+</svg>
+
+<div class="page">
+<div class="wrap">
+
+  <div class="brandbar">
+    <div class="lockup">
+      <div class="mark"><svg viewBox="0 0 32 32"><use href="#mk-sprout"/></svg></div>
+      <div><div class="brandname">Vajeeva</div><div class="brandsub">Ayurvedic supportive food &#183; discreet by design</div></div>
+    </div>
+    <span class="tag">Hi-fi &#183; hero flow</span>
+  </div>
+
+  <div class="identity">
+    <div class="idcard">
+      <div class="idlabel">Palette &#8212; modern Ayurveda</div>
+      <div class="sw">
+        <div class="swatch"><span class="chip-c" style="background:#F2EDE1"></span><small>Bone</small></div>
+        <div class="swatch"><span class="chip-c" style="background:#FBF8F1"></span><small>Cream</small></div>
+        <div class="swatch"><span class="chip-c" style="background:#2A251E"></span><small>Ink</small></div>
+        <div class="swatch"><span class="chip-c" style="background:#3E6B4F"></span><small>Herbal</small></div>
+        <div class="swatch"><span class="chip-c" style="background:#C6902F"></span><small>Turmeric</small></div>
+        <div class="swatch"><span class="chip-c" style="background:#B4472E"></span><small>Safety</small></div>
+      </div>
+      <div class="illnote"><svg viewBox="0 0 64 48"><use href="#ill-laddu" x="0" y="-8"/></svg> Illustration system &#8212; warm, cohesive, sidesteps mixed photo sourcing <span class="ref">&#167;8</span></div>
+    </div>
+    <div class="idcard">
+      <div class="idlabel">Type</div>
+      <div class="typ">
+        <div class="sp"><div class="big-serif">Aa</div><div class="rl">Serif &#183; names + Sanskrit</div></div>
+        <div class="sp"><div class="big-sans">Aa</div><div class="rl">Sans &#183; interface</div></div>
+      </div>
+      <div class="diac">Coconut Laddu &#183; <i>Narikela modaka</i> &#183; K&#7779;&#299;ra &#183; &#256;h&#257;ra</div>
+    </div>
+  </div>
+
+  <div class="flowlabel">
+    <h2>The hero flow</h2>
+    <span class="step">Home &#8594; Detail &#8594; Cook &#8594; Save</span>
+    <span class="ln2"></span>
+  </div>
+
+  <div class="screens">
+
+    <!-- 1 &#183; HOME -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:13px">
+            <div class="row">
+              <div class="mark" style="width:34px;height:34px;border-radius:10px"><svg viewBox="0 0 32 32"><use href="#mk-sprout"/></svg></div>
+              <div class="grow"><div class="greet" style="font-size:16px">Good evening<small>Vajeeva</small></div></div>
+              <div class="avatar"><svg class="icon"><use href="#i-user"/></svg></div>
+            </div>
+            <div class="search"><svg class="icon" style="width:17px;height:17px"><use href="#i-search"/></svg> Search a recipe or ingredient&#8230;</div>
+
+            <div class="contcard">
+              <div class="ct"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+              <div class="grow"><div class="cl">Continue &#183; Coconut Laddu</div><div class="cs">Step 3 of 6</div><div class="mprog"></div></div>
+              <div class="playbtn"><svg class="icon" style="width:15px;height:15px"><use href="#i-play"/></svg></div>
+            </div>
+
+            <div class="prompt">What would you like today?</div>
+            <div class="pillar"><div class="ptile s"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div><div class="pn">Solid</div><div class="ps">Breads &#183; sweets &#183; snacks</div><div class="pc">44 recipes</div></div><svg class="icon chev"><use href="#i-chev"/></svg></div>
+            <div class="pillar"><div class="ptile l"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div><div><div class="pn">Liquid</div><div class="ps">Drinks &#183; soups &#183; buttermilk</div><div class="pc">23 recipes</div></div><svg class="icon chev"><use href="#i-chev"/></svg></div>
+            <div class="pillar"><div class="ptile m"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div><div><div class="pn">Semi-solid</div><div class="ps">Porridge &#183; puddings &#183; chutneys</div><div class="pc">16 recipes</div></div><svg class="icon chev"><use href="#i-chev"/></svg></div>
+
+            <div class="trust"><svg class="icon lf"><use href="#i-leaf"/></svg> grounded in classical texts + ICMR-NIN 2024</div>
+          </div>
+          <div class="bnav">
+            <div class="nav on"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">1</span><span class="cap-t">Home</span></div>
+        <ul class="notes"><li><b>Three texture pillars</b> anchor the screen, each with its own warm illustration</li><li><b>Continue</b> card resumes mid-cook in one tap <span class="ref">&#167;6</span></li><li>Herbal green = brand + action; turmeric &amp; clay tints differentiate categories</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- 2 · DETAIL -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp scroll">
+          <div class="hero-ill">
+            <div class="hero-top">
+              <div class="icobtn"><svg class="icon"><use href="#i-back"/></svg></div>
+              <div class="rt"><div class="icobtn" style="color:var(--clay)"><svg class="icon"><use href="#i-heart-f"/></svg></div><div class="icobtn"><svg class="icon"><use href="#i-share"/></svg></div></div>
+            </div>
+            <svg viewBox="0 0 120 90"><use href="#ill-hero"/></svg>
+          </div>
+          <div class="pad col" style="gap:13px">
+            <div class="titleblock">
+              <div class="rn">Coconut Laddu</div>
+              <div class="sn" style="color:var(--amber);font-size:13px">Narikela modaka</div>
+            </div>
+
+            <div>
+              <div class="dslabel">Classical sources</div>
+              <div class="src-pills">
+                <span class="src-pill">K&#7779;emakut&#363;halam 10/54 <span class="ext">&#8599;</span></span>
+                <span class="src-pill">ICMR&#8209;NIN 2024 <span class="ext">&#8599;</span></span>
+              </div>
+            </div>
+
+            <div class="dbadges">
+              <span class="dbadge">&#x1FAD9; Makes 3&#8211;4 laddoos</span>
+              <span class="dbadge">&#x1F4C5; Keeps 5&#8211;7 days</span>
+            </div>
+
+            <div class="dcc">
+              <div class="dcc-h">&#9888; Use with caution</div>
+              <div class="dcc-b">Diabetes &#183; Overweight/Obesity &#183; Lactose intolerance &#183; Sedentary lifestyle</div>
+            </div>
+
+            <div>
+              <div class="row"><div class="h-serif grow" style="font-size:16px">Ingredients</div><span class="toggle"><span class="on">g</span><span>cup</span></span></div>
+              <div style="margin-top:6px">
+                <div class="ing"><span class="grow">Grated coconut</span><span class="muted" style="font-size:11px">40&#8211;50 g &#183; &#188; cup</span></div>
+                <div class="ing"><span class="grow">Milk</span><span class="muted" style="font-size:11px">30&#8211;40 ml &#183; 2&#189; tbsp</span></div>
+                <div class="ing"><span class="grow">Ghee</span><span class="muted" style="font-size:11px">10&#8211;15 ml &#183; 2&#8211;3 tsp</span></div>
+                <div class="ing"><span class="grow">Rock sugar powder</span><span class="muted" style="font-size:11px">15&#8211;20 g &#183; 3&#8211;4 tsp</span></div>
+                <div class="ing"><span class="grow">Cardamom powder</span><span class="muted" style="font-size:11px">2&#8211;3 g &#183; &#189; tsp</span></div>
+                <div class="ing" style="border:none"><span class="grow">Dry ginger powder</span><span class="muted" style="font-size:11px">2&#8211;3 g &#183; &#189; tsp</span></div>
+              </div>
+            </div>
+
+            <div class="cta"><svg class="icon"><use href="#i-play"/></svg> Start cooking</div>
+            <div class="disc">Supportive dietary guidance &#183; not a substitute for medical advice</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">2</span><span class="cap-t">Recipe Detail</span></div>
+        <ul class="notes"><li><b>Illustration hero</b> carries brand identity into the recipe &#8212; warm gradient + the laddu trio at a glance</li><li><b>Source pills</b> in serif italic amber replace the old source bar &#8212; tappable, linked to classical text <span class="ref">&#167;6.5</span></li><li><b>Contra card</b> and yield badges always visible on scroll &#8212; never buried behind a tab <span class="ref">&#167;6.6</span></li><li>g&#8644;cup toggle + all 6 ingredients &#8212; dual units, complete</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- 3 &#183; COOK MODE -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="cm">
+            <div class="cm-top"><div class="cm-x"><svg><use href="#i-close"/></svg></div><div class="cm-prog"></div><span class="cm-ct">Step 3 / 6</span></div>
+            <div class="cm-phase">Phase &#183; Roast in ghee</div>
+            <div class="cm-body">
+              <div class="cm-step">Roast the coconut in ghee on low heat until it turns light golden and aromatic.</div>
+              <div class="cm-ill"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+              <div class="cm-timer"><svg class="icon"><use href="#i-clock"/></svg> 10:00 &#183; start</div>
+              <div class="cm-peek"><svg class="icon" style="width:15px;color:var(--green)"><use href="#i-leaf"/></svg> This step &#8212; coconut &#183; ghee</div>
+            </div>
+            <div class="cm-awake">screen stays awake &#183; works offline</div>
+            <div class="cm-foot"><div class="cm-nav prev"><svg class="icon" style="width:15px"><use href="#i-back"/></svg> Back</div><div class="cm-nav next">Next <svg class="icon" style="width:15px"><use href="#i-chev"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">3</span><span class="cap-t">Cook Mode</span></div>
+        <ul class="notes"><li>One large step, sans for max legibility hands-busy <span class="ref">&#167;7.1</span></li><li><b>Phase</b> label + inline <b>timer</b> in green; screen-awake, offline <span class="ref">&#167;8</span></li><li>Warm, focused, calm &#8212; cooking shouldn&#8217;t feel clinical</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- 4 &#183; SAVED -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="toast"><svg><use href="#i-check"/></svg> Saved &#8212; available offline <span class="u">Undo</span></div>
+          <div class="pad col" style="gap:12px">
+            <div class="row"><div class="h-serif grow" style="font-size:20px">Saved</div><span class="offbadge"><svg><use href="#i-leaf"/></svg> Offline</span></div>
+            <div class="grid2">
+              <div class="rcard"><div class="rim s" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="rn">Coconut Laddu</div><div class="rs">Narikela modaka</div><div class="rm"><span class="flag"></span><span class="rmeta">Sweet &#183; 25 min</span></div></div>
+              <div class="rcard"><div class="rim" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div><div class="rn">Amla Panaka</div><div class="rs">&#256;malaka panaka</div><div class="rm"><span class="rmeta">Drink &#183; no-cook</span></div></div>
+              <div class="rcard"><div class="rim" style="background:var(--clay-soft)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div><div class="rn">Barley Porridge</div><div class="rs">Yava yavagu</div><div class="rm"><span class="rmeta">Semi &#183; 15 min</span></div></div>
+              <div class="rcard"><div class="rim" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div><div class="rn">Spiced Buttermilk</div><div class="rs">Takra</div><div class="rm"><span class="rmeta">Drink &#183; 10 min</span></div></div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="nav"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav on"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">4</span><span class="cap-t">Saved</span></div>
+        <ul class="notes"><li>Quiet green confirmation + <b>Undo</b>; no account needed</li><li><b>Offline</b> for kitchen use; cards keep the clay safety dot <span class="ref">&#167;7.6</span></li><li>Illustration tiles read cleanly at card size &#8212; the system scales</li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+
+  <footer>
+    <span>Vajeeva &#183; hi-fi hero flow &#183; Modern Ayurveda identity &#183; light &amp; dark</span>
+    <span>Illustration system per &#167;8 &#183; full component set next</span>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>

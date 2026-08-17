@@ -1,0 +1,264 @@
+<title>Vajeeva Flow Map</title>
+<style>
+  :root {
+    --bg: #FAF6EF;
+    --surface: #FFFFFF;
+    --ink: #2A2118;
+    --muted: #6E6257;
+    --accent: #C77B3F;
+    --accent-soft: #F6E9DB;
+    --border: #E6DDCE;
+    --lock: #4A7C4E;
+    --lock-soft: #E7F0E5;
+    --defer: #9A9186;
+    --defer-soft: #F1EEE8;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #1F1A14;
+      --surface: #2A241C;
+      --ink: #F0E9DE;
+      --muted: #AC9F8E;
+      --accent: #E0985C;
+      --accent-soft: #3A2E21;
+      --border: #3C342A;
+      --lock: #8BBA8E;
+      --lock-soft: #27331F;
+      --defer: #8A8175;
+      --defer-soft: #2E2921;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1F1A14;
+    --surface: #2A241C;
+    --ink: #F0E9DE;
+    --muted: #AC9F8E;
+    --accent: #E0985C;
+    --accent-soft: #3A2E21;
+    --border: #3C342A;
+    --lock: #8BBA8E;
+    --lock-soft: #27331F;
+    --defer: #8A8175;
+    --defer-soft: #2E2921;
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.5;
+    margin: 0;
+    padding: 2rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; }
+  header { margin-bottom: 2rem; }
+  h1 { font-size: 1.9rem; margin: 0 0 .25rem; letter-spacing: -.01em; }
+  .sub { color: var(--muted); margin: 0 0 1rem; }
+  .badges { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .badge {
+    font-size: .78rem; font-weight: 600; padding: .3rem .7rem;
+    border-radius: 999px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--muted);
+  }
+  .badge.lock { background: var(--lock-soft); color: var(--lock); border-color: var(--lock); }
+  .badge.accent { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  section { margin: 2.5rem 0; }
+  h2 {
+    font-size: 1.15rem; margin: 0 0 .25rem;
+    display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap;
+  }
+  .count {
+    font-size: .72rem; font-weight: 700; color: var(--accent);
+    background: var(--accent-soft); border-radius: 999px; padding: .15rem .55rem;
+  }
+  .note { color: var(--muted); font-size: .88rem; margin: 0 0 .9rem; }
+  .diagram {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 1rem; overflow-x: auto;
+  }
+  .diagram pre.mermaid { margin: 0; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: .7rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: .7rem .85rem; font-size: .85rem;
+  }
+  .card b { display: block; font-size: .72rem; color: var(--accent); margin-bottom: .2rem; letter-spacing: .04em; }
+  .card.defer { border-style: dashed; background: var(--defer-soft); color: var(--defer); }
+  .card.defer b { color: var(--defer); }
+  .legend { display: flex; flex-wrap: wrap; gap: 1.1rem; font-size: .8rem; color: var(--muted); margin-top: .6rem; }
+  .legend span::before { content: ""; display: inline-block; width: .7rem; height: .7rem; border-radius: 3px; margin-right: .35rem; vertical-align: -1px; }
+  .lg-hub::before  { background: #F3E4C2; border: 1px solid #C09A4A; }
+  .lg-node::before { background: #E7EFE0; border: 1px solid #7E9670; }
+  .lg-act::before  { background: #FDF9F2; border: 1px solid #C4B29A; }
+  .lg-end::before  { background: #F5E0D0; border: 1px solid #C77B3F; }
+  footer { margin-top: 3rem; color: var(--muted); font-size: .82rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+</style>
+
+<div class="wrap">
+<header>
+  <h1>Vajeeva — v1 Patient Flow Map</h1>
+  <p class="sub">Vajikarana Āhāra dietary app · visual map of the locked v1 patient scope · companion to User-Flows.md</p>
+  <div class="badges">
+    <span class="badge lock">✅ v1 cut locked · 2026-08-17</span>
+    <span class="badge accent">42 patient flows in v1</span>
+    <span class="badge">Deferred: P22 · P36–P38 · C1–C4</span>
+    <span class="badge">CMS (AD*/R*) via headless tool — not designed screens</span>
+  </div>
+  <div class="legend">
+    <span class="lg-hub">Hub screen</span>
+    <span class="lg-node">Screen / state</span>
+    <span class="lg-act">Action / interaction</span>
+    <span class="lg-end">Entry / terminal</span>
+  </div>
+</header>
+
+<section>
+  <h2>1 · Core journey — find → cook → save <span class="count">P6⭐ P7 P8 P9 P10 P26</span></h2>
+  <p class="note">The hero path. Everything else feeds this spine.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    H(["Home"]):::hub -->|"P6 ⭐ texture pillar"| TL["Texture list<br/>Solid · Liquid · Semi-solid"]:::node
+    H -->|"P8 search"| SE["Search"]:::node
+    H -->|"P10 sub-type chip<br/>(e.g. Sweets)"| D
+    H -->|"P7 Continue<br/>(resume mid-step)"| CM
+    TL -->|"P9 Filter → narrowed"| TL
+    TL --> D["Recipe Detail"]:::node
+    SE --> D
+    D -->|"Start cooking"| CM["Cook Mode"]:::node
+    CM -->|"P26 last step → finish"| SP["Save prompt"]:::act
+    SP --> SV(["Saved"]):::term
+    classDef hub fill:#F3E4C2,stroke:#C09A4A,color:#2A2118
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+    classDef term fill:#F5E0D0,stroke:#C77B3F,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>2 · Entry &amp; onboarding <span class="count">P1–P5</span></h2>
+  <p class="note">Anonymous-first. Account optional (email/phone OTP, no social).</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    L(["First launch"]):::term --> ON["Onboarding<br/>welcome · privacy"]:::node
+    ON -->|"P1 Skip → anonymous"| H(["Home"]):::hub
+    ON -->|"P2 health flags + prefs"| H
+    ON -->|"P3 Sign up (OTP)"| H
+    ND(["New device"]):::term -->|"P4 Log in → sync saved + flags"| H
+    RE(["Reopen"]):::term -->|"P5 returning state:<br/>Continue + Saved peek"| H
+    classDef hub fill:#F3E4C2,stroke:#C09A4A,color:#2A2118
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef term fill:#F5E0D0,stroke:#C77B3F,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>3 · Discovery <span class="count">P11–P15</span></h2>
+  <p class="note">Browse facets, typed search (English · Sanskrit · ingredient), safety chip.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    H(["Home"]):::hub --> BR["Browse"]:::node
+    H --> SE["Search"]:::node
+    H -->|"P15 'Safe for you' chip"| SF["Filtered safe results"]:::node
+    BR -->|"P11 facet: ingredient · type · meal"| RES["Results"]:::node
+    SE -->|"P12 EN · Sanskrit · ingredient"| RES
+    SE -->|"P13 no results"| EMP["Empty state → refine"]:::act
+    RES -->|"P14 filters: diabetic-safe · dairy-free<br/>no-cook · make-ahead · time"| RES
+    RES --> D["Recipe Detail"]:::node
+    SF --> D
+    SE -.->|"P12 term match"| G["Glossary term"]:::act
+    classDef hub fill:#F3E4C2,stroke:#C09A4A,color:#2A2118
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>4 · Recipe Detail &amp; Cook Mode interactions <span class="count">P16–P21 · P23–P26</span></h2>
+  <p class="note">Satellite actions on Detail; step navigation, timer, and resume in Cook Mode. P22 Share deferred.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart TD
+    D["Recipe Detail"]:::node
+    D --> P16["P16 expand Sources"]:::act
+    D --> P17["P17 units toggle g ⇄ cup"]:::act
+    D --> P18["P18 pronunciation tap"]:::act
+    D --> P20["P20 Save ♡ → toast"]:::act
+    D --> P21["P21 ingredient checklist<br/>(shopping)"]:::act
+    D -->|"P19 alternative method<br/>bake · air-fry · pressure"| CM
+    D -->|"Start cooking"| CM["Cook Mode"]:::node
+    CM --> P23["P23 Next / Back / swipe steps"]:::act
+    CM --> P24["P24 start timer → runs →<br/>completes (P46 notification)"]:::act
+    CM --> P25["P25 exit mid-cook →<br/>resume via Continue (P7)"]:::act
+    CM -->|"P26 finish"| SV(["Saved"]):::term
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+    classDef term fill:#F5E0D0,stroke:#C77B3F,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>5 · Saved <span class="count">P27–P29</span></h2>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    SV(["Saved"]):::term -->|"P27 open (works offline)"| CM["Cook Mode"]:::node
+    SV -->|"P28 remove"| RM["Removed"]:::act
+    SV -->|"P29 empty"| BP["Prompt to browse"]:::act
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+    classDef term fill:#F5E0D0,stroke:#C77B3F,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>6 · Account <span class="count">P30–P35</span></h2>
+  <p class="note">Anon → account merge is set-union of saved recipes; flags travel with account.</p>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    AN(["Anonymous"]):::term -->|"P30 sign up →<br/>merge anon saved"| AC["Account"]:::node
+    LG(["Log in"]):::term -->|"P35 forgot / OTP recover"| AC
+    AC -->|"P31 edit health flags"| SFU["Safety filtering updates"]:::act
+    AC -->|"P32 units · language · text size"| ST["Settings"]:::act
+    AC -->|"P33 sign out"| SO["Signed out"]:::act
+    AC -->|"P34 delete account →<br/>confirm → data wiped"| DEL(["Wiped"]):::term
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+    classDef term fill:#F5E0D0,stroke:#C77B3F,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>7 · Reference &amp; support <span class="count">P39–P41</span></h2>
+  <div class="diagram"><pre class="mermaid">
+flowchart LR
+    M["More"]:::node -->|"P39"| G["Glossary → term →<br/>meaning · pronunciation"]:::node
+    G --> GR["Recipes using term"]:::act
+    M -->|"P40"| AB["About / Evidence →<br/>sources → Disclaimer"]:::act
+    M -->|"P41"| PR["Settings → privacy →<br/>clear data"]:::act
+    classDef node fill:#E7EFE0,stroke:#7E9670,color:#2A2118
+    classDef act fill:#FDF9F2,stroke:#C4B29A,color:#2A2118
+  </pre></div>
+</section>
+
+<section>
+  <h2>8 · Safety, edge &amp; offline <span class="count">P42–P46</span></h2>
+  <p class="note">Cross-cutting states — these overlay every screen above rather than forming a path.</p>
+  <div class="cards">
+    <div class="card"><b>P42 · SAFETY</b>Flag = diabetes → unsafe recipes flagged/filtered everywhere; Detail shows strong warning.</div>
+    <div class="card"><b>P43 · OFFLINE</b>Saved + Cook Mode fully work offline; Browse shows offline state.</div>
+    <div class="card"><b>P44 · IMAGE MISSING</b>Branded illustration placeholder — never a broken image.</div>
+    <div class="card"><b>P45 · PREP-AHEAD</b>"Start tonight" nudge → Detail overnight step.</div>
+    <div class="card"><b>P46 · NOTIFICATION</b>Timer complete — discreet wording, no health terms → deep-link back into recipe.</div>
+  </div>
+</section>
+
+<section>
+  <h2>9 · Deferred — not in v1 <span class="count">locked out</span></h2>
+  <div class="cards">
+    <div class="card defer"><b>P22 · LATER</b>Detail → Share (link/PDF)</div>
+    <div class="card defer"><b>P36–P38 · FAST-FOLLOW</b>Stats / time-tracking + empty state + tracking opt-out</div>
+    <div class="card defer"><b>C1–C4 · LATER</b>All clinician flows: search by benefit, evidence check, share-to-patient, recommend</div>
+  </div>
+</section>
+
+<footer>
+  Vajeeva · v1 cut locked 2026-08-17 · 42 patient flows (P1–P21, P23–P35, P39–P46) · CMS flows (AD1–AD8, R1–R2) delivered by headless CMS UI, not designed screens · Next: wireframe undesigned screens.
+</footer>
+</div>

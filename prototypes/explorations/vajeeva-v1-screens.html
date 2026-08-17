@@ -1,0 +1,906 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva v1 Screens</title>
+<style>
+  :root{
+    --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1; --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+    --line:#E5DDCC; --line-2:#D8CEBA;
+    --green:#3E6B4F; --green-press:#335B42; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+    --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+    --clay:#B4472E; --clay-soft:#F3E1D8;
+    --shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);
+    --shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI Variable","Segoe UI",system-ui,sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  /* Light-locked: warm Modern Ayurveda is a light-first identity. Dark palette kept below but disabled. */
+  :root[data-theme="light"]{--bone:#F2EDE1;--sand:#E9E1D0;--cream:#FBF8F1;--ink:#2A251E;--ink-2:#6E6656;--muted:#9C9482;--line:#E5DDCC;--line-2:#D8CEBA;--green:#3E6B4F;--green-press:#335B42;--green-soft:#E4EDE3;--on-green:#FBF8F1;--amber:#C6902F;--amber-2:#A9701F;--amber-soft:#F4E8CE;--clay:#B4472E;--clay-soft:#F3E1D8;--shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);--shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);}
+  /* dark toggle maps to the same light palette, so the page stays light-locked */
+  :root[data-theme="dark"]{--bone:#F2EDE1;--sand:#E9E1D0;--cream:#FBF8F1;--ink:#2A251E;--ink-2:#6E6656;--muted:#9C9482;--line:#E5DDCC;--line-2:#D8CEBA;--green:#3E6B4F;--green-press:#335B42;--green-soft:#E4EDE3;--on-green:#FBF8F1;--amber:#C6902F;--amber-2:#A9701F;--amber-soft:#F4E8CE;--clay:#B4472E;--clay-soft:#F3E1D8;--shadow:0 6px 22px rgba(42,37,30,.07),0 1px 3px rgba(42,37,30,.05);--shadow-lift:0 12px 30px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);}
+
+  *{box-sizing:border-box} body{margin:0;background:var(--bone)}
+  .page{background:var(--bone);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.5;padding:clamp(20px,5vw,52px) clamp(16px,5vw,40px) 76px}
+  .wrap{max-width:1160px;margin:0 auto}
+  .icon{width:20px;height:20px;display:inline-block;vertical-align:middle}
+  .ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .fl{fill:currentColor}
+  .il-cream{fill:var(--cream)}.il-sand{fill:var(--sand)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+  .il-green{fill:var(--green)}.il-clay{fill:var(--clay)}.il-ink{fill:var(--ink)}
+  .il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+  .il-steam{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round;opacity:.45}
+  .mk{fill:none;stroke:var(--green);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+  .mk-l{fill:var(--green)}
+
+  .brandbar{display:flex;flex-wrap:wrap;align-items:center;gap:14px 22px;justify-content:space-between}
+  .lockup{display:flex;align-items:center;gap:12px}
+  .mark{width:46px;height:46px;border-radius:14px;background:var(--green-soft);display:grid;place-items:center;flex:none;box-shadow:var(--shadow)}
+  .mark svg{width:28px;height:28px}
+  .brandname{font-family:var(--serif);font-size:30px;font-weight:700;letter-spacing:.01em}
+  .brandsub{font-size:12px;color:var(--ink-2);margin-top:-2px}
+  .tag{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--green);font-weight:700;border:1px solid var(--line-2);border-radius:999px;padding:7px 13px;background:var(--cream)}
+  .coverage{margin:18px 0 4px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:13px 16px;font-size:12.5px;color:var(--ink-2);box-shadow:var(--shadow)}
+  .coverage b{color:var(--ink)}
+
+  .flowlabel{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:38px 0 20px}
+  .flowlabel h2{font-family:var(--serif);font-size:20px;margin:0;font-weight:700}
+  .flowlabel .step{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+  .flowlabel .ln2{flex:1;height:1px;background:var(--line-2);min-width:20px}
+
+  .screens{display:flex;flex-wrap:wrap;gap:34px 30px;justify-content:center;align-items:flex-start}
+  .screen{width:290px;display:flex;flex-direction:column;gap:15px}
+  .phone{position:relative;width:290px;background:#0f0d0a;border:1px solid rgba(0,0,0,.4);border-radius:40px;padding:9px;box-shadow:var(--shadow-lift)}
+  .notch{position:absolute;top:9px;left:50%;transform:translateX(-50%);width:98px;height:26px;background:#0f0d0a;border-radius:0 0 16px 16px;z-index:5}
+  .vp{position:relative;background:var(--bone);border-radius:32px;overflow:hidden;height:600px;display:flex;flex-direction:column;font-size:12px;line-height:1.4}
+  .vp.scroll{overflow-y:auto}.vp::-webkit-scrollbar{width:0}
+  .sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 20px 4px;color:var(--ink);font-size:11px;font-weight:700;font-family:var(--sans)}
+  .sbar .rt{display:flex;gap:5px;align-items:center}
+  .pad{padding:10px 15px}.col{display:flex;flex-direction:column}
+  .h-serif{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+  .muted{color:var(--ink-2)} .mut2{color:var(--muted)}
+  .row{display:flex;align-items:center;gap:10px}.grow{flex:1;min-width:0}
+  .icobtn{width:38px;height:38px;border-radius:50%;background:var(--cream);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow);flex:none}
+  .avatar{width:38px;height:38px;border-radius:50%;background:var(--green-soft);border:1px solid var(--line);flex:none;display:grid;place-items:center;color:var(--green)}
+  .search{display:flex;align-items:center;gap:9px;background:var(--cream);border:1px solid var(--line);border-radius:999px;padding:12px 15px;color:var(--muted);box-shadow:var(--shadow)}
+  .greet{font-family:var(--serif);font-size:19px;font-weight:700}
+  .greet small{display:block;font-family:var(--sans);font-size:11px;font-weight:600;color:var(--ink-2);letter-spacing:.02em}
+  .pillar{display:flex;align-items:center;gap:13px;background:var(--cream);border:1px solid var(--line);border-radius:19px;padding:12px;box-shadow:var(--shadow)}
+  .ptile{width:60px;height:60px;border-radius:15px;flex:none;display:grid;place-items:center;overflow:hidden}
+  .ptile svg{width:52px;height:52px}
+  .ptile.s{background:var(--amber-soft)} .ptile.l{background:var(--green-soft)} .ptile.m{background:var(--clay-soft)}
+  .pillar .pn{font-family:var(--serif);font-size:17px;font-weight:700}
+  .pillar .ps{font-size:10.5px;color:var(--ink-2);margin-top:1px}
+  .contcard{display:flex;align-items:center;gap:11px;background:var(--green);color:var(--on-green);border-radius:17px;padding:11px 13px;box-shadow:var(--shadow)}
+  .contcard .ct{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.16);display:grid;place-items:center;flex:none}
+  .contcard .ct svg{width:34px;height:34px}
+  .contcard .cl{font-weight:800;font-size:13px}
+  .contcard .cs{font-size:10.5px;opacity:.85}
+  .playbtn{width:30px;height:30px;border-radius:50%;background:var(--on-green);color:var(--green);display:grid;place-items:center;flex:none}
+  .bnav{margin-top:auto;display:flex;justify-content:space-around;align-items:center;background:var(--cream);border-top:1px solid var(--line);padding:10px 6px 12px}
+  .nav{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px;font-weight:600}
+  .nav svg{width:21px;height:21px}
+  .nav.on{color:var(--green)}
+  .cta{background:var(--green);color:var(--on-green);border-radius:14px;padding:15px;text-align:center;font-weight:800;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:var(--shadow)}
+  .cta svg{width:17px;height:17px}
+  .cta.sand{background:var(--sand);color:var(--ink);box-shadow:none}
+  .ghost{text-align:center;font-weight:800;font-size:13px;color:var(--ink-2);padding:11px}
+  .disc{text-align:center;font-size:9.5px;color:var(--muted);padding:2px 6px}
+  .pill{display:inline-flex;align-items:center;gap:5px;background:var(--sand);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:600;color:var(--ink)}
+  .pill svg{width:13px;height:13px;color:var(--ink-2)}
+  .pills{display:flex;flex-wrap:wrap;gap:7px}
+  .toggle{display:inline-flex;background:var(--sand);border-radius:999px;padding:3px;font-size:10px;font-weight:700}
+  .toggle span{padding:4px 10px;border-radius:999px;color:var(--ink-2)}
+  .toggle .on{background:var(--cream);color:var(--green);box-shadow:var(--shadow)}
+
+  /* onboarding */
+  .obt{font-family:var(--serif);font-size:23px;font-weight:700;line-height:1.2;letter-spacing:-.01em}
+  .obs{font-size:11.5px;color:var(--ink-2)}
+  .vrow{display:flex;align-items:flex-start;gap:11px;font-size:12px}
+  .vrow .vi{width:32px;height:32px;border-radius:10px;background:var(--green-soft);color:var(--green);display:grid;place-items:center;flex:none}
+  .vrow .vi svg{width:17px;height:17px}
+  .vrow b{display:block;font-size:12px}
+  .vrow small{font-size:10.5px;color:var(--ink-2)}
+  .privnote{display:flex;align-items:center;gap:9px;background:var(--sand);border-radius:12px;padding:11px 13px;font-size:10.5px;color:var(--ink-2)}
+  .privnote svg{width:16px;height:16px;color:var(--green);flex:none}
+  .dots{display:flex;gap:5px}
+  .dots span{width:6px;height:6px;border-radius:50%;background:var(--line-2)}
+  .dots .on{background:var(--green);width:16px;border-radius:3px}
+  .fchips{display:flex;flex-wrap:wrap;gap:8px}
+  .fchip{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--line-2);background:var(--cream);border-radius:999px;padding:9px 14px;font-size:11.5px;font-weight:700;color:var(--ink-2)}
+  .fchip svg{width:13px;height:13px}
+  .fchip.on{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+  .fchip.sm{padding:7px 12px;font-size:10.5px}
+  .seg{display:flex;background:var(--sand);border-radius:12px;padding:3px;font-size:11.5px;font-weight:800}
+  .seg span{flex:1;text-align:center;padding:8px;border-radius:9px;color:var(--ink-2)}
+  .seg .on{background:var(--cream);color:var(--green);box-shadow:var(--shadow)}
+  .field{background:var(--cream);border:1px solid var(--line);border-radius:13px;padding:13px 15px;font-weight:700;font-size:13px;display:flex;align-items:center;gap:9px;box-shadow:var(--shadow)}
+  .field .ph{color:var(--muted);font-weight:600}
+  .otp{display:flex;gap:7px;justify-content:space-between}
+  .otp span{flex:1;height:46px;border-radius:12px;background:var(--cream);border:1.5px solid var(--line-2);display:grid;place-items:center;font-family:var(--mono);font-size:17px;font-weight:800}
+  .otp .fill{border-color:var(--green)}
+  .otp .cur{border-color:var(--green);background:var(--green-soft)}
+
+  figcaption{padding:0 2px}
+  .cap-h{display:flex;align-items:baseline;gap:9px;margin-bottom:8px}
+  .cap-n{font-family:var(--mono);font-size:11px;font-weight:800;color:var(--on-green);background:var(--green);border-radius:7px;padding:2px 8px}
+  .cap-t{font-family:var(--serif);font-size:16px;font-weight:700}
+  .notes{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .notes li{position:relative;padding-left:16px;font-size:12px;color:var(--ink-2);line-height:1.45}
+  .notes li::before{content:"";position:absolute;left:0;top:7px;width:6px;height:6px;border-radius:2px;background:var(--green)}
+  .notes b{color:var(--ink)}
+  .ref{font-family:var(--mono);font-size:10px;color:var(--amber-2)}
+
+  /* lists & rows */
+  .lcard{display:flex;align-items:center;gap:11px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:9px;box-shadow:var(--shadow)}
+  .lcard .lt{width:54px;height:54px;border-radius:13px;flex:none;display:grid;place-items:center}
+  .lcard .lt svg{width:46px;height:46px}
+  .lcard .ln1{font-family:var(--serif);font-size:14px;font-weight:700;line-height:1.15}
+  .lcard .ln2b{font-size:10px;color:var(--ink-2);font-style:italic;font-family:var(--serif)}
+  .lcard .lm{display:flex;align-items:center;gap:6px;margin-top:3px;font-size:9.5px;color:var(--muted)}
+  .flag{width:8px;height:8px;border-radius:50%;background:var(--clay);flex:none}
+  .lrow{display:flex;align-items:center;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:12.5px;font-weight:700;box-shadow:var(--shadow)}
+  .lrow .li{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;flex:none;background:var(--green-soft);color:var(--green)}
+  .lrow .li svg{width:16px;height:16px}
+  .lrow .li.a{background:var(--amber-soft);color:var(--amber-2)}
+  .lrow .li.c{background:var(--clay-soft);color:var(--clay)}
+  .lrow small{display:block;font-size:10px;color:var(--muted);font-weight:600}
+  .lrow .rv{margin-left:auto;color:var(--muted);font-size:11px;font-weight:600;display:flex;align-items:center;gap:6px}
+  .soon{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;background:var(--sand);color:var(--ink-2);border-radius:6px;padding:2px 6px}
+  .mlabel{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:4px 0 -3px}
+  .switch{width:40px;height:24px;border-radius:999px;background:var(--line-2);position:relative;flex:none}
+  .switch::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--cream);box-shadow:var(--shadow)}
+  .switch.on{background:var(--green)}
+  .switch.on::after{left:auto;right:3px}
+
+  /* sheet / overlays */
+  .dimtop{flex:1;background:linear-gradient(rgba(42,37,30,.14),rgba(42,37,30,.32))}
+  .sheet{background:var(--cream);border-radius:24px 24px 0 0;padding:10px 16px 16px;box-shadow:var(--shadow-lift);display:flex;flex-direction:column;gap:13px}
+  .handle{width:36px;height:4px;border-radius:2px;background:var(--line-2);margin:0 auto}
+
+  /* empty states */
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;text-align:center;padding:0 26px}
+  .empty .et{width:96px;height:96px;border-radius:26px;background:var(--sand);display:grid;place-items:center}
+  .empty .et svg{width:70px;height:70px}
+  .empty .eh{font-family:var(--serif);font-size:18px;font-weight:700}
+  .empty .es{font-size:11px;color:var(--ink-2)}
+
+  /* cook mode */
+  .cm{height:100%;display:flex;flex-direction:column;background:var(--cream)}
+  .cm-top{display:flex;align-items:center;gap:12px;padding:14px 16px}
+  .cm-x{width:34px;height:34px;border-radius:50%;background:var(--sand);display:grid;place-items:center;color:var(--ink);flex:none}
+  .cm-x svg{width:15px;height:15px}
+  .cm-prog{flex:1;height:7px;border-radius:4px;background:var(--sand);overflow:hidden;position:relative}
+  .cm-prog::after{content:"";position:absolute;inset:0 33% 0 0;background:var(--green)}
+  .cm-ct{font-weight:800;font-size:11px;white-space:nowrap}
+  .cm-phase{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber-2);font-weight:700;padding:14px 20px 0}
+  .cm-body{padding:8px 20px 0;display:flex;flex-direction:column;gap:16px;flex:1}
+  .cm-step{font-size:22px;font-weight:700;line-height:1.3;letter-spacing:-.01em}
+  .cm-peek{display:flex;align-items:center;gap:8px;background:var(--bone);border-radius:11px;padding:10px 12px;color:var(--ink-2);font-size:11px}
+  .cm-awake{text-align:center;font-size:9.5px;color:var(--muted);font-family:var(--mono);padding-bottom:8px}
+  .cm-foot{display:flex;gap:11px;padding:14px}
+  .cm-nav{flex:1;text-align:center;font-weight:800;font-size:13px;border-radius:14px;padding:15px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .cm-nav.prev{background:var(--sand);color:var(--ink)}
+  .cm-nav.next{background:var(--green);color:var(--on-green)}
+  .timer-live{background:var(--green);color:var(--on-green);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+  .timer-live .tt{font-family:var(--mono);font-size:30px;font-weight:800;letter-spacing:.02em;text-align:center}
+  .timer-live .tb{height:5px;border-radius:3px;background:rgba(255,255,255,.25);position:relative;overflow:hidden}
+  .timer-live .tb::after{content:"";position:absolute;inset:0 22% 0 0;background:var(--on-green)}
+  .timer-live .tr{display:flex;justify-content:center;gap:16px;font-size:10.5px;font-weight:800;opacity:.9}
+
+  /* misc states */
+  .offbar{display:flex;align-items:center;gap:9px;margin:8px 15px 0;background:var(--sand);border:1px solid var(--line-2);border-radius:12px;padding:10px 13px;font-size:11px;font-weight:700;color:var(--ink-2)}
+  .offbar svg{width:15px;height:15px;flex:none}
+  .warnbig{background:var(--clay);color:#fff;border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px;box-shadow:var(--shadow)}
+  .warnbig .wh{display:flex;align-items:center;gap:9px;font-weight:800;font-size:13px}
+  .warnbig .wh svg{width:17px;height:17px;flex:none}
+  .warnbig .wd{font-size:11px;opacity:.92;line-height:1.45}
+  .warnbig .wl{align-self:flex-start;background:#fff;color:var(--clay);border-radius:999px;padding:7px 13px;font-size:11px;font-weight:800}
+  .savedpromo{display:flex;align-items:center;gap:11px;background:var(--green-soft);border:1px solid var(--green);border-radius:16px;padding:12px 14px}
+  .savedpromo .sp1{font-weight:800;font-size:12.5px;color:var(--green)}
+  .savedpromo .sp2{font-size:10.5px;color:var(--ink-2)}
+  .toast{display:flex;align-items:center;gap:9px;margin:8px 15px 0;background:var(--green);color:var(--on-green);border-radius:13px;padding:11px 13px;font-size:11.5px;font-weight:700;box-shadow:var(--shadow)}
+  .toast svg{width:16px;height:16px}
+  .offbadge{display:inline-flex;align-items:center;gap:6px;background:var(--sand);border-radius:999px;padding:5px 11px;font-size:10px;font-weight:700;color:var(--ink-2)}
+  .offbadge svg{width:13px;height:13px}
+  .dim{opacity:.45}
+  .glterm{font-family:var(--serif);font-size:27px;font-weight:700}
+  .saypill{display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--green);color:var(--green);border-radius:999px;padding:6px 12px;font-size:11px;font-weight:800}
+  .saypill svg{width:13px;height:13px}
+  .srcrow{display:flex;gap:11px;align-items:flex-start;background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow)}
+  .srcrow .si{width:32px;height:32px;border-radius:10px;background:var(--amber-soft);color:var(--amber-2);display:grid;place-items:center;flex:none}
+  .srcrow .si svg{width:16px;height:16px}
+  .srcrow .sn{font-family:var(--serif);font-size:13px;font-weight:700}
+  .srcrow .sd{font-size:10px;color:var(--ink-2);margin-top:1px}
+  .searchbar{display:flex;align-items:center;gap:8px;background:var(--cream);border:1px solid var(--line-2);border-radius:12px;padding:10px 12px;font-size:12px;color:var(--muted)}
+  .pillar .pt{font-family:var(--serif);font-size:13px;font-weight:700;text-align:center}
+  .pillar .pc{font-size:9.5px;color:var(--muted);text-align:center;margin-top:1px}
+  .srcrow b{font-size:12px}
+  .srcrow small{display:block;font-size:10.5px;color:var(--ink-2)}
+  .discbox{background:var(--sand);border-radius:12px;padding:12px 14px;font-size:10.5px;color:var(--ink-2);line-height:1.5}
+  .notif{display:flex;align-items:center;gap:10px;background:#26221c;color:#F2EDE1;border-radius:16px;padding:11px 14px;box-shadow:var(--shadow-lift);font-size:11.5px}
+  .notif .ni{width:30px;height:30px;border-radius:9px;background:var(--green);display:grid;place-items:center;flex:none}
+  .notif .ni svg{width:16px;height:16px;color:var(--on-green)}
+  .notif b{display:block;font-size:11.5px}
+  .notif small{font-size:10px;opacity:.7}
+  .comp3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:6px}
+  .compcard{background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:15px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:11px}
+  .compcard .ch{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700}
+
+  footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--line-2);font-size:12px;color:var(--ink-2);display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between}
+  a{color:var(--green)}
+  :focus-visible{outline:2px solid var(--green);outline-offset:3px;border-radius:6px}
+  @media (prefers-reduced-motion:no-preference){
+    .screen{animation:rise .55s cubic-bezier(.2,.7,.2,1) both}
+    .screens .screen:nth-child(2){animation-delay:.07s}.screens .screen:nth-child(3){animation-delay:.14s}.screens .screen:nth-child(4){animation-delay:.21s}
+    @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="mk-sprout" viewBox="0 0 32 32">
+    <path class="mk" d="M16 28V13"/>
+    <path class="mk-l" d="M16 15c-1-5-5-6.5-8.5-6.5C7 13 10 16 16 16Z"/>
+    <path class="mk-l" d="M16 13c1-4.5 4.5-6 7.5-6C23 11.5 20.5 14 16 14Z"/>
+  </symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path class="ln" d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-heart-f" viewBox="0 0 24 24"><path class="fl" d="M12 20.4S4.6 15.6 4.6 9.8A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.4 2.8c0 5.8-7.4 10.6-7.4 10.6z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle class="ln" cx="11" cy="11" r="6.5"/><path class="ln" d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path class="ln" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path class="ln" d="M7 4h11v16l-5.5-4L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle class="fl" cx="5.5" cy="12" r="1.7"/><circle class="fl" cx="12" cy="12" r="1.7"/><circle class="fl" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path class="fl" d="M8 6.5l10 5.5-10 5.5z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="ln" d="M12 8v4.3l2.8 1.7"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path class="ln" d="M20 14.5A8 8 0 1 1 10 4a6.2 6.2 0 0 0 10 10.5z"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path class="ln" d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="8.5" r="3.3"/><path class="ln" d="M5.5 19a6.5 6.5 0 0 1 13 0"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path class="ln" d="M12 3c1 3 4 4.5 4 8a4 4 0 0 1-8 0c0-1.4.6-2.4 1.3-3.2C10 9 12 8 12 3z"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8.5"/><path class="ln" d="M12 11v5M12 8v.2"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path class="ln" d="M4 6h16M7 12h10M10 18h4"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path class="ln" d="M12 3l7 3v5c0 5-3.2 8.2-7 10-3.8-1.8-7-5-7-10V6z"/></symbol>
+  <symbol id="i-off" viewBox="0 0 24 24"><path class="ln" d="M5 10.5a11 11 0 0 1 6-2.4M15.5 9a11 11 0 0 1 3.5 1.5M8.5 14a6.5 6.5 0 0 1 4-1.5M14 13.4a6.5 6.5 0 0 1 1.7 1"/><circle class="fl" cx="12" cy="18" r="1.6"/><path class="ln" d="M4 4l16 16"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path class="ln" d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13M10 11v5M14 11v5"/></symbol>
+  <symbol id="i-out" viewBox="0 0 24 24"><path class="ln" d="M14 4H7a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7M11 12h9M17 8.5L20.5 12 17 15.5"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="3.2"/><path class="ln" d="M12 3.5v2.6M12 17.9v2.6M20.5 12h-2.6M6.1 12H3.5M18 6l-1.8 1.8M7.8 16.2 6 18M18 18l-1.8-1.8M7.8 7.8 6 6"/></symbol>
+  <symbol id="i-sound" viewBox="0 0 24 24"><path class="ln" d="M5 10v4h3l4 3.5v-11L8 10zM15.5 9.5a4 4 0 0 1 0 5M18 7a8 8 0 0 1 0 10"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/>
+    <circle class="il-a" cx="32" cy="33" r="15"/>
+    <circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/>
+    <circle class="il-a2" cx="33" cy="37" r="1.6"/><circle class="il-a2" cx="26" cy="38" r="1.2"/>
+    <circle class="il-a2" cx="38" cy="34" r="1.4"/><circle class="il-a2" cx="31" cy="33" r="1.2"/>
+    <ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/>
+  </symbol>
+  <symbol id="ill-cup" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="31" cy="51" rx="17" ry="4"/>
+    <path class="il-cream" d="M19 25h24l-2.6 20a4 4 0 0 1-4 3.5H25.6a4 4 0 0 1-4-3.5z"/>
+    <path class="il-green" d="M20.4 25h21.2l-.7 5.4H21.1z"/>
+    <path class="il-stroke" d="M43.5 28a7 7 0 0 1 0 12"/>
+    <path class="il-steam" d="M28 20c-2-2 2-4 0-6M36 20c-2-2 2-4 0-6"/>
+  </symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="50" rx="18" ry="4"/>
+    <path class="il-cream" d="M15 33a17 13 0 0 0 34 0z"/>
+    <ellipse class="il-a" cx="32" cy="33" rx="15" ry="4.6"/>
+    <circle class="il-clay" cx="28" cy="32" r="1.7"/><circle class="il-clay" cx="36" cy="33" r="1.5"/><circle class="il-green" cx="32" cy="31.5" r="1.6"/>
+    <path class="il-stroke" d="M40 22l-6 9" stroke-width="2.6"/>
+    <ellipse class="il-green" cx="41" cy="21" rx="3" ry="2" transform="rotate(35 41 21)"/>
+  </symbol>
+  <symbol id="ill-sprout" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="50" rx="17" ry="4"/>
+    <path class="il-stroke" d="M32 48V30"/>
+    <path class="il-green" d="M32 33c-2-8-8-10-13.5-10 .8 7.2 5.5 11.5 13.5 11.5z"/>
+    <path class="il-green" d="M32 30c1.6-7 7-9.5 12-9.5-.8 6.8-5 10.5-12 10.5z" opacity=".75"/>
+  </symbol>
+  <symbol id="ill-hero" viewBox="0 0 120 90">
+    <ellipse class="il-cream" cx="60" cy="62" rx="46" ry="12"/>
+    <ellipse class="il-sand" cx="60" cy="64" rx="46" ry="9"/>
+    <g>
+      <circle class="il-a" cx="44" cy="52" r="13"/><circle class="il-a2" cx="40" cy="50" r="1.4"/><circle class="il-a2" cx="47" cy="54" r="1.4"/><circle class="il-a2" cx="45" cy="49" r="1.2"/>
+      <circle class="il-a" cx="76" cy="52" r="13"/><circle class="il-a2" cx="72" cy="54" r="1.4"/><circle class="il-a2" cx="79" cy="50" r="1.4"/><circle class="il-a2" cx="77" cy="55" r="1.2"/>
+      <circle class="il-a" cx="60" cy="46" r="15"/><circle class="il-a2" cx="55" cy="44" r="1.5"/><circle class="il-a2" cx="64" cy="42" r="1.4"/><circle class="il-a2" cx="61" cy="49" r="1.6"/><circle class="il-a2" cx="66" cy="48" r="1.3"/>
+      <ellipse class="il-green" cx="60" cy="30" rx="4" ry="2.6"/>
+    </g>
+    <path class="il-stroke" d="M92 40c-6 1-9 5-9 11" stroke-width="2.2"/>
+    <ellipse class="il-green" cx="93" cy="39" rx="4" ry="2.4" transform="rotate(-30 93 39)"/>
+  </symbol>
+</svg>
+
+<div class="page">
+<div class="wrap">
+
+  <div class="brandbar">
+    <div class="lockup">
+      <div class="mark"><svg viewBox="0 0 32 32"><use href="#mk-sprout"/></svg></div>
+      <div><div class="brandname">Vajeeva</div><div class="brandsub">v1 screen set &#183; every remaining locked flow</div></div>
+    </div>
+    <span class="tag">Hi-fi &#183; 17 screens</span>
+  </div>
+
+  <div class="coverage"><b>Coverage:</b> the 4 hero screens (Home &#183; Detail &#183; Cook &#183; Saved) live in <b>vajeeva-hero-flow.html</b>. This sheet adds the remaining 17 screens &#8212; together they visualize all <b>42 locked v1 patient flows</b>. Deferred (P22, P36&#8211;38, C1&#8211;4) not designed.</div>
+
+  <!-- ══════════ A · ENTRY & ONBOARDING ══════════ -->
+  <div class="flowlabel"><h2>A &#183; Entry &amp; onboarding</h2><span class="step">P1 &#8211; P5 &#183; P30 &#183; P35</span><span class="ln2"></span></div>
+  <div class="screens">
+
+    <!-- A1 WELCOME -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:15px;flex:1;padding-top:26px">
+            <div class="mark" style="width:62px;height:62px;border-radius:18px;align-self:center"><svg viewBox="0 0 32 32" style="width:38px;height:38px"><use href="#mk-sprout"/></svg></div>
+            <div style="text-align:center">
+              <div class="h-serif" style="font-size:26px">Vajeeva</div>
+              <div class="obs">Supportive Ayurvedic food, made simply.</div>
+            </div>
+            <div class="col" style="gap:12px;margin-top:8px">
+              <div class="vrow"><div class="vi"><svg><use href="#i-flame"/></svg></div><div><b>Pick by texture</b><small>Solid &#183; liquid &#183; semi-solid &#8212; the classical way</small></div></div>
+              <div class="vrow"><div class="vi"><svg><use href="#i-book"/></svg></div><div><b>Grounded in sources</b><small>Classical texts + ICMR-NIN 2024, cited on every recipe</small></div></div>
+              <div class="vrow"><div class="vi"><svg><use href="#i-moon"/></svg></div><div><b>Cooks with you</b><small>Step-by-step cook mode, works offline</small></div></div>
+            </div>
+            <div class="privnote"><svg><use href="#i-shield"/></svg> No account needed. Everything stays on this phone unless you sign up.</div>
+            <div style="flex:1"></div>
+            <div class="cta">Get started</div>
+            <div class="ghost">Skip for now</div>
+            <div class="disc">Supportive dietary guidance &#183; not a substitute for medical advice</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">A1</span><span class="cap-t">Welcome</span></div>
+        <ul class="notes"><li><b>Skip</b> is a first-class exit &#8212; anonymous-first <span class="ref">P1</span></li><li>Privacy promise up front; discreet tone, no health claims</li><li>Get started &#8594; health flags <span class="ref">P2</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- A2 HEALTH FLAGS -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:14px;flex:1">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="grow"></div><div class="dots"><span class="on"></span><span></span></div></div>
+            <div>
+              <div class="obt">Anything we should<br>cook around?</div>
+              <div class="obs" style="margin-top:6px">Optional. Used only to flag recipes on this phone &#8212; never sent anywhere.</div>
+            </div>
+            <div class="fchips">
+              <span class="fchip on"><svg><use href="#i-check"/></svg> Diabetes</span>
+              <span class="fchip">Overweight</span>
+              <span class="fchip on"><svg><use href="#i-check"/></svg> Lactose intolerance</span>
+              <span class="fchip">High blood pressure</span>
+              <span class="fchip">Sedentary lifestyle</span>
+              <span class="fchip">None of these</span>
+            </div>
+            <div class="privnote"><svg><use href="#i-leaf"/></svg> You&#8217;ll get a <b style="color:var(--green)">&#8220;Safe for you&#8221;</b> shortcut on Home, and clear warnings on recipes to avoid.</div>
+            <div style="flex:1"></div>
+            <div class="cta">Continue</div>
+            <div class="ghost">Skip &#8212; decide later</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">A2</span><span class="cap-t">Health flags</span></div>
+        <ul class="notes"><li>Multi-select chips, plain language &#8212; matches recipe contraindication library <span class="ref">P2</span></li><li>Drives &#8220;Safe for you&#8221; <span class="ref">P15</span> and warnings <span class="ref">P42</span></li><li>Skippable; editable later in Profile <span class="ref">P31</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- A3 AUTH / OTP -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:14px;flex:1">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="grow"></div><div class="dots"><span class="on"></span><span class="on"></span></div></div>
+            <div>
+              <div class="obt">Keep your kitchen<br>on every device</div>
+              <div class="obs" style="margin-top:6px">Saved recipes and health flags sync when you sign in. No password &#8212; just a one-time code.</div>
+            </div>
+            <div class="seg"><span class="on">Phone</span><span>Email</span></div>
+            <div class="field">+91 &#183; 98761 43210</div>
+            <div>
+              <div class="mlabel" style="margin-bottom:7px">Enter the 6-digit code</div>
+              <div class="otp"><span class="fill">3</span><span class="fill">8</span><span class="fill">1</span><span class="fill">4</span><span class="cur"></span><span></span></div>
+              <div class="obs" style="margin-top:8px;font-size:10.5px">Code sent &#183; resend in <b style="font-family:var(--mono)">0:24</b></div>
+            </div>
+            <div class="privnote"><svg><use href="#i-heart"/></svg> Anything you saved anonymously merges into your account.</div>
+            <div style="flex:1"></div>
+            <div class="cta">Verify &amp; continue</div>
+            <div class="disc">OTP by SMS/email &#183; no social login &#183; delete anytime</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">A3</span><span class="cap-t">Sign in &#183; OTP</span></div>
+        <ul class="notes"><li>One screen serves sign-up, log-in and recovery &#8212; OTP is the only path <span class="ref">P3 P4 P35</span></li><li><b>Merge promise</b> stated before verifying <span class="ref">P30</span></li><li>Same screen from onboarding or Profile</li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+  <!-- ══════════ B · DISCOVERY ══════════ -->
+  <div class="flowlabel"><h2>B &#183; Discovery</h2><span class="step">P6 &#183; P8 &#8211; P15</span><span class="ln2"></span></div>
+  <div class="screens">
+
+    <!-- B1 TEXTURE LIST -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="row">
+              <div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div>
+              <div class="grow"><div class="h-serif" style="font-size:20px">Solid</div><div class="obs" style="font-size:10.5px">44 recipes &#183; breads &#183; sweets &#183; snacks</div></div>
+              <div class="icobtn"><svg class="icon"><use href="#i-filter"/></svg></div>
+            </div>
+            <div class="fchips" style="flex-wrap:nowrap;overflow:hidden">
+              <span class="fchip sm on">Sweets</span>
+              <span class="fchip sm">Breads</span>
+              <span class="fchip sm">Snacks</span>
+              <span class="fchip sm" style="border-color:var(--green);color:var(--green)"><svg><use href="#i-shield"/></svg> Safe for you</span>
+            </div>
+            <div class="lcard"><div class="lt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Coconut Laddu</div><div class="ln2b">Narikela modaka</div><div class="lm"><span class="flag"></span>Sweet &#183; ~25 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Sesame Laddu</div><div class="ln2b">Tila laddu</div><div class="lm"><span class="flag"></span>Sweet &#183; ~30 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-sprout"/></svg></div><div class="grow"><div class="ln1">Dates &amp; Almond Bites</div><div class="ln2b">Kharj&#363;ra modaka</div><div class="lm">No-cook &#183; ~15 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--clay-soft)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div><div class="grow"><div class="ln1">Wheat Halwa</div><div class="ln2b">Godh&#363;ma &#347;&#299;r&#7779;a</div><div class="lm"><span class="flag"></span>Sweet &#183; ~35 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+          </div>
+          <div class="bnav">
+            <div class="nav on"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">B1</span><span class="cap-t">Texture list</span></div>
+        <ul class="notes"><li>Pillar &#8594; list, sub-type chips on top <span class="ref">P6 P10</span></li><li><b>Safe for you</b> chip filters by flags <span class="ref">P15</span>; clay dot marks recipes with contraindications <span class="ref">P42</span></li><li>Filter icon opens sheet <span class="ref">P9</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- B2 FILTER SHEET -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="dimtop"></div>
+          <div class="sheet">
+            <div class="handle"></div>
+            <div class="row"><div class="h-serif grow" style="font-size:17px">Filter</div><span style="font-size:11px;font-weight:800;color:var(--ink-2)">Reset</span></div>
+            <div class="row" style="justify-content:space-between;background:var(--green-soft);border-radius:13px;padding:11px 13px">
+              <div><div style="font-weight:800;font-size:12px;color:var(--green)">Safe for you</div><div style="font-size:10px;color:var(--ink-2)">Uses your flags: diabetes, lactose</div></div>
+              <div class="switch on"></div>
+            </div>
+            <div>
+              <div class="mlabel" style="margin-bottom:8px">Diet</div>
+              <div class="fchips">
+                <span class="fchip sm on"><svg><use href="#i-check"/></svg> Diabetic-safe</span>
+                <span class="fchip sm">Dairy-free</span>
+                <span class="fchip sm">Nut-light</span>
+              </div>
+            </div>
+            <div>
+              <div class="mlabel" style="margin-bottom:8px">Time &amp; effort</div>
+              <div class="fchips">
+                <span class="fchip sm">Under 15 min</span>
+                <span class="fchip sm on"><svg><use href="#i-check"/></svg> 15&#8211;30 min</span>
+                <span class="fchip sm">No-cook</span>
+                <span class="fchip sm">Make-ahead</span>
+              </div>
+            </div>
+            <div class="cta">Show 12 recipes</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">B2</span><span class="cap-t">Filter sheet</span></div>
+        <ul class="notes"><li>All locked facets: diabetic-safe &#183; dairy-free &#183; no-cook &#183; make-ahead &#183; time <span class="ref">P9 P14</span></li><li>Safety filter is a highlighted toggle, tied to profile flags <span class="ref">P31</span></li><li>Result count on the CTA &#8212; no dead-end filtering</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- B3 SEARCH RESULTS -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="row">
+              <div class="search grow" style="color:var(--ink);font-weight:700">laddu<span style="color:var(--green)">|</span></div>
+              <span style="font-size:11.5px;font-weight:800;color:var(--ink-2)">Cancel</span>
+            </div>
+            <div class="mlabel">Recipes &#183; 3</div>
+            <div class="lcard"><div class="lt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Coconut <u style="text-decoration-color:var(--amber)">Laddu</u></div><div class="ln2b">Narikela modaka</div><div class="lm"><span class="flag"></span>Sweet &#183; ~25 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Sesame <u style="text-decoration-color:var(--amber)">Laddu</u></div><div class="ln2b">Tila laddu</div><div class="lm"><span class="flag"></span>Sweet &#183; ~30 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Urad Dal Laddu</div><div class="ln2b">M&#257;&#7779;a laddu</div><div class="lm">Sweet &#183; ~40 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="mlabel">From the glossary</div>
+            <div class="lrow"><div class="li a"><svg><use href="#i-book"/></svg></div><div class="grow"><span style="font-family:var(--serif)">Modaka</span><small>sweet preparation &#183; rounded offering</small></div><svg class="icon" style="color:var(--muted);width:16px"><use href="#i-chev"/></svg></div>
+            <div class="obs" style="font-size:10px;text-align:center">Searches English &#183; Sanskrit &#183; ingredients together</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">B3</span><span class="cap-t">Search results</span></div>
+        <ul class="notes"><li>One index across English, Sanskrit, ingredient <span class="ref">P8 P12</span></li><li>Glossary terms surface as a second section &#8594; term page <span class="ref">P39</span></li><li>Match highlighting in turmeric</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- B4 SEARCH EMPTY -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="row">
+              <div class="search grow" style="color:var(--ink);font-weight:700">pizza<span style="color:var(--green)">|</span></div>
+              <span style="font-size:11.5px;font-weight:800;color:var(--ink-2)">Cancel</span>
+            </div>
+            <div class="empty">
+              <div class="et"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div>
+              <div class="eh">Nothing for that here</div>
+              <div class="es">Vajeeva keeps to classical supportive preparations. Try an ingredient or one of these:</div>
+              <div class="fchips" style="justify-content:center">
+                <span class="fchip sm">Laddu</span><span class="fchip sm">Warm drinks</span><span class="fchip sm">Porridge</span>
+              </div>
+              <div class="cta sand" style="align-self:stretch;margin-top:6px">Browse all textures</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">B4</span><span class="cap-t">Search &#8212; no results</span></div>
+        <ul class="notes"><li>Warm, non-dead-end empty state <span class="ref">P13</span></li><li>Suggestion chips re-seed the query; fallback to texture browse <span class="ref">P6</span></li><li>Tone explains the catalogue&#8217;s scope, never blames the user</li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+  <!-- ══════════ C · COOK & SAVED STATES ══════════ -->
+  <div class="flowlabel"><h2>C &#183; Cook &amp; Saved states</h2><span class="step">P24 &#183; P26 &#183; P29 &#183; P46</span><span class="ln2"></span></div>
+  <div class="screens">
+
+    <!-- C1 TIMER RUNNING -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="cm">
+            <div class="cm-top"><div class="cm-x"><svg><use href="#i-close"/></svg></div><div class="cm-prog"></div><span class="cm-ct">Step 4 / 6</span></div>
+            <div class="cm-phase">Phase &#183; Simmer</div>
+            <div class="cm-body">
+              <div class="cm-step">Simmer the milk on low heat, stirring now and then.</div>
+              <div class="timer-live">
+                <div class="tt">07:42</div>
+                <div class="tb"></div>
+                <div class="tr"><span>&#10073;&#10073; pause</span><span>+1 min</span></div>
+              </div>
+              <div class="cm-peek"><svg class="icon" style="width:15px;color:var(--green)"><use href="#i-leaf"/></svg> This step &#8212; milk &#183; rock sugar</div>
+            </div>
+            <div class="cm-awake">timer keeps running if you leave &#183; discreet alert when done</div>
+            <div class="cm-foot"><div class="cm-nav prev"><svg class="icon" style="width:15px"><use href="#i-back"/></svg> Back</div><div class="cm-nav next">Next <svg class="icon" style="width:15px"><use href="#i-chev"/></svg></div></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">C1</span><span class="cap-t">Cook Mode &#8212; timer running</span></div>
+        <ul class="notes"><li>Timer promoted to a full card while live; pause / +1 min at thumb reach <span class="ref">P24</span></li><li>Runs in background &#8594; discreet notification, no health wording <span class="ref">P46</span></li><li>Steps stay navigable while it runs <span class="ref">P23</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- C2 FINISH -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="cm">
+            <div class="cm-top"><div class="cm-x"><svg><use href="#i-close"/></svg></div><div class="cm-prog" style="--x:0"></div><span class="cm-ct">Done</span></div>
+            <div class="cm-body" style="justify-content:center;text-align:center;gap:13px">
+              <svg viewBox="0 0 120 90" style="width:170px;height:127px;align-self:center"><use href="#ill-hero"/></svg>
+              <div>
+                <div class="h-serif" style="font-size:25px">Well made.</div>
+                <div class="obs" style="margin-top:4px">Coconut Laddu &#183; 6 steps &#183; ~25 min</div>
+              </div>
+              <div class="col" style="gap:10px;background:var(--green-soft);border:1px solid var(--green);border-radius:16px;padding:14px;text-align:left">
+                <div style="font-weight:800;font-size:12.5px;color:var(--green)">Keep it in your kitchen?</div>
+                <div style="font-size:10.5px;color:var(--ink-2)">Saved recipes stay on this phone and work offline.</div>
+                <div class="cta" style="padding:12px"><svg><use href="#i-heart"/></svg> Save recipe</div>
+              </div>
+              <div class="ghost">Not now</div>
+            </div>
+            <div class="cm-awake">store airtight &#183; keeps 5&#8211;7 days</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">C2</span><span class="cap-t">Finish &#8594; Save prompt</span></div>
+        <ul class="notes"><li>Last step &#8594; quiet completion, single save decision <span class="ref">P26</span></li><li>Storage note reinforces make-ahead value</li><li>Save &#8594; Saved with toast (hero sheet, screen 4) <span class="ref">P20</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- C3 SAVED EMPTY -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="row"><div class="h-serif grow" style="font-size:20px">Saved</div><span class="offbadge"><svg><use href="#i-leaf"/></svg> Offline-ready</span></div>
+            <div class="empty">
+              <div class="et"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+              <div class="eh">Nothing saved yet</div>
+              <div class="es">Tap the ♡ on any recipe. Saves live on this phone and work without internet &#8212; no account needed.</div>
+              <div class="cta" style="align-self:stretch;margin-top:6px">Browse recipes</div>
+            </div>
+          </div>
+          <div class="bnav">
+            <div class="nav"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav on"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">C3</span><span class="cap-t">Saved &#8212; empty</span></div>
+        <ul class="notes"><li>Explains the mechanic + the offline promise in one line <span class="ref">P29 P43</span></li><li>Single path out: browse <span class="ref">P6</span></li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+  <!-- ══════════ D · ACCOUNT, SETTINGS & REFERENCE ══════════ -->
+  <div class="flowlabel"><h2>D &#183; Account, Settings &amp; reference</h2><span class="step">P30 &#8211; P35 &#183; P39 &#8211; P41</span><span class="ln2"></span></div>
+  <div class="screens">
+
+    <!-- D1 PROFILE -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp scroll">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px">
+            <div class="h-serif" style="font-size:20px">Account</div>
+            <div class="lrow"><div class="avatar"><svg class="icon"><use href="#i-user"/></svg></div><div class="grow">Signed in<small>+91 98&#8226;&#8226;&#8226; &#8226;&#8226;210 &#183; synced</small></div><svg class="icon" style="width:16px;color:var(--green)"><use href="#i-check"/></svg></div>
+            <div class="mlabel">Health flags</div>
+            <div class="fchips">
+              <span class="fchip sm on"><svg><use href="#i-check"/></svg> Diabetes</span>
+              <span class="fchip sm on"><svg><use href="#i-check"/></svg> Lactose intolerance</span>
+              <span class="fchip sm">+ Edit</span>
+            </div>
+            <div class="privnote" style="font-size:10px"><svg><use href="#i-shield"/></svg> Changing flags instantly updates &#8220;Safe for you&#8221; and recipe warnings.</div>
+            <div class="mlabel">Library</div>
+            <div class="lrow"><div class="li"><svg><use href="#i-heart"/></svg></div><div class="grow">Saved recipes</div><span class="rv">12 <svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="lrow"><div class="li"><svg><use href="#i-gear"/></svg></div><div class="grow">Settings</div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="mlabel">Session</div>
+            <div class="lrow"><div class="li a"><svg><use href="#i-out"/></svg></div><div class="grow">Sign out<small>saves stay on this phone</small></div></div>
+            <div class="lrow" style="border-color:var(--clay)"><div class="li c"><svg><use href="#i-trash"/></svg></div><div class="grow" style="color:var(--clay)">Delete account &amp; data<small>confirm twice &#183; wiped everywhere</small></div></div>
+            <div class="disc">Vajeeva stores only: saved recipes, flags, progress</div>
+          </div>
+          <div class="bnav">
+            <div class="nav"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav on"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">D1</span><span class="cap-t">Profile</span></div>
+        <ul class="notes"><li>Flags editable in place &#8212; safety updates ripple immediately <span class="ref">P31</span></li><li>Sign out keeps device saves; delete is explicit, double-confirmed <span class="ref">P33 P34</span></li><li>Data inventory stated plainly &#8212; trust surface</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- D2 SETTINGS -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="h-serif grow" style="font-size:19px">Settings</div></div>
+            <div class="mlabel">Cooking</div>
+            <div class="lrow"><div class="grow">Units</div><span class="toggle"><span class="on">g</span><span>cup</span></span></div>
+            <div class="lrow"><div class="grow">Language</div><span class="rv">English <svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="lrow"><div class="grow">Text size</div><span class="toggle"><span>A</span><span class="on">A</span><span style="font-size:12px">A</span></span></div>
+            <div class="mlabel">Alerts</div>
+            <div class="lrow"><div class="grow">Timer alerts<small>discreet wording &#183; no health terms</small></div><div class="switch on"></div></div>
+            <div class="mlabel">Privacy</div>
+            <div class="lrow"><div class="grow" style="color:var(--clay)">Clear on-device data<small>saved recipes &#183; flags &#183; progress</small></div></div>
+            <div class="lrow"><div class="grow">Privacy &amp; disclaimer</div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div style="flex:1"></div>
+            <div class="disc">Free &#183; clinic-distributed &#183; v1.0</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">D2</span><span class="cap-t">Settings</span></div>
+        <ul class="notes"><li>Units &#183; language &#183; text size <span class="ref">P32</span>; clear-data lives here too <span class="ref">P41</span></li><li>Timer alert copy commits to the discreet-notification decision <span class="ref">P46</span></li><li>Notifications opt-in by default posture</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- D3 MORE MENU -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="h-serif" style="font-size:20px">More</div>
+            <div class="lrow"><div class="li"><svg><use href="#i-book"/></svg></div><div class="grow">Glossary<small>Sanskrit terms &#183; pronunciation</small></div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="lrow"><div class="li a"><svg><use href="#i-leaf"/></svg></div><div class="grow">About &amp; evidence<small>sources &#183; how recipes are reviewed</small></div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="lrow" style="opacity:.55"><div class="li"><svg><use href="#i-clock"/></svg></div><div class="grow">Your stats<small>time in kitchen &#183; activity</small></div><span class="soon">soon</span></div>
+            <div class="lrow"><div class="li"><svg><use href="#i-gear"/></svg></div><div class="grow">Settings</div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div class="lrow"><div class="li"><svg><use href="#i-user"/></svg></div><div class="grow">Account</div><span class="rv"><svg class="icon" style="width:14px"><use href="#i-chev"/></svg></span></div>
+            <div style="flex:1"></div>
+            <div class="discbox">Vajeeva offers supportive dietary preparations from classical Ayurvedic sources. It is not medical advice, diagnosis, or treatment.</div>
+          </div>
+          <div class="bnav">
+            <div class="nav"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav on"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">D3</span><span class="cap-t">More</span></div>
+        <ul class="notes"><li>Hub for reference + account <span class="ref">P39 P40 P41</span></li><li>Stats visible but gated &#8220;soon&#8221; &#8212; honest fast-follow signal <span class="ref">P36</span></li><li>Disclaimer always one tap away</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- D4 GLOSSARY TERM -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:13px;flex:1">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="obs grow" style="font-weight:700">Glossary</div></div>
+            <div>
+              <div class="glterm">K&#7779;&#299;ra</div>
+              <div class="row" style="margin-top:8px;gap:8px">
+                <span class="saypill"><svg><use href="#i-sound"/></svg> KSHEE-rah</span>
+                <span class="pill">noun &#183; liquid</span>
+              </div>
+            </div>
+            <div style="font-size:12px;color:var(--ink-2);line-height:1.55">Milk &#8212; in classical texts the foundational nourishing liquid, prized as a <i>v&#7771;&#7779;ya</i> (strengthening) food. Usually taken warm, often with spices or soaked nuts.</div>
+            <div class="srcbar" style="display:flex;align-items:center;gap:9px;background:var(--amber-soft);border-radius:11px;padding:10px 12px;font-size:10.5px">Appears in Bh&#257;vaprak&#257;&#347;a &#183; K&#7779;emakut&#363;halam</div>
+            <div class="mlabel">Recipes using k&#7779;&#299;ra</div>
+            <div class="lcard"><div class="lt" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div><div class="grow"><div class="ln1">Spiced Night Milk</div><div class="ln2b">K&#7779;&#299;ra p&#257;ka</div><div class="lm">Drink &#183; ~10 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+            <div class="lcard"><div class="lt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="grow"><div class="ln1">Coconut Laddu</div><div class="ln2b">Narikela modaka</div><div class="lm"><span class="flag"></span>Sweet &#183; ~25 min</div></div><svg class="icon" style="color:var(--muted)"><use href="#i-chev"/></svg></div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">D4</span><span class="cap-t">Glossary term</span></div>
+        <ul class="notes"><li>Meaning + pronunciation + source in one card <span class="ref">P39 P18</span></li><li>&#8220;Recipes using it&#8221; closes the loop back to cooking</li><li>Reachable from search matches too <span class="ref">P12</span></li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+  <!-- ══════════ E · SAFETY & EDGE ══════════ -->
+  <div class="flowlabel"><h2>E &#183; Safety &amp; edge states</h2><span class="step">P40 &#183; P42 &#8211; P46</span><span class="ln2"></span></div>
+  <div class="screens">
+
+    <!-- E1 DETAIL FLAGGED -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp scroll">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="grow"></div><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-heart"/></svg></div></div>
+            <div style="height:74px;border-radius:14px;background:var(--sand);display:flex;align-items:center;justify-content:center;filter:saturate(.6)"><svg style="width:56px;height:56px" viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div>
+              <div class="h-serif" style="font-size:21px">Coconut Laddu</div>
+              <div class="ln2b" style="font-size:12px">Narikela modaka</div>
+            </div>
+            <div class="warnbig">
+              <div class="wh"><svg><use href="#i-info"/></svg> Not recommended for you</div>
+              <div class="wd">You flagged <b>diabetes</b> &#8212; this recipe uses rock sugar as a main ingredient.</div>
+              <div class="wl">See 6 safe sweets instead &#8594;</div>
+            </div>
+            <div class="row" style="gap:6px;opacity:.5">
+              <span class="pill">Sweet</span><span class="pill">Solid</span><span class="pill">~25 min</span>
+            </div>
+            <button class="cta sand">Cook anyway</button>
+            <div class="disc">Flagged recipes are shown &#8212; never hidden. Your call, informed.</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">E1</span><span class="cap-t">Detail &#183; flagged</span></div>
+        <ul class="notes"><li>Strong clay warning names the flag + the reason <span class="ref">P42</span></li><li>Route out: &#8220;safe sweets&#8221; link beats a dead end <span class="ref">P15</span></li><li>Cook anyway stays available &#8212; adults, not children</li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- E2 ABOUT & EVIDENCE -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp scroll">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#8963; &#9646;</span></div>
+          <div class="pad col" style="gap:12px">
+            <div class="row"><div class="icobtn" style="width:34px;height:34px"><svg class="icon" style="width:16px"><use href="#i-back"/></svg></div><div class="obs grow" style="font-weight:700">About &amp; evidence</div></div>
+            <div style="font-size:12px;color:var(--ink-2);line-height:1.6">Every Vajeeva recipe is adapted from classical <i>Vajikarana &#256;h&#257;ra</i> texts, then checked against modern nutrition guidance.</div>
+            <div class="mlabel">Classical sources</div>
+            <div class="srcrow"><div class="sn">K&#7779;emakut&#363;halam</div><div class="sd">16th c. &#183; culinary-medical treatise</div></div>
+            <div class="srcrow"><div class="sn">Bh&#257;vaprak&#257;&#347;a</div><div class="sd">16th c. &#183; materia medica</div></div>
+            <div class="mlabel">Modern reference</div>
+            <div class="srcrow"><div class="sn">ICMR-NIN Dietary Guidelines</div><div class="sd">2024 &#183; nutrient values &amp; safe limits</div></div>
+            <div class="privnote" style="align-items:flex-start"><svg style="margin-top:1px"><use href="#i-check"/></svg> Each recipe is checked by a clinical reviewer before it is published.</div>
+            <div class="discbox">Vajeeva is educational. It does not diagnose, treat, or replace advice from your clinician.</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">E2</span><span class="cap-t">About &amp; evidence</span></div>
+        <ul class="notes"><li>Sources &#8594; disclaimer in one scroll <span class="ref">P40</span></li><li>Review promise mirrors the CMS approve step <span class="ref">R1</span></li><li>Same source names as Detail&#8217;s Sources block <span class="ref">P16</span></li></ul>
+      </figcaption>
+    </figure>
+
+    <!-- E3 OFFLINE HOME -->
+    <figure class="screen">
+      <div class="phone"><div class="notch"></div>
+        <div class="vp">
+          <div class="sbar"><span>9:41</span><span class="rt">&#9702;&#9702;&#9702; &#10005; &#9646;</span></div>
+          <div class="offbar"><svg><use href="#i-off"/></svg> You&#8217;re offline &#8212; browsing needs a connection</div>
+          <div class="pad col" style="gap:12px;flex:1">
+            <div class="h-serif" style="font-size:20px">Namaste</div>
+            <div class="dim">
+              <div class="searchbar"><svg class="icon" style="width:15px"><use href="#i-search"/></svg><span>Search recipes&#8230;</span></div>
+              <div class="row" style="gap:8px;margin-top:10px">
+                <div class="pillar" style="flex:1;flex-direction:column;gap:2px;padding:10px 6px"><div class="pt">Solid</div><div class="pc">&#8212;</div></div>
+                <div class="pillar" style="flex:1;flex-direction:column;gap:2px;padding:10px 6px"><div class="pt">Liquid</div><div class="pc">&#8212;</div></div>
+                <div class="pillar" style="flex:1;flex-direction:column;gap:2px;padding:10px 6px"><div class="pt">Semi</div><div class="pc">&#8212;</div></div>
+              </div>
+            </div>
+            <div class="savedpromo"><svg class="icon" style="width:16px;color:var(--green)"><use href="#i-heart-f"/></svg><div class="grow" style="font-size:11.5px"><b>Your 4 saved recipes work offline.</b><br><span style="color:var(--ink-2)">Open Saved to keep cooking.</span></div></div>
+            <button class="cta">Open Saved</button>
+            <div style="flex:1"></div>
+          </div>
+          <div class="bnav">
+            <div class="nav on"><svg><use href="#i-home"/></svg>Home</div>
+            <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+            <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+          </div>
+        </div>
+      </div>
+      <figcaption>
+        <div class="cap-h"><span class="cap-n">E3</span><span class="cap-t">Offline</span></div>
+        <ul class="notes"><li>Browse dims honestly; Saved + Cook promised loudly <span class="ref">P43</span></li><li>One clear action: go where things still work <span class="ref">P27</span></li><li>No error language &#8212; calm, kitchen-safe tone</li></ul>
+      </figcaption>
+    </figure>
+
+  </div>
+
+  <!-- ══════════ F · CROSS-CUTTING COMPONENTS ══════════ -->
+  <div class="flowlabel"><h2>F &#183; Cross-cutting components</h2><span class="step">P44 &#183; P45 &#183; P46</span><span class="ln2"></span></div>
+  <div class="comp3">
+    <div class="compcard">
+      <div class="cap-h" style="margin-bottom:10px"><span class="cap-n">F1</span><span class="cap-t">Missing image</span></div>
+      <div style="height:86px;border-radius:12px;background:var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
+        <svg style="width:34px;height:34px" viewBox="0 0 64 64"><use href="#ill-sprout"/></svg>
+        <span style="font-family:ui-monospace,monospace;font-size:8.5px;letter-spacing:.12em;color:var(--muted)">VAJEEVA</span>
+      </div>
+      <ul class="notes" style="margin-top:10px"><li>Branded sprout placeholder &#8212; never a broken-image glyph <span class="ref">P44</span></li><li>Same tile everywhere: cards, detail hero, glossary</li></ul>
+    </div>
+    <div class="compcard">
+      <div class="cap-h" style="margin-bottom:10px"><span class="cap-n">F2</span><span class="cap-t">Prep-ahead nudge</span></div>
+      <div style="display:flex;gap:10px;align-items:center;background:var(--green-soft);border-radius:12px;padding:12px">
+        <svg class="icon" style="width:18px;color:var(--green);flex:none"><use href="#i-moon"/></svg>
+        <div style="font-size:11.5px;line-height:1.45"><b>Soak the almonds tonight</b><br><span style="color:var(--ink-2)">They&#8217;ll be ready by morning.</span></div>
+      </div>
+      <div style="margin-top:8px"><span class="pill" style="background:var(--green-soft);color:var(--green);border-color:var(--green)">Start tonight</span></div>
+      <ul class="notes" style="margin-top:10px"><li>Shown on Detail for overnight recipes <span class="ref">P45</span></li><li>Chip jumps to the overnight step</li></ul>
+    </div>
+    <div class="compcard">
+      <div class="cap-h" style="margin-bottom:10px"><span class="cap-n">F3</span><span class="cap-t">Timer notification</span></div>
+      <div class="notif">
+        <div class="ni"><svg class="icon" style="width:14px"><use href="#i-clock"/></svg></div>
+        <div style="flex:1"><b style="font-size:11px">Vajeeva</b><div style="font-size:10.5px;opacity:.75">Timer done &#8212; step 4 is ready.</div></div>
+        <span style="font-size:9px;opacity:.5">now</span>
+      </div>
+      <ul class="notes" style="margin-top:10px"><li>Discreet: no dish name on lock screen, zero health wording <span class="ref">P46</span></li><li>Tap deep-links back into the running step <span class="ref">P24</span></li></ul>
+    </div>
+  </div>
+<!-- append-point -->
+
+  <footer>
+    <span>Vajeeva &#183; v1 screen set &#183; companion to vajeeva-hero-flow.html + v1-flow-map.html</span>
+    <span>42 locked flows visualized &#183; deferred scope not designed</span>
+  </footer>
+
+</div>
+</div>
+</body>
+</html>
