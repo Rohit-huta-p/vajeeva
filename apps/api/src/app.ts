@@ -4,6 +4,7 @@ import { errorHandler } from './middleware/errorHandler';
 import { authRouter } from './routes/auth.routes';
 import { recipesRouter } from './routes/recipes.routes';
 import { syncRouter } from './routes/sync.routes';
+import { adminRouter } from './routes/admin.routes';
 
 export function createApp() {
   const app = express();
@@ -13,6 +14,7 @@ export function createApp() {
   app.use('/api/auth', authRouter);
   app.use('/api/recipes', recipesRouter);
   app.use('/api/sync', syncRouter);
+  app.use('/api/admin', adminRouter);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
