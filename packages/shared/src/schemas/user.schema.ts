@@ -13,7 +13,12 @@ export const RegisterInputSchema = z.object({
   password: z.string().min(8),
 });
 
-export const LoginInputSchema = RegisterInputSchema;
+// No min-length at login — password policy applies at registration only;
+// a wrong-length password must fail the credential check (401), not validation (400).
+export const LoginInputSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
 
 export type User = z.infer<typeof UserSchema>;
 export type RegisterInput = z.infer<typeof RegisterInputSchema>;

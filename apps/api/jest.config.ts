@@ -4,4 +4,5 @@ export default {
   testMatch: ['**/__tests__/**/*.test.ts'],
   globalSetup: './src/__tests__/setup.ts',
   globalTeardown: './src/__tests__/teardown.ts',
+  setupFilesAfterEnv: ['./src/__tests__/jest.setup.ts'],
 };
