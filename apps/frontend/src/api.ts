@@ -1,6 +1,16 @@
 import axios from 'axios';
+import Constants from 'expo-constants';
 
-const BASE_URL = process.env.EXPO_PUBLIC_API_URL ?? 'http://localhost:4000';
+// On a physical device 'localhost' is the phone itself, so default to the
+// Metro host the device already connected to (its LAN IP), port 4000.
+// EXPO_PUBLIC_API_URL stays the highest-priority override; web/simulator
+// (no hostUri, or a localhost one) falls back to localhost.
+const hostUri: string | undefined =
+  Constants.expoConfig?.hostUri ?? (Constants as any).manifest2?.extra?.expoGo?.debuggerHost;
+const lanHost = hostUri?.split(':')[0];
+const BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL ??
+  (lanHost ? `http://${lanHost}:4000` : 'http://localhost:4000');
 
 let accessToken: string | null = null;
 let refreshToken: string | null = null;
