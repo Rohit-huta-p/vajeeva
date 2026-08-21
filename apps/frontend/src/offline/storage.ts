@@ -1,17 +1,31 @@
-import { createMMKV } from 'react-native-mmkv';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const store = createMMKV({ id: 'vajeeva' });
+// AsyncStorage-backed (Expo Go compatible — MMKV needs native modules Expo Go
+// can't load). All operations are Promise-based; hooks load persisted state
+// into React state once, then persist on mutation.
 
-export function get<T>(key: string): T | null {
-  const v = store.getString(key);
+export async function get<T>(key: string): Promise<T | null> {
+  const v = await AsyncStorage.getItem(key);
   if (!v) return null;
   try { return JSON.parse(v) as T; } catch { return null; }
 }
 
-export function set<T>(key: string, val: T): void {
-  store.set(key, JSON.stringify(val));
+/** Batch read; result is keyed by input key, missing/corrupt entries omitted. */
+export async function getMany<T>(keys: string[]): Promise<Record<string, T>> {
+  if (keys.length === 0) return {};
+  const pairs = await AsyncStorage.multiGet(keys);
+  const out: Record<string, T> = {};
+  for (const [key, v] of pairs) {
+    if (!v) continue;
+    try { out[key] = JSON.parse(v) as T; } catch { /* skip corrupt entry */ }
+  }
+  return out;
 }
 
-export function del(key: string): void {
-  store.remove(key);
+export async function set<T>(key: string, val: T): Promise<void> {
+  await AsyncStorage.setItem(key, JSON.stringify(val));
+}
+
+export async function del(key: string): Promise<void> {
+  await AsyncStorage.removeItem(key);
 }

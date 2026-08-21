@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { get, set, del } from '../offline/storage';
 
 const KEY = 'cook:session';
@@ -13,9 +13,21 @@ export interface CookSession {
 }
 
 // Single active cook session, persisted offline so HomeScreen can offer
-// "Continue cooking" across app restarts.
+// "Continue cooking" across app restarts. Storage is async: the persisted
+// session loads once into React state; mutations persist in the background.
 export function useCookSession() {
-  const [session, setSession] = useState<CookSession | null>(() => get<CookSession>(KEY));
+  const [session, setSession] = useState<CookSession | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let alive = true;
+    get<CookSession>(KEY).then(s => {
+      if (!alive) return;
+      setSession(s);
+      setLoading(false);
+    });
+    return () => { alive = false; };
+  }, []);
 
   const startSession = useCallback((s: CookSession) => {
     set(KEY, s);
@@ -36,5 +48,5 @@ export function useCookSession() {
     setSession(null);
   }, []);
 
-  return { session, startSession, updateStep, clearSession };
+  return { session, loading, startSession, updateStep, clearSession };
 }
