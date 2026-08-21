@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { api } from '../api/client';
 
-// Condition codes mirror the api's health-flag condition values; persistence
-// lands in the wiring wave — defaults below seed the form until then.
+// Inline condition list — no ConditionCode enum in packages/shared yet
 const CONDITIONS = [
   { code: 'DIABETES', label: 'Diabetes', defaultDesc: 'High blood sugar — avoid recipes high in simple carbohydrates.' },
   { code: 'OBESITY', label: 'Obesity', defaultDesc: 'Weight management — prefer low-calorie, high-fibre preparations.' },
@@ -15,13 +15,40 @@ const CONDITIONS = [
 
 type FlagState = { label: string; description: string };
 
+function defaultFlags(): Record<string, FlagState> {
+  return Object.fromEntries(CONDITIONS.map(c => [c.code, { label: c.label, description: c.defaultDesc }]));
+}
+
 export function HealthFlagsPage() {
-  const [flags, setFlags] = useState<Record<string, FlagState>>(() =>
-    Object.fromEntries(CONDITIONS.map(c => [c.code, { label: c.label, description: c.defaultDesc }]))
-  );
+  const [flags, setFlags] = useState<Record<string, FlagState>>(defaultFlags);
+  const [saving, setSaving] = useState(false);
+  const [saveMsg, setSaveMsg] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // Attempt to load saved flags from API; fall back to defaults on 404
+  useEffect(() => {
+    api<Record<string, FlagState>>('/api/admin/health-flags')
+      .then(setFlags)
+      .catch(() => { /* endpoint not yet implemented — defaults stay */ });
+  }, []);
 
   const update = (code: string, patch: Partial<FlagState>) =>
     setFlags(f => ({ ...f, [code]: { ...f[code], ...patch } }));
+
+  async function handleSaveAll() {
+    setSaving(true);
+    setSaveMsg(null);
+    try {
+      await api('/api/admin/health-flags', {
+        method: 'PUT',
+        body: JSON.stringify(flags),
+      });
+      setSaveMsg({ ok: true, text: 'Saved successfully.' });
+    } catch (e) {
+      setSaveMsg({ ok: false, text: (e as Error).message });
+    } finally {
+      setSaving(false);
+    }
+  }
 
   return (
     <div className="p-8">
@@ -29,9 +56,21 @@ export function HealthFlagsPage() {
         <p className="text-sm text-ink/55">
           Labels and descriptions shown to users when a recipe is flagged for their health profile.
         </p>
-        <button type="button" className="bg-brand text-white rounded-lg px-4 py-2 text-sm font-medium">
-          Save all
-        </button>
+        <div className="flex items-center gap-3">
+          {saveMsg && (
+            <span className={`text-xs ${saveMsg.ok ? 'text-brand' : 'text-clay'}`}>
+              {saveMsg.text}
+            </span>
+          )}
+          <button
+            type="button"
+            onClick={handleSaveAll}
+            disabled={saving}
+            className="bg-brand text-white rounded-lg px-4 py-2 text-sm font-medium disabled:opacity-50"
+          >
+            {saving ? 'Saving…' : 'Save all'}
+          </button>
+        </div>
       </div>
 
       <div className="grid grid-cols-2 gap-4">

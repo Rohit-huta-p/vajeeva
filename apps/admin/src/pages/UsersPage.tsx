@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { api } from '../api/client';
+
 interface User {
   id: string;
   name: string;
@@ -7,7 +10,7 @@ interface User {
   joinedAt: string;
 }
 
-// Placeholder data — real user list lands in the wiring wave (WIRE-ADM)
+// Fallback shown while /api/admin/users endpoint is not yet implemented
 const PLACEHOLDER_USERS: User[] = [
   {
     id: '1', name: 'Priya Venkatesh', email: 'priya@example.com',
@@ -26,7 +29,7 @@ const PLACEHOLDER_USERS: User[] = [
   },
 ];
 
-// No blue token in the theme, so Google keeps raw hex
+// No blue theme token — raw hex for Google
 const PROVIDER_COLORS: Record<string, string> = {
   Google: 'bg-[#E8F0FA] text-[#3B6BA0]',
   Email: 'bg-brand-bg text-brand',
@@ -34,11 +37,20 @@ const PROVIDER_COLORS: Record<string, string> = {
 };
 
 export function UsersPage() {
+  const [users, setUsers] = useState<User[]>(PLACEHOLDER_USERS);
+
+  // Attempt to load real users; fall back to placeholder on 404
+  useEffect(() => {
+    api<User[]>('/api/admin/users')
+      .then(setUsers)
+      .catch(() => { /* endpoint not yet implemented — placeholder stays */ });
+  }, []);
+
   return (
     <div className="p-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="font-serif text-2xl font-bold text-ink">Users</h1>
-        <span className="text-sm text-ink/50">{PLACEHOLDER_USERS.length} users</span>
+        <span className="text-sm text-ink/50">{users.length} users</span>
       </div>
 
       <div className="border border-sand rounded-xl overflow-hidden">
@@ -47,7 +59,7 @@ export function UsersPage() {
             <span key={h} className="text-xs font-mono text-ink/50 uppercase tracking-wider">{h}</span>
           ))}
         </div>
-        {PLACEHOLDER_USERS.map((user, i) => (
+        {users.map((user, i) => (
           <div
             key={user.id}
             className={`grid grid-cols-[2fr_2fr_1fr_2fr_1fr] px-4 py-3 items-center ${i % 2 === 1 ? 'bg-white' : ''}`}
