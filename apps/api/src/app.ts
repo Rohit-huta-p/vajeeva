@@ -6,6 +6,7 @@ import { authRouter } from './routes/auth.routes';
 import { recipesRouter } from './routes/recipes.routes';
 import { syncRouter } from './routes/sync.routes';
 import { adminRouter } from './routes/admin.routes';
+import { sourcesAdminRouter, sourcesPublicRouter } from './routes/sources.routes';
 
 export function createApp() {
   const app = express();
@@ -24,6 +25,8 @@ export function createApp() {
   app.use('/api/recipes', recipesRouter);
   app.use('/api/sync', syncRouter);
   app.use('/api/admin', adminRouter);
+  app.use('/api/admin/sources', sourcesAdminRouter);
+  app.use('/api/sources', sourcesPublicRouter);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
