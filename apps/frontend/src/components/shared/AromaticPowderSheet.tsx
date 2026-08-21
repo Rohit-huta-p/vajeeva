@@ -51,7 +51,7 @@ export function AromaticPowderSheet({ visible, onClose }: {
         note: typeof data.note === 'string' ? data.note : prev.note,
         method: typeof data.method === 'string' ? data.method : prev.method,
         rows: Array.isArray(data.ingredients) && data.ingredients.length
-          ? data.ingredients.map((ing: any) => [ing.name ?? '', ing.qty ?? ''] as const)
+          ? data.ingredients.map((ing: any) => [ing.name ?? '', ing.qty ?? ing.quantity ?? ''] as const)
           : prev.rows,
       }));
     }).catch(() => { /* offline — sourced fallback stands */ });
