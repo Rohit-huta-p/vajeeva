@@ -1,10 +1,3 @@
-import { View, Text } from 'react-native';
+import ProfileScreen from '../../src/screens/ProfileScreen';
 
-// Route stub owned by Jim (frontend-core). Wired to its screen at FE-12.
-export default function MoreScreen() {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#F2EDE1', alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ color: '#2A251E' }}>MoreScreen</Text>
-    </View>
-  );
-}
+export default ProfileScreen;
