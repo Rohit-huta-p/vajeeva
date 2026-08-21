@@ -8,22 +8,35 @@ import { colors, fonts, spacing } from '../theme/tokens';
 import { RecipeCard } from '../components/shared/RecipeCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconButton } from '../components/shared/IconButton';
-import { recipesApi } from '../api/recipes';
-import type { RecipeListItem } from '../api/recipes';
+import { recipesApi, toListItem } from '../api/recipes';
+import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 
-const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'];
+const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
+
+// Display label -> API category value; also accepts the texture route param
+// (HomeScreen pillar keys: solid | liquid | semi).
+const LABEL_TO_CATEGORY: Record<string, string> = {
+  Solid: 'solid', Liquid: 'liquid', 'Semi-solid': 'semi-solid',
+};
+function textureToLabel(texture?: string): string {
+  if (!texture) return 'All';
+  const t = texture.toLowerCase();
+  if (t.startsWith('semi')) return 'Semi-solid';
+  const label = t.charAt(0).toUpperCase() + t.slice(1);
+  return label in LABEL_TO_CATEGORY ? label : 'All';
+}
 
 export function RecipeListScreen() {
   const router = useRouter();
   const { texture } = useLocalSearchParams<{ texture?: string }>();
-  const [filter, setFilter] = useState(texture ?? 'All');
+  const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
   const load = useCallback(async () => {
     try {
-      const all: RecipeListItem[] = await recipesApi.list();
-      setRecipes(filter === 'All' ? all : all.filter(r => r.category.toLowerCase() === filter.toLowerCase()));
+      const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
+      setRecipes(docs.map(toListItem));
     } catch {}
   }, [filter]);
 
