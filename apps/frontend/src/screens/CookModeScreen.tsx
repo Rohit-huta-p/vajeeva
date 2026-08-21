@@ -1,129 +1,158 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, StatusBar, ActivityIndicator } from 'react-native';
-import type { CookModeProps } from '../navigation/types';
-import type { Recipe } from '../components/RecipeCard';
-import StepCard from '../components/StepCard';
-import { colors } from '../theme';
-import { recipesApi } from '../api';
+import React, { useState, useEffect, useCallback } from 'react';
+import {
+  View, Text, TouchableOpacity, StyleSheet, SafeAreaView, PanResponder,
+} from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { colors, fonts, spacing } from '../theme/tokens';
+import { TimerPill } from '../components/shared/TimerPill';
+import { CookDots } from '../components/shared/CookDots';
 
-export default function CookModeScreen({ route, navigation }: CookModeProps) {
-  const { slug } = route.params;
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const [stepIdx, setStepIdx] = useState(0);
+// ponytail: placeholder steps; replace with recipesApi.get(slug).steps
+const PLACEHOLDER_STEPS = [
+  { phase: 'PREP', text: 'Wash and slice bitter melon into thin rounds. Soak toor dal for 20 minutes.', timerSec: 20 * 60 },
+  { phase: 'COOK', text: 'Pressure cook dal until soft, about 3 whistles.', timerSec: 8 * 60 },
+  { phase: 'SEASON', text: 'Temper mustard seeds in 1 tbsp oil until they splutter.', timerSec: 2 * 60 },
+];
 
+export function CookModeScreen() {
+  const router = useRouter();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const [step, setStep] = useState(0);
+  const [timerRunning, setTimerRunning] = useState(false);
+  const [timerDone, setTimerDone] = useState(false);
+  const steps = PLACEHOLDER_STEPS;
+  const current = steps[step];
+
+  // Web wake lock — keeps the screen on while cooking
   useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      try {
-        const data = await recipesApi.detail(slug);
-        if (mounted) setRecipe(data);
-      } catch (e) {
-        console.warn('Failed to load recipe', e);
-      }
-    };
-    load();
-    return () => { mounted = false; };
-  }, [slug]);
+    if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
+      let lock: any;
+      (navigator as any).wakeLock.request('screen').then((l: any) => { lock = l; }).catch(() => {});
+      return () => { lock?.release?.(); };
+    }
+  }, []);
 
-  if (!recipe) return <ActivityIndicator style={{ flex: 1, backgroundColor: colors.cmBg }} color={colors.cmGreen} />;
+  const goNext = useCallback(() => {
+    if (step >= steps.length - 1) {
+      router.replace(`/finish/${slug}`);
+    } else {
+      setStep(s => s + 1);
+      setTimerRunning(false);
+      setTimerDone(false);
+    }
+  }, [step, steps.length, slug, router]);
 
-  const steps = [...recipe.steps].sort((a, b) => a.order - b.order);
-  const step = steps[stepIdx];
-  const total = steps.length;
-  const progress = (stepIdx + 1) / total;
-  const isFirst = stepIdx === 0;
-  const isLast = stepIdx === total - 1;
+  const goPrev = useCallback(() => {
+    if (step > 0) { setStep(s => s - 1); setTimerRunning(false); setTimerDone(false); }
+  }, [step]);
 
-  const illBg = step.illColor ? `${step.illColor}22` : colors.cmSurf;
+  const jumpTo = useCallback((i: number) => {
+    setStep(i);
+    setTimerRunning(false);
+    setTimerDone(false);
+  }, []);
+
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: () => true,
+    onPanResponderRelease: (_, { dx }) => {
+      if (dx < -44) goNext();
+      else if (dx > 44) goPrev();
+    },
+  });
+
+  const progress = (step + 1) / steps.length;
 
   return (
-    <View style={[s.root, { backgroundColor: colors.cmBg }]}>
-      <StatusBar barStyle="light-content" />
-
-      <View style={s.progLine}>
-        <View style={[s.progFill, { width: `${progress * 100}%` }]} />
+    <View style={s.root} {...panResponder.panHandlers}>
+      {/* Progress bar */}
+      <View style={s.track}>
+        <View style={[s.fill, { width: `${Math.round(progress * 100)}%` as any }]} />
       </View>
-
-      <View style={s.bar}>
-        <TouchableOpacity style={s.closeBtn} onPress={() => navigation.goBack()}>
-          <Text style={s.closeX}>✕</Text>
-        </TouchableOpacity>
-        <View style={s.dots}>
-          {steps.map((_, i) => (
-            <TouchableOpacity key={i} onPress={() => setStepIdx(i)}>
-              <View style={[s.dot,
-                i === stepIdx && s.dotActive,
-                i < stepIdx  && s.dotDone,
-              ]} />
-            </TouchableOpacity>
-          ))}
+      <SafeAreaView style={s.safe}>
+        {/* Nav bar */}
+        <View style={s.navbar}>
+          <TouchableOpacity style={s.closeBtn} onPress={() => router.back()}>
+            <Text style={s.closeTxt}>✕</Text>
+          </TouchableOpacity>
+          <CookDots total={steps.length} current={step} onJump={jumpTo} />
+          <Text style={s.counter}>{step + 1}/{steps.length}</Text>
         </View>
-        <Text style={s.stepLabel}>{stepIdx + 1}/{total}</Text>
-      </View>
 
-      <View style={s.phaseStrip}>
-        <Text style={s.phaseText}>{step.phase}</Text>
-      </View>
+        {/* Content */}
+        <View style={s.content}>
+          <Text style={s.phase}>{current.phase}</Text>
+          <Text style={s.stepText}>{current.text}</Text>
+          <View style={s.illus} />
+          <TimerPill
+            seconds={current.timerSec}
+            running={timerRunning}
+            onToggle={() => setTimerRunning(r => !r)}
+            done={timerDone}
+          />
+        </View>
 
-      <View style={[s.ill, { backgroundColor: illBg }]}>
-        <Text style={{ fontSize: 36 }}>🍲</Text>
-      </View>
-
-      <View style={s.body}>
-        <StepCard step={step} />
-      </View>
-
-      <View style={s.footer}>
-        <TouchableOpacity
-          style={[s.navBtn, s.prevBtn, isFirst && s.disabled]}
-          onPress={() => !isFirst && setStepIdx(i => i - 1)}
-          disabled={isFirst}>
-          <Text style={s.prevText}>← Prev</Text>
-        </TouchableOpacity>
-
-        {isLast ? (
-          <TouchableOpacity style={[s.navBtn, s.nextBtn]} onPress={() => navigation.goBack()}>
-            <Text style={s.nextText}>Finish ✓</Text>
+        {/* Footer nav */}
+        <View style={s.footer}>
+          <TouchableOpacity
+            style={[s.footBtn, s.footPrev, step === 0 && s.footPrevDim]}
+            onPress={goPrev}
+            disabled={step === 0}
+          >
+            <Text style={s.footPrevTxt}>← Prev</Text>
           </TouchableOpacity>
-        ) : (
-          <TouchableOpacity style={[s.navBtn, s.nextBtn]} onPress={() => setStepIdx(i => i + 1)}>
-            <Text style={s.nextText}>Next →</Text>
+          <TouchableOpacity style={[s.footBtn, s.footNext]} onPress={goNext}>
+            <Text style={s.footNextTxt}>{step === steps.length - 1 ? 'Finish ✓' : 'Next →'}</Text>
           </TouchableOpacity>
-        )}
-      </View>
+        </View>
+        <Text style={s.caption}>screen stays awake · swipe to navigate · works offline</Text>
+      </SafeAreaView>
     </View>
   );
 }
 
+// Default export kept for the legacy react-navigation TabNavigator until FE-12 removes it.
+export default CookModeScreen;
+
 const s = StyleSheet.create({
-  root:      { flex: 1 },
-  progLine:  { height: 2, backgroundColor: 'rgba(240,234,216,0.06)' },
-  progFill:  { height: '100%', backgroundColor: colors.cmAmber, borderRadius: 1 },
-  bar:       { flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14,
-               paddingTop: 10, paddingBottom: 8, gap: 0 },
-  closeBtn:  { width: 32, height: 32, borderRadius: 16, backgroundColor: colors.cmSurf,
-               alignItems: 'center', justifyContent: 'center',
-               borderWidth: 1, borderColor: colors.cmLine },
-  closeX:    { color: colors.cmMuted, fontSize: 13 },
-  dots:      { flex: 1, flexDirection: 'row', justifyContent: 'center', gap: 5 },
-  dot:       { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.cmSurf2 },
-  dotActive: { width: 20, backgroundColor: colors.cmAmber },
-  dotDone:   { backgroundColor: 'rgba(92,173,120,0.5)' },
-  stepLabel: { fontFamily: 'mono', fontSize: 10, color: colors.cmMuted,
-               fontWeight: '700', minWidth: 32, textAlign: 'right' },
-  phaseStrip: { paddingHorizontal: 18, paddingBottom: 10 },
-  phaseText:  { fontFamily: 'mono', fontSize: 9, letterSpacing: 2,
-                 textTransform: 'uppercase', color: colors.cmAmber, fontWeight: '700' },
-  ill:        { height: 94, marginHorizontal: 18, borderRadius: 14,
-                 alignItems: 'center', justifyContent: 'center' },
-  body:       { flex: 1, paddingHorizontal: 18, paddingTop: 14 },
-  footer:     { flexDirection: 'row', gap: 8, paddingHorizontal: 14, paddingVertical: 10,
-                 borderTopWidth: 1, borderTopColor: colors.cmLine },
-  navBtn:     { flex: 1, borderRadius: 14, padding: 14, alignItems: 'center',
-                 justifyContent: 'center' },
-  prevBtn:    { backgroundColor: colors.cmSurf, borderWidth: 1, borderColor: colors.cmLine },
-  nextBtn:    { backgroundColor: colors.cmGreen },
-  prevText:   { color: 'rgba(240,234,216,0.65)', fontWeight: '800', fontSize: 13 },
-  nextText:   { color: '#0c1a10', fontWeight: '800', fontSize: 13 },
-  disabled:   { opacity: 0.3 },
+  root: { flex: 1, backgroundColor: colors.cmBg },
+  track: { height: 2, backgroundColor: colors.cmLine },
+  fill: { height: 2, backgroundColor: colors.cmAmber },
+  safe: { flex: 1 },
+  navbar: {
+    flexDirection: 'row', alignItems: 'center',
+    paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: 8,
+  },
+  closeBtn: {
+    width: 32, height: 32, borderRadius: 16,
+    backgroundColor: colors.cmSurf, alignItems: 'center', justifyContent: 'center',
+  },
+  closeTxt: { fontSize: 14, color: colors.cmText, opacity: 0.6 },
+  counter: { flex: 0, fontSize: 11, fontFamily: fonts.mono, color: colors.cmMuted, marginLeft: 'auto' },
+  content: { flex: 1, padding: spacing.lg },
+  phase: {
+    fontSize: 9, fontFamily: fonts.mono, color: colors.cmAmber,
+    letterSpacing: 0.18, marginBottom: spacing.md,
+  },
+  stepText: {
+    fontSize: 20, fontFamily: fonts.serif, fontWeight: '700',
+    color: colors.cmText, lineHeight: 28, marginBottom: 24,
+  },
+  illus: {
+    height: 94, borderRadius: 14, backgroundColor: colors.cmSurf,
+    marginBottom: 20,
+  },
+  footer: { flexDirection: 'row', gap: spacing.sm, padding: spacing.lg },
+  footBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  footPrev: {
+    backgroundColor: colors.cmSurf,
+    borderWidth: 1, borderColor: colors.cmLine,
+  },
+  footPrevDim: { opacity: 0.3 },
+  footPrevTxt: { fontSize: 14, fontFamily: fonts.sans, color: colors.cmText, opacity: 0.65 },
+  footNext: { backgroundColor: colors.cmGreen },
+  footNextTxt: { fontSize: 14, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmBg },
+  caption: {
+    fontSize: 8, fontFamily: fonts.mono, color: colors.cmMuted,
+    textAlign: 'center', marginBottom: spacing.lg,
+  },
 });
