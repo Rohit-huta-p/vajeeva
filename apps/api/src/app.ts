@@ -7,6 +7,7 @@ import { recipesRouter } from './routes/recipes.routes';
 import { syncRouter } from './routes/sync.routes';
 import { adminRouter } from './routes/admin.routes';
 import { sourcesAdminRouter, sourcesPublicRouter } from './routes/sources.routes';
+import { subrecipesAdminRouter } from './routes/subrecipes.routes';
 
 export function createApp() {
   const app = express();
@@ -26,6 +27,7 @@ export function createApp() {
   app.use('/api/sync', syncRouter);
   app.use('/api/admin', adminRouter);
   app.use('/api/admin/sources', sourcesAdminRouter);
+  app.use('/api/admin/subrecipes', subrecipesAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
 
   app.get('/health', (_req, res) => {
