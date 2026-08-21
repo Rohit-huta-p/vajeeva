@@ -5,7 +5,8 @@
     "dev": "ts-node-dev --respawn src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
