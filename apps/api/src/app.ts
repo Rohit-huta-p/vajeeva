@@ -7,7 +7,7 @@ import { recipesRouter } from './routes/recipes.routes';
 import { syncRouter } from './routes/sync.routes';
 import { adminRouter } from './routes/admin.routes';
 import { sourcesAdminRouter, sourcesPublicRouter } from './routes/sources.routes';
-import { subrecipesAdminRouter } from './routes/subrecipes.routes';
+import { subrecipesAdminRouter, subrecipesPublicRouter } from './routes/subrecipes.routes';
 import { healthFlagsAdminRouter } from './routes/healthflags.routes';
 import { usersAdminRouter } from './routes/usersadmin.routes';
 
@@ -33,6 +33,7 @@ export function createApp() {
   app.use('/api/admin/health-flags', healthFlagsAdminRouter);
   app.use('/api/admin/users', usersAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
+  app.use('/api/subrecipes', subrecipesPublicRouter);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });

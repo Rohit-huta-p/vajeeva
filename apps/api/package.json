@@ -6,7 +6,8 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "test": "jest --runInBand",
-    "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts"
+    "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts",
+    "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",

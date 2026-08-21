@@ -3,6 +3,37 @@ import { SubRecipe } from '../models/SubRecipe';
 import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 
+// ── Public DTO (full shape for consumer sheet) ──────────────────────────────
+function toPublicDTO(doc: any) {
+  return {
+    id:          doc._id.toString(),
+    name:        doc.name,
+    slug:        doc.slug,
+    usedIn:      doc.usedIn ?? 0,
+    ingredients: (doc.ingredients ?? []).map((i: any) => ({ name: i.name, qty: i.qty })),
+    note:        doc.note ?? '',
+    method:      doc.method ?? '',
+  };
+}
+
+// Consumer router — no auth required
+export const subrecipesPublicRouter = Router();
+
+subrecipesPublicRouter.get('/', async (_req, res, next) => {
+  try {
+    const items = await SubRecipe.find({}).lean();
+    res.json(items.map(toPublicDTO));
+  } catch (err) { next(err); }
+});
+
+subrecipesPublicRouter.get('/:slug', async (req, res, next) => {
+  try {
+    const item = await SubRecipe.findOne({ slug: req.params.slug }).lean();
+    if (!item) { res.status(404).json({ error: 'Not found' }); return; }
+    res.json(toPublicDTO(item));
+  } catch (err) { next(err); }
+});
+
 export const subrecipesAdminRouter = Router();
 subrecipesAdminRouter.use(requireAuth, requireAdmin);
 
