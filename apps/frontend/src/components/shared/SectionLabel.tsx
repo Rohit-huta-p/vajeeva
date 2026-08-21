@@ -1,6 +1,6 @@
 import React from 'react';
 import { Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts } from '../../theme/tokens';
 
 export function SectionLabel({ label }: { label: string }) {
   return <Text style={s.t}>{label.toUpperCase()}</Text>;
@@ -8,7 +8,7 @@ export function SectionLabel({ label }: { label: string }) {
 
 const s = StyleSheet.create({
   t: {
-    fontFamily: fonts.mono, fontSize: 9, letterSpacing: 0.1,
-    color: colors.ink, opacity: 0.28, marginBottom: 6,
+    fontFamily: fonts.sans, fontSize: 9, fontWeight: '700', letterSpacing: 0.72,
+    color: 'rgba(42,37,30,0.28)', marginBottom: 7,
   },
 });

@@ -5,15 +5,16 @@ import { colors, fonts } from '../../theme/tokens';
 export function SourcePill({ name, onPress }: { name: string; onPress: () => void }) {
   return (
     <TouchableOpacity style={s.pill} onPress={onPress}>
-      <Text style={s.label}>{name}</Text>
+      <Text style={s.label}>{name} <Text style={s.ext}>↗</Text></Text>
     </TouchableOpacity>
   );
 }
 
 const s = StyleSheet.create({
   pill: {
-    borderWidth: 1, borderColor: colors.amber, borderStyle: 'dashed',
-    borderRadius: 99, paddingHorizontal: 10, paddingVertical: 4, marginRight: 6,
+    borderWidth: 1, borderColor: 'rgba(198,144,47,0.42)',
+    borderRadius: 4, paddingHorizontal: 9, paddingVertical: 3,
   },
-  label: { fontSize: 11, fontFamily: fonts.serifItalic, color: colors.amber },
+  label: { fontSize: 10, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber },
+  ext: { fontSize: 8, opacity: 0.6, fontStyle: 'normal', fontFamily: fonts.sans },
 });

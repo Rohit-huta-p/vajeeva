@@ -11,7 +11,7 @@ export function StepList({ steps }: { steps: Step[] }) {
   return (
     <View>
       {steps.map((step, i) => (
-        <View key={i} style={s.row}>
+        <View key={i} style={[s.row, i === steps.length - 1 && s.lastRow]}>
           <View style={s.circle}>
             <Text style={s.num}>{i + 1}</Text>
           </View>
@@ -26,18 +26,22 @@ export function StepList({ steps }: { steps: Step[] }) {
 }
 
 const s = StyleSheet.create({
-  row: { flexDirection: 'row', marginBottom: 16 },
+  row: {
+    flexDirection: 'row', gap: 9, paddingVertical: 7,
+    borderBottomWidth: 1, borderBottomColor: 'rgba(229,221,204,0.7)',
+  },
+  lastRow: { borderBottomWidth: 0 },
   circle: {
     width: 20, height: 20, borderRadius: 10,
-    backgroundColor: colors.green,
+    borderWidth: 1.5, borderColor: colors.green,
     alignItems: 'center', justifyContent: 'center',
-    marginRight: 10, marginTop: 2, flexShrink: 0,
+    marginTop: 1, flexShrink: 0,
   },
-  num: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: colors.onGreen },
+  num: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: colors.green },
   body: { flex: 1 },
   phase: {
-    fontSize: 8, fontFamily: fonts.mono, fontWeight: '700',
-    color: colors.amber, letterSpacing: 0.08, marginBottom: 4,
+    fontSize: 8, fontFamily: fonts.sans, fontWeight: '800',
+    color: colors.amber, letterSpacing: 0.5, marginBottom: 2,
   },
-  text: { fontSize: 13, fontFamily: fonts.sans, color: colors.ink, lineHeight: 18 },
+  text: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink, lineHeight: 16.5 },
 });

@@ -12,6 +12,8 @@ import { CTA } from '../components/shared/CTA';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
+import { IconBack, IconHeart, IconShare, IconPlay, IllHero } from '../components/shared/icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { recipesApi } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
 
@@ -78,34 +80,45 @@ export function RecipeDetailScreen() {
   return (
     <SafeAreaView style={s.root}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Hero */}
-        <View style={s.hero}>
-          <IconButton icon="←" onPress={() => router.back()} style={s.backBtn} />
-        </View>
+        {/* Illustration hero */}
+        <LinearGradient colors={[colors.greenSoft, colors.sand]} style={s.hero}>
+          <View style={s.heroBar}>
+            <IconButton icon={<IconBack size={15} color={colors.ink} />} onPress={() => router.back()} />
+            <View style={s.heroActs}>
+              <IconButton icon={<IconHeart size={15} color={colors.clay} />} onPress={() => {}} />
+              <IconButton icon={<IconShare size={15} color={colors.ink} />} onPress={() => {}} />
+            </View>
+          </View>
+          <IllHero width={174} height={130} />
+        </LinearGradient>
         <View style={s.body}>
           {/* Title */}
-          <Text style={s.title}>{recipe.nameEn}</Text>
-          <Text style={s.tamil}>{recipe.nameTa}</Text>
+          <View>
+            <Text style={s.title}>{recipe.nameEn}</Text>
+            {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
+          </View>
 
           {/* Sources */}
-          <SectionLabel label="Classical Sources" />
-          <View style={s.sourceRow}>
-            {recipe.sources.map(src => (
-              <SourcePill key={src} name={src} onPress={() => router.push(`/source/${toSourceSlug(src)}` as any)} />
-            ))}
+          <View>
+            <SectionLabel label="Classical sources" />
+            <View style={s.sourceRow}>
+              {recipe.sources.map(src => (
+                <SourcePill key={src} name={src} onPress={() => router.push(`/source/${toSourceSlug(src)}` as any)} />
+              ))}
+            </View>
           </View>
 
           {/* Yield / shelf */}
           <View style={s.badges}>
-            <View style={s.badge}><Text style={s.badgeText}>{recipe.yield}</Text></View>
-            <View style={s.badge}><Text style={s.badgeText}>{recipe.shelfLife}</Text></View>
+            {recipe.yield ? <View style={s.badge}><Text style={s.badgeText}>🫙 {recipe.yield}</Text></View> : null}
+            {recipe.shelfLife ? <View style={s.badge}><Text style={s.badgeText}>📅 {recipe.shelfLife}</Text></View> : null}
           </View>
 
           {/* Contra */}
           <ContraCard conditions={recipe.contraConditions} />
 
           {/* Ingredients */}
-          <View style={s.section}>
+          <View>
             <View style={s.ingHeader}>
               <Text style={s.sectionTitle}>Ingredients</Text>
               <View style={s.toggle}>
@@ -124,14 +137,15 @@ export function RecipeDetailScreen() {
           </View>
 
           {/* Method */}
-          <View style={s.section}>
-            <Text style={s.sectionTitle}>Method</Text>
+          <View>
+            <Text style={[s.sectionTitle, s.methodTitle]}>Method</Text>
+            <SectionLabel label={`${recipe.steps.length} steps · cook mode`} />
             <StepList steps={recipe.steps} />
           </View>
 
           {/* CTA */}
-          <CTA label="Start Cook Mode" icon="▶" onPress={() => router.push(`/cook/${slug}` as any)} />
-          <Disclaimer text="Consult a qualified practitioner before making dietary changes based on classical Ayurvedic texts." />
+          <CTA label="Start Cook" icon={<IconPlay size={15} color={colors.onGreen} />} onPress={() => router.push(`/cook/${slug}` as any)} />
+          <Disclaimer text="Supportive dietary guidance · not a substitute for medical advice" />
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -143,25 +157,28 @@ const s = StyleSheet.create({
   loading: { flex: 1 },
   hero: {
     height: 172,
-    backgroundColor: colors.greenSoft,
-    justifyContent: 'flex-end', padding: spacing.md,
+    alignItems: 'center', justifyContent: 'center',
   },
-  backBtn: { position: 'absolute', top: spacing.lg, left: spacing.md },
-  body: { padding: spacing.lg },
-  title: { fontSize: 22, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, letterSpacing: -0.01 * 22, marginBottom: 4 },
-  tamil: { fontSize: 13, fontFamily: fonts.serifItalic, color: colors.amber, marginBottom: spacing.md },
-  sourceRow: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: spacing.md },
-  badges: { flexDirection: 'row', gap: 8, marginBottom: spacing.md },
-  badge: { backgroundColor: colors.sand, borderRadius: 6, paddingHorizontal: 9, paddingVertical: 4 },
+  heroBar: {
+    position: 'absolute', top: 12, left: 12, right: 12,
+    flexDirection: 'row', justifyContent: 'space-between', zIndex: 2,
+  },
+  heroActs: { flexDirection: 'row', gap: 6 },
+  body: { paddingHorizontal: 14, paddingTop: 13, paddingBottom: 14, gap: 13 },
+  title: { fontSize: 22, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, letterSpacing: -0.22, lineHeight: 25 },
+  tamil: { fontSize: 13, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 3 },
+  sourceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
+  badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
+  badge: { backgroundColor: colors.sand, borderRadius: 4, paddingHorizontal: 9, paddingVertical: 4 },
   badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
-  section: { marginBottom: spacing.xl },
-  ingHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
-  sectionTitle: { flex: 1, fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  ingHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 },
+  sectionTitle: { fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  methodTitle: { marginBottom: 2 },
   toggle: {
-    flexDirection: 'row', backgroundColor: colors.sand, borderRadius: 8, padding: 2,
+    flexDirection: 'row', backgroundColor: colors.sand, borderRadius: 6, padding: 2, gap: 2,
   },
-  toggleBtn: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
+  toggleBtn: { paddingHorizontal: 9, paddingVertical: 3, borderRadius: 4 },
   toggleActive: { backgroundColor: colors.green },
-  toggleLabel: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink2 },
-  toggleLabelActive: { color: colors.onGreen, fontWeight: '700' },
+  toggleLabel: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', letterSpacing: 0.36, color: colors.muted },
+  toggleLabelActive: { color: '#fff' },
 });
