@@ -47,12 +47,14 @@ export const authApi = {
 };
 
 export const recipesApi = {
-  list: () => api.get<any[]>('/api/recipes').then(r => r.data),
+  list: (category?: string) =>
+    api.get<any[]>('/api/recipes', { params: category ? { category } : undefined }).then(r => r.data),
   detail: (slug: string) => api.get<any>(`/api/recipes/${slug}`).then(r => r.data),
 };
 
 export const savedApi = {
-  list: () => api.get<{ savedIds: string[] }>('/api/sync/saved').then(r => r.data.savedIds ?? []),
+  // GET /api/sync/saved returns a bare string[] of recipe ids.
+  list: () => api.get<string[]>('/api/sync/saved').then(r => r.data ?? []),
   push: (added: string[], removed: string[]) =>
     api.post('/api/sync/saved', { added, removed }),
 };
