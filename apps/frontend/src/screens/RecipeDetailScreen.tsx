@@ -182,7 +182,7 @@ const s = StyleSheet.create({
   badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
   fnRow: {
     flexDirection: 'row', alignItems: 'center', gap: 6,
-    paddingTop: 8, paddingBottom: 3,
+    paddingTop: 8, paddingBottom: 11,
   },
   fnLabel: { fontSize: 9, fontFamily: fonts.sans, color: 'rgba(42,37,30,0.35)' },
   fnPill: {
