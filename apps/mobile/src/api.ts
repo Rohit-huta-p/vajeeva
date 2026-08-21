@@ -50,3 +50,9 @@ export const recipesApi = {
   list: () => api.get<any[]>('/api/recipes').then(r => r.data),
   detail: (slug: string) => api.get<any>(`/api/recipes/${slug}`).then(r => r.data),
 };
+
+export const savedApi = {
+  list: () => api.get<{ savedIds: string[] }>('/api/sync/saved').then(r => r.data.savedIds ?? []),
+  push: (added: string[], removed: string[]) =>
+    api.post('/api/sync/saved', { added, removed }),
+};

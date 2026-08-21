@@ -8,10 +8,12 @@ import SourceList from '../components/SourceList';
 import SaveButton from '../components/SaveButton';
 import { colors } from '../theme';
 import { recipesApi } from '../api';
+import { useSavedRecipe } from '../hooks/useSavedRecipes';
 
 export default function RecipeDetailScreen({ route, navigation }: RecipeDetailProps) {
   const { slug } = route.params;
   const [recipe, setRecipe] = useState<Recipe | null>(null);
+  const { isSaved, toggle } = useSavedRecipe(slug);
 
   useEffect(() => {
     let mounted = true;
@@ -44,7 +46,7 @@ export default function RecipeDetailScreen({ route, navigation }: RecipeDetailPr
       </View>
 
       <View style={s.actions}>
-        <SaveButton isSaved={false} onPress={() => {}} />
+        <SaveButton isSaved={isSaved} onPress={toggle} />
         <TouchableOpacity style={s.cookBtn}
           onPress={() => navigation.navigate('CookMode', { slug })}>
           <Text style={s.cookBtnText}>▶ Cook Mode</Text>

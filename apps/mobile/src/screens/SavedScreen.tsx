@@ -1,36 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import type { Recipe } from '../components/RecipeCard';
 import { colors } from '../theme';
 import { recipesApi } from '../api';
+import { useSavedRecipe } from '../hooks/useSavedRecipes';
+// ponytail: renders all, each item hides itself if not saved; fine for 83 recipes
+
+function SavedItem({ recipe }: { recipe: Recipe }) {
+  const { isSaved } = useSavedRecipe(recipe.slug);
+  if (!isSaved) return null;
+  return <Text style={styles.item}>{recipe.nameEn}</Text>;
+}
 
 export default function SavedScreen() {
-  const [saved, setSaved] = useState<Recipe[]>([]);
+  const [all, setAll] = useState<Recipe[]>([]);
 
   useEffect(() => {
     let mounted = true;
-    const load = async () => {
-      try {
-        const all = await recipesApi.list();
-        if (mounted) setSaved(all.filter((r: any) => r.status === 'published'));
-      } catch (e) {
-        console.warn('Failed to load saved', e);
-      }
-    };
-    load();
+    recipesApi.list()
+      .then(data => { if (mounted) setAll(data.filter((r: any) => r.status === 'published')); })
+      .catch(() => {});
     return () => { mounted = false; };
   }, []);
 
   return (
     <View style={styles.root}>
       <Text style={styles.heading}>Saved</Text>
-      {saved.length === 0 ? (
-        <Text style={styles.empty}>No saved recipes yet.</Text>
-      ) : (
-        saved.map(r => (
-          <Text key={r.slug} style={styles.item}>{r.nameEn}</Text>
-        ))
-      )}
+      <FlatList
+        data={all}
+        keyExtractor={r => r.slug}
+        renderItem={({ item }) => <SavedItem recipe={item} />}
+        ListEmptyComponent={<Text style={styles.empty}>No saved recipes yet.</Text>}
+      />
     </View>
   );
 }
