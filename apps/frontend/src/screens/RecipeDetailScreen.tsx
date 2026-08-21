@@ -15,6 +15,11 @@ import { IconButton } from '../components/shared/IconButton';
 import { recipesApi } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
 
+// Matches the API's Source slug scheme (lowercase, non-alphanumeric -> '-').
+function toSourceSlug(name: string): string {
+  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
 interface DetailView {
   nameEn: string;
   nameTa?: string;
@@ -86,7 +91,7 @@ export function RecipeDetailScreen() {
           <SectionLabel label="Classical Sources" />
           <View style={s.sourceRow}>
             {recipe.sources.map(src => (
-              <SourcePill key={src} name={src} onPress={() => router.push(`/source/${src}` as any)} />
+              <SourcePill key={src} name={src} onPress={() => router.push(`/source/${toSourceSlug(src)}` as any)} />
             ))}
           </View>
 

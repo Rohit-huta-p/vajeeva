@@ -52,6 +52,11 @@ export const recipesApi = {
   detail: (slug: string) => api.get<any>(`/api/recipes/${slug}`).then(r => r.data),
 };
 
+export const sourcesApi = {
+  list: () => api.get<any[]>('/api/sources').then(r => r.data),
+  detail: (slug: string) => api.get<any>(`/api/sources/${slug}`).then(r => r.data),
+};
+
 export const savedApi = {
   // GET /api/sync/saved returns a bare string[] of recipe ids.
   list: () => api.get<string[]>('/api/sync/saved').then(r => r.data ?? []),
