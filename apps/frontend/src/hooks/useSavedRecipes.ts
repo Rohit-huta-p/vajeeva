@@ -1,56 +1,34 @@
-// src/hooks/useSavedRecipes.ts
-// Module-level saved set — shared across all screens without a Context.
-// Listeners re-render any component using the hook.
-import { useState, useEffect, useCallback } from 'react';
-import { savedApi } from '../api';
+import { useState, useCallback } from 'react';
+import { get, set } from '../offline/storage';
 
-const savedIds = new Set<string>();
-const listeners = new Set<() => void>();
+const KEY = 'savedIds';
 
-function notify() { listeners.forEach(fn => fn()); }
-
-let initialized = false;
-
-/** Load saved list from the server once per session. */
-export async function initSaved() {
-  if (initialized) return;
-  initialized = true;
-  try {
-    const ids = await savedApi.list();
-    ids.forEach(id => savedIds.add(id));
-    notify();
-  } catch { /* offline or logged out — skip */ }
+function load(): string[] {
+  return get<string[]>(KEY) ?? [];
 }
 
-/** Reset on logout. */
-export function clearSaved() {
-  savedIds.clear();
-  initialized = false;
-  notify();
+export function useSavedRecipes() {
+  const [ids, setIds] = useState<string[]>(load);
+
+  const save = useCallback((slug: string) => {
+    const next = [...new Set([...ids, slug])];
+    set(KEY, next);
+    setIds(next);
+  }, [ids]);
+
+  const unsave = useCallback((slug: string) => {
+    const next = ids.filter(id => id !== slug);
+    set(KEY, next);
+    setIds(next);
+  }, [ids]);
+
+  const isSaved = useCallback((slug: string) => ids.includes(slug), [ids]);
+
+  return { ids, save, unsave, isSaved };
 }
 
-/** React hook — returns live isSaved + toggle for a given recipe slug. */
-export function useSavedRecipe(slug: string) {
-  const [isSaved, setIsSaved] = useState(() => savedIds.has(slug));
-
-  useEffect(() => {
-    const refresh = () => setIsSaved(savedIds.has(slug));
-    listeners.add(refresh);
-    return () => { listeners.delete(refresh); };
-  }, [slug]);
-
-  const toggle = useCallback(async () => {
-    const next = !savedIds.has(slug);
-    if (next) savedIds.add(slug); else savedIds.delete(slug);
-    notify();
-    try {
-      await savedApi.push(next ? [slug] : [], next ? [] : [slug]);
-    } catch {
-      // Revert on failure
-      if (next) savedIds.delete(slug); else savedIds.add(slug);
-      notify();
-    }
-  }, [slug]);
-
-  return { isSaved, toggle };
-}
+// TODO(reconcile): compat no-ops for the legacy pre-router src/App.tsx, which
+// imported the old server-backed initSaved/clearSaved. Remove once App.tsx is
+// retired at final integration.
+export async function initSaved() {}
+export function clearSaved() {}

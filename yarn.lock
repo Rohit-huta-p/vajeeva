@@ -4266,6 +4266,7 @@ __metadata:
     react: "npm:19.1.0"
     react-dom: "npm:19.1.0"
     react-native: "npm:0.81.5"
+    react-native-mmkv: "npm:^4.3.2"
     react-native-safe-area-context: "npm:~5.6.0"
     react-native-screens: "npm:~4.16.0"
     react-native-web: "npm:^0.21.0"
@@ -12679,6 +12680,17 @@ __metadata:
     react: "*"
     react-native: "*"
   checksum: 10c0/28cebd5f1f3632864ff5e342278721d1e5e38627ae73859a8814012116ef15c629fee7137a6c9c97bb05d94bbe639b0b47e69b36fc2735ab53ed31570140663f
+  languageName: node
+  linkType: hard
+
+"react-native-mmkv@npm:^4.3.2":
+  version: 4.3.2
+  resolution: "react-native-mmkv@npm:4.3.2"
+  peerDependencies:
+    react: "*"
+    react-native: "*"
+    react-native-nitro-modules: "*"
+  checksum: 10c0/47c86114ee0ddbc8245dda174f419df9390a8ce0a6bcee0ded5eabd0b257e2b49257ddaf3b39eb5ab95ad7eed0ffa6d6b1e7c6bf8a3e56e6508408e49b98ed07
   languageName: node
   linkType: hard
 

@@ -1,44 +1,52 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import type { Recipe } from '../components/RecipeCard';
-import { colors } from '../theme';
-import { recipesApi } from '../api';
-import { useSavedRecipe } from '../hooks/useSavedRecipes';
-// ponytail: renders all, each item hides itself if not saved; fine for 83 recipes
+import React from 'react';
+import { View, Text, FlatList, StyleSheet, SafeAreaView } from 'react-native';
+import { useRouter } from 'expo-router';
+import { colors, fonts, spacing } from '../theme/tokens';
+import { OfflineBadge } from '../components/shared/OfflineBadge';
+import { RecipeCard } from '../components/shared/RecipeCard';
+import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { get } from '../offline/storage';
+import type { RecipeListItem } from '../api/recipes';
 
-function SavedItem({ recipe }: { recipe: Recipe }) {
-  const { isSaved } = useSavedRecipe(recipe.slug);
-  if (!isSaved) return null;
-  return <Text style={styles.item}>{recipe.nameEn}</Text>;
-}
+// TODO(GAP-SAVEDKEYS): reads `saved:{id}` payloads that no code writes yet
+// (FinishScreen only stores the slug in savedIds). god to reconcile.
 
-export default function SavedScreen() {
-  const [all, setAll] = useState<Recipe[]>([]);
-
-  useEffect(() => {
-    let mounted = true;
-    recipesApi.list()
-      .then(data => { if (mounted) setAll(data.filter((r: any) => r.status === 'published')); })
-      .catch(() => {});
-    return () => { mounted = false; };
-  }, []);
+export function SavedScreen() {
+  const router = useRouter();
+  const { ids } = useSavedRecipes();
+  const recipes = ids
+    .map(id => get<RecipeListItem>(`saved:${id}`))
+    .filter(Boolean) as RecipeListItem[];
 
   return (
-    <View style={styles.root}>
-      <Text style={styles.heading}>Saved</Text>
+    <SafeAreaView style={s.root}>
+      <View style={s.header}>
+        <Text style={s.title}>Saved</Text>
+        <OfflineBadge />
+      </View>
       <FlatList
-        data={all}
+        data={recipes}
         keyExtractor={r => r.slug}
-        renderItem={({ item }) => <SavedItem recipe={item} />}
-        ListEmptyComponent={<Text style={styles.empty}>No saved recipes yet.</Text>}
+        numColumns={2}
+        renderItem={({ item }) => (
+          <View style={s.col}>
+            <RecipeCard recipe={item} onPress={() => router.push(`/recipe/${item.slug}` as any)} />
+          </View>
+        )}
+        contentContainerStyle={s.grid}
+        ListEmptyComponent={
+          <Text style={s.empty}>No saved recipes yet.</Text>
+        }
       />
-    </View>
+    </SafeAreaView>
   );
 }
 
-const styles = StyleSheet.create({
-  root:    { flex: 1, backgroundColor: colors.bone, padding: 16 },
-  heading: { fontSize: 22, fontWeight: '800', color: colors.ink, marginBottom: 12 },
-  empty:   { textAlign: 'center', color: colors.muted, marginTop: 40 },
-  item:    { padding: 12, color: colors.ink, borderBottomWidth: 1, borderBottomColor: colors.line },
+const s = StyleSheet.create({
+  root: { flex: 1, backgroundColor: colors.bone },
+  header: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg, gap: spacing.sm },
+  title: { flex: 1, fontSize: 18, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  grid: { padding: spacing.md },
+  col: { flex: 1, margin: 4 },
+  empty: { textAlign: 'center', color: colors.muted, marginTop: 60 },
 });
