@@ -1,22 +1,27 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator,
+  View, Text, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, spacing } from '../theme/tokens';
+import { colors, fonts } from '../theme/tokens';
 import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
+import { IconBack, IconChev, IconCheck, IconClose, IconFlame, CategoryIll } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi, parseTimerMin } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
 
-interface CookStep { phase: string; text: string; timerSec: number }
+interface CookStep { phase: string; text: string; timerSec: number; heat: string | null }
+
+const NEXT_TEXT = '#0c1a10'; // prototype .cm-nav.next text color
+const PREV_TEXT = 'rgba(240,234,216,0.65)';
 
 export function CookModeScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState<CookStep[]>([]);
+  const [category, setCategory] = useState('solid');
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerDone, setTimerDone] = useState(false);
   const current = steps[step];
@@ -35,8 +40,10 @@ export function CookModeScreen() {
           phase: (st.phase ?? '').toUpperCase(),
           text: st.text,
           timerSec: parseTimerMin(st.timerStr) * 60,
+          heat: st.heat ?? null,
         }));
       setSteps(cookSteps);
+      setCategory(doc.category);
       startSession({
         slug,
         title: doc.nameEn,
@@ -97,6 +104,7 @@ export function CookModeScreen() {
   }
 
   const progress = (step + 1) / steps.length;
+  const isLast = step === steps.length - 1;
 
   return (
     <View style={s.root} {...panResponder.panHandlers}>
@@ -108,26 +116,40 @@ export function CookModeScreen() {
         {/* Nav bar */}
         <View style={s.navbar}>
           <TouchableOpacity style={s.closeBtn} onPress={() => router.back()}>
-            <Text style={s.closeTxt}>✕</Text>
+            <IconClose size={13} color={colors.cmMuted} />
           </TouchableOpacity>
           <CookDots total={steps.length} current={step} onJump={jumpTo} />
-          <Text style={s.counter}>{step + 1}/{steps.length}</Text>
+          <Text style={s.counter}>{step + 1} / {steps.length}</Text>
+        </View>
+
+        {/* Phase strip */}
+        <View style={s.phaseStrip}>
+          <Text style={s.phase}>Phase · {current.phase}</Text>
         </View>
 
         {/* Content */}
-        <View style={s.content}>
-          <Text style={s.phase}>{current.phase}</Text>
+        <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <Text style={s.stepText}>{current.text}</Text>
-          <View style={s.illus} />
-          {current.timerSec > 0 ? (
-            <TimerPill
-              seconds={current.timerSec}
-              running={timerRunning}
-              onToggle={() => setTimerRunning(r => !r)}
-              done={timerDone}
-            />
-          ) : null}
-        </View>
+          <View style={s.illus}>
+            <CategoryIll category={category} size={76} />
+          </View>
+          <View style={s.infoRow}>
+            {current.heat ? (
+              <View style={s.heat}>
+                <IconFlame size={11} color={colors.cmMuted} />
+                <Text style={s.heatText}>{current.heat}</Text>
+              </View>
+            ) : <View />}
+            {current.timerSec > 0 ? (
+              <TimerPill
+                seconds={current.timerSec}
+                running={timerRunning}
+                onToggle={() => setTimerRunning(r => !r)}
+                done={timerDone}
+              />
+            ) : null}
+          </View>
+        </ScrollView>
 
         {/* Footer nav */}
         <View style={s.footer}>
@@ -136,10 +158,12 @@ export function CookModeScreen() {
             onPress={goPrev}
             disabled={step === 0}
           >
-            <Text style={s.footPrevTxt}>← Prev</Text>
+            <IconBack size={13} color={PREV_TEXT} />
+            <Text style={s.footPrevTxt}>Back</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[s.footBtn, s.footNext]} onPress={goNext}>
-            <Text style={s.footNextTxt}>{step === steps.length - 1 ? 'Finish ✓' : 'Next →'}</Text>
+            <Text style={s.footNextTxt}>{isLast ? 'Finish' : 'Next'}</Text>
+            {isLast ? <IconCheck size={13} color={NEXT_TEXT} /> : <IconChev size={13} color={NEXT_TEXT} />}
           </TouchableOpacity>
         </View>
         <Text style={s.caption}>screen stays awake · swipe to navigate · works offline</Text>
@@ -148,47 +172,68 @@ export function CookModeScreen() {
   );
 }
 
+// Default export kept for the legacy react-navigation TabNavigator until FE-12 removes it.
+export default CookModeScreen;
+
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.cmBg },
   loadingRoot: { alignItems: 'center', justifyContent: 'center' },
   track: { height: 2, backgroundColor: colors.cmLine },
-  fill: { height: 2, backgroundColor: colors.cmAmber },
+  fill: { height: 2, backgroundColor: colors.cmAmber, borderTopRightRadius: 1, borderBottomRightRadius: 1 },
   safe: { flex: 1 },
   navbar: {
     flexDirection: 'row', alignItems: 'center',
-    paddingHorizontal: spacing.lg, paddingTop: spacing.md, paddingBottom: 8,
+    paddingHorizontal: 14, paddingTop: 6, paddingBottom: 8,
   },
   closeBtn: {
     width: 32, height: 32, borderRadius: 16,
-    backgroundColor: colors.cmSurf, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: colors.cmSurf, borderWidth: 1, borderColor: colors.cmLine,
+    alignItems: 'center', justifyContent: 'center',
   },
-  closeTxt: { fontSize: 14, color: colors.cmText, opacity: 0.6 },
-  counter: { flex: 0, fontSize: 11, fontFamily: fonts.mono, color: colors.cmMuted, marginLeft: 'auto' },
-  content: { flex: 1, padding: spacing.lg },
+  counter: {
+    fontSize: 10, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmMuted,
+    minWidth: 32, textAlign: 'right',
+  },
+  phaseStrip: { paddingTop: 2, paddingHorizontal: 18, paddingBottom: 10 },
   phase: {
-    fontSize: 9, fontFamily: fonts.mono, color: colors.cmAmber,
-    letterSpacing: 0.18, marginBottom: spacing.md,
+    fontSize: 9, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmAmber,
+    letterSpacing: 1.62, textTransform: 'uppercase',
   },
+  body: { flex: 1 },
+  bodyContent: { paddingHorizontal: 18, gap: 13 },
   stepText: {
     fontSize: 20, fontFamily: fonts.serif, fontWeight: '700',
-    color: colors.cmText, lineHeight: 28, marginBottom: 24,
+    color: colors.cmText, lineHeight: 27.6, letterSpacing: -0.2,
   },
   illus: {
     height: 94, borderRadius: 14, backgroundColor: colors.cmSurf,
-    marginBottom: 20,
+    alignItems: 'center', justifyContent: 'center',
   },
-  footer: { flexDirection: 'row', gap: spacing.sm, padding: spacing.lg },
-  footBtn: { flex: 1, paddingVertical: 12, borderRadius: 10, alignItems: 'center' },
+  infoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  heat: { flexDirection: 'row', alignItems: 'center', gap: 5 },
+  heatText: {
+    fontSize: 9.5, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmMuted,
+    letterSpacing: 0.38,
+  },
+  footer: {
+    flexDirection: 'row', gap: 8,
+    paddingHorizontal: 13, paddingTop: 9, paddingBottom: 6,
+    borderTopWidth: 1, borderTopColor: colors.cmLine,
+  },
+  footBtn: {
+    flex: 1, padding: 13, borderRadius: 13,
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6,
+  },
   footPrev: {
     backgroundColor: colors.cmSurf,
     borderWidth: 1, borderColor: colors.cmLine,
   },
   footPrevDim: { opacity: 0.3 },
-  footPrevTxt: { fontSize: 14, fontFamily: fonts.sans, color: colors.cmText, opacity: 0.65 },
+  footPrevTxt: { fontSize: 12.5, fontFamily: fonts.sans, fontWeight: '800', color: PREV_TEXT },
   footNext: { backgroundColor: colors.cmGreen },
-  footNextTxt: { fontSize: 14, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmBg },
+  footNextTxt: { fontSize: 12.5, fontFamily: fonts.sans, fontWeight: '800', color: NEXT_TEXT },
   caption: {
     fontSize: 8, fontFamily: fonts.mono, color: colors.cmMuted,
-    textAlign: 'center', marginBottom: spacing.lg,
+    textAlign: 'center', letterSpacing: 0.4, paddingTop: 4, paddingBottom: 10,
   },
 });
