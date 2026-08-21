@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView,
+  View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
@@ -12,32 +12,63 @@ import { CTA } from '../components/shared/CTA';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
+import { recipesApi } from '../api/recipes';
+import type { RecipeDoc } from '../api/recipes';
 
-// Placeholder data; replaced by recipesApi.get(slug) in the wiring wave.
-const PLACEHOLDER = {
-  nameEn: 'Paavakkai Pitla',
-  nameTa: 'பாவக்காய் பிட்லா',
-  sources: ['Samayamulu', 'Arogya Padasastra'],
-  yield: '2 servings',
-  shelfLife: '4h · refrigerate',
-  contraConditions: ['Pregnancy — bitter melon stimulates uterine contractions'],
-  ingredients: [
-    { name: 'Bitter melon', amountG: 150, amountCup: '1 cup' },
-    { name: 'Toor dal', amountG: 80, amountCup: '⅓ cup' },
-    { stage: 'Seasoning' } as any,
-    { name: 'Mustard seeds', amountG: 4, amountCup: '1 tsp' },
-  ],
-  steps: [
-    { phase: 'Prep', text: 'Wash and slice bitter melon into thin rounds. Soak toor dal for 20 minutes.' },
-    { phase: 'Cook', text: 'Pressure cook dal until soft. In a pan, temper mustard seeds in oil.' },
-  ],
-};
+interface DetailView {
+  nameEn: string;
+  nameTa?: string;
+  sources: string[];
+  yield: string;
+  shelfLife: string;
+  contraConditions: string[];
+  ingredients: { name: string; amountG: number; amountCup?: string }[];
+  steps: { phase?: string; text: string }[];
+}
+
+function toDetailView(doc: RecipeDoc): DetailView {
+  return {
+    nameEn: doc.nameEn,
+    nameTa: doc.nameTa,
+    sources: (doc.sources ?? []).map(src => src.text),
+    yield: doc.yieldStr ?? '',
+    shelfLife: doc.shelfLife ?? '',
+    contraConditions: (doc.healthFlags ?? [])
+      .filter(f => f.severity !== 'safe')
+      .map(f => `${f.condition.charAt(0).toUpperCase() + f.condition.slice(1)}${f.note ? ` — ${f.note}` : ''}`),
+    ingredients: (doc.ingredients ?? []).map(ing => ({
+      name: ing.nameEn,
+      amountG: parseInt(ing.quantityG ?? '', 10) || 0,
+      amountCup: ing.quantityCup,
+    })),
+    steps: [...(doc.steps ?? [])]
+      .sort((a, b) => a.order - b.order)
+      .map(st => ({ phase: st.phase, text: st.text })),
+  };
+}
 
 export function RecipeDetailScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
-  const recipe = PLACEHOLDER; // TODO: fetch by slug
+  const [recipe, setRecipe] = useState<DetailView | null>(null);
+
+  useEffect(() => {
+    let alive = true;
+    if (!slug) return;
+    recipesApi.detail(slug)
+      .then((doc: RecipeDoc) => { if (alive) setRecipe(toDetailView(doc)); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [slug]);
+
+  if (!recipe) {
+    return (
+      <SafeAreaView style={s.root}>
+        <ActivityIndicator style={s.loading} color={colors.green} />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={s.root}>
@@ -104,6 +135,7 @@ export function RecipeDetailScreen() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bone },
+  loading: { flex: 1 },
   hero: {
     height: 172,
     backgroundColor: colors.greenSoft,
