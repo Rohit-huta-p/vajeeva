@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { errorHandler } from './middleware/errorHandler';
 import { authRouter } from './routes/auth.routes';
@@ -8,6 +9,14 @@ import { adminRouter } from './routes/admin.routes';
 
 export function createApp() {
   const app = express();
+
+  app.use(cors({
+    origin: (origin, cb) => {
+      if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
+      return cb(new Error('Not allowed by CORS'));
+    },
+    credentials: true,
+  }));
   app.use(express.json());
   app.use(cookieParser());
 

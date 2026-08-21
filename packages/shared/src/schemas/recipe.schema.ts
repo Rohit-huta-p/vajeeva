@@ -49,5 +49,9 @@ export const RecipeInputSchema = RecipeSchema.omit({
   createdAt: true,
 });
 
+export type Ingredient = z.infer<typeof IngredientSchema>;
+export type Step = z.infer<typeof StepSchema>;
+export type HealthFlag = z.infer<typeof HealthFlagSchema>;
+export type Source = z.infer<typeof SourceSchema>;
 export type Recipe = z.infer<typeof RecipeSchema>;
 export type RecipeInput = z.infer<typeof RecipeInputSchema>;

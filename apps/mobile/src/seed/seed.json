@@ -1,0 +1,383 @@
+[
+  {
+    "serverId": "seed-coconut-burfi",
+    "slug": "coconut-burfi",
+    "nameEn": "Coconut Burfi",
+    "nameTa": "தேங்காய் பர்ஃபி",
+    "category": "semi-solid",
+    "description": "A classic Ayurvedic sweet made from fresh coconut and jaggery.",
+    "ingredients": [
+      { "nameEn": "Fresh Coconut",  "quantityG": "50 g",   "quantityCup": "¼ cup" },
+      { "nameEn": "Jaggery",        "quantityG": "40 g",   "quantityCup": "¼ cup" },
+      { "nameEn": "Whole Milk",     "quantityG": "120 ml", "quantityCup": "½ cup" },
+      { "nameEn": "Cardamom",       "quantityG": "1 g",    "quantityCup": "pinch" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Heat milk on low flame until it reduces by half.", "phase": "Milk phase",      "heat": "Low heat",    "timerStr": "08:00", "stepIngredients": ["Whole Milk"],    "illColor": "#2A3828" },
+      { "order": 2, "text": "Add grated coconut and stir continuously.",        "phase": "Coconut phase",   "heat": "Medium heat", "timerStr": null,    "stepIngredients": ["Fresh Coconut"], "illColor": "#3E5E3A" },
+      { "order": 3, "text": "Add jaggery and cook until mixture leaves the pan.","phase": "Setting phase",   "heat": "Low heat",    "timerStr": "05:00", "stepIngredients": ["Jaggery"],       "illColor": "#5C4A1E" },
+      { "order": 4, "text": "Add cardamom, mix, and pour into a greased tray.",  "phase": "Finish",          "heat": null,          "timerStr": null,    "stepIngredients": ["Cardamom"],      "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes",   "severity": "avoid",   "note": "High jaggery content" },
+      { "condition": "lactose",    "severity": "caution", "note": "Contains whole milk" }
+    ],
+    "sources": [
+      { "text": "Ksemakutulhalam", "citation": "10/54" }
+    ],
+    "yieldStr": "3–4 pieces",
+    "shelfLife": "5–7 days",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-moong-dal-payasam",
+    "slug": "moong-dal-payasam",
+    "nameEn": "Moong Dal Payasam",
+    "nameTa": "பச்சைப்பயறு பாயசம்",
+    "category": "liquid",
+    "description": "A nourishing sweet pudding made from yellow moong dal, jaggery, and milk.",
+    "ingredients": [
+      { "nameEn": "Yellow Moong Dal", "quantityG": "100 g",  "quantityCup": "½ cup" },
+      { "nameEn": "Jaggery",          "quantityG": "80 g",  "quantityCup": "½ cup" },
+      { "nameEn": "Milk",             "quantityG": "250 ml","quantityCup": "1 cup" },
+      { "nameEn": "Ghee",             "quantityG": "10 g",  "quantityCup": "1 tsp" },
+      { "nameEn": "Cardamom",         "quantityG": "1 g",   "quantityCup": "pinch" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Dry roast moong dal until golden and aromatic.", "phase": "Roast phase", "heat": "Low heat", "timerStr": "06:00", "stepIngredients": ["Yellow Moong Dal"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Pressure cook dal with water until soft.", "phase": "Cook phase", "heat": null, "timerStr": "10:00", "stepIngredients": ["Yellow Moong Dal"], "illColor": "#4A4538" },
+      { "order": 3, "text": "Mash cooked dal and add jaggery syrup.", "phase": "Sweeten phase", "heat": "Medium heat", "timerStr": "04:00", "stepIngredients": ["Jaggery"], "illColor": "#5C4A1E" },
+      { "order": 4, "text": "Add milk and cardamom, simmer until creamy.", "phase": "Finish", "heat": "Low heat", "timerStr": "07:00", "stepIngredients": ["Milk", "Cardamom"], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "avoid", "note": "High jaggery content" },
+      { "condition": "pitta",    "severity": "safe",   "note": "Cooling and nourishing" }
+    ],
+    "sources": [
+      { "text": "Susruta Samhita", "citation": "5/12" }
+    ],
+    "yieldStr": "2 servings",
+    "shelfLife": "1 day (refrigerated)",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-bajra-roti",
+    "slug": "bajra-roti",
+    "nameEn": "Bajra Roti",
+    "nameTa": "கorra கKUZHI மAVA",
+    "category": "solid",
+    "description": "Nutritious pearl millet flatbread, a staple in Tamil Nadu villages.",
+    "ingredients": [
+      { "nameEn": "Bajra Flour",  "quantityG": "200 g",  "quantityCup": "1½ cups" },
+      { "nameEn": "Wheat Flour",  "quantityG": "50 g",   "quantityCup": "¼ cup" },
+      { "nameEn": "Salt",         "quantityG": "3 g",    "quantityCup": "½ tsp" },
+      { "nameEn": "Water",        "quantityG": "120 ml", "quantityCup": "½ cup" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Mix flours and salt in a wide bowl.", "phase": "Mix phase", "heat": null, "timerStr": null, "stepIngredients": ["Bajra Flour", "Wheat Flour", "Salt"], "illColor": "#6E6656" },
+      { "order": 2, "text": "Add warm water gradually and knead into soft dough.", "phase": "Knead phase", "heat": null, "timerStr": null, "stepIngredients": ["Water"], "illColor": "#8A7E6B" },
+      { "order": 3, "text": "Divide dough into balls and roll into flat discs.", "phase": "Roll phase", "heat": null, "timerStr": null, "stepIngredients": [], "illColor": "#A89880" },
+      { "order": 4, "text": "Cook on hot tawa until golden spots appear on both sides.", "phase": "Cook phase", "heat": "Medium heat", "timerStr": "02:00", "stepIngredients": [], "illColor": "#4A3B2A" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "safe",   "note": "Low glycemic index" },
+      { "condition": "kapha",    "severity": "caution", "note": "Heavy to digest in excess" }
+    ],
+    "sources": [
+      { "text": "Caraka Samhita", "citation": "4/35" }
+    ],
+    "yieldStr": "4 rotis",
+    "shelfLife": "Same day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-ash-gourd-curry",
+    "slug": "ash-gourd-curry",
+    "nameEn": "Ash Gourd Curry",
+    "nameTa": "போற்சிகை கரி",
+    "category": "semi-solid",
+    "description": "A light, soothing curry made from ash gourd and mild spices.",
+    "ingredients": [
+      { "nameEn": "Ash Gourd",   "quantityG": "300 g",  "quantityCup": "2 cups" },
+      { "nameEn": "Moong Dal",   "quantityG": "50 g",   "quantityCup": "¼ cup" },
+      { "nameEn": "Turmeric",    "quantityG": "2 g",    "quantityCup": "½ tsp" },
+      { "nameEn": "Coconut Milk","quantityG": "100 ml", "quantityCup": "⅓ cup" },
+      { "nameEn": "Coriander",   "quantityG": "5 g",    "quantityCup": "1 tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Pressure cook ash gourd cubes with turmeric until tender.", "phase": "Cook phase", "heat": "Medium heat", "timerStr": "05:00", "stepIngredients": ["Ash Gourd", "Turmeric"], "illColor": "#2A3828" },
+      { "order": 2, "text": "Mash dal and add to the cooked gourd.", "phase": "Mix phase", "heat": "Low heat", "timerStr": null, "stepIngredients": ["Moong Dal"], "illColor": "#4A5E3A" },
+      { "order": 3, "text": "Pour coconut milk and simmer gently.", "phase": "Simmer phase", "heat": "Low heat", "timerStr": "03:00", "stepIngredients": ["Coconut Milk"], "illColor": "#3E5E3A" },
+      { "order": 4, "text": "Garnish with coriander and serve hot.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": ["Coriander"], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "pitta", "severity": "safe",   "note": "Cooling and easy to digest" },
+      { "condition": "vata",  "severity": "safe",   "note": "Moisturizing and grounding" }
+    ],
+    "sources": [
+      { "text": "Ashtanga Hridayam", "citation": "5/18" }
+    ],
+    "yieldStr": "3 servings",
+    "shelfLife": "1 day (refrigerated)",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-neer-mor",
+    "slug": "neer-mor",
+    "nameEn": "Neer Mor",
+    "nameTa": "நீர் மோர்",
+    "category": "liquid",
+    "description": "A refreshing spiced buttermilk drink perfect for hot summer days.",
+    "ingredients": [
+      { "nameEn": "Buttermilk",  "quantityG": "500 ml", "quantityCup": "2 cups" },
+      { "nameEn": "Ginger",      "quantityG": "5 g",    "quantityCup": "1 tsp" },
+      { "nameEn": "Green Chili", "quantityG": "2 g",    "quantityCup": "1 small" },
+      { "nameEn": "Coriander",   "quantityG": "10 g",   "quantityCup": "2 tbsp" },
+      { "nameEn": "Salt",        "quantityG": "3 g",    "quantityCup": "½ tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Blend ginger, green chili, and coriander with little water.", "phase": "Grind phase", "heat": null, "timerStr": null, "stepIngredients": ["Ginger", "Green Chili", "Coriander"], "illColor": "#3A4A28" },
+      { "order": 2, "text": "Strain the paste into buttermilk.", "phase": "Mix phase", "heat": null, "timerStr": null, "stepIngredients": ["Buttermilk"], "illColor": "#E9E1D0" },
+      { "order": 3, "text": "Add salt and stir well. Chill before serving.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": ["Salt"], "illColor": "#E9E1D0" }
+    ],
+    "healthFlags": [
+      { "condition": "pitta",   "severity": "safe",   "note": "Cooling digestive aid" },
+      { "condition": "acidity", "severity": "safe",   "note": "Neutralizes stomach acid" }
+    ],
+    "sources": [
+      { "text": "Ksemakutulhalam", "citation": "3/22" }
+    ],
+    "yieldStr": "2 glasses",
+    "shelfLife": "Same day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-ragi-mudde",
+    "slug": "ragi-mudde",
+    "nameEn": "Ragi Mudde",
+    "nameTa": "ராகி முட்டே",
+    "category": "solid",
+    "description": "A wholesome finger millet ball, a traditional Karnataka and Tamil Nadu staple.",
+    "ingredients": [
+      { "nameEn": "Ragi Flour", "quantityG": "200 g", "quantityCup": "1½ cups" },
+      { "nameEn": "Water",      "quantityG": "400 ml","quantityCup": "1¾ cups" },
+      { "nameEn": "Salt",       "quantityG": "3 g",  "quantityCup": "½ tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Bring water to boil in a heavy-bottomed vessel.", "phase": "Boil phase", "heat": "High heat", "timerStr": "03:00", "stepIngredients": ["Water"], "illColor": "#4A4538" },
+      { "order": 2, "text": "Add ragi flour gradually while stirring vigorously to avoid lumps.", "phase": "Mix phase", "heat": "Medium heat", "timerStr": "05:00", "stepIngredients": ["Ragi Flour"], "illColor": "#6E6656" },
+      { "order": 3, "text": "Cook until the mixture thickens and leaves the vessel sides.", "phase": "Cook phase", "heat": "Low heat", "timerStr": "08:00", "stepIngredients": [], "illColor": "#5C4A3A" },
+      { "order": 4, "text": "Shape into balls while hot and serve with sambar or curd.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": [], "illColor": "#4A3B2A" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "safe",   "note": "Excellent low-GI staple" },
+      { "condition": "anemia",   "severity": "safe",   "note": "Rich in iron and calcium" }
+    ],
+    "sources": [
+      { "text": "Susruta Samhita", "citation": "6/41" }
+    ],
+    "yieldStr": "4 balls",
+    "shelfLife": "Same day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-pumpkin-pongal",
+    "slug": "pumpkin-pongal",
+    "nameEn": "Pumpkin Pongal",
+    "nameTa": "புடங்கiniai பொங்கல்",
+    "category": "semi-solid",
+    "description": "A sweet rice and pumpkin dish prepared during harvest festivals.",
+    "ingredients": [
+      { "nameEn": "Rice",       "quantityG": "100 g",  "quantityCup": "½ cup" },
+      { "nameEn": "Pumpkin",    "quantityG": "150 g",  "quantityCup": "1 cup" },
+      { "nameEn": "Moong Dal",  "quantityG": "50 g",   "quantityCup": "¼ cup" },
+      { "nameEn": "Jaggery",    "quantityG": "60 g",   "quantityCup": "⅓ cup" },
+      { "nameEn": "Ghee",       "quantityG": "20 g",   "quantityCup": "1 tbsp" },
+      { "nameEn": "Cardamom",   "quantityG": "2 g",    "quantityCup": "½ tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Roast moong dal until golden and aromatic.", "phase": "Roast phase", "heat": "Low heat", "timerStr": "04:00", "stepIngredients": ["Moong Dal"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Cook rice, dal, and pumpkin together until soft.", "phase": "Cook phase", "heat": "Medium heat", "timerStr": "12:00", "stepIngredients": ["Rice", "Pumpkin", "Moong Dal"], "illColor": "#4A4538" },
+      { "order": 3, "text": "Mash the mixture and add melted jaggery.", "phase": "Sweeten phase", "heat": "Low heat", "timerStr": "03:00", "stepIngredients": ["Jaggery"], "illColor": "#5C4A1E" },
+      { "order": 4, "text": "Add ghee and cardamom, mix well and serve warm.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": ["Ghee", "Cardamom"], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "caution", "note": "Contains jaggery" },
+      { "condition": "vata",     "severity": "safe",    "note": "Warm, grounding, easy to digest" }
+    ],
+    "sources": [
+      { "text": "Ksemakutulhalam", "citation": "8/30" }
+    ],
+    "yieldStr": "3 servings",
+    "shelfLife": "1 day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-buttermilk",
+    "slug": "buttermilk",
+    "nameEn": "Spiced Buttermilk",
+    "nameTa": "மோர்",
+    "category": "liquid",
+    "description": "A cooling probiotic drink blended with aromatic spices and herbs.",
+    "ingredients": [
+      { "nameEn": "Buttermilk", "quantityG": "500 ml", "quantityCup": "2 cups" },
+      { "nameEn": "Cumin",      "quantityG": "3 g",   "quantityCup": "½ tsp" },
+      { "nameEn": "Asafoetida", "quantityG": "0.5 g", "quantityCup": "pinch" },
+      { "nameEn": "Curry Leaves","quantityG": "3 g",  "quantityCup": "6 leaves" },
+      { "nameEn": "Coriander",  "quantityG": "5 g",   "quantityCup": "1 tsp" },
+      { "nameEn": "Salt",       "quantityG": "3 g",   "quantityCup": "½ tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Temper cumin, asafoetida, and curry leaves in ghee.", "phase": "Tempering phase", "heat": "Low heat", "timerStr": "01:00", "stepIngredients": ["Cumin", "Asafoetida", "Curry Leaves"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Pour tempering into chilled buttermilk.", "phase": "Mix phase", "heat": null, "timerStr": null, "stepIngredients": ["Buttermilk"], "illColor": "#E9E1D0" },
+      { "order": 3, "text": "Add coriander and salt. Stir and serve immediately.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": ["Coriander", "Salt"], "illColor": "#E9E1D0" }
+    ],
+    "healthFlags": [
+      { "condition": "pitta",   "severity": "safe",   "note": "Excellent coolant" },
+      { "condition": "indigestion", "severity": "safe", "note": "Probiotic and digestive" }
+    ],
+    "sources": [
+      { "text": "Caraka Samhita", "citation": "7/12" }
+    ],
+    "yieldStr": "2 glasses",
+    "shelfLife": "Same day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-jowar-idli",
+    "slug": "jowar-idli",
+    "nameEn": "Jowar Idli",
+    "nameTa": "ஜோவர் இட்லி",
+    "category": "solid",
+    "description": "A soft, gluten-free idli made from jowar (sorghum) and urad dal.",
+    "ingredients": [
+      { "nameEn": "Jowar Flour", "quantityG": "150 g", "quantityCup": "1 cup" },
+      { "nameEn": "Urad Dal",    "quantityG": "100 g", "quantityCup": "½ cup" },
+      { "nameEn": "Fenugreek",   "quantityG": "5 g",   "quantityCup": "1 tsp" },
+      { "nameEn": "Salt",        "quantityG": "5 g",   "quantityCup": "1 tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Wash urad dal and fenugreek, soak for 4 hours.", "phase": "Soak phase", "heat": null, "timerStr": "04:00", "stepIngredients": ["Urad Dal", "Fenugreek"], "illColor": "#4A4538" },
+      { "order": 2, "text": "Grind dal to a fluffy batter and mix with jowar flour and salt.", "phase": "Mix phase", "heat": null, "timerStr": null, "stepIngredients": ["Jowar Flour", "Salt"], "illColor": "#6E6656" },
+      { "order": 3, "text": "Ferment batter for 8 hours in a warm place.", "phase": "Ferment phase", "heat": null, "timerStr": "08:00", "stepIngredients": [], "illColor": "#5C4A3A" },
+      { "order": 4, "text": "Steam in idli molds until a toothpick comes out clean.", "phase": "Steam phase", "heat": "Medium heat", "timerStr": "10:00", "stepIngredients": [], "illColor": "#3A3028" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "safe",   "note": "Low glycemic index" },
+      { "condition": "gluten",   "severity": "safe",   "note": "Naturally gluten-free" }
+    ],
+    "sources": [
+      { "text": "Ashtanga Hridayam", "citation": "5/42" }
+    ],
+    "yieldStr": "12 idlis",
+    "shelfLife": "1 day (refrigerated)",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-millet-khichdi",
+    "slug": "millet-khichdi",
+    "nameEn": "Millet Khichdi",
+    "nameTa": "தினை கிச்சிடி",
+    "category": "semi-solid",
+    "description": "A comforting one-pot meal of foxtail millet and moong dal with mild spices.",
+    "ingredients": [
+      { "nameEn": "Foxtail Millet", "quantityG": "150 g", "quantityCup": "1 cup" },
+      { "nameEn": "Moong Dal",      "quantityG": "50 g",  "quantityCup": "¼ cup" },
+      { "nameEn": "Ghee",           "quantityG": "15 g",  "quantityCup": "1 tbsp" },
+      { "nameEn": "Cumin",          "quantityG": "3 g",   "quantityCup": "½ tsp" },
+      { "nameEn": "Turmeric",       "quantityG": "2 g",   "quantityCup": "½ tsp" },
+      { "nameEn": "Salt",           "quantityG": "4 g",   "quantityCup": "¾ tsp" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Dry roast millet and dal until fragrant.", "phase": "Roast phase", "heat": "Low heat", "timerStr": "03:00", "stepIngredients": ["Foxtail Millet", "Moong Dal"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Temper cumin and turmeric in ghee.", "phase": "Tempering phase", "heat": "Low heat", "timerStr": "01:00", "stepIngredients": ["Cumin", "Turmeric", "Ghee"], "illColor": "#5C4A1E" },
+      { "order": 3, "text": "Add millet, dal, salt, and water. Pressure cook until soft.", "phase": "Cook phase", "heat": "Medium heat", "timerStr": "06:00", "stepIngredients": ["Foxtail Millet", "Moong Dal"], "illColor": "#4A4538" },
+      { "order": 4, "text": "Fluff with a spoon and serve with papad or curd.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": [], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "safe",   "note": "Low glycemic load" },
+      { "condition": "obesity",  "severity": "safe",   "note": "High fiber, satisfying" }
+    ],
+    "sources": [
+      { "text": "Susruta Samhita", "citation": "8/55" }
+    ],
+    "yieldStr": "3 servings",
+    "shelfLife": "1 day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-thinai-porridge",
+    "slug": "thinai-porridge",
+    "nameEn": "Thinai Porridge",
+    "nameTa": "தினை கஞči",
+    "category": "liquid",
+    "description": "A soothing foxtail millet porridge ideal for breakfast or recovery meals.",
+    "ingredients": [
+      { "nameEn": "Foxtail Millet", "quantityG": "100 g", "quantityCup": "¾ cup" },
+      { "nameEn": "Milk",           "quantityG": "300 ml","quantityCup": "1¼ cups" },
+      { "nameEn": "Jaggery",        "quantityG": "30 g",  "quantityCup": "2 tbsp" },
+      { "nameEn": "Ghee",           "quantityG": "10 g",  "quantityCup": "2 tsp" },
+      { "nameEn": "Cardamom",       "quantityG": "1 g",   "quantityCup": "pinch" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Roast millet until golden.", "phase": "Roast phase", "heat": "Low heat", "timerStr": "03:00", "stepIngredients": ["Foxtail Millet"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Cook millet in milk until soft and creamy.", "phase": "Cook phase", "heat": "Medium heat", "timerStr": "10:00", "stepIngredients": ["Foxtail Millet", "Milk"], "illColor": "#4A4538" },
+      { "order": 3, "text": "Add jaggery and cardamom, stir until dissolved.", "phase": "Sweeten phase", "heat": "Low heat", "timerStr": "02:00", "stepIngredients": ["Jaggery", "Cardamom"], "illColor": "#5C4A1E" },
+      { "order": 4, "text": "Finish with a dollop of ghee and serve warm.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": ["Ghee"], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "diabetes", "severity": "caution", "note": "Contains jaggery" },
+      { "condition": "pitta",    "severity": "safe",    "note": "Cooling and nourishing" }
+    ],
+    "sources": [
+      { "text": "Ksemakutulhalam", "citation": "12/8" }
+    ],
+    "yieldStr": "2 servings",
+    "shelfLife": "Same day",
+    "status": "published",
+    "updatedAt": 0
+  },
+  {
+    "serverId": "seed-karuveppilai-chutney",
+    "slug": "karuveppilai-chutney",
+    "nameEn": "Curry Leaf Chutney",
+    "nameTa": "கரிவேப்பிலை சட்னி",
+    "category": "semi-solid",
+    "description": "A pungent, aromatic chutney made from fresh curry leaves and coconut.",
+    "ingredients": [
+      { "nameEn": "Curry Leaves", "quantityG": "30 g",  "quantityCup": "1 cup" },
+      { "nameEn": "Coconut",      "quantityG": "50 g",  "quantityCup": "¼ cup" },
+      { "nameEn": "Green Chili",  "quantityG": "4 g",   "quantityCup": "2 small" },
+      { "nameEn": "Garlic",       "quantityG": "5 g",   "quantityCup": "2 cloves" },
+      { "nameEn": "Urad Dal",     "quantityG": "10 g",  "quantityCup": "1 tbsp" },
+      { "nameEn": "Tamarind",     "quantityG": "5 g",   "quantityCup": "small piece" }
+    ],
+    "steps": [
+      { "order": 1, "text": "Roast urad dal until golden.", "phase": "Roast phase", "heat": "Low heat", "timerStr": "02:00", "stepIngredients": ["Urad Dal"], "illColor": "#3E3A28" },
+      { "order": 2, "text": "Sauté curry leaves, coconut, chili, garlic, and tamarind.", "phase": "Sauté phase", "heat": "Medium heat", "timerStr": "03:00", "stepIngredients": ["Curry Leaves", "Coconut", "Green Chili", "Garlic", "Tamarind"], "illColor": "#2A3828" },
+      { "order": 3, "text": "Grind to a coarse paste with little water.", "phase": "Grind phase", "heat": null, "timerStr": null, "stepIngredients": [], "illColor": "#3A4A28" },
+      { "order": 4, "text": "Temper with mustard seeds and serve.", "phase": "Finish", "heat": null, "timerStr": null, "stepIngredients": [], "illColor": "#2A3828" }
+    ],
+    "healthFlags": [
+      { "condition": "anemia", "severity": "safe",   "note": "Rich in iron" },
+      { "condition": "digestion", "severity": "safe", "note": "Aids digestion" }
+    ],
+    "sources": [
+      { "text": "Susruta Samhita", "citation": "9/22" }
+    ],
+    "yieldStr": "1 cup",
+    "shelfLife": "3 days (refrigerated)",
+    "status": "published",
+    "updatedAt": 0
+  }
+]
