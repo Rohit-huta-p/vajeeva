@@ -5,6 +5,7 @@ const HealthFlagConfigSchema = new mongoose.Schema({
   code:        { type: String, required: true, unique: true },
   label:       { type: String, required: true },
   description: { type: String, required: true },
+  enabled:     { type: Boolean, default: false },
 });
 
 export const HealthFlagConfig = mongoose.model('HealthFlagConfig', HealthFlagConfigSchema);

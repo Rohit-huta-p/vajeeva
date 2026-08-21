@@ -8,6 +8,8 @@ import { syncRouter } from './routes/sync.routes';
 import { adminRouter } from './routes/admin.routes';
 import { sourcesAdminRouter, sourcesPublicRouter } from './routes/sources.routes';
 import { subrecipesAdminRouter } from './routes/subrecipes.routes';
+import { healthFlagsAdminRouter } from './routes/healthflags.routes';
+import { usersAdminRouter } from './routes/usersadmin.routes';
 
 export function createApp() {
   const app = express();
@@ -28,6 +30,8 @@ export function createApp() {
   app.use('/api/admin', adminRouter);
   app.use('/api/admin/sources', sourcesAdminRouter);
   app.use('/api/admin/subrecipes', subrecipesAdminRouter);
+  app.use('/api/admin/health-flags', healthFlagsAdminRouter);
+  app.use('/api/admin/users', usersAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
 
   app.get('/health', (_req, res) => {
