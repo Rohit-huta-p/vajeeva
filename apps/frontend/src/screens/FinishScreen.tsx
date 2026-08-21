@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
@@ -6,11 +6,11 @@ import { CTA } from '../components/shared/CTA';
 import { GhostButton } from '../components/shared/GhostButton';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useCookSession } from '../hooks/useCookSession';
-import type { RecipeListItem } from '../api/recipes';
+import { recipesApi, toListItem } from '../api/recipes';
+import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 
-// Placeholder offline payload built from the slug; WIRE-FE replaces this with
-// the recipe fetched via recipesApi.get(slug).
-function placeholderRecipe(slug: string): RecipeListItem {
+// Offline fallback built from the slug, used only if the fetch fails.
+function slugFallback(slug: string): RecipeListItem {
   return {
     slug,
     nameEn: slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
@@ -25,7 +25,17 @@ export function FinishScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { save, isSaved } = useSavedRecipes();
   const { clearSession } = useCookSession();
+  const [recipe, setRecipe] = useState<RecipeListItem>(() => slugFallback(slug ?? ''));
   const saved = isSaved(slug ?? '');
+
+  useEffect(() => {
+    let alive = true;
+    if (!slug) return;
+    recipesApi.detail(slug)
+      .then((doc: RecipeDoc) => { if (alive) setRecipe(toListItem(doc)); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [slug]);
 
   // The cook is finished — drop the active session so HomeScreen stops
   // offering "Continue cooking".
@@ -54,7 +64,7 @@ export function FinishScreen() {
         <Text style={s.saveHeader}>Save for later?</Text>
         <Text style={s.saveSub}>Available offline — no internet needed next time.</Text>
         {!saved ? (
-          <CTA label="Save Recipe" onPress={() => save(placeholderRecipe(slug ?? ''))} />
+          <CTA label="Save Recipe" onPress={() => save(recipe)} />
         ) : (
           <Text style={s.savedMsg}>✓ Already saved</Text>
         )}
