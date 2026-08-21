@@ -6,6 +6,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
 import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
+import { useCookSession } from '../hooks/useCookSession';
 
 // ponytail: placeholder steps; replace with recipesApi.get(slug).steps
 const PLACEHOLDER_STEPS = [
@@ -22,6 +23,23 @@ export function CookModeScreen() {
   const [timerDone, setTimerDone] = useState(false);
   const steps = PLACEHOLDER_STEPS;
   const current = steps[step];
+  const { startSession, updateStep } = useCookSession();
+
+  // Persist the session so HomeScreen can offer "Continue cooking".
+  // Title/texture are placeholders until WIRE-FE fetches the real recipe.
+  useEffect(() => {
+    startSession({
+      slug: slug ?? '',
+      title: 'Paavakkai Pitla',
+      texture: 'solid',
+      stepIndex: 0,
+      totalSteps: steps.length,
+      startedAt: Date.now(),
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => { updateStep(step); }, [step, updateStep]);
 
   // Web wake lock — keeps the screen on while cooking
   useEffect(() => {

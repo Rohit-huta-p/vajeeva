@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
 import { CTA } from '../components/shared/CTA';
 import { GhostButton } from '../components/shared/GhostButton';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { useCookSession } from '../hooks/useCookSession';
 import type { RecipeListItem } from '../api/recipes';
 
 // Placeholder offline payload built from the slug; WIRE-FE replaces this with
@@ -23,7 +24,12 @@ export function FinishScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { save, isSaved } = useSavedRecipes();
+  const { clearSession } = useCookSession();
   const saved = isSaved(slug ?? '');
+
+  // The cook is finished — drop the active session so HomeScreen stops
+  // offering "Continue cooking".
+  useEffect(() => { clearSession(); }, [clearSession]);
 
   return (
     <SafeAreaView style={s.root}>

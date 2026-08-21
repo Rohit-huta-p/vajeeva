@@ -6,6 +6,10 @@ import { useRouter } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
 import { SearchBar } from '../components/shared/SearchBar';
 import { TexturePillar } from '../components/shared/TexturePillar';
+import { SectionLabel } from '../components/shared/SectionLabel';
+import { ContinueCookingCard } from '../components/shared/ContinueCookingCard';
+import { useCookSession } from '../hooks/useCookSession';
+import type { RecipeListItem } from '../api/recipes';
 
 const PILLARS = [
   { key: 'solid',  name: 'Solid Foods',  subtitle: 'Grains, lentils & vegetables', count: 24 },
@@ -13,13 +17,18 @@ const PILLARS = [
   { key: 'semi',   name: 'Semi-solid',    subtitle: 'Porridges, purees & chutneys', count: 16 },
 ] as const;
 
-// TODO(GAP-COOKSESSION): spec §5 shows a ContinueCookingCard here when a cook
-// session is in progress, driven by useCookSession() — that hook is not defined
-// in any task. Left out intentionally; god to reconcile.
-
 export function HomeScreen() {
   const [search, setSearch] = useState('');
   const router = useRouter();
+  const { session } = useCookSession();
+
+  const sessionRecipe: RecipeListItem | null = session ? {
+    slug: session.slug,
+    nameEn: session.title,
+    category: session.texture,
+    cookTimeMin: 0,
+    contraCount: 0,
+  } : null;
 
   return (
     <SafeAreaView style={s.root}>
@@ -35,6 +44,19 @@ export function HomeScreen() {
         <View style={s.searchWrap}>
           <SearchBar value={search} onChangeText={setSearch} />
         </View>
+
+        {/* Continue cooking */}
+        {session && sessionRecipe ? (
+          <>
+            <SectionLabel label="Continue cooking" />
+            <ContinueCookingCard
+              recipe={sessionRecipe}
+              currentStep={session.stepIndex + 1}
+              totalSteps={session.totalSteps}
+              onPress={() => router.push(`/cook/${session.slug}` as any)}
+            />
+          </>
+        ) : null}
 
         {/* Section heading */}
         <Text style={s.heading}>What would you like today?</Text>
