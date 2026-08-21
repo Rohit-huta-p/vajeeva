@@ -1,10 +1,14 @@
-import { View, Text } from 'react-native';
+import { useRouter } from 'expo-router';
+import RegisterScreen from '../../src/auth/RegisterScreen';
 
-// Route stub owned by Jim (frontend-core). Wired to its screen at FE-12.
+// Adapts the legacy react-navigation-style screen to expo-router.
 export default function Signup() {
-  return (
-    <View style={{ flex: 1, backgroundColor: '#F2EDE1', alignItems: 'center', justifyContent: 'center' }}>
-      <Text style={{ color: '#2A251E' }}>Signup</Text>
-    </View>
-  );
+  const router = useRouter();
+  const navigation = {
+    navigate: (route: string) => {
+      if (route === 'Login') router.push('/auth/login' as any);
+      else router.push('/' as any);
+    },
+  };
+  return <RegisterScreen navigation={navigation} />;
 }
