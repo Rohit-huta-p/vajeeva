@@ -13,6 +13,7 @@ import { Disclaimer } from '../components/shared/Disclaimer';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
 import { IconBack, IconHeart, IconShare, IconPlay, IllHero } from '../components/shared/icons';
+import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { LinearGradient } from 'expo-linear-gradient';
 import { recipesApi } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
@@ -58,6 +59,7 @@ export function RecipeDetailScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
+  const [aromaOpen, setAromaOpen] = useState(false);
   const [recipe, setRecipe] = useState<DetailView | null>(null);
 
   useEffect(() => {
@@ -134,6 +136,12 @@ export function RecipeDetailScreen() {
               </View>
             </View>
             <IngredientTable ingredients={recipe.ingredients} unit={unit} />
+            <View style={s.fnRow}>
+              <Text style={s.fnLabel}>* Some recipes reference</Text>
+              <TouchableOpacity style={s.fnPill} onPress={() => setAromaOpen(true)}>
+                <Text style={s.fnPillText}>Aromatic Powder Blend <Text style={s.fnExt}>↗</Text></Text>
+              </TouchableOpacity>
+            </View>
           </View>
 
           {/* Method */}
@@ -148,6 +156,7 @@ export function RecipeDetailScreen() {
           <Disclaimer text="Supportive dietary guidance · not a substitute for medical advice" />
         </View>
       </ScrollView>
+      <AromaticPowderSheet visible={aromaOpen} onClose={() => setAromaOpen(false)} />
     </SafeAreaView>
   );
 }
@@ -171,6 +180,17 @@ const s = StyleSheet.create({
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
   badge: { backgroundColor: colors.sand, borderRadius: 4, paddingHorizontal: 9, paddingVertical: 4 },
   badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
+  fnRow: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingTop: 8, paddingBottom: 3,
+  },
+  fnLabel: { fontSize: 9, fontFamily: fonts.sans, color: 'rgba(42,37,30,0.35)' },
+  fnPill: {
+    borderWidth: 1, borderStyle: 'dashed', borderColor: 'rgba(198,144,47,0.45)',
+    borderRadius: 4, paddingHorizontal: 8, paddingVertical: 2,
+  },
+  fnPillText: { fontSize: 9, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber },
+  fnExt: { fontSize: 8, opacity: 0.7, fontStyle: 'normal', fontFamily: fonts.sans },
   ingHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 },
   sectionTitle: { fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
   methodTitle: { marginBottom: 2 },
