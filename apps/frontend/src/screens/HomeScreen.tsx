@@ -1,69 +1,89 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { View, FlatList, Text, StyleSheet, RefreshControl } from 'react-native';
-import RecipeCard from '../components/RecipeCard';
-import CategoryFilter, { Category } from '../components/CategoryFilter';
-import type { Recipe } from '../components/RecipeCard';
-import type { HomeScreenProps } from '../navigation/types';
-import { colors } from '../theme';
-import { recipesApi } from '../api';
+import React, { useState } from 'react';
+import {
+  View, Text, ScrollView, StyleSheet, SafeAreaView,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { colors, fonts, spacing } from '../theme/tokens';
+import { SearchBar } from '../components/shared/SearchBar';
+import { TexturePillar } from '../components/shared/TexturePillar';
 
-function HomeInner({ recipes, navigation, refreshing, onRefresh }: {
-  recipes: Recipe[]; navigation: HomeScreenProps['navigation'];
-  refreshing: boolean; onRefresh: () => void;
-}) {
-  return (
-    <FlatList
-      data={recipes}
-      keyExtractor={r => r.slug}
-      renderItem={({ item }) => (
-        <RecipeCard recipe={item} onPress={() => navigation.navigate('RecipeDetail', { slug: item.slug })} />
-      )}
-      ListEmptyComponent={<Text style={s.empty}>No recipes yet.</Text>}
-      contentContainerStyle={s.list}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.green} />}
-    />
-  );
-}
+const PILLARS = [
+  { key: 'solid',  name: 'Solid Foods',  subtitle: 'Grains, lentils & vegetables', count: 24 },
+  { key: 'liquid', name: 'Liquids',       subtitle: 'Broths, rasams & tonics',      count: 11 },
+  { key: 'semi',   name: 'Semi-solid',    subtitle: 'Porridges, purees & chutneys', count: 16 },
+] as const;
 
-export default function HomeScreen({ navigation }: HomeScreenProps) {
-  const [category, setCategory] = useState<Category>('all');
-  const [recipes, setRecipes] = useState<Recipe[]>([]);
-  const [refreshing, setRefreshing] = useState(false);
+// TODO(GAP-COOKSESSION): spec §5 shows a ContinueCookingCard here when a cook
+// session is in progress, driven by useCookSession() — that hook is not defined
+// in any task. Left out intentionally; god to reconcile.
 
-  const load = useCallback(async () => {
-    try {
-      const all = await recipesApi.list();
-      const filtered = all.filter((r: any) => {
-        if (r.status !== 'published') return false;
-        if (category !== 'all' && r.category !== category) return false;
-        return true;
-      });
-      setRecipes(filtered);
-    } catch (e) {
-      console.warn('Failed to load recipes', e);
-    }
-  }, [category]);
-
-  useEffect(() => { load(); }, [load]);
-
-  const onRefresh = useCallback(async () => {
-    setRefreshing(true);
-    await load();
-    setRefreshing(false);
-  }, [load]);
+export function HomeScreen() {
+  const [search, setSearch] = useState('');
+  const router = useRouter();
 
   return (
-    <View style={s.root}>
-      <Text style={s.heading}>Vajeeva</Text>
-      <CategoryFilter selected={category} onSelect={setCategory} />
-      <HomeInner recipes={recipes} navigation={navigation} refreshing={refreshing} onRefresh={onRefresh} />
-    </View>
+    <SafeAreaView style={s.root}>
+      <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+        {/* Logo row */}
+        <View style={s.logoRow}>
+          <View style={s.logoMark}><Text style={s.logoV}>V</Text></View>
+          <Text style={s.greeting}>Good morning · Vajeeva</Text>
+          <View style={s.avatar}><Text style={s.avatarInitial}>R</Text></View>
+        </View>
+
+        {/* Search */}
+        <View style={s.searchWrap}>
+          <SearchBar value={search} onChangeText={setSearch} />
+        </View>
+
+        {/* Section heading */}
+        <Text style={s.heading}>What would you like today?</Text>
+
+        {/* Texture pillars */}
+        {PILLARS.map(p => (
+          <TexturePillar
+            key={p.key}
+            name={p.name}
+            subtitle={p.subtitle}
+            count={p.count}
+            onPress={() => router.push(`/recipe-list?texture=${p.key}` as any)}
+          />
+        ))}
+
+        {/* Trust badge */}
+        <View style={s.trust}>
+          <Text style={s.trustText}>🌿 grounded in classical texts · ICMR-NIN 2024</Text>
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  root:    { flex: 1, backgroundColor: colors.bone },
-  heading: { fontSize: 22, fontWeight: '800', color: colors.ink, padding: 16, paddingBottom: 0 },
-  list:    { padding: 16, paddingTop: 6 },
-  empty:   { textAlign: 'center', color: colors.muted, marginTop: 40 },
+  root: { flex: 1, backgroundColor: colors.bone },
+  scroll: { padding: spacing.lg, paddingBottom: 40 },
+  logoRow: {
+    flexDirection: 'row', alignItems: 'center', marginBottom: spacing.md,
+  },
+  logoMark: {
+    width: 30, height: 30, borderRadius: 7,
+    backgroundColor: colors.greenSoft, alignItems: 'center', justifyContent: 'center',
+    marginRight: spacing.sm,
+  },
+  logoV: { fontSize: 14, fontFamily: fonts.serif, fontWeight: '700', color: colors.green },
+  greeting: {
+    flex: 1, fontSize: 15, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink,
+  },
+  avatar: {
+    width: 34, height: 34, borderRadius: 17,
+    backgroundColor: colors.sand, alignItems: 'center', justifyContent: 'center',
+  },
+  avatarInitial: { fontSize: 13, fontFamily: fonts.sans, fontWeight: '700', color: colors.ink2 },
+  searchWrap: { marginBottom: spacing.lg },
+  heading: {
+    fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink,
+    marginBottom: spacing.md,
+  },
+  trust: { marginTop: 20, alignItems: 'center' },
+  trustText: { fontSize: 9, fontFamily: fonts.mono, color: colors.muted },
 });
