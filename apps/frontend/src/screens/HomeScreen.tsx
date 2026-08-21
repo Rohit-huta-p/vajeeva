@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, ScrollView, StyleSheet, SafeAreaView,
 } from 'react-native';
@@ -9,26 +9,48 @@ import { TexturePillar } from '../components/shared/TexturePillar';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { ContinueCookingCard } from '../components/shared/ContinueCookingCard';
 import { useCookSession } from '../hooks/useCookSession';
-import type { RecipeListItem } from '../api/recipes';
+import { recipesApi, toListItem } from '../api/recipes';
+import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 
 const PILLARS = [
-  { key: 'solid',  name: 'Solid Foods',  subtitle: 'Grains, lentils & vegetables', count: 24 },
-  { key: 'liquid', name: 'Liquids',       subtitle: 'Broths, rasams & tonics',      count: 11 },
-  { key: 'semi',   name: 'Semi-solid',    subtitle: 'Porridges, purees & chutneys', count: 16 },
+  { key: 'solid',      name: 'Solid Foods', subtitle: 'Grains, lentils & vegetables', },
+  { key: 'liquid',     name: 'Liquids',      subtitle: 'Broths, rasams & tonics',      },
+  { key: 'semi-solid', name: 'Semi-solid',   subtitle: 'Porridges, purees & chutneys', },
 ] as const;
 
 export function HomeScreen() {
   const [search, setSearch] = useState('');
+  const [counts, setCounts] = useState<Record<string, number>>({});
+  const [sessionRecipe, setSessionRecipe] = useState<RecipeListItem | null>(null);
   const router = useRouter();
   const { session } = useCookSession();
 
-  const sessionRecipe: RecipeListItem | null = session ? {
-    slug: session.slug,
-    nameEn: session.title,
-    category: session.texture,
-    cookTimeMin: 0,
-    contraCount: 0,
-  } : null;
+  useEffect(() => {
+    let alive = true;
+    recipesApi.list().then((docs: RecipeDoc[]) => {
+      if (!alive) return;
+      const next: Record<string, number> = {};
+      docs.forEach(d => { next[d.category] = (next[d.category] ?? 0) + 1; });
+      setCounts(next);
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, []);
+
+  // Resolve the in-progress recipe for the ContinueCookingCard; the session
+  // itself is the offline fallback if the fetch fails.
+  useEffect(() => {
+    let alive = true;
+    if (!session) { setSessionRecipe(null); return; }
+    const fallback: RecipeListItem = {
+      slug: session.slug, nameEn: session.title, category: session.texture,
+      cookTimeMin: 0, contraCount: 0,
+    };
+    setSessionRecipe(fallback);
+    recipesApi.detail(session.slug)
+      .then((doc: RecipeDoc) => { if (alive) setSessionRecipe(toListItem(doc)); })
+      .catch(() => {});
+    return () => { alive = false; };
+  }, [session?.slug]);
 
   return (
     <SafeAreaView style={s.root}>
@@ -67,7 +89,7 @@ export function HomeScreen() {
             key={p.key}
             name={p.name}
             subtitle={p.subtitle}
-            count={p.count}
+            count={counts[p.key] ?? 0}
             onPress={() => router.push(`/recipe-list?texture=${p.key}` as any)}
           />
         ))}
