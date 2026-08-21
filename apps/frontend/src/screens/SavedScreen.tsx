@@ -8,9 +8,6 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { get } from '../offline/storage';
 import type { RecipeListItem } from '../api/recipes';
 
-// TODO(GAP-SAVEDKEYS): reads `saved:{id}` payloads that no code writes yet
-// (FinishScreen only stores the slug in savedIds). god to reconcile.
-
 export function SavedScreen() {
   const router = useRouter();
   const { ids } = useSavedRecipes();

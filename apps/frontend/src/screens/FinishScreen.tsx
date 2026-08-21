@@ -5,11 +5,19 @@ import { colors, fonts, spacing } from '../theme/tokens';
 import { CTA } from '../components/shared/CTA';
 import { GhostButton } from '../components/shared/GhostButton';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import type { RecipeListItem } from '../api/recipes';
 
-// TODO(GAP-SAVEDKEYS): save() only records the slug in savedIds — nothing ever
-// writes the `saved:{slug}` RecipeListItem payload that SavedScreen reads, so a
-// freshly saved recipe won't render there yet. god to reconcile the write path
-// (likely here, once real recipe data is fetched in the wiring wave).
+// Placeholder offline payload built from the slug; WIRE-FE replaces this with
+// the recipe fetched via recipesApi.get(slug).
+function placeholderRecipe(slug: string): RecipeListItem {
+  return {
+    slug,
+    nameEn: slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+    category: 'solid',
+    cookTimeMin: 0,
+    contraCount: 0,
+  };
+}
 
 export function FinishScreen() {
   const router = useRouter();
@@ -40,7 +48,7 @@ export function FinishScreen() {
         <Text style={s.saveHeader}>Save for later?</Text>
         <Text style={s.saveSub}>Available offline — no internet needed next time.</Text>
         {!saved ? (
-          <CTA label="Save Recipe" onPress={() => save(slug ?? '')} />
+          <CTA label="Save Recipe" onPress={() => save(placeholderRecipe(slug ?? ''))} />
         ) : (
           <Text style={s.savedMsg}>✓ Already saved</Text>
         )}
