@@ -4,7 +4,8 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
 import { IconButton } from '../components/shared/IconButton';
 
-// ponytail: placeholder data; replace with sourcesApi.get(slug)
+// WIRE-FE note: the consumer API has no /api/sources endpoint (recipes embed
+// sources as {text, citation} only) — placeholder stays until one exists.
 const PLACEHOLDER = {
   eyebrow: 'Classical text · ~16th century CE',
   title: 'Samayamulu',

@@ -1,11 +1,16 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import RecipeCard from '../src/components/RecipeCard';
+import { RecipeCard } from '../src/components/shared/RecipeCard';
+import type { RecipeListItem } from '../src/api/recipes';
 
-const MOCK_RECIPE = {
-  id: '1', nameEn: 'Coconut Burfi', nameTa: 'தேங்காய்', category: 'semi-solid',
-  yieldStr: '4 pieces', shelfLife: '5 days',
-} as any;
+const MOCK_RECIPE: RecipeListItem = {
+  slug: 'coconut-burfi',
+  nameEn: 'Coconut Burfi',
+  nameTa: 'தேங்காய்',
+  category: 'semi-solid',
+  cookTimeMin: 25,
+  contraCount: 1,
+};
 
 test('renders recipe name and calls onPress', () => {
   const onPress = jest.fn();
