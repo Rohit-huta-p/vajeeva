@@ -31,8 +31,3 @@ export function useSavedRecipes() {
   return { ids, save, unsave, isSaved };
 }
 
-// TODO(reconcile): compat no-ops for the legacy pre-router src/App.tsx, which
-// imported the old server-backed initSaved/clearSaved. Remove once App.tsx is
-// retired at final integration.
-export async function initSaved() {}
-export function clearSaved() {}

@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
 import { AuthContext } from './AuthContext';
-import type { LoginScreenProps } from '../navigation/types';
+type LoginScreenProps = { navigation: { navigate: (route: string) => void } };
 import { colors } from '../theme';
 
 export default function LoginScreen({ navigation }: LoginScreenProps) {

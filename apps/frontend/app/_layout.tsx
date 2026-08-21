@@ -1,6 +1,7 @@
 import { Slot } from 'expo-router';
 import { useEffect } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
+import { AuthProvider } from '../src/auth/AuthContext';
 import {
   useFonts,
   LibreBaskerville_400Regular,
@@ -28,5 +29,9 @@ export default function RootLayout() {
 
   if (!fontsLoaded) return null;
 
-  return <Slot />;
+  return (
+    <AuthProvider>
+      <Slot />
+    </AuthProvider>
+  );
 }

@@ -128,9 +128,6 @@ export function CookModeScreen() {
   );
 }
 
-// Default export kept for the legacy react-navigation TabNavigator until FE-12 removes it.
-export default CookModeScreen;
-
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.cmBg },
   track: { height: 2, backgroundColor: colors.cmLine },
