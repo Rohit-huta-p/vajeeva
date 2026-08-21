@@ -64,7 +64,7 @@ export function SubRecipesPage() {
       </div>
 
       <div className="border border-sand rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[2fr_1fr_110px] bg-bone px-4 py-3">
+        <div className="grid grid-cols-[2fr_1fr_130px] gap-x-4 bg-bone px-4 py-3">
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider">Name</span>
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider">Used In</span>
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider text-right">Actions</span>
@@ -72,7 +72,7 @@ export function SubRecipesPage() {
         {PLACEHOLDER_SUBRECIPES.map((sr, i) => (
           <div
             key={sr.id}
-            className={`grid grid-cols-[2fr_1fr_110px] px-4 py-3 items-center ${i % 2 === 1 ? 'bg-white' : ''} hover:bg-bone/50`}
+            className={`grid grid-cols-[2fr_1fr_130px] gap-x-4 px-4 py-3 items-center ${i % 2 === 1 ? 'bg-white' : ''} hover:bg-bone/50`}
           >
             <span className="text-sm font-medium text-ink">{sr.name}</span>
             <span className="text-sm text-ink/70">{sr.usedIn} recipes</span>

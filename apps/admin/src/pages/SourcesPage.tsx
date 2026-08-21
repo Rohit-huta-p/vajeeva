@@ -77,7 +77,7 @@ export function SourcesPage() {
       </div>
 
       <div className="border border-sand rounded-xl overflow-hidden">
-        <div className="grid grid-cols-[2fr_1fr_80px_110px] bg-bone px-4 py-3">
+        <div className="grid grid-cols-[2fr_1fr_80px_130px] gap-x-4 bg-bone px-4 py-3">
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider">Name</span>
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider">Type</span>
           <span className="text-xs font-mono text-ink/50 uppercase tracking-wider text-right">Recipes</span>
@@ -86,7 +86,7 @@ export function SourcesPage() {
         {PLACEHOLDER_SOURCES.map((src, i) => (
           <div
             key={src.id}
-            className={`grid grid-cols-[2fr_1fr_80px_110px] px-4 py-3 items-center ${i % 2 === 1 ? 'bg-white' : ''} hover:bg-bone/50`}
+            className={`grid grid-cols-[2fr_1fr_80px_130px] gap-x-4 px-4 py-3 items-center ${i % 2 === 1 ? 'bg-white' : ''} hover:bg-bone/50`}
           >
             <span className="text-sm font-medium text-ink">{src.name}</span>
             <span className="text-sm text-ink/70">{src.type}</span>
