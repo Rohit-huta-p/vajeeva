@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { colors, fonts, spacing } from '../../theme/tokens';
+import { colors, fonts } from '../../theme/tokens';
+import { IconCheck } from './icons';
 
 export function FilterChip({ label, active, onPress, safeForMe }: {
   label: string; active: boolean; onPress: () => void; safeForMe?: boolean;
@@ -10,6 +11,7 @@ export function FilterChip({ label, active, onPress, safeForMe }: {
       style={[s.chip, active && s.active, safeForMe && s.safeChip]}
       onPress={onPress}
     >
+      {active ? <IconCheck size={11} color={colors.green} /> : null}
       <Text style={[s.label, active && s.activeLabel, safeForMe && s.safeLabel]}>{label}</Text>
     </TouchableOpacity>
   );
@@ -17,8 +19,9 @@ export function FilterChip({ label, active, onPress, safeForMe }: {
 
 const s = StyleSheet.create({
   chip: {
-    paddingHorizontal: 12, paddingVertical: 6, borderRadius: 99,
-    borderWidth: 1, borderColor: colors.line2, marginRight: spacing.sm,
+    flexDirection: 'row', alignItems: 'center', gap: 5,
+    paddingHorizontal: 11, paddingVertical: 6, borderRadius: 999,
+    borderWidth: 1.5, borderColor: colors.line2, backgroundColor: colors.cream,
   },
   active: { backgroundColor: colors.greenSoft, borderColor: colors.green },
   safeChip: { borderColor: colors.green },
