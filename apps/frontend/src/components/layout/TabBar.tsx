@@ -3,11 +3,12 @@ import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts } from '../../theme/tokens';
+import { IconHome, IconBook, IconMore } from '../shared/icons';
 
 const TABS = [
-  { href: '/', label: 'Home', icon: '⌂' },
-  { href: '/saved', label: 'Saved', icon: '♡' },
-  { href: '/more', label: 'More', icon: '≡' },
+  { href: '/', label: 'Home', Icon: IconHome },
+  { href: '/saved', label: 'Saved', Icon: IconBook },
+  { href: '/more', label: 'More', Icon: IconMore },
 ] as const;
 
 export function TabBar() {
@@ -26,7 +27,7 @@ export function TabBar() {
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
           >
-            <Text style={[s.icon, active && s.activeIcon]}>{tab.icon}</Text>
+            <tab.Icon size={20} color={active ? colors.green : colors.muted} />
             <Text style={[s.label, active && s.activeLabel]}>{tab.label}</Text>
           </TouchableOpacity>
         );
@@ -42,9 +43,7 @@ const s = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.line,
   },
-  item: { flex: 1, alignItems: 'center', paddingTop: 10 },
-  icon: { fontSize: 20, color: colors.muted },
-  activeIcon: { color: colors.green },
-  label: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: colors.muted, marginTop: 2 },
+  item: { flex: 1, alignItems: 'center', paddingTop: 10, gap: 3 },
+  label: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '600', color: colors.muted },
   activeLabel: { color: colors.green },
 });
