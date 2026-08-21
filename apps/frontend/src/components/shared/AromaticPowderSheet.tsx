@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable, ScrollView, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
-import { api } from '../../api';
+import { subrecipesApi } from '../../api';
+import { IconClose } from './icons';
 
 // Prototype bottom sheet (.bsoverlay/.bspanel) for the shared sub-recipe.
-// Content is real sourced copy (content/vajeeva-recipes.md S-24, matches the
-// prototype). usedIn comes from the API when Kevin's public
-// GET /api/subrecipes/:slug lands (BACKEND-SUBRECIPE) — until then the
-// subtitle omits the count rather than shipping the prototype's literal "8".
+// Content is fetched from GET /api/subrecipes/:slug; the S-24 sourced copy
+// (content/vajeeva-recipes.md) stays as the offline/error fallback so the
+// sheet never renders empty. usedIn always comes from the API — omitted when
+// unknown, never hardcoded.
 const SLUG = 'aromatic-powder-blend';
 
 interface SubRecipeSheet {
@@ -41,7 +42,7 @@ export function AromaticPowderSheet({ visible, onClose }: {
   useEffect(() => {
     if (!visible) return;
     let alive = true;
-    api.get<any>(`/api/subrecipes/${SLUG}`).then(({ data }) => {
+    subrecipesApi.detail(SLUG).then((data: any) => {
       if (!alive || !data) return;
       setSheet(prev => ({
         ...prev,
@@ -50,15 +51,15 @@ export function AromaticPowderSheet({ visible, onClose }: {
         note: typeof data.note === 'string' ? data.note : prev.note,
         method: typeof data.method === 'string' ? data.method : prev.method,
         rows: Array.isArray(data.ingredients) && data.ingredients.length
-          ? data.ingredients.map((ing: any) => [ing.name ?? '', ing.quantity ?? ''] as const)
+          ? data.ingredients.map((ing: any) => [ing.name ?? '', ing.qty ?? ''] as const)
           : prev.rows,
       }));
-    }).catch(() => { /* endpoint not live yet — sourced fallback stands */ });
+    }).catch(() => { /* offline — sourced fallback stands */ });
     return () => { alive = false; };
   }, [visible]);
 
   const subtitle = sheet.usedIn != null
-    ? `Shared sub-recipe · used in ${sheet.usedIn} recipes`
+    ? `Shared sub-recipe · used in ${sheet.usedIn} ${sheet.usedIn === 1 ? 'recipe' : 'recipes'}`
     : 'Shared sub-recipe';
 
   return (
@@ -72,8 +73,8 @@ export function AromaticPowderSheet({ visible, onClose }: {
               <Text style={s.title}>{sheet.title}</Text>
               <Text style={s.subtitle}>{subtitle}</Text>
             </View>
-            <TouchableOpacity onPress={onClose} hitSlop={8}>
-              <Text style={s.close}>✕</Text>
+            <TouchableOpacity onPress={onClose} hitSlop={8} style={s.close}>
+              <IconClose size={15} color={colors.ink2} />
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.bodyContent}>
@@ -112,7 +113,7 @@ const s = StyleSheet.create({
   headText: { flex: 1, minWidth: 0 },
   title: { fontSize: 15, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
   subtitle: { fontSize: 10, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 2 },
-  close: { fontSize: 17, color: colors.ink2, padding: 2, lineHeight: 18 },
+  close: { padding: 2 },
   bodyContent: { paddingBottom: 20 },
   note: {
     fontSize: 10, fontFamily: fonts.sans, color: colors.ink2, lineHeight: 15,

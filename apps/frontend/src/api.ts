@@ -62,6 +62,11 @@ export const recipesApi = {
   detail: (slug: string) => api.get<any>(`/api/recipes/${slug}`).then(r => r.data),
 };
 
+export const subrecipesApi = {
+  list: () => api.get<any[]>('/api/subrecipes').then(r => r.data),
+  detail: (slug: string) => api.get<any>(`/api/subrecipes/${slug}`).then(r => r.data),
+};
+
 export const sourcesApi = {
   list: () => api.get<any[]>('/api/sources').then(r => r.data),
   detail: (slug: string) => api.get<any>(`/api/sources/${slug}`).then(r => r.data),
