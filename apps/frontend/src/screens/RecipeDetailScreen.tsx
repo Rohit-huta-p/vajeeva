@@ -1,83 +1,130 @@
-import React, { useEffect, useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
-import type { RecipeDetailProps } from '../navigation/types';
-import type { Recipe } from '../components/RecipeCard';
-import IngredientTable from '../components/IngredientTable';
-import HealthFlagList from '../components/HealthFlagList';
-import SourceList from '../components/SourceList';
-import SaveButton from '../components/SaveButton';
-import { colors } from '../theme';
-import { recipesApi } from '../api';
-import { useSavedRecipe } from '../hooks/useSavedRecipes';
+import React, { useState } from 'react';
+import {
+  View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView,
+} from 'react-native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
+import { colors, fonts, spacing } from '../theme/tokens';
+import { ContraCard } from '../components/shared/ContraCard';
+import { IngredientTable } from '../components/shared/IngredientTable';
+import { StepList } from '../components/shared/StepList';
+import { SourcePill } from '../components/shared/SourcePill';
+import { CTA } from '../components/shared/CTA';
+import { Disclaimer } from '../components/shared/Disclaimer';
+import { SectionLabel } from '../components/shared/SectionLabel';
+import { IconButton } from '../components/shared/IconButton';
 
-export default function RecipeDetailScreen({ route, navigation }: RecipeDetailProps) {
-  const { slug } = route.params;
-  const [recipe, setRecipe] = useState<Recipe | null>(null);
-  const { isSaved, toggle } = useSavedRecipe(slug);
+// Placeholder data; replaced by recipesApi.get(slug) in the wiring wave.
+const PLACEHOLDER = {
+  nameEn: 'Paavakkai Pitla',
+  nameTa: 'பாவக்காய் பிட்லா',
+  sources: ['Samayamulu', 'Arogya Padasastra'],
+  yield: '2 servings',
+  shelfLife: '4h · refrigerate',
+  contraConditions: ['Pregnancy — bitter melon stimulates uterine contractions'],
+  ingredients: [
+    { name: 'Bitter melon', amountG: 150, amountCup: '1 cup' },
+    { name: 'Toor dal', amountG: 80, amountCup: '⅓ cup' },
+    { stage: 'Seasoning' } as any,
+    { name: 'Mustard seeds', amountG: 4, amountCup: '1 tsp' },
+  ],
+  steps: [
+    { phase: 'Prep', text: 'Wash and slice bitter melon into thin rounds. Soak toor dal for 20 minutes.' },
+    { phase: 'Cook', text: 'Pressure cook dal until soft. In a pan, temper mustard seeds in oil.' },
+  ],
+};
 
-  useEffect(() => {
-    let mounted = true;
-    const load = async () => {
-      try {
-        const data = await recipesApi.detail(slug);
-        if (mounted) setRecipe(data);
-      } catch (e) {
-        console.warn('Failed to load recipe', e);
-      }
-    };
-    load();
-    return () => { mounted = false; };
-  }, [slug]);
-
-  if (!recipe) return <ActivityIndicator style={{ flex: 1 }} color={colors.green} />;
+export function RecipeDetailScreen() {
+  const router = useRouter();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const [unit, setUnit] = useState<'g' | 'cup'>('g');
+  const recipe = PLACEHOLDER; // TODO: fetch by slug
 
   return (
-    <ScrollView style={s.root} contentContainerStyle={s.content}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={s.back}>
-        <Text style={s.backText}>← Back</Text>
-      </TouchableOpacity>
-      <Text style={s.title}>{recipe.nameEn}</Text>
-      {recipe.nameTa ? <Text style={s.titleTa}>{recipe.nameTa}</Text> : null}
-      <Text style={s.desc}>{recipe.description}</Text>
+    <SafeAreaView style={s.root}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {/* Hero */}
+        <View style={s.hero}>
+          <IconButton icon="←" onPress={() => router.back()} style={s.backBtn} />
+        </View>
+        <View style={s.body}>
+          {/* Title */}
+          <Text style={s.title}>{recipe.nameEn}</Text>
+          <Text style={s.tamil}>{recipe.nameTa}</Text>
 
-      <View style={s.metaRow}>
-        <Text style={s.metaItem}>Yield: {recipe.yieldStr}</Text>
-        <Text style={s.metaItem}>Shelf: {recipe.shelfLife}</Text>
-      </View>
+          {/* Sources */}
+          <SectionLabel label="Classical Sources" />
+          <View style={s.sourceRow}>
+            {recipe.sources.map(src => (
+              <SourcePill key={src} name={src} onPress={() => router.push(`/source/${src}` as any)} />
+            ))}
+          </View>
 
-      <View style={s.actions}>
-        <SaveButton isSaved={isSaved} onPress={toggle} />
-        <TouchableOpacity style={s.cookBtn}
-          onPress={() => navigation.navigate('CookMode', { slug })}>
-          <Text style={s.cookBtnText}>▶ Cook Mode</Text>
-        </TouchableOpacity>
-      </View>
+          {/* Yield / shelf */}
+          <View style={s.badges}>
+            <View style={s.badge}><Text style={s.badgeText}>{recipe.yield}</Text></View>
+            <View style={s.badge}><Text style={s.badgeText}>{recipe.shelfLife}</Text></View>
+          </View>
 
-      <Text style={s.sectionHead}>Ingredients</Text>
-      <IngredientTable ingredients={recipe.ingredients} />
+          {/* Contra */}
+          <ContraCard conditions={recipe.contraConditions} />
 
-      <Text style={s.sectionHead}>Health Flags</Text>
-      <HealthFlagList flags={recipe.healthFlags} />
+          {/* Ingredients */}
+          <View style={s.section}>
+            <View style={s.ingHeader}>
+              <Text style={s.sectionTitle}>Ingredients</Text>
+              <View style={s.toggle}>
+                {(['g', 'cup'] as const).map(u => (
+                  <TouchableOpacity
+                    key={u}
+                    style={[s.toggleBtn, unit === u && s.toggleActive]}
+                    onPress={() => setUnit(u)}
+                  >
+                    <Text style={[s.toggleLabel, unit === u && s.toggleLabelActive]}>{u}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </View>
+            <IngredientTable ingredients={recipe.ingredients} unit={unit} />
+          </View>
 
-      <Text style={s.sectionHead}>Sources</Text>
-      <SourceList sources={recipe.sources} />
-    </ScrollView>
+          {/* Method */}
+          <View style={s.section}>
+            <Text style={s.sectionTitle}>Method</Text>
+            <StepList steps={recipe.steps} />
+          </View>
+
+          {/* CTA */}
+          <CTA label="Start Cook Mode" icon="▶" onPress={() => router.push(`/cook/${slug}` as any)} />
+          <Disclaimer text="Consult a qualified practitioner before making dietary changes based on classical Ayurvedic texts." />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  root:        { flex: 1, backgroundColor: colors.bone },
-  content:     { padding: 20, gap: 16, paddingBottom: 40 },
-  back:        { marginBottom: 4 },
-  backText:    { color: colors.green, fontSize: 14, fontWeight: '600' },
-  title:       { fontSize: 26, fontWeight: '800', color: colors.ink },
-  titleTa:     { fontSize: 14, fontStyle: 'italic', color: colors.amber },
-  desc:        { fontSize: 14, color: colors.ink2, lineHeight: 21 },
-  metaRow:     { flexDirection: 'row', gap: 16 },
-  metaItem:    { fontSize: 12, color: colors.muted },
-  actions:     { flexDirection: 'row', gap: 10, alignItems: 'center' },
-  cookBtn:     { flex: 1, backgroundColor: colors.green, borderRadius: 14,
-                 padding: 14, alignItems: 'center' },
-  cookBtnText: { color: colors.cream, fontWeight: '800', fontSize: 15 },
-  sectionHead: { fontSize: 16, fontWeight: '700', color: colors.ink, marginTop: 4 },
+  root: { flex: 1, backgroundColor: colors.bone },
+  hero: {
+    height: 172,
+    backgroundColor: colors.greenSoft,
+    justifyContent: 'flex-end', padding: spacing.md,
+  },
+  backBtn: { position: 'absolute', top: spacing.lg, left: spacing.md },
+  body: { padding: spacing.lg },
+  title: { fontSize: 22, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, letterSpacing: -0.01 * 22, marginBottom: 4 },
+  tamil: { fontSize: 13, fontFamily: fonts.serifItalic, color: colors.amber, marginBottom: spacing.md },
+  sourceRow: { flexDirection: 'row', flexWrap: 'wrap', marginBottom: spacing.md },
+  badges: { flexDirection: 'row', gap: 8, marginBottom: spacing.md },
+  badge: { backgroundColor: colors.sand, borderRadius: 6, paddingHorizontal: 9, paddingVertical: 4 },
+  badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
+  section: { marginBottom: spacing.xl },
+  ingHeader: { flexDirection: 'row', alignItems: 'center', marginBottom: spacing.sm },
+  sectionTitle: { flex: 1, fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  toggle: {
+    flexDirection: 'row', backgroundColor: colors.sand, borderRadius: 8, padding: 2,
+  },
+  toggleBtn: { paddingHorizontal: 10, paddingVertical: 4, borderRadius: 6 },
+  toggleActive: { backgroundColor: colors.green },
+  toggleLabel: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink2 },
+  toggleLabelActive: { color: colors.onGreen, fontWeight: '700' },
 });
