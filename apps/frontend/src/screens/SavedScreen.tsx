@@ -17,7 +17,8 @@ function SavedCard({ recipe, onPress }: { recipe: RecipeListItem; onPress: () =>
       <Text style={s.name} numberOfLines={1}>{recipe.nameEn}</Text>
       {recipe.nameTa ? <Text style={s.skt} numberOfLines={1}>{recipe.nameTa}</Text> : null}
       <Text style={s.meta}>
-        {recipe.category}{recipe.cookTimeMin > 0 ? ` · ${recipe.cookTimeMin} min` : ''}
+        {recipe.category.charAt(0).toUpperCase() + recipe.category.slice(1)}
+        {recipe.cookTimeMin > 0 ? ` · ${recipe.cookTimeMin} min` : ''}
       </Text>
     </TouchableOpacity>
   );
@@ -67,7 +68,9 @@ const s = StyleSheet.create({
   loading: { marginTop: 60 },
   grid: { paddingBottom: 24, gap: 9 },
   gridRow: { gap: 9 },
-  col: { flex: 1 },
+  // maxWidth keeps a lone card in the last row at column width instead of
+  // stretching across both columns (spec: 2-col grid).
+  col: { flex: 1, maxWidth: '50%' },
   card: {
     backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
     borderRadius: 13, padding: 7,
