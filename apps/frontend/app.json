@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Vajeeva",
+    "slug": "vajeeva",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#F2EDE1"
+    },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.vajeeva.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#F2EDE1"
+      },
+      "package": "com.vajeeva.app"
+    },
+    "scheme": "vajeeva",
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router"
+    ]
+  }
+}
