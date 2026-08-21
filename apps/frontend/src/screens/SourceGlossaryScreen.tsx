@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, spacing } from '../theme/tokens';
-import { IconButton } from '../components/shared/IconButton';
+import { colors, fonts, shadows } from '../theme/tokens';
+import { IconBack } from '../components/shared/icons';
 import { sourcesApi } from '../api';
 
 interface SourceDTO {
@@ -30,27 +30,38 @@ export function SourceGlossaryScreen() {
 
   return (
     <SafeAreaView style={s.root}>
-      <View style={s.nav}>
-        <IconButton icon="←" onPress={() => router.back()} />
-        <Text style={s.navRight}>SOURCE</Text>
+      {/* Hero (prototype .gloss-hero) */}
+      <View style={s.hero}>
+        <View style={s.heroRow}>
+          <TouchableOpacity style={s.icobtn} onPress={() => router.back()}>
+            <IconBack size={15} color={colors.ink} />
+          </TouchableOpacity>
+          <View style={s.grow} />
+          <Text style={s.navRight}>SOURCE</Text>
+        </View>
+        {status === 'ready' && source ? (
+          <>
+            <Text style={s.eyebrow}>{source.type}</Text>
+            <Text style={s.title}>{source.name}</Text>
+          </>
+        ) : null}
       </View>
       {status === 'loading' ? (
         <ActivityIndicator style={s.loading} color={colors.green} />
       ) : status === 'missing' || !source ? (
-        <View style={s.body}>
+        <View style={s.block}>
           <Text style={s.title}>Source not found</Text>
           <Text style={s.blockText}>This classical source isn't in the glossary yet.</Text>
         </View>
       ) : (
-        <ScrollView contentContainerStyle={s.body}>
-          <Text style={s.eyebrow}>{source.type.toUpperCase()}</Text>
-          <Text style={s.title}>{source.name}</Text>
+        <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <View style={s.block}>
-            <Text style={s.blockLabel}>CITED IN</Text>
-            <Text style={s.blockText}>
+            <Text style={s.blockLabel}>Cited in</Text>
+            <Text style={[s.blockText, s.cited]}>
               {source.recipeCount} {source.recipeCount === 1 ? 'recipe' : 'recipes'} in the Vajeeva collection
             </Text>
           </View>
+          <View style={{ height: 16 }} />
         </ScrollView>
       )}
     </SafeAreaView>
@@ -59,13 +70,32 @@ export function SourceGlossaryScreen() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.bone },
-  nav: { flexDirection: 'row', alignItems: 'center', padding: spacing.lg },
-  navRight: { flex: 1, textAlign: 'right', fontSize: 9, fontFamily: fonts.mono, color: colors.muted },
+  hero: { padding: 14, borderBottomWidth: 1, borderBottomColor: colors.line },
+  heroRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
+  grow: { flex: 1 },
+  icobtn: {
+    width: 34, height: 34, borderRadius: 17,
+    backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
+    alignItems: 'center', justifyContent: 'center',
+    ...shadows.card,
+  },
+  navRight: { fontSize: 9, fontFamily: fonts.mono, color: colors.muted },
   loading: { marginTop: 60 },
-  body: { paddingHorizontal: spacing.lg, paddingBottom: 40 },
-  eyebrow: { fontSize: 8.5, fontFamily: fonts.sans, fontWeight: '700', color: colors.amber, letterSpacing: 0.08, marginBottom: 6 },
-  title: { fontSize: 19, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, marginBottom: 4 },
-  block: { marginTop: spacing.md, marginBottom: spacing.lg },
-  blockLabel: { fontSize: 9, fontFamily: fonts.mono, color: colors.ink, opacity: 0.3, marginBottom: 6, letterSpacing: 0.1 },
-  blockText: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink, lineHeight: 16 },
+  eyebrow: {
+    fontSize: 8.5, fontFamily: fonts.sans, fontWeight: '700', color: colors.amber,
+    letterSpacing: 0.85, textTransform: 'uppercase', marginBottom: 5,
+  },
+  title: { fontSize: 19, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  body: { flex: 1 },
+  bodyContent: { paddingBottom: 20 },
+  block: {
+    paddingHorizontal: 14, paddingVertical: 12,
+    borderBottomWidth: 1, borderBottomColor: colors.line,
+  },
+  blockLabel: {
+    fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: 'rgba(42,37,30,0.3)',
+    letterSpacing: 0.63, textTransform: 'uppercase', marginBottom: 5,
+  },
+  blockText: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink, lineHeight: 17.6 },
+  cited: { color: colors.amber },
 });
