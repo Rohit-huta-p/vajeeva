@@ -3,6 +3,7 @@ import {
   View, Text, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { colors, fonts } from '../theme/tokens';
 import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
@@ -110,7 +111,11 @@ export function CookModeScreen() {
     <View style={s.root} {...panResponder.panHandlers}>
       {/* Progress bar */}
       <View style={s.track}>
-        <View style={[s.fill, { width: `${Math.round(progress * 100)}%` as any }]} />
+        <LinearGradient
+          colors={[colors.cmAmber, '#E8B44A']}
+          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+          style={[s.fill, { width: `${Math.round(progress * 100)}%` as any }]}
+        />
       </View>
       <SafeAreaView style={s.safe}>
         {/* Nav bar */}
@@ -137,7 +142,11 @@ export function CookModeScreen() {
             {current.heat ? (
               <View style={s.heat}>
                 <IconFlame size={11} color={colors.cmMuted} />
-                <Text style={s.heatText}>{current.heat}</Text>
+                <Text style={s.heatText}>
+                  {/* prototype copy: "Low heat" / "Medium heat" */}
+                  {current.heat.charAt(0).toUpperCase() + current.heat.slice(1)}
+                  {/heat/i.test(current.heat) ? '' : ' heat'}
+                </Text>
               </View>
             ) : <View />}
             {current.timerSec > 0 ? (
@@ -179,7 +188,7 @@ const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.cmBg },
   loadingRoot: { alignItems: 'center', justifyContent: 'center' },
   track: { height: 2, backgroundColor: colors.cmLine },
-  fill: { height: 2, backgroundColor: colors.cmAmber, borderTopRightRadius: 1, borderBottomRightRadius: 1 },
+  fill: { height: 2, borderTopRightRadius: 1, borderBottomRightRadius: 1 },
   safe: { flex: 1 },
   navbar: {
     flexDirection: 'row', alignItems: 'center',
