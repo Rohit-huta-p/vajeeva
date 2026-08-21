@@ -1,43 +1,53 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  View, Text, TouchableOpacity, StyleSheet, SafeAreaView, PanResponder,
+  View, Text, TouchableOpacity, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, spacing } from '../theme/tokens';
 import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
 import { useCookSession } from '../hooks/useCookSession';
+import { recipesApi, parseTimerMin } from '../api/recipes';
+import type { RecipeDoc } from '../api/recipes';
 
-// ponytail: placeholder steps; replace with recipesApi.get(slug).steps
-const PLACEHOLDER_STEPS = [
-  { phase: 'PREP', text: 'Wash and slice bitter melon into thin rounds. Soak toor dal for 20 minutes.', timerSec: 20 * 60 },
-  { phase: 'COOK', text: 'Pressure cook dal until soft, about 3 whistles.', timerSec: 8 * 60 },
-  { phase: 'SEASON', text: 'Temper mustard seeds in 1 tbsp oil until they splutter.', timerSec: 2 * 60 },
-];
+interface CookStep { phase: string; text: string; timerSec: number }
 
 export function CookModeScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [step, setStep] = useState(0);
+  const [steps, setSteps] = useState<CookStep[]>([]);
   const [timerRunning, setTimerRunning] = useState(false);
   const [timerDone, setTimerDone] = useState(false);
-  const steps = PLACEHOLDER_STEPS;
   const current = steps[step];
   const { startSession, updateStep } = useCookSession();
 
-  // Persist the session so HomeScreen can offer "Continue cooking".
-  // Title/texture are placeholders until WIRE-FE fetches the real recipe.
+  // Fetch the recipe, then persist the session so HomeScreen can offer
+  // "Continue cooking" with real title/texture.
   useEffect(() => {
-    startSession({
-      slug: slug ?? '',
-      title: 'Paavakkai Pitla',
-      texture: 'solid',
-      stepIndex: 0,
-      totalSteps: steps.length,
-      startedAt: Date.now(),
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    let alive = true;
+    if (!slug) return;
+    recipesApi.detail(slug).then((doc: RecipeDoc) => {
+      if (!alive) return;
+      const cookSteps = [...(doc.steps ?? [])]
+        .sort((a, b) => a.order - b.order)
+        .map(st => ({
+          phase: (st.phase ?? '').toUpperCase(),
+          text: st.text,
+          timerSec: parseTimerMin(st.timerStr) * 60,
+        }));
+      setSteps(cookSteps);
+      startSession({
+        slug,
+        title: doc.nameEn,
+        texture: doc.category,
+        stepIndex: 0,
+        totalSteps: cookSteps.length,
+        startedAt: Date.now(),
+      });
+    }).catch(() => {});
+    return () => { alive = false; };
+  }, [slug, startSession]);
 
   useEffect(() => { updateStep(step); }, [step, updateStep]);
 
@@ -78,6 +88,14 @@ export function CookModeScreen() {
     },
   });
 
+  if (!current) {
+    return (
+      <View style={[s.root, s.loadingRoot]}>
+        <ActivityIndicator color={colors.cmGreen} />
+      </View>
+    );
+  }
+
   const progress = (step + 1) / steps.length;
 
   return (
@@ -101,12 +119,14 @@ export function CookModeScreen() {
           <Text style={s.phase}>{current.phase}</Text>
           <Text style={s.stepText}>{current.text}</Text>
           <View style={s.illus} />
-          <TimerPill
-            seconds={current.timerSec}
-            running={timerRunning}
-            onToggle={() => setTimerRunning(r => !r)}
-            done={timerDone}
-          />
+          {current.timerSec > 0 ? (
+            <TimerPill
+              seconds={current.timerSec}
+              running={timerRunning}
+              onToggle={() => setTimerRunning(r => !r)}
+              done={timerDone}
+            />
+          ) : null}
         </View>
 
         {/* Footer nav */}
@@ -130,6 +150,7 @@ export function CookModeScreen() {
 
 const s = StyleSheet.create({
   root: { flex: 1, backgroundColor: colors.cmBg },
+  loadingRoot: { alignItems: 'center', justifyContent: 'center' },
   track: { height: 2, backgroundColor: colors.cmLine },
   fill: { height: 2, backgroundColor: colors.cmAmber },
   safe: { flex: 1 },
