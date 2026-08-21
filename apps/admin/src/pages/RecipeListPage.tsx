@@ -4,6 +4,12 @@ import { api, type RecipeDoc } from '../api/client';
 
 const CATEGORY_LABEL = { solid: 'Solid', liquid: 'Liquid', 'semi-solid': 'Semi-solid' } as const;
 
+const STATUS_TABS = [
+  { value: 'all' as const, label: 'All' },
+  { value: 'published' as const, label: 'Published' },
+  { value: 'draft' as const, label: 'Draft' },
+];
+
 export function RecipeListPage() {
   const [recipes, setRecipes] = useState<RecipeDoc[] | null>(null);
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
@@ -20,25 +26,55 @@ export function RecipeListPage() {
   }
 
   const visible = statusFilter === 'all' ? recipes : recipes.filter(r => r.status === statusFilter);
+  const published = recipes.filter(r => r.status === 'published').length;
+  const drafts = recipes.filter(r => r.status === 'draft').length;
 
   return (
-    <main className="min-h-screen bg-cream p-6">
-      <header className="flex items-center gap-4 mb-6">
-        <h1 className="font-serif text-xl font-semibold text-ink flex-1">Recipes</h1>
-        <select
+    <div className="p-6">
+      {/* Stats row */}
+      <div className="flex gap-3 mb-5">
+        <div className="bg-bone border border-ink/20 rounded-lg px-4 py-2.5 text-sm">
+          <span data-testid="stat-total" className="font-semibold text-ink">{recipes.length}</span>
+          <span className="text-ink/55 ml-1.5">total</span>
+        </div>
+        <div className="bg-bone border border-ink/20 rounded-lg px-4 py-2.5 text-sm">
+          <span data-testid="stat-published" className="font-semibold text-brand">{published}</span>
+          <span className="text-ink/55 ml-1.5">published</span>
+        </div>
+        <div className="bg-bone border border-ink/20 rounded-lg px-4 py-2.5 text-sm">
+          <span data-testid="stat-drafts" className="font-semibold text-amber">{drafts}</span>
+          <span className="text-ink/55 ml-1.5">drafts</span>
+        </div>
+
+        {/* Filter tabs — pushed right */}
+        <div
+          role="tablist"
           aria-label="Filter by status"
-          value={statusFilter}
-          onChange={e => setStatusFilter(e.target.value as typeof statusFilter)}
-          className="border border-ink/20 rounded-lg px-3 py-2 bg-bone text-sm"
+          className="ml-auto flex gap-0.5 bg-bone border border-ink/20 rounded-lg p-0.5"
         >
-          <option value="all">All statuses</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
-        </select>
-        <Link to="/recipes/new" className="bg-brand text-white rounded-lg px-4 py-2 text-sm font-medium">
-          New Recipe
-        </Link>
-      </header>
+          {STATUS_TABS.map(tab => {
+            const count = tab.value === 'all' ? recipes.length
+              : recipes.filter(r => r.status === tab.value).length;
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                role="tab"
+                aria-selected={statusFilter === tab.value}
+                onClick={() => setStatusFilter(tab.value)}
+                className={`px-3 py-1.5 text-sm rounded-md transition-colors ${
+                  statusFilter === tab.value
+                    ? 'bg-white text-ink font-medium shadow-sm'
+                    : 'text-ink/55 hover:text-ink'
+                }`}
+              >
+                {tab.label}
+                <span className="ml-1.5 text-xs text-ink/40">({count})</span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
       {error && <p role="alert" className="mb-4 text-clay text-sm">{error}</p>}
 
@@ -86,7 +122,7 @@ export function RecipeListPage() {
         </tbody>
       </table>
       {visible.length === 0 && <p className="p-4 text-ink/55">No recipes match this filter.</p>}
-    </main>
+    </div>
   );
 
   async function toggleStatus(r: RecipeDoc) {
