@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { get, getMany, set, del } from '../offline/storage';
+import { savedApi } from '../api/recipes';
 import type { RecipeListItem } from '../api/recipes';
 
 const KEY = 'savedIds';
@@ -34,6 +35,8 @@ export function useSavedRecipes() {
     });
     setRecipes(prev => prev.some(r => r.slug === recipe.slug) ? prev : [...prev, recipe]);
     set(`saved:${recipe.slug}`, recipe);
+    // Additive cross-device sync; local storage stays the source of truth.
+    savedApi.push([recipe.slug], []).catch(() => { /* offline or logged out */ });
   }, []);
 
   const unsave = useCallback((slug: string) => {
@@ -44,6 +47,7 @@ export function useSavedRecipes() {
     });
     setRecipes(prev => prev.filter(r => r.slug !== slug));
     del(`saved:${slug}`);
+    savedApi.push([], [slug]).catch(() => { /* offline or logged out */ });
   }, []);
 
   const isSaved = useCallback((slug: string) => ids.includes(slug), [ids]);
