@@ -52,7 +52,7 @@ export function RecipeListScreen() {
     try {
       const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
       setRecipes(docs.map(toListItem));
-    } catch {}
+    } catch { }
   }, [filter]);
 
   useEffect(() => { load(); }, [load]);
@@ -88,7 +88,7 @@ export function RecipeListScreen() {
           {FILTERS.map(f => (
             <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f)} />
           ))}
-          <FilterChip label="🛡 Safe for me" active={false} onPress={() => {}} safeForMe />
+          <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
         </ScrollView>
         {/* List */}
         <FlatList
