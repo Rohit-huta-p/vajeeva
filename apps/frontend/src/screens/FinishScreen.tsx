@@ -27,13 +27,18 @@ export function FinishScreen() {
   const { save, isSaved } = useSavedRecipes();
   const { clearSession } = useCookSession();
   const [recipe, setRecipe] = useState<RecipeListItem>(() => slugFallback(slug ?? ''));
+  const [stepsCount, setStepsCount] = useState<number | null>(null);
   const saved = isSaved(slug ?? '');
 
   useEffect(() => {
     let alive = true;
     if (!slug) return;
     recipesApi.detail(slug)
-      .then((doc: RecipeDoc) => { if (alive) setRecipe(toListItem(doc)); })
+      .then((doc: RecipeDoc) => {
+        if (!alive) return;
+        setRecipe(toListItem(doc));
+        setStepsCount(doc.steps?.length ?? null);
+      })
       .catch(() => {});
     return () => { alive = false; };
   }, [slug]);
@@ -62,6 +67,7 @@ export function FinishScreen() {
           <Text style={s.wellMade}>Well made.</Text>
           <Text style={s.sub}>
             {recipe.nameEn}
+            {stepsCount ? ` · ${stepsCount} steps` : ''}
             {recipe.cookTimeMin > 0 ? `\n~${recipe.cookTimeMin} min` : ''}
           </Text>
         </View>
