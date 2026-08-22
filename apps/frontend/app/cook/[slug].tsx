@@ -1,3 +1,4 @@
+import { StatusBar } from 'expo-status-bar';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { colors } from '../../src/theme/tokens';
 import { CookModeScreen } from '../../src/screens/CookModeScreen';
@@ -8,6 +9,8 @@ import { CookModeScreen } from '../../src/screens/CookModeScreen';
 export default function CookModeRoute() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.cmBg }} edges={['top']}>
+      {/* Dark cm theme: light status-bar icons while this route is focused. */}
+      <StatusBar style="light" />
       <CookModeScreen />
     </SafeAreaView>
   );
