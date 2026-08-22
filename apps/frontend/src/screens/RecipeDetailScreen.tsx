@@ -14,9 +14,10 @@ import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
 import { IconBack, IconHeart, IconShare, IconPlay, IllHero } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
+import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { recipesApi } from '../api/recipes';
-import type { RecipeDoc } from '../api/recipes';
+import { recipesApi, sortImages, cloudThumb } from '../api/recipes';
+import type { RecipeDoc, RecipeImage } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 
 // Matches the API's Source slug scheme (lowercase, non-alphanumeric -> '-').
@@ -27,6 +28,7 @@ function toSourceSlug(name: string): string {
 interface DetailView {
   nameEn: string;
   nameTa?: string;
+  images: RecipeImage[];
   sources: string[];
   yield: string;
   shelfLife: string;
@@ -39,6 +41,8 @@ function toDetailView(doc: RecipeDoc): DetailView {
   return {
     nameEn: doc.nameEn,
     nameTa: doc.nameTa,
+    // hero-sized Cloudinary transform (390pt-wide hero @3x)
+    images: sortImages(doc.images).map(im => ({ ...im, url: cloudThumb(im.url, 1200, 530) })),
     sources: (doc.sources ?? []).map(src => src.text),
     yield: doc.yieldStr ?? '',
     shelfLife: doc.shelfLife ?? '',
@@ -83,8 +87,15 @@ export function RecipeDetailScreen() {
   return (
     <SafeAreaView style={s.root}>
       <ScrollView showsVerticalScrollIndicator={false}>
-        {/* Illustration hero */}
-        <LinearGradient colors={[colors.greenSoft, colors.sand]} style={s.hero}>
+        {/* Hero — photo carousel when the recipe has images, illustration otherwise */}
+        <View style={s.hero}>
+          {recipe.images.length ? (
+            <ImageCarousel images={recipe.images} height={sc(172)} />
+          ) : (
+            <LinearGradient colors={[colors.greenSoft, colors.sand]} style={s.heroFill}>
+              <IllHero width={sc(174)} height={sc(130)} />
+            </LinearGradient>
+          )}
           <View style={s.heroBar}>
             <IconButton icon={<IconBack size={sc(15)} color={colors.ink} />} onPress={() => router.back()} />
             <View style={s.heroActs}>
@@ -92,8 +103,7 @@ export function RecipeDetailScreen() {
               <IconButton icon={<IconShare size={sc(15)} color={colors.ink} />} onPress={() => {}} />
             </View>
           </View>
-          <IllHero width={sc(174)} height={sc(130)} />
-        </LinearGradient>
+        </View>
         <View style={s.body}>
           {/* Title */}
           <View>
@@ -167,6 +177,9 @@ const s = scaledSheet({
   loading: { flex: 1 },
   hero: {
     height: 172,
+  },
+  heroFill: {
+    width: '100%', height: '100%',
     alignItems: 'center', justifyContent: 'center',
   },
   heroBar: {
