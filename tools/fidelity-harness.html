@@ -33,20 +33,22 @@
   </div>
   <div class="col">
     <h2>Prototype</h2>
-    <iframe id="proto" src="/prototypes/vajeeva-prototype.html"></iframe>
+    <iframe id="proto"></iframe>
     <div class="grid" id="gridB"></div>
   </div>
 </div>
 <script>
-// app route + prototype screen id per comparable screen
+// app route + standalone reference file (prototypes/screens/ — true
+// edge-to-edge 390px phone canvases, extracted from the device mock)
 const SCREENS = {
-  home:     { app: '/',                                       proto: 's-home' },
-  list:     { app: '/recipe-list',                            proto: 's-texture' },
-  detail:   { app: '/recipe/coconut-laddu-narikela-modaka',   proto: 's-detail' },
-  cook:     { app: '/cook/coconut-laddu-narikela-modaka',     proto: 's-cook' },
-  finish:   { app: '/finish/coconut-laddu-narikela-modaka',   proto: 's-finish' },
-  saved:    { app: '/saved',                                  proto: 's-saved' },
-  glossary: { app: '/source/samayamulu',                      proto: 's-glossary' },
+  home:     { app: '/',                                       ref: 'home.html' },
+  list:     { app: '/recipe-list',                            ref: 'texture.html' },
+  detail:   { app: '/recipe/coconut-laddu-narikela-modaka',   ref: 'detail.html' },
+  sheet:    { app: '/recipe/coconut-laddu-narikela-modaka',   ref: 'aromatic-sheet.html' },
+  cook:     { app: '/cook/coconut-laddu-narikela-modaka',     ref: 'cook.html' },
+  finish:   { app: '/finish/coconut-laddu-narikela-modaka',   ref: 'finish.html' },
+  saved:    { app: '/saved',                                  ref: 'saved.html' },
+  glossary: { app: '/source/samayamulu',                      ref: 'glossary.html' },
 };
 const sel = document.getElementById('screen');
 for (const k of Object.keys(SCREENS)) sel.add(new Option(k, k));
@@ -58,16 +60,12 @@ function show(key) {
   const t = SCREENS[key];
   if (!t) return;
   appFrame.src = 'http://localhost:8081' + t.app;
-  // prototype iframe is same-origin (both served from :8090) — drive its own go().
-  // Retry once after its ~250ms screen transition ends (go() no-ops while busy).
-  const jump = () => { try { protoFrame.contentWindow.go(t.proto); } catch (e) { /* not loaded yet */ } };
-  jump();
-  setTimeout(jump, 400);
+  const refSrc = '/prototypes/screens/' + t.ref;
+  if (!protoFrame.src.endsWith(refSrc)) protoFrame.src = refSrc;
   history.replaceState(null, '', '?screen=' + key);
 }
 
 sel.onchange = () => show(sel.value);
-protoFrame.onload = () => show(sel.value);
 
 document.getElementById('gridBtn').onclick = () => {
   document.getElementById('gridA').classList.toggle('on');
