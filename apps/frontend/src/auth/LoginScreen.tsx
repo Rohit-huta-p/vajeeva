@@ -1,50 +1,115 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityIndicator } from 'react-native';
-import { AuthContext } from './AuthContext';
-type LoginScreenProps = { navigation: { navigate: (route: string) => void } };
-import { colors } from '../theme';
+import {
+  View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ActivityIndicator,
+} from 'react-native';
+import { useRouter } from 'expo-router';
+import { colors } from '../theme/tokens';
 import { scaledSheet } from '../theme/scale';
+import { AuthContext } from './AuthContext';
+import { Disclaimer } from '../components/shared/Disclaimer';
+import {
+  AuthTitle, AuthNote, AuthInput, ContinueButton, OrDivider, GoogleButton,
+  EmailChip, FootLink, AuthHint, AuthError,
+} from './atoms';
 
-export default function LoginScreen({ navigation }: LoginScreenProps) {
+const EMAIL_RE = /^\S+@\S+\.\S+$/;
+
+type Props = { navigation?: { navigate: (route: string) => void } };
+
+// Progressive login (refs: login-step1/2.html): email question first, the
+// password step slides in after Continue. Kept default-exported for the
+// app/auth/login.tsx route adapter.
+export default function LoginScreen(_props: Props) {
+  const router = useRouter();
   const { login } = useContext(AuthContext);
+  const [step, setStep] = useState<1 | 2>(1);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleLogin = async () => {
-    if (!email || !password) return;
+  const emailValid = EMAIL_RE.test(email.trim());
+
+  const handleSignIn = async () => {
+    if (!password || loading) return;
     setLoading(true);
+    setError(null);
     try {
       await login(email.trim().toLowerCase(), password);
+      router.replace('/' as any);
     } catch (e: any) {
-      Alert.alert('Login failed', e?.response?.data?.error ?? 'Check your credentials');
+      setError(e?.response?.data?.error ?? 'That didn’t match — check your password.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <View style={s.root}>
-      <Text style={s.title}>Vajeeva</Text>
-      <TextInput style={s.input} placeholder="Email" placeholderTextColor={colors.muted}
-        value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
-      <TextInput style={s.input} placeholder="Password" placeholderTextColor={colors.muted}
-        value={password} onChangeText={setPassword} secureTextEntry />
-      <TouchableOpacity style={s.btn} onPress={handleLogin} disabled={loading}>
-        {loading ? <ActivityIndicator color={colors.cream} /> : <Text style={s.btnText}>Sign In</Text>}
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-        <Text style={s.link}>No account? Register</Text>
-      </TouchableOpacity>
-    </View>
+    <SafeAreaView style={s.root}>
+      <KeyboardAvoidingView style={s.flex} behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+        <View style={s.wrap}>
+          <View style={s.mid}>
+            {step === 1 ? (
+              <>
+                <AuthTitle>What's your email address?</AuthTitle>
+                <AuthNote>Welcome back — your kitchen is where you left it.</AuthNote>
+                <AuthInput
+                  placeholder="Email address"
+                  value={email}
+                  onChangeText={setEmail}
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  keyboardType="email-address"
+                  onSubmitEditing={() => emailValid && setStep(2)}
+                />
+                <ContinueButton enabled={emailValid} onPress={() => setStep(2)} />
+                <OrDivider />
+                <GoogleButton />
+              </>
+            ) : (
+              <>
+                <AuthTitle>And your password?</AuthTitle>
+                <AuthNote>Signing in as</AuthNote>
+                <EmailChip email={email.trim().toLowerCase()} onEdit={() => { setStep(1); setError(null); }} />
+                <AuthInput
+                  placeholder="Password"
+                  value={password}
+                  onChangeText={setPassword}
+                  secureTextEntry
+                  autoComplete="current-password"
+                  autoFocus
+                  onSubmitEditing={handleSignIn}
+                />
+                <View style={s.cta}>
+                  {loading
+                    ? <ActivityIndicator color={colors.green} style={s.spinner} />
+                    : <ContinueButton enabled={password.length > 0} label="Sign in" onPress={handleSignIn} />}
+                </View>
+                {error
+                  ? <AuthError>{error}</AuthError>
+                  : <AuthHint>Your health details stay private — used only to flag recipes for you.</AuthHint>}
+              </>
+            )}
+          </View>
+          <FootLink
+            text="New to Vajeeva?"
+            linkText="Create account"
+            onPress={() => router.push('/auth/signup' as any)}
+          />
+          <Disclaimer text="Supportive dietary guidance · not a substitute for medical advice" />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 }
 
+export { LoginScreen };
+
 const s = scaledSheet({
-  root:    { flex: 1, backgroundColor: colors.bone, justifyContent: 'center', padding: 24, gap: 12 },
-  title:   { fontFamily: 'serif', fontSize: 32, color: colors.ink, textAlign: 'center', marginBottom: 16 },
-  input:   { backgroundColor: colors.sand, borderRadius: 10, padding: 14, color: colors.ink, fontSize: 15 },
-  btn:     { backgroundColor: colors.green, borderRadius: 14, padding: 16, alignItems: 'center' },
-  btnText: { color: colors.cream, fontWeight: '800', fontSize: 15 },
-  link:    { color: colors.green, textAlign: 'center', marginTop: 8, fontSize: 14 },
+  root: { flex: 1, backgroundColor: colors.bone },
+  flex: { flex: 1 },
+  wrap: { flex: 1, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 16 },
+  mid: { flex: 1, justifyContent: 'center', paddingBottom: 34 },
+  cta: { marginTop: 0 },
+  spinner: { marginTop: 10, padding: 14 },
 });
