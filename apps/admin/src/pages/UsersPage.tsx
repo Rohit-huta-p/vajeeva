@@ -39,11 +39,19 @@ const PROVIDER_COLORS: Record<string, string> = {
 export function UsersPage() {
   const [users, setUsers] = useState<User[]>(PLACEHOLDER_USERS);
 
-  // Attempt to load real users; fall back to placeholder on 404
+  // Load real users; normalize the server shape (accounts may lack name /
+  // health tags, and joinedAt arrives as an ISO timestamp).
   useEffect(() => {
-    api<User[]>('/api/admin/users')
-      .then(setUsers)
-      .catch(() => { /* endpoint not yet implemented — placeholder stays */ });
+    api<Partial<User>[]>('/api/admin/users')
+      .then(list => setUsers(list.map(u => ({
+        id: u.id ?? '',
+        name: u.name || (u.email ? u.email.split('@')[0] : '—'),
+        email: u.email ?? '—',
+        authProviders: u.authProviders ?? [],
+        healthTags: u.healthTags ?? (u as any).healthProfile ?? [],
+        joinedAt: u.joinedAt ? new Date(u.joinedAt).toISOString().slice(0, 10) : '—',
+      }))))
+      .catch(() => { /* endpoint unreachable — placeholder stays */ });
   }, []);
 
   return (

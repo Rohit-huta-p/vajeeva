@@ -24,11 +24,22 @@ export function HealthFlagsPage() {
   const [saving, setSaving] = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
-  // Attempt to load saved flags from API; fall back to defaults on 404
+  // Load saved flags and merge them OVER the defaults — the endpoint returns
+  // only the codes an admin has customised (an empty object on a fresh DB),
+  // so replacing wholesale would drop every default row.
   useEffect(() => {
-    api<Record<string, FlagState>>('/api/admin/health-flags')
-      .then(setFlags)
-      .catch(() => { /* endpoint not yet implemented — defaults stay */ });
+    api<Record<string, Partial<FlagState>>>('/api/admin/health-flags')
+      .then(saved => {
+        if (!saved || typeof saved !== 'object') return;
+        setFlags(f => {
+          const next = { ...defaultFlags(), ...f };
+          for (const [code, patch] of Object.entries(saved)) {
+            next[code] = { ...next[code], ...patch } as FlagState;
+          }
+          return next;
+        });
+      })
+      .catch(() => { /* endpoint unreachable — defaults stay */ });
   }, []);
 
   const update = (code: string, patch: Partial<FlagState>) =>
