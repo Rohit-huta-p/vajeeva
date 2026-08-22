@@ -49,6 +49,14 @@ const SCREENS = {
   finish:   { app: '/finish/coconut-laddu-narikela-modaka',   ref: 'finish.html' },
   saved:    { app: '/saved',                                  ref: 'saved.html' },
   glossary: { app: '/source/samayamulu',                      ref: 'glossary.html' },
+  // auth wave (routes land with AUTH-WAVE-1; refs already exist)
+  opening:  { app: '/auth/opening',                           ref: 'opening.html' },
+  login1:   { app: '/auth/login',                             ref: 'login-step1.html' },
+  login2:   { app: '/auth/login?step=2',                      ref: 'login-step2.html' },
+  signup1:  { app: '/auth/signup',                            ref: 'signup-step1.html' },
+  signup2:  { app: '/auth/signup?step=2',                     ref: 'signup-step2.html' },
+  signup3:  { app: '/auth/signup?step=3',                     ref: 'signup-step3.html' },
+  onboard:  { app: '/auth/onboarding',                        ref: 'onboarding.html' },
 };
 const sel = document.getElementById('screen');
 for (const k of Object.keys(SCREENS)) sel.add(new Option(k, k));
