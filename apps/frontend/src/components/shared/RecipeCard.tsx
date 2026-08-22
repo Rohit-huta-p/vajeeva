@@ -1,8 +1,9 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, View, Text, Image, StyleSheet } from 'react-native';
 import { colors, fonts, shadows } from '../../theme/tokens';
 import { ContraDots } from './ContraDots';
 import { IconChev, CategoryIll, categoryTint } from './icons';
+import { cloudThumb } from '../../api/recipes';
 import type { RecipeListItem } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -15,7 +16,16 @@ export function RecipeCard({ recipe, onPress }: { recipe: RecipeListItem; onPres
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.tile, { backgroundColor: categoryTint(recipe.category) }]}>
-        <CategoryIll category={recipe.category} size={sc(42)} />
+        {recipe.imageUrl ? (
+          <Image
+            source={{ uri: cloudThumb(recipe.imageUrl, 200, 200) }}
+            accessibilityLabel={recipe.nameEn}
+            style={s.tileImg}
+            resizeMode="cover"
+          />
+        ) : (
+          <CategoryIll category={recipe.category} size={sc(42)} />
+        )}
       </View>
       <View style={s.info}>
         <Text style={s.name}>{recipe.nameEn}</Text>
@@ -43,7 +53,9 @@ const s = scaledSheet({
   tile: {
     width: 50, height: 50, borderRadius: 12,
     alignItems: 'center', justifyContent: 'center',
+    overflow: 'hidden',
   },
+  tileImg: { width: '100%', height: '100%' },
   info: { flex: 1, minWidth: 0 },
   name: { fontSize: 13.5, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, lineHeight: 15.5 },
   tamil: { fontSize: 10, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 1 },

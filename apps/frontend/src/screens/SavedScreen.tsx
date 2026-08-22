@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { colors, fonts, shadows } from '../theme/tokens';
 import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { CategoryIll, categoryTint } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { cloudThumb } from '../api/recipes';
 import type { RecipeListItem } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -13,7 +14,16 @@ function SavedCard({ recipe, onPress }: { recipe: RecipeListItem; onPress: () =>
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.rim, { backgroundColor: categoryTint(recipe.category) }]}>
-        <CategoryIll category={recipe.category} size={sc(60)} />
+        {recipe.imageUrl ? (
+          <Image
+            source={{ uri: cloudThumb(recipe.imageUrl, 500, 220) }}
+            accessibilityLabel={recipe.nameEn}
+            style={s.rimImg}
+            resizeMode="cover"
+          />
+        ) : (
+          <CategoryIll category={recipe.category} size={sc(60)} />
+        )}
       </View>
       <Text style={s.name} numberOfLines={1}>{recipe.nameEn}</Text>
       {recipe.nameTa ? <Text style={s.skt} numberOfLines={1}>{recipe.nameTa}</Text> : null}
@@ -80,7 +90,9 @@ const s = scaledSheet({
   rim: {
     height: 72, borderRadius: 9,
     alignItems: 'center', justifyContent: 'center',
+    overflow: 'hidden',
   },
+  rimImg: { width: '100%', height: '100%' },
   name: { fontSize: 12, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, marginTop: 6, lineHeight: 14 },
   skt: { fontSize: 9, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber },
   meta: { fontSize: 9, fontFamily: fonts.sans, color: colors.muted, marginTop: 5 },

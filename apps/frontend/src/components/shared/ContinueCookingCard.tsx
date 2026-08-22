@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, DimensionValue } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, DimensionValue } from 'react-native';
 import { colors, fonts, shadows } from '../../theme/tokens';
 import { IconPlay, CategoryIll } from './icons';
+import { cloudThumb } from '../../api/recipes';
 import type { RecipeListItem } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -12,7 +13,18 @@ export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }
   const fillWidth: DimensionValue = `${Math.round(progress * 100)}%`;
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.9}>
-      <View style={s.tile}><CategoryIll category={recipe.category} size={sc(30)} /></View>
+      <View style={s.tile}>
+        {recipe.imageUrl ? (
+          <Image
+            source={{ uri: cloudThumb(recipe.imageUrl, 150, 150) }}
+            accessibilityLabel={recipe.nameEn}
+            style={s.tileImg}
+            resizeMode="cover"
+          />
+        ) : (
+          <CategoryIll category={recipe.category} size={sc(30)} />
+        )}
+      </View>
       <View style={s.info}>
         <Text style={s.name} numberOfLines={1}>Continue · {recipe.nameEn}</Text>
         <Text style={s.step}>Step {currentStep} of {totalSteps}</Text>
@@ -36,7 +48,9 @@ const s = scaledSheet({
     width: 38, height: 38, borderRadius: 11,
     backgroundColor: 'rgba(255,255,255,0.16)',
     alignItems: 'center', justifyContent: 'center',
+    overflow: 'hidden',
   },
+  tileImg: { width: '100%', height: '100%' },
   info: { flex: 1, minWidth: 0 },
   name: { fontSize: 12.5, fontFamily: fonts.sans, fontWeight: '800', color: colors.onGreen },
   step: { fontSize: 10, fontFamily: fonts.sans, color: colors.onGreen, opacity: 0.85 },
