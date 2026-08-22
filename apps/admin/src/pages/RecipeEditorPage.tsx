@@ -196,6 +196,7 @@ export function RecipeEditorPage() {
               context="hero"
               value={(form.images ?? []) as GalleryImage[]}
               onChange={images => setForm({ ...form, images })}
+              hint="1200 × 800 px · 3:2 ratio · JPEG or WebP"
             />
           </fieldset>
         </div>

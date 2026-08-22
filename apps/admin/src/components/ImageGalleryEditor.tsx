@@ -12,6 +12,8 @@ interface Props {
   context: string;
   value: GalleryImage[];
   onChange: (next: GalleryImage[]) => void;
+  /** Optional dimension hint shown below the picker, e.g. "1200 × 800 px · 3:2 · JPEG/WebP" */
+  hint?: string;
 }
 
 /** Upload one file to /api/admin/uploads and return { url, publicId }. */
@@ -28,7 +30,7 @@ async function uploadFile(file: File): Promise<{ url: string; publicId: string }
   return body as { url: string; publicId: string };
 }
 
-export function ImageGalleryEditor({ context, value, onChange }: Props) {
+export function ImageGalleryEditor({ context, value, onChange, hint }: Props) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState<string | null>(null);
@@ -119,6 +121,12 @@ export function ImageGalleryEditor({ context, value, onChange }: Props) {
         disabled={uploading}
         onChange={e => handleFiles(e.target.files)}
       />
+
+      {hint && (
+        <p className="text-xs text-ink/35 mt-1.5 leading-snug">
+          📐 {hint} · max 8 MB
+        </p>
+      )}
 
       {uploadError && (
         <p role="alert" className="text-xs text-clay mt-1">{uploadError}</p>

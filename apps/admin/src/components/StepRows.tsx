@@ -95,6 +95,7 @@ export function StepRows({ value, onChange }: {
             context={`step ${i + 1}`}
             value={(row.images ?? []) as GalleryImage[]}
             onChange={images => set(i, { images })}
+            hint="800 × 600 px · 4:3 ratio · JPEG or WebP"
           />
         </div>
       ))}
