@@ -11,6 +11,7 @@ import { subrecipesAdminRouter, subrecipesPublicRouter } from './routes/subrecip
 import { healthFlagsAdminRouter } from './routes/healthflags.routes';
 import { usersAdminRouter } from './routes/usersadmin.routes';
 import { usersRouter, publicHealthFlagsRouter } from './routes/users.routes';
+import { uploadsRouter } from './routes/uploads.routes';
 
 export function createApp() {
   const app = express();
@@ -37,6 +38,7 @@ export function createApp() {
   app.use('/api/subrecipes', subrecipesPublicRouter);
   app.use('/api/healthflags', publicHealthFlagsRouter);
   app.use('/api/users', usersRouter);
+  app.use('/api/admin/uploads', uploadsRouter);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });
