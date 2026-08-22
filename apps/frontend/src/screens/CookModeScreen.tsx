@@ -9,11 +9,12 @@ import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
 import { IconBack, IconChev, IconCheck, IconClose, IconFlame, CategoryIll } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
-import { recipesApi, parseTimerMin } from '../api/recipes';
-import type { RecipeDoc } from '../api/recipes';
+import { ImageCarousel } from '../components/shared/ImageCarousel';
+import { recipesApi, parseTimerMin, sortImages, cloudThumb } from '../api/recipes';
+import type { RecipeDoc, RecipeImage } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 
-interface CookStep { phase: string; text: string; timerSec: number; heat: string | null }
+interface CookStep { phase: string; text: string; timerSec: number; heat: string | null; images: RecipeImage[] }
 
 const NEXT_TEXT = '#0c1a10'; // prototype .cm-nav.next text color
 const PREV_TEXT = 'rgba(240,234,216,0.65)';
@@ -43,6 +44,8 @@ export function CookModeScreen() {
           text: st.text,
           timerSec: parseTimerMin(st.timerStr) * 60,
           heat: st.heat ?? null,
+          // illus-box-sized Cloudinary transform (full-width box, h94 @3x)
+          images: sortImages(st.images).map(im => ({ ...im, url: cloudThumb(im.url, 1100, 290) })),
         }));
       setSteps(cookSteps);
       setCategory(doc.category);
@@ -137,9 +140,13 @@ export function CookModeScreen() {
         {/* Content */}
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <Text style={s.stepText}>{current.text}</Text>
-          <View style={s.illus}>
-            <CategoryIll category={category} size={sc(76)} />
-          </View>
+          {current.images.length ? (
+            <ImageCarousel images={current.images} height={sc(94)} radius={sc(14)} placeholderColor={colors.cmSurf} />
+          ) : (
+            <View style={s.illus}>
+              <CategoryIll category={category} size={sc(76)} />
+            </View>
+          )}
           <View style={s.infoRow}>
             {current.heat ? (
               <View style={s.heat}>
