@@ -98,8 +98,10 @@ const s = StyleSheet.create({
   scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.3)' },
   panel: {
     backgroundColor: colors.cream,
+    // Top radius only — the prototype's 32px bottom radius was a device-mock
+    // artifact (hugging the mock's rounded screen corners); a real sheet sits
+    // flush at the viewport bottom.
     borderTopLeftRadius: 18, borderTopRightRadius: 18,
-    borderBottomLeftRadius: 32, borderBottomRightRadius: 32,
     maxHeight: '78%',
   },
   handle: {
