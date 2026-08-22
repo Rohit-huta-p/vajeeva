@@ -86,7 +86,7 @@ export function RecipeEditorPage() {
   }
 
   return (
-    <main className="min-h-screen bg-cream p-6 max-w-5xl mx-auto">
+    <main className="min-h-full bg-cream p-6 max-w-5xl mx-auto">
       <header className="flex items-center gap-3 mb-6">
         <Link to="/" className="text-ink/55 text-sm">← All Recipes</Link>
         <h1 className="font-serif text-xl font-semibold text-ink flex-1">

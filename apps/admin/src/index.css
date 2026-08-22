@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+/* Ensure h-screen / percentage-height flex chains resolve to the real viewport.
+   Without these, the AdminLayout flex h-screen root collapses to content height
+   and leaves a bare white body below the shell. */
+html,
+body,
+#root {
+  height: 100%;
+}
+
 @theme {
   --color-cream: #FBF8F1;
   --color-bone: #F2EDE1;
