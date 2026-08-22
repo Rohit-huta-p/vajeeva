@@ -25,6 +25,23 @@ interactions are stubbed to no-ops — these are static reference files.
 | `glossary.html` | `#s-glossary` |
 | `aromatic-sheet.html` | `#aroma-overlay` shown open over `#s-detail` |
 
+Auth screens (designed 2026-08-22, no counterpart in the original prototype —
+authored directly in the same shared style block; progressive one-question
+flow, content vertically centered):
+
+| File | Screen |
+| --- | --- |
+| `opening.html` | Welcome carousel, panel 1 of 3 (Log in / Sign up footer) |
+| `login-step1.html` | Login 1/2 — email question, Continue disabled until valid |
+| `login-step2.html` | Login 2/2 — password, email recap chip with Edit |
+| `signup-step1.html` | Signup 1/4 — email |
+| `signup-step2.html` | Signup 2/4 — create password |
+| `signup-step3.html` | Signup 3/4 — name + optional phone |
+| `onboarding.html` | Signup 4/4 — health profile (DM/OW/LI/SD grid, skippable) |
+
+`explorations/` holds the retired auth design variants (brand-first forms,
+trust-first, benefits-first, care-preferences) kept for reference.
+
 ## Viewing
 
 Serve the repo root and open at a 390px viewport (device toolbar, or an iframe):
