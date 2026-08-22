@@ -17,6 +17,7 @@ import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { LinearGradient } from 'expo-linear-gradient';
 import { recipesApi } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 // Matches the API's Source slug scheme (lowercase, non-alphanumeric -> '-').
 function toSourceSlug(name: string): string {
@@ -85,13 +86,13 @@ export function RecipeDetailScreen() {
         {/* Illustration hero */}
         <LinearGradient colors={[colors.greenSoft, colors.sand]} style={s.hero}>
           <View style={s.heroBar}>
-            <IconButton icon={<IconBack size={15} color={colors.ink} />} onPress={() => router.back()} />
+            <IconButton icon={<IconBack size={sc(15)} color={colors.ink} />} onPress={() => router.back()} />
             <View style={s.heroActs}>
-              <IconButton icon={<IconHeart size={15} color={colors.clay} />} onPress={() => {}} />
-              <IconButton icon={<IconShare size={15} color={colors.ink} />} onPress={() => {}} />
+              <IconButton icon={<IconHeart size={sc(15)} color={colors.clay} />} onPress={() => {}} />
+              <IconButton icon={<IconShare size={sc(15)} color={colors.ink} />} onPress={() => {}} />
             </View>
           </View>
-          <IllHero width={174} height={130} />
+          <IllHero width={sc(174)} height={sc(130)} />
         </LinearGradient>
         <View style={s.body}>
           {/* Title */}
@@ -152,7 +153,7 @@ export function RecipeDetailScreen() {
           </View>
 
           {/* CTA */}
-          <CTA label="Start Cook" icon={<IconPlay size={15} color={colors.onGreen} />} onPress={() => router.push(`/cook/${slug}` as any)} />
+          <CTA label="Start Cook" icon={<IconPlay size={sc(15)} color={colors.onGreen} />} onPress={() => router.push(`/cook/${slug}` as any)} />
           <Disclaimer text="Supportive dietary guidance · not a substitute for medical advice" />
         </View>
       </ScrollView>
@@ -161,7 +162,7 @@ export function RecipeDetailScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   loading: { flex: 1 },
   hero: {

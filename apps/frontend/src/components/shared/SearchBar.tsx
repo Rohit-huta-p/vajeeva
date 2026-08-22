@@ -2,13 +2,14 @@ import React from 'react';
 import { View, TextInput, StyleSheet } from 'react-native';
 import { colors, fonts, shadows } from '../../theme/tokens';
 import { IconSearch } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 export function SearchBar({ placeholder = 'Search a recipe or ingredient…', value, onChangeText }: {
   placeholder?: string; value: string; onChangeText: (t: string) => void;
 }) {
   return (
     <View style={s.bar}>
-      <IconSearch size={15} color={colors.muted} />
+      <IconSearch size={sc(15)} color={colors.muted} />
       <TextInput
         style={s.input}
         placeholder={placeholder}
@@ -20,7 +21,7 @@ export function SearchBar({ placeholder = 'Search a recipe or ingredient…', va
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   bar: {
     flexDirection: 'row', alignItems: 'center', gap: 9,
     backgroundColor: colors.cream, borderRadius: 999,

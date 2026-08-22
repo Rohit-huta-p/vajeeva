@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { AuthContext } from '../auth/AuthContext';
 import { colors } from '../theme';
+import { scaledSheet } from '../theme/scale';
 
 export default function ProfileScreen() {
   const { user, logout } = useContext(AuthContext);
@@ -16,7 +17,7 @@ export default function ProfileScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root:       { flex: 1, backgroundColor: colors.bone, padding: 24, gap: 16 },
   heading:    { fontSize: 22, fontWeight: '800', color: colors.ink },
   email:      { fontSize: 15, color: colors.ink2 },

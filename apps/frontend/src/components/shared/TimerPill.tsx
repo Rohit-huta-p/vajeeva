@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
 import { IconClock } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 function fmt(s: number) {
   return `${String(Math.floor(s / 60)).padStart(2, '0')}:${String(s % 60).padStart(2, '0')}`;
@@ -31,13 +32,13 @@ export function TimerPill({ seconds, running, onToggle, done }: {
   const color = done ? DONE_TEXT : colors.cmGreen;
   return (
     <TouchableOpacity style={[s.pill, done && s.pillDone]} onPress={onToggle} disabled={done}>
-      <IconClock size={13} color={color} />
+      <IconClock size={sc(13)} color={color} />
       <Text style={[s.label, { color }]}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   pill: {
     flexDirection: 'row', alignItems: 'center', gap: 7,
     borderWidth: 2, borderColor: colors.cmGreen,

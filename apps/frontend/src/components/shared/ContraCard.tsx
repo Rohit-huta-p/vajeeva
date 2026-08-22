@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export function ContraCard({ conditions }: { conditions: string[] }) {
   if (conditions.length === 0) return null;
@@ -12,7 +13,7 @@ export function ContraCard({ conditions }: { conditions: string[] }) {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   card: {
     backgroundColor: 'rgba(180,71,46,0.07)',
     borderLeftWidth: 3, borderLeftColor: colors.clay,

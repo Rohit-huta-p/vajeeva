@@ -4,6 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, shadows } from '../theme/tokens';
 import { IconBack } from '../components/shared/icons';
 import { sourcesApi } from '../api';
+import { scaledSheet, sc } from '../theme/scale';
 
 interface SourceDTO {
   id: string;
@@ -60,7 +61,7 @@ export function SourceGlossaryScreen() {
       <View style={s.hero}>
         <View style={s.heroRow}>
           <TouchableOpacity style={s.icobtn} onPress={() => router.back()}>
-            <IconBack size={15} color={colors.ink} />
+            <IconBack size={sc(15)} color={colors.ink} />
           </TouchableOpacity>
           <View style={s.grow} />
           <Text style={s.navRight}>SOURCE</Text>
@@ -110,14 +111,14 @@ export function SourceGlossaryScreen() {
               {source.recipeCount} {source.recipeCount === 1 ? 'recipe' : 'recipes'} in the Vajeeva collection
             </Text>
           </GlossBlock>
-          <View style={{ height: 16 }} />
+          <View style={{ height: sc(16) }} />
         </ScrollView>
       )}
     </SafeAreaView>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   hero: { padding: 14, borderBottomWidth: 1, borderBottomColor: colors.line },
   heroRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },

@@ -11,6 +11,7 @@ import { MkSprout, IconUser, IconLeaf } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 const PILLARS = [
   { key: 'solid',      name: 'Solid',      subtitle: 'Breads · sweets · snacks' },
@@ -57,12 +58,12 @@ export function HomeScreen() {
       <ScrollView contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
         {/* Logo row */}
         <View style={s.logoRow}>
-          <View style={s.logoMark}><MkSprout size={18} /></View>
+          <View style={s.logoMark}><MkSprout size={sc(18)} /></View>
           <View style={s.grow}>
             <Text style={s.greeting}>Good morning</Text>
             <Text style={s.greetingSub}>Vajeeva</Text>
           </View>
-          <View style={s.avatar}><IconUser size={15} color={colors.green} /></View>
+          <View style={s.avatar}><IconUser size={sc(15)} color={colors.green} /></View>
         </View>
 
         {/* Search */}
@@ -95,7 +96,7 @@ export function HomeScreen() {
 
         {/* Trust badge */}
         <View style={s.trust}>
-          <IconLeaf size={11} color={colors.green} />
+          <IconLeaf size={sc(11)} color={colors.green} />
           <Text style={s.trustText}>grounded in classical texts + ICMR-NIN 2024</Text>
         </View>
       </ScrollView>
@@ -103,7 +104,7 @@ export function HomeScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   scroll: { paddingHorizontal: 14, paddingTop: 14, paddingBottom: 24, gap: 10 },
   logoRow: { flexDirection: 'row', alignItems: 'center', gap: 10 },

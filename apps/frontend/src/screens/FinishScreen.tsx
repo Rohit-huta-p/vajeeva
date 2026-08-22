@@ -7,6 +7,7 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 const CTA_TEXT = '#0c1a10'; // prototype .fin-cta text color
 
@@ -52,7 +53,7 @@ export function FinishScreen() {
       {/* Top row */}
       <View style={s.top}>
         <TouchableOpacity style={s.closeBtn} onPress={() => router.push('/')}>
-          <IconClose size={13} color={colors.cmMuted} />
+          <IconClose size={sc(13)} color={colors.cmMuted} />
         </TouchableOpacity>
         <View style={s.progTrack}><View style={s.progFill} /></View>
         <Text style={s.done}>Done</Text>
@@ -61,7 +62,7 @@ export function FinishScreen() {
       {/* Body */}
       <View style={s.body}>
         <View style={s.ring}>
-          <IconCheck size={32} color={colors.cmGreen} />
+          <IconCheck size={sc(32)} color={colors.cmGreen} />
         </View>
         <View style={s.titleWrap}>
           <Text style={s.wellMade}>Well made.</Text>
@@ -78,7 +79,7 @@ export function FinishScreen() {
           <Text style={s.saveSub}>Saved recipes stay on this device and work completely offline.</Text>
           {!saved ? (
             <TouchableOpacity style={s.saveCta} onPress={() => save(recipe)} activeOpacity={0.85}>
-              <IconHeart size={14} color={CTA_TEXT} />
+              <IconHeart size={sc(14)} color={CTA_TEXT} />
               <Text style={s.saveCtaText}>Save recipe</Text>
             </TouchableOpacity>
           ) : (
@@ -95,7 +96,7 @@ export function FinishScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.cmBg },
   top: {
     flexDirection: 'row', alignItems: 'center',

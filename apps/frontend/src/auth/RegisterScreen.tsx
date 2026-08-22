@@ -3,6 +3,7 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert, ActivityInd
 import { AuthContext } from './AuthContext';
 type RegisterScreenProps = { navigation: { navigate: (route: string) => void } };
 import { colors } from '../theme';
+import { scaledSheet } from '../theme/scale';
 
 export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   const { register } = useContext(AuthContext);
@@ -39,7 +40,7 @@ export default function RegisterScreen({ navigation }: RegisterScreenProps) {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root:    { flex: 1, backgroundColor: colors.bone, justifyContent: 'center', padding: 24, gap: 12 },
   title:   { fontFamily: 'serif', fontSize: 28, color: colors.ink, textAlign: 'center', marginBottom: 16 },
   input:   { backgroundColor: colors.sand, borderRadius: 10, padding: 14, color: colors.ink, fontSize: 15 },

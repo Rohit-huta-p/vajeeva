@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
 import { colors, fonts, shadows } from '../../theme/tokens';
 import { IconChev, CategoryIll, categoryTint } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 export function TexturePillar({ name, subtitle, count, category, onPress }: {
   name: string; subtitle: string; count: number; category: string; onPress: () => void;
@@ -9,19 +10,19 @@ export function TexturePillar({ name, subtitle, count, category, onPress }: {
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.tile, { backgroundColor: categoryTint(category) }]}>
-        <CategoryIll category={category} size={48} />
+        <CategoryIll category={category} size={sc(48)} />
       </View>
       <View style={s.info}>
         <Text style={s.name}>{name}</Text>
         <Text style={s.subtitle}>{subtitle}</Text>
         <Text style={s.count}>{count} recipes</Text>
       </View>
-      <IconChev size={18} color={colors.muted} />
+      <IconChev size={sc(18)} color={colors.muted} />
     </TouchableOpacity>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
     backgroundColor: colors.cream, borderRadius: 18,

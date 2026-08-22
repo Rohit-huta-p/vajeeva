@@ -2,6 +2,7 @@ import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
 import { IconCheck } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 export function FilterChip({ label, active, onPress, safeForMe }: {
   label: string; active: boolean; onPress: () => void; safeForMe?: boolean;
@@ -11,13 +12,13 @@ export function FilterChip({ label, active, onPress, safeForMe }: {
       style={[s.chip, active && s.active, safeForMe && s.safeChip]}
       onPress={onPress}
     >
-      {active ? <IconCheck size={11} color={colors.green} /> : null}
+      {active ? <IconCheck size={sc(11)} color={colors.green} /> : null}
       <Text style={[s.label, active && s.activeLabel, safeForMe && s.safeLabel]}>{label}</Text>
     </TouchableOpacity>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   chip: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
     paddingHorizontal: 11, paddingVertical: 6, borderRadius: 999,

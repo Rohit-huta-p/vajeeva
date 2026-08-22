@@ -4,6 +4,7 @@ import { usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { colors, fonts } from '../../theme/tokens';
 import { IconHome, IconBook, IconMore } from '../shared/icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 const TABS = [
   { href: '/', label: 'Home', Icon: IconHome },
@@ -27,7 +28,7 @@ export function TabBar() {
             accessibilityRole="tab"
             accessibilityState={{ selected: active }}
           >
-            <tab.Icon size={20} color={active ? colors.green : colors.muted} />
+            <tab.Icon size={sc(20)} color={active ? colors.green : colors.muted} />
             <Text style={[s.label, active && s.activeLabel]}>{tab.label}</Text>
           </TouchableOpacity>
         );
@@ -36,7 +37,7 @@ export function TabBar() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   bar: {
     flexDirection: 'row',
     backgroundColor: colors.cream,

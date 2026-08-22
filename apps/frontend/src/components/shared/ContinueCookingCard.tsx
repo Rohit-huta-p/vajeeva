@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet, DimensionValue } from 'react-
 import { colors, fonts, shadows } from '../../theme/tokens';
 import { IconPlay, CategoryIll } from './icons';
 import type { RecipeListItem } from '../../api/recipes';
+import { scaledSheet, sc } from '../../theme/scale';
 
 export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }: {
   recipe: RecipeListItem; currentStep: number; totalSteps: number; onPress: () => void;
@@ -11,7 +12,7 @@ export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }
   const fillWidth: DimensionValue = `${Math.round(progress * 100)}%`;
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.9}>
-      <View style={s.tile}><CategoryIll category={recipe.category} size={30} /></View>
+      <View style={s.tile}><CategoryIll category={recipe.category} size={sc(30)} /></View>
       <View style={s.info}>
         <Text style={s.name} numberOfLines={1}>Continue · {recipe.nameEn}</Text>
         <Text style={s.step}>Step {currentStep} of {totalSteps}</Text>
@@ -19,12 +20,12 @@ export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }
           <View style={[s.fill, { width: fillWidth }]} />
         </View>
       </View>
-      <View style={s.play}><IconPlay size={12} color={colors.green} /></View>
+      <View style={s.play}><IconPlay size={sc(12)} color={colors.green} /></View>
     </TouchableOpacity>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
     backgroundColor: colors.green, borderRadius: 16,

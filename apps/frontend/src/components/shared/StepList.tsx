@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export interface Step {
   phase?: string;
@@ -25,7 +26,7 @@ export function StepList({ steps }: { steps: Step[] }) {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   row: {
     flexDirection: 'row', gap: 9, paddingVertical: 7,
     borderBottomWidth: 1, borderBottomColor: 'rgba(229,221,204,0.7)',

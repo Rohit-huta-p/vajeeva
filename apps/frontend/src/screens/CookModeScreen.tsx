@@ -11,6 +11,7 @@ import { IconBack, IconChev, IconCheck, IconClose, IconFlame, CategoryIll } from
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi, parseTimerMin } from '../api/recipes';
 import type { RecipeDoc } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 interface CookStep { phase: string; text: string; timerSec: number; heat: string | null }
 
@@ -122,7 +123,7 @@ export function CookModeScreen() {
         {/* Nav bar */}
         <View style={s.navbar}>
           <TouchableOpacity style={s.closeBtn} onPress={() => router.back()}>
-            <IconClose size={13} color={colors.cmMuted} />
+            <IconClose size={sc(13)} color={colors.cmMuted} />
           </TouchableOpacity>
           <CookDots total={steps.length} current={step} onJump={jumpTo} />
           <Text style={s.counter}>{step + 1} / {steps.length}</Text>
@@ -137,12 +138,12 @@ export function CookModeScreen() {
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <Text style={s.stepText}>{current.text}</Text>
           <View style={s.illus}>
-            <CategoryIll category={category} size={76} />
+            <CategoryIll category={category} size={sc(76)} />
           </View>
           <View style={s.infoRow}>
             {current.heat ? (
               <View style={s.heat}>
-                <IconFlame size={11} color={colors.cmMuted} />
+                <IconFlame size={sc(11)} color={colors.cmMuted} />
                 <Text style={s.heatText}>
                   {/* prototype copy: "Low heat" / "Medium heat" */}
                   {current.heat.charAt(0).toUpperCase() + current.heat.slice(1)}
@@ -168,12 +169,12 @@ export function CookModeScreen() {
             onPress={goPrev}
             disabled={step === 0}
           >
-            <IconBack size={13} color={PREV_TEXT} />
+            <IconBack size={sc(13)} color={PREV_TEXT} />
             <Text style={s.footPrevTxt}>Back</Text>
           </TouchableOpacity>
           <TouchableOpacity style={[s.footBtn, s.footNext]} onPress={goNext}>
             <Text style={s.footNextTxt}>{isLast ? 'Finish' : 'Next'}</Text>
-            {isLast ? <IconCheck size={13} color={NEXT_TEXT} /> : <IconChev size={13} color={NEXT_TEXT} />}
+            {isLast ? <IconCheck size={sc(13)} color={NEXT_TEXT} /> : <IconChev size={sc(13)} color={NEXT_TEXT} />}
           </TouchableOpacity>
         </View>
         <Text style={s.caption}>screen stays awake · swipe to navigate · works offline</Text>
@@ -185,7 +186,7 @@ export function CookModeScreen() {
 // Default export kept for the legacy react-navigation TabNavigator until FE-12 removes it.
 export default CookModeScreen;
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.cmBg },
   loadingRoot: { alignItems: 'center', justifyContent: 'center' },
   track: { height: 2, backgroundColor: colors.cmLine },

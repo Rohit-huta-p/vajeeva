@@ -3,6 +3,7 @@ import { Modal, View, Text, TouchableOpacity, Pressable, ScrollView, StyleSheet 
 import { colors, fonts } from '../../theme/tokens';
 import { subrecipesApi } from '../../api';
 import { IconClose } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 // Prototype bottom sheet (.bsoverlay/.bspanel) for the shared sub-recipe.
 // Content is fetched from GET /api/subrecipes/:slug; the S-24 sourced copy
@@ -74,7 +75,7 @@ export function AromaticPowderSheet({ visible, onClose }: {
               <Text style={s.subtitle}>{subtitle}</Text>
             </View>
             <TouchableOpacity onPress={onClose} hitSlop={8} style={s.close}>
-              <IconClose size={15} color={colors.ink2} />
+              <IconClose size={sc(15)} color={colors.ink2} />
             </TouchableOpacity>
           </View>
           <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.bodyContent}>
@@ -93,7 +94,7 @@ export function AromaticPowderSheet({ visible, onClose }: {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   overlay: { flex: 1, justifyContent: 'flex-end' },
   scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.3)' },
   panel: {

@@ -10,6 +10,7 @@ import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
 
@@ -73,14 +74,14 @@ export function RecipeListScreen() {
         {/* Header */}
         <View style={s.header}>
           <IcoBtn onPress={() => router.back()}>
-            <IconBack size={15} color={colors.ink} />
+            <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
             <Text style={s.title}>{filter === 'All' ? 'All Recipes' : filter}</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
           <IcoBtn>
-            <IconFilter size={15} color={colors.ink} />
+            <IconFilter size={sc(15)} color={colors.ink} />
           </IcoBtn>
         </View>
         {/* Filter chips */}
@@ -105,7 +106,7 @@ export function RecipeListScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   page: { flex: 1, paddingHorizontal: 14, paddingTop: 6, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },

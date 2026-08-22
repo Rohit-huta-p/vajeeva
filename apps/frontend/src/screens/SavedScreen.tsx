@@ -6,13 +6,14 @@ import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { CategoryIll, categoryTint } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import type { RecipeListItem } from '../api/recipes';
+import { scaledSheet, sc } from '../theme/scale';
 
 // Prototype .rcard — compact 2-col grid card.
 function SavedCard({ recipe, onPress }: { recipe: RecipeListItem; onPress: () => void }) {
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.rim, { backgroundColor: categoryTint(recipe.category) }]}>
-        <CategoryIll category={recipe.category} size={60} />
+        <CategoryIll category={recipe.category} size={sc(60)} />
       </View>
       <Text style={s.name} numberOfLines={1}>{recipe.nameEn}</Text>
       {recipe.nameTa ? <Text style={s.skt} numberOfLines={1}>{recipe.nameTa}</Text> : null}
@@ -60,7 +61,7 @@ export function SavedScreen() {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   page: { flex: 1, paddingHorizontal: 14, paddingTop: 8, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },

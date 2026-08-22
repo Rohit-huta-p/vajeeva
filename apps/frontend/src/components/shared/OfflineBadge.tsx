@@ -2,17 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
 import { IconLeaf } from './icons';
+import { scaledSheet, sc } from '../../theme/scale';
 
 export function OfflineBadge() {
   return (
     <View style={s.pill}>
-      <IconLeaf size={11} color={colors.green} />
+      <IconLeaf size={sc(11)} color={colors.green} />
       <Text style={s.label}>Offline</Text>
     </View>
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   pill: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
     backgroundColor: colors.sand, borderRadius: 999,

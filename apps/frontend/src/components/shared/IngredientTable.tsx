@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export interface Ingredient {
   name: string;
@@ -35,7 +36,7 @@ export function IngredientTable({ ingredients, unit }: {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   row: { flexDirection: 'row', paddingVertical: 7, paddingHorizontal: 14 },
   odd: { backgroundColor: 'rgba(233,225,208,0.45)' },
   stage: {

@@ -4,6 +4,7 @@ import { colors, fonts, shadows } from '../../theme/tokens';
 import { ContraDots } from './ContraDots';
 import { IconChev, CategoryIll, categoryTint } from './icons';
 import type { RecipeListItem } from '../../api/recipes';
+import { scaledSheet, sc } from '../../theme/scale';
 
 function metaLabel(r: RecipeListItem) {
   const cat = r.category.charAt(0).toUpperCase() + r.category.slice(1);
@@ -14,14 +15,14 @@ export function RecipeCard({ recipe, onPress }: { recipe: RecipeListItem; onPres
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.tile, { backgroundColor: categoryTint(recipe.category) }]}>
-        <CategoryIll category={recipe.category} size={42} />
+        <CategoryIll category={recipe.category} size={sc(42)} />
       </View>
       <View style={s.info}>
         <Text style={s.name}>{recipe.nameEn}</Text>
         {recipe.nameTa ? <Text style={s.tamil} numberOfLines={1}>{recipe.nameTa}</Text> : null}
         <Text style={s.meta}>{metaLabel(recipe)}</Text>
       </View>
-      <IconChev size={18} color={colors.muted} />
+      <IconChev size={sc(18)} color={colors.muted} />
       {recipe.contraCount > 0 && (
         <View style={s.cdots}>
           <ContraDots count={recipe.contraCount} />
@@ -31,7 +32,7 @@ export function RecipeCard({ recipe, onPress }: { recipe: RecipeListItem; onPres
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
     backgroundColor: colors.cream, borderRadius: 15,

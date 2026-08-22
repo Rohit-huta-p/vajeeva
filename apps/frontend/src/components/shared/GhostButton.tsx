@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export function GhostButton({ label, onPress }: { label: string; onPress: () => void }) {
   return (
@@ -10,7 +11,7 @@ export function GhostButton({ label, onPress }: { label: string; onPress: () => 
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   btn: { alignItems: 'center', paddingVertical: 12 },
   label: { fontSize: 14, fontFamily: fonts.sans, color: colors.ink2 },
 });

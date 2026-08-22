@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
 import { colors, fonts, shadows } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export function CTA({ label, onPress, icon }: {
   label: string; onPress: () => void; icon?: React.ReactNode;
@@ -15,7 +16,7 @@ export function CTA({ label, onPress, icon }: {
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   btn: {
     backgroundColor: colors.green, borderRadius: 14,
     paddingVertical: 14, paddingHorizontal: 15, alignItems: 'center',

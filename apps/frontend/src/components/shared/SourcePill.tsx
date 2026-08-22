@@ -1,6 +1,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { colors, fonts } from '../../theme/tokens';
+import { scaledSheet } from '../../theme/scale';
 
 export function SourcePill({ name, onPress }: { name: string; onPress: () => void }) {
   return (
@@ -10,7 +11,7 @@ export function SourcePill({ name, onPress }: { name: string; onPress: () => voi
   );
 }
 
-const s = StyleSheet.create({
+const s = scaledSheet({
   pill: {
     borderWidth: 1, borderColor: 'rgba(198,144,47,0.42)',
     borderRadius: 4, paddingHorizontal: 9, paddingVertical: 3,
