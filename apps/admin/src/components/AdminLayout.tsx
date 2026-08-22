@@ -80,7 +80,7 @@ export function AdminLayout() {
   const { pathname } = useLocation();
 
   return (
-    <div className="flex h-screen bg-cream">
+    <div className="flex h-full bg-cream">
       <aside className="w-[240px] bg-sand border-r border-ink/20 flex flex-col shrink-0">
         <div className="flex items-center gap-2.5 px-4 py-[18px] border-b border-ink/20">
           <div className="w-8 h-8 bg-brand text-white rounded-lg flex items-center justify-center font-serif text-lg font-bold shrink-0">
