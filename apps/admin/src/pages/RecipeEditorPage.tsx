@@ -7,6 +7,7 @@ import { StepRows, EMPTY_STEP } from '../components/StepRows';
 import { HealthFlagRows } from '../components/HealthFlagRows';
 import { SourceRows } from '../components/SourceRows';
 import { AppPreviewCard } from '../components/AppPreviewCard';
+import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
 
 const EMPTY_RECIPE: RecipeInput = {
   slug: '',
@@ -21,6 +22,7 @@ const EMPTY_RECIPE: RecipeInput = {
   yieldStr: '',
   shelfLife: '',
   status: 'draft',
+  images: [],
 };
 
 export function RecipeEditorPage() {
@@ -185,6 +187,17 @@ export function RecipeEditorPage() {
           <StepRows value={form.steps} onChange={steps => setForm({ ...form, steps })} />
           <HealthFlagRows value={form.healthFlags} onChange={healthFlags => setForm({ ...form, healthFlags })} />
           <SourceRows value={form.sources} onChange={sources => setForm({ ...form, sources })} />
+
+          {/* Hero Gallery */}
+          <fieldset className="bg-white border border-ink/20 rounded-lg p-5 mb-4">
+            <legend className="text-xs font-bold uppercase text-ink/55 px-1">Hero Gallery</legend>
+            <p className="text-xs text-ink/50 mb-2">Upload photos for the recipe card and detail view. First image is the card thumbnail.</p>
+            <ImageGalleryEditor
+              context="hero"
+              value={(form.images ?? []) as GalleryImage[]}
+              onChange={images => setForm({ ...form, images })}
+            />
+          </fieldset>
         </div>
         <div className="lg:sticky lg:top-6 mt-4 lg:mt-0">
           <AppPreviewCard recipe={form} />

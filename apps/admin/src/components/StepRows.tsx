@@ -1,4 +1,5 @@
 import type { RecipeInput } from '@vajeeva/shared';
+import { ImageGalleryEditor, type GalleryImage } from './ImageGalleryEditor';
 
 type Step = RecipeInput['steps'][number];
 
@@ -10,6 +11,7 @@ export const EMPTY_STEP: Step = {
   timerStr: null,
   stepIngredients: [],
   illColor: '#2A3828',
+  images: [],
 };
 
 export function StepRows({ value, onChange }: {
@@ -88,6 +90,11 @@ export function StepRows({ value, onChange }: {
             value={row.stepIngredients.join(',')}
             onChange={e => set(i, { stepIngredients: e.target.value.split(',') })}
             className="w-full border border-ink/20 rounded-lg px-3 py-2 bg-white text-sm"
+          />
+          <ImageGalleryEditor
+            context={`step ${i + 1}`}
+            value={(row.images ?? []) as GalleryImage[]}
+            onChange={images => set(i, { images })}
           />
         </div>
       ))}

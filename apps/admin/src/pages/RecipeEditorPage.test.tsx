@@ -107,3 +107,75 @@ it('live-previews the recipe name as you type', async () => {
   const preview = screen.getByRole('complementary', { name: /app preview/i });
   expect(within(preview).getByText('Ragi Malt')).toBeInTheDocument();
 });
+
+// ── ADM-IMAGES: hero gallery + per-step image uploads ─────────────────────────
+
+it('hero gallery: renders the "Add hero image" file input', async () => {
+  vi.stubGlobal('fetch', vi.fn());
+  setToken('t');
+  renderCreate();
+  // There should be a file input for the hero gallery
+  const input = screen.getByLabelText(/add hero image/i) as HTMLInputElement;
+  expect(input).toBeInTheDocument();
+  expect(input.type).toBe('file');
+  expect(input.accept).toContain('image/');
+});
+
+it('hero gallery: uploading a file calls /api/admin/uploads and shows thumbnail', async () => {
+  const uploadMock = vi.fn().mockResolvedValue(
+    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
+  );
+  vi.stubGlobal('fetch', uploadMock);
+  setToken('admin-tok');
+  renderCreate();
+
+  const file = new File(['img'], 'hero.jpg', { type: 'image/jpeg' });
+  const input = screen.getByLabelText(/add hero image/i);
+  await userEvent.upload(input, file);
+
+  // POST to upload endpoint
+  expect(uploadMock).toHaveBeenCalledWith(
+    '/api/admin/uploads',
+    expect.objectContaining({ method: 'POST' })
+  );
+  // Thumbnail appears
+  expect(await screen.findByRole('img', { name: /hero image 1/i })).toBeInTheDocument();
+});
+
+it('hero gallery: shows inline error when upload returns 400', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+    new Response(JSON.stringify({ error: 'File too large (max 8MB)' }), { status: 400 })
+  ));
+  setToken('admin-tok');
+  renderCreate();
+
+  // Use an image file so the input change fires normally in jsdom
+  const file = new File(['x'.repeat(100)], 'large.jpg', { type: 'image/jpeg' });
+  const input = screen.getByLabelText(/add hero image/i);
+  await userEvent.upload(input, file);
+
+  expect(await screen.findByText(/file too large/i)).toBeInTheDocument();
+});
+
+it('hero gallery: remove button deletes the image from the list', async () => {
+  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
+  ));
+  setToken('admin-tok');
+  renderCreate();
+
+  const file = new File(['img'], 'hero.jpg', { type: 'image/jpeg' });
+  await userEvent.upload(screen.getByLabelText(/add hero image/i), file);
+  expect(await screen.findByRole('img', { name: /hero image 1/i })).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole('button', { name: /remove hero image 1/i }));
+  expect(screen.queryByRole('img', { name: /hero image 1/i })).not.toBeInTheDocument();
+});
+
+it('per-step: each step has an "Add step image" file input', async () => {
+  vi.stubGlobal('fetch', vi.fn());
+  setToken('t');
+  renderCreate();
+  // aria-label rendered by ImageGalleryEditor: "Add step 1 image"
+  expect(screen.getByLabelText(/add step 1 image/i)).toBeInTheDocument();
+});
