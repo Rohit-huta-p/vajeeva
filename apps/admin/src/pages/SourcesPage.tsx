@@ -6,6 +6,15 @@ interface Source {
   name: string;
   type: string;
   recipeCount: number;
+  // Narrative fields
+  period?: string;
+  author?: string;
+  genre?: string;
+  chapter?: string;
+  about?: string;
+  citationRef?: string;
+  citationNote?: string;
+  whyItMatters?: string;
 }
 
 // Fallback data shown while the API endpoint is not yet implemented
@@ -17,13 +26,37 @@ const PLACEHOLDER_SOURCES: Source[] = [
 
 interface SourceModalProps {
   source: Source | null;
-  onSave: (name: string, type: string) => Promise<void>;
+  onSave: (data: Partial<Source>) => Promise<void>;
   onClose: () => void;
 }
 
+/** Small helper for labelled inputs to reduce repetition in the modal. */
+function Field({ id, label, value, onChange, multiline }: {
+  id: string; label: string; value: string;
+  onChange: (v: string) => void; multiline?: boolean;
+}) {
+  const cls = 'w-full border border-sand rounded-lg px-3 py-2 text-sm mt-1 bg-white text-ink';
+  return (
+    <div>
+      <label htmlFor={id} className="text-xs font-mono uppercase tracking-wider text-ink/60">{label}</label>
+      {multiline
+        ? <textarea id={id} className={cls} rows={3} value={value} onChange={e => onChange(e.target.value)} />
+        : <input id={id} className={cls} value={value} onChange={e => onChange(e.target.value)} />}
+    </div>
+  );
+}
+
 function SourceModal({ source, onSave, onClose }: SourceModalProps) {
-  const [name, setName] = useState(source?.name ?? '');
-  const [type, setType] = useState(source?.type ?? '');
+  const [name,         setName]         = useState(source?.name         ?? '');
+  const [type,         setType]         = useState(source?.type         ?? '');
+  const [period,       setPeriod]       = useState(source?.period       ?? '');
+  const [author,       setAuthor]       = useState(source?.author       ?? '');
+  const [genre,        setGenre]        = useState(source?.genre        ?? '');
+  const [chapter,      setChapter]      = useState(source?.chapter      ?? '');
+  const [about,        setAbout]        = useState(source?.about        ?? '');
+  const [citationRef,  setCitationRef]  = useState(source?.citationRef  ?? '');
+  const [citationNote, setCitationNote] = useState(source?.citationNote ?? '');
+  const [whyItMatters, setWhyItMatters] = useState(source?.whyItMatters ?? '');
   const [saving, setSaving] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -31,7 +64,7 @@ function SourceModal({ source, onSave, onClose }: SourceModalProps) {
     setSaving(true);
     setErr(null);
     try {
-      await onSave(name, type);
+      await onSave({ name, type, period, author, genre, chapter, about, citationRef, citationNote, whyItMatters });
       onClose();
     } catch (e) {
       setErr((e as Error).message);
@@ -41,30 +74,24 @@ function SourceModal({ source, onSave, onClose }: SourceModalProps) {
   }
 
   return (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
-      <div className="bg-cream rounded-xl shadow-xl p-6 w-[420px]">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 bg-black/30 flex items-center justify-center z-50 overflow-y-auto py-8">
+      <div className="bg-cream rounded-xl shadow-xl p-6 w-[480px] max-w-full">
         <h2 className="font-serif text-lg font-bold text-ink mb-4">
           {source ? 'Edit Source' : 'New Source'}
         </h2>
         <div className="flex flex-col gap-3 mb-4">
-          <div>
-            <label htmlFor="source-name" className="text-xs font-mono uppercase tracking-wider text-ink/60">Name</label>
-            <input
-              id="source-name"
-              className="w-full border border-sand rounded-lg px-3 py-2 text-sm mt-1 bg-white text-ink"
-              value={name}
-              onChange={e => setName(e.target.value)}
-            />
-          </div>
-          <div>
-            <label htmlFor="source-type" className="text-xs font-mono uppercase tracking-wider text-ink/60">Type</label>
-            <input
-              id="source-type"
-              className="w-full border border-sand rounded-lg px-3 py-2 text-sm mt-1 bg-white text-ink"
-              value={type}
-              onChange={e => setType(e.target.value)}
-            />
-          </div>
+          <Field id="source-name"    label="Name"           value={name}         onChange={setName} />
+          <Field id="source-type"    label="Type"           value={type}         onChange={setType} />
+          <hr className="border-sand" />
+          <p className="text-xs text-ink/40 font-mono uppercase tracking-wider">Narrative (optional)</p>
+          <Field id="source-period"       label="Period"          value={period}       onChange={setPeriod} />
+          <Field id="source-author"       label="Author"          value={author}       onChange={setAuthor} />
+          <Field id="source-genre"        label="Genre"           value={genre}        onChange={setGenre} />
+          <Field id="source-chapter"      label="Chapter"         value={chapter}      onChange={setChapter} />
+          <Field id="source-about"        label="About"           value={about}        onChange={setAbout}        multiline />
+          <Field id="source-citationRef"  label="Citation Ref"    value={citationRef}  onChange={setCitationRef} />
+          <Field id="source-citationNote" label="Citation Note"   value={citationNote} onChange={setCitationNote} multiline />
+          <Field id="source-why"          label="Why It Matters"  value={whyItMatters} onChange={setWhyItMatters} multiline />
         </div>
         {err && <p role="alert" className="text-xs text-clay mb-3">{err}</p>}
         <div className="flex justify-end gap-3">
@@ -96,17 +123,17 @@ export function SourcesPage() {
       .catch(() => { /* endpoint not yet implemented — placeholder stays */ });
   }, []);
 
-  async function handleSave(name: string, type: string) {
+  async function handleSave(data: Partial<Source>) {
     if (editing) {
       const updated = await api<Source>(`/api/admin/sources/${editing.id}`, {
         method: 'PUT',
-        body: JSON.stringify({ name, type }),
+        body: JSON.stringify(data),
       });
       setSources(ss => ss.map(s => s.id === editing.id ? updated : s));
     } else {
       const created = await api<Source>('/api/admin/sources', {
         method: 'POST',
-        body: JSON.stringify({ name, type }),
+        body: JSON.stringify(data),
       });
       setSources(ss => [...ss, created]);
     }

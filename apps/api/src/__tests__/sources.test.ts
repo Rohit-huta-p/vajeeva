@@ -119,3 +119,68 @@ describe('Consumer Sources', () => {
     expect(res.status).toBe(404);
   });
 });
+
+describe('Source narrative fields (BE-SOURCE-META)', () => {
+  it('POST /api/admin/sources persists narrative fields and returns them', async () => {
+    const res = await request(app)
+      .post('/api/admin/sources')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Ksemakutuhalam',
+        type: 'Classical text',
+        period: '~16th century CE',
+        author: 'Ksema Sarma',
+        genre: 'Pakavidhi',
+        chapter: 'Modaka chapter',
+        about: 'A Sanskrit treatise on Ayurvedic culinary science.',
+        citationRef: 'Chapter 10, verse 54',
+        citationNote: 'The 10th Utsava chapter covers sweet preparations.',
+        whyItMatters: 'Validates the coconut + rock sugar + ghee combination.',
+      });
+    expect(res.status).toBe(201);
+    expect(res.body).toMatchObject({
+      period: '~16th century CE',
+      author: 'Ksema Sarma',
+      genre: 'Pakavidhi',
+      chapter: 'Modaka chapter',
+      about: 'A Sanskrit treatise on Ayurvedic culinary science.',
+      citationRef: 'Chapter 10, verse 54',
+      citationNote: 'The 10th Utsava chapter covers sweet preparations.',
+      whyItMatters: 'Validates the coconut + rock sugar + ghee combination.',
+    });
+  });
+
+  it('GET /api/sources/:slug returns narrative fields', async () => {
+    await request(app)
+      .post('/api/admin/sources')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        name: 'Ksemakutuhalam',
+        type: 'Classical text',
+        about: 'A Sanskrit treatise.',
+        whyItMatters: 'Validates classical preparation.',
+      });
+    const res = await request(app).get('/api/sources/ksemakutuhalam');
+    expect(res.status).toBe(200);
+    expect(res.body.about).toBe('A Sanskrit treatise.');
+    expect(res.body.whyItMatters).toBe('Validates classical preparation.');
+    // Unset fields present but empty
+    expect(res.body).toHaveProperty('period');
+    expect(res.body).toHaveProperty('citationRef');
+  });
+
+  it('PUT /api/admin/sources/:id updates narrative fields', async () => {
+    const create = await request(app)
+      .post('/api/admin/sources')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: 'Some Text', type: 'Classical text' });
+    const id = create.body.id;
+    const res = await request(app)
+      .put(`/api/admin/sources/${id}`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ name: 'Some Text', type: 'Classical text', period: '12th century CE', author: 'Unknown Rishi' });
+    expect(res.status).toBe(200);
+    expect(res.body.period).toBe('12th century CE');
+    expect(res.body.author).toBe('Unknown Rishi');
+  });
+});

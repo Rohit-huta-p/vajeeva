@@ -11,7 +11,28 @@ function toSlug(name: string): string {
 }
 
 function toDTO(doc: any) {
-  return { id: doc._id.toString(), name: doc.name, type: doc.type, recipeCount: doc.recipeCount, slug: doc.slug };
+  return {
+    id:           doc._id.toString(),
+    name:         doc.name,
+    slug:         doc.slug,
+    type:         doc.type,
+    recipeCount:  doc.recipeCount ?? 0,
+    // Narrative fields (empty string when not yet authored)
+    period:       doc.period       ?? '',
+    author:       doc.author       ?? '',
+    genre:        doc.genre        ?? '',
+    chapter:      doc.chapter      ?? '',
+    about:        doc.about        ?? '',
+    citationRef:  doc.citationRef  ?? '',
+    citationNote: doc.citationNote ?? '',
+    whyItMatters: doc.whyItMatters ?? '',
+  };
+}
+
+/** Pick only the fields we accept from request bodies (whitelist). */
+function pickFields(body: any) {
+  const { name, type, period, author, genre, chapter, about, citationRef, citationNote, whyItMatters } = body;
+  return { name, type, period, author, genre, chapter, about, citationRef, citationNote, whyItMatters };
 }
 
 sourcesAdminRouter.get('/', async (_req, res, next) => {
@@ -23,20 +44,20 @@ sourcesAdminRouter.get('/', async (_req, res, next) => {
 
 sourcesAdminRouter.post('/', async (req, res, next) => {
   try {
-    const { name, type } = req.body as { name: string; type: string };
-    if (!name || !type) { res.status(400).json({ error: 'name and type required' }); return; }
-    const slug = toSlug(name);
-    const source = await Source.create({ name, type, slug });
+    const fields = pickFields(req.body);
+    if (!fields.name || !fields.type) { res.status(400).json({ error: 'name and type required' }); return; }
+    const slug = toSlug(fields.name);
+    const source = await Source.create({ ...fields, slug });
     res.status(201).json(toDTO(source));
   } catch (err) { next(err); }
 });
 
 sourcesAdminRouter.put('/:id', async (req, res, next) => {
   try {
-    const { name, type } = req.body as { name: string; type: string };
+    const fields = pickFields(req.body);
     const source = await Source.findByIdAndUpdate(
       req.params.id,
-      { name, type, ...(name ? { slug: toSlug(name) } : {}) },
+      { ...fields, ...(fields.name ? { slug: toSlug(fields.name) } : {}) },
       { new: true }
     ).lean();
     if (!source) { res.status(404).json({ error: 'Not found' }); return; }

@@ -34,3 +34,12 @@ it('opens the modal pre-filled when Edit is clicked', () => {
   expect(screen.getByText('Edit Source')).toBeInTheDocument();
   expect(screen.getByLabelText('Name')).toHaveValue('Samayamulu');
 });
+
+it('modal contains narrative field inputs (BE-SOURCE-META)', () => {
+  render(<MemoryRouter><SourcesPage /></MemoryRouter>);
+  fireEvent.click(screen.getByRole('button', { name: /new source/i }));
+  // All narrative fields must have labelled inputs so a human can author copy
+  for (const label of ['Period', 'Author', 'Genre', 'Chapter', 'About', 'Citation Ref', 'Citation Note', 'Why It Matters']) {
+    expect(screen.getByLabelText(label)).toBeInTheDocument();
+  }
+});
