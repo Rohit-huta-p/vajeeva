@@ -32,11 +32,11 @@ export const colors = {
 } as const;
 
 export const fonts = {
-  // iOS: IowanOldStyle is a system font — no load needed
-  // Android + Web: LibreBaskerville loaded in app/_layout.tsx
-  serif: Platform.OS === 'ios' ? 'IowanOldStyle' : 'LibreBaskerville_400Regular',
-  serifBold: Platform.OS === 'ios' ? 'IowanOldStyle' : 'LibreBaskerville_700Bold',
-  serifItalic: Platform.OS === 'ios' ? 'IowanOldStyle-Italic' : 'LibreBaskerville_400Regular_Italic',
+  // Lora (bundled assets/fonts, loaded in app/_layout.tsx) — same brand
+  // serif on iOS, Android and web.
+  serif: 'Lora',
+  serifBold: 'Lora-Bold',
+  serifItalic: 'Lora-Italic',
   // System monospace per platform ('SpaceMono' was never loaded, so mono text
   // silently fell back to the platform default — a serif on web)
   mono: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
