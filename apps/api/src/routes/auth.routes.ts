@@ -17,10 +17,10 @@ authRouter.post('/register', async (req, res, next) => {
   try {
     const parsed = RegisterInputSchema.safeParse(req.body);
     if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
-    const { email, password } = parsed.data;
+    const { email, password, name, phone } = parsed.data;
     if (await User.findOne({ email })) { res.status(409).json({ error: 'Email already registered' }); return; }
     const passwordHash = await bcrypt.hash(password, 12);
-    const user = await User.create({ email, passwordHash });
+    const user = await User.create({ email, passwordHash, ...(name ? { name } : {}), ...(phone ? { phone } : {}) });
     res.status(201).json({ accessToken: signAccess(user.id, user.role) });
   } catch (err) { next(err); }
 });

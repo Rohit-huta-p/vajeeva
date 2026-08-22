@@ -9,8 +9,10 @@ export const UserSchema = z.object({
 });
 
 export const RegisterInputSchema = z.object({
-  email: z.string().email(),
+  email:    z.string().email(),
   password: z.string().min(8),
+  name:     z.string().optional(),
+  phone:    z.string().optional(),
 });
 
 // No min-length at login — password policy applies at registration only;
