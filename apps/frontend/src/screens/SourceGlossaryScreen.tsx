@@ -11,6 +11,29 @@ interface SourceDTO {
   type: string;
   recipeCount: number;
   slug: string;
+  // Narrative meta (BE-SOURCE-META contract) — all optional; most classical
+  // sources legitimately have none of these authored, so absence is the
+  // common path, not an edge case.
+  period?: string;
+  author?: string;
+  genre?: string;
+  chapter?: string;
+  about?: string;
+  citationRef?: string;
+  citationNote?: string;
+  whyItMatters?: string;
+}
+
+const has = (v?: string | null): v is string => !!v && v.trim().length > 0;
+
+// Prototype .gloss-block: bordered section with uppercase label + body text.
+function GlossBlock({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <View style={s.block}>
+      <Text style={s.blockLabel}>{label}</Text>
+      {children}
+    </View>
+  );
 }
 
 export function SourceGlossaryScreen() {
@@ -28,6 +51,9 @@ export function SourceGlossaryScreen() {
     return () => { alive = false; };
   }, [slug]);
 
+  // gloss-sub: author · genre · chapter, skipping absent parts.
+  const subParts = source ? [source.author, source.genre, source.chapter].filter(has) : [];
+
   return (
     <SafeAreaView style={s.root}>
       {/* Hero (prototype .gloss-hero) */}
@@ -41,8 +67,13 @@ export function SourceGlossaryScreen() {
         </View>
         {status === 'ready' && source ? (
           <>
-            <Text style={s.eyebrow}>{source.type}</Text>
+            <Text style={s.eyebrow}>
+              {has(source.period) ? `${source.type} · ${source.period}` : source.type}
+            </Text>
             <Text style={s.title}>{source.name}</Text>
+            {subParts.length > 0 ? (
+              <Text style={s.sub}>{subParts.join(' · ')}</Text>
+            ) : null}
           </>
         ) : null}
       </View>
@@ -55,12 +86,30 @@ export function SourceGlossaryScreen() {
         </View>
       ) : (
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
-          <View style={s.block}>
-            <Text style={s.blockLabel}>Cited in</Text>
+          {has(source.about) ? (
+            <GlossBlock label="About this text">
+              <Text style={s.blockText}>{source.about}</Text>
+            </GlossBlock>
+          ) : null}
+          {has(source.citationRef) || has(source.citationNote) ? (
+            <GlossBlock label="This citation">
+              <Text style={s.blockText}>
+                {has(source.citationRef) ? <Text style={s.hl}>{source.citationRef}</Text> : null}
+                {has(source.citationRef) && has(source.citationNote) ? ' — ' : ''}
+                {has(source.citationNote) ? source.citationNote : ''}
+              </Text>
+            </GlossBlock>
+          ) : null}
+          {has(source.whyItMatters) ? (
+            <GlossBlock label="Why it matters for this recipe">
+              <Text style={s.blockText}>{source.whyItMatters}</Text>
+            </GlossBlock>
+          ) : null}
+          <GlossBlock label="Cited in">
             <Text style={[s.blockText, s.cited]}>
               {source.recipeCount} {source.recipeCount === 1 ? 'recipe' : 'recipes'} in the Vajeeva collection
             </Text>
-          </View>
+          </GlossBlock>
           <View style={{ height: 16 }} />
         </ScrollView>
       )}
@@ -86,6 +135,10 @@ const s = StyleSheet.create({
     letterSpacing: 0.85, textTransform: 'uppercase', marginBottom: 5,
   },
   title: { fontSize: 19, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
+  sub: {
+    fontSize: 11, fontFamily: fonts.serifItalic, fontStyle: 'italic',
+    color: colors.ink2, marginTop: 2,
+  },
   body: { flex: 1 },
   bodyContent: { paddingBottom: 20 },
   block: {
@@ -97,5 +150,6 @@ const s = StyleSheet.create({
     letterSpacing: 0.63, textTransform: 'uppercase', marginBottom: 5,
   },
   blockText: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink, lineHeight: 17.6 },
+  hl: { fontWeight: '700', color: colors.amber2 },
   cited: { color: colors.amber },
 });
