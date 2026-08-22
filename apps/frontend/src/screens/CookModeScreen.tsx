@@ -109,15 +109,16 @@ export function CookModeScreen() {
 
   return (
     <View style={s.root} {...panResponder.panHandlers}>
-      {/* Progress bar */}
-      <View style={s.track}>
-        <LinearGradient
-          colors={[colors.cmAmber, '#E8B44A']}
-          start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
-          style={[s.fill, { width: `${Math.round(progress * 100)}%` as any }]}
-        />
-      </View>
       <SafeAreaView style={s.safe}>
+        {/* Progress bar — inside the safe area so it sits below the system
+            status bar on device (root paints the dark safe-area background) */}
+        <View style={s.track}>
+          <LinearGradient
+            colors={[colors.cmAmber, '#E8B44A']}
+            start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }}
+            style={[s.fill, { width: `${Math.round(progress * 100)}%` as any }]}
+          />
+        </View>
         {/* Nav bar */}
         <View style={s.navbar}>
           <TouchableOpacity style={s.closeBtn} onPress={() => router.back()}>
@@ -209,7 +210,7 @@ const s = StyleSheet.create({
     letterSpacing: 1.62, textTransform: 'uppercase',
   },
   body: { flex: 1 },
-  bodyContent: { paddingHorizontal: 18, gap: 13 },
+  bodyContent: { paddingHorizontal: 18, gap: 13, paddingBottom: 17 },
   stepText: {
     fontSize: 20, fontFamily: fonts.serif, fontWeight: '700',
     color: colors.cmText, lineHeight: 27.6, letterSpacing: -0.2,
