@@ -37,7 +37,9 @@ export const fonts = {
   serif: Platform.OS === 'ios' ? 'IowanOldStyle' : 'LibreBaskerville_400Regular',
   serifBold: Platform.OS === 'ios' ? 'IowanOldStyle' : 'LibreBaskerville_700Bold',
   serifItalic: Platform.OS === 'ios' ? 'IowanOldStyle-Italic' : 'LibreBaskerville_400Regular_Italic',
-  mono: 'SpaceMono',
+  // System monospace per platform ('SpaceMono' was never loaded, so mono text
+  // silently fell back to the platform default — a serif on web)
+  mono: Platform.OS === 'ios' ? 'Menlo' : 'monospace',
   sans: 'System',
 } as const;
 
