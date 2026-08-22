@@ -4,12 +4,20 @@ const IngredientSchema = new mongoose.Schema({
   nameEn: String, quantityG: String, quantityCup: String,
 }, { _id: false });
 
+/** Shared image sub-document for hero gallery and per-step gallery. */
+const ImageSchema = new mongoose.Schema({
+  url:   { type: String, required: true },
+  alt:   { type: String, default: '' },
+  order: { type: Number, required: true },
+}, { _id: false });
+
 const StepSchema = new mongoose.Schema({
   order: Number, text: String, phase: String,
   heat: { type: String, default: null },
   timerStr: { type: String, default: null },
   stepIngredients: [String],
   illColor: String,
+  images: { type: [ImageSchema], default: [] },
 }, { _id: false });
 
 const HealthFlagSchema = new mongoose.Schema({
@@ -31,6 +39,7 @@ const RecipeSchema = new mongoose.Schema({
   yieldStr:    String,
   shelfLife:   String,
   status:      { type: String, enum: ['published', 'draft'], default: 'draft' },
+  images:      { type: [ImageSchema], default: [] },
 }, { timestamps: true });
 
 export const Recipe = mongoose.model('Recipe', RecipeSchema);
