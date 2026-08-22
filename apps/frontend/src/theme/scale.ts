@@ -4,8 +4,8 @@ import { Dimensions, StyleSheet } from 'react-native';
 // and ported 1:1, so raw values read ~30% small on a real ~390-430pt phone.
 // Scale them to the device width so any phone shows the mock's proportions.
 // Desktop (>= 768, Sidebar layout) keeps raw values — visually unchanged.
-const GUIDELINE_BASE = 272; // prototype stage width the values were authored on
-const PHONE_CAP = 430;      // largest phone logical width; scaling stops here
+const GUIDELINE_BASE = 260; // prototype stage width the values were authored on
+const PHONE_CAP = 320;      // largest phone logical width; scaling stops here
 const DESKTOP_MIN = 768;    // useIsDesktop breakpoint
 
 // Static read is fine: the app is portrait-only (app.json) and the desktop
