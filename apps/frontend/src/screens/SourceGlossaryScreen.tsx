@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { IconBack } from '../components/shared/icons';
 import { sourcesApi } from '../api';
 import { scaledSheet, sc } from '../theme/scale';
@@ -27,21 +28,21 @@ interface SourceDTO {
 
 const has = (v?: string | null): v is string => !!v && v.trim().length > 0;
 
-// Prototype .gloss-block: bordered section with uppercase label + body text.
-function GlossBlock({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
+export function SourceGlossaryScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
+  const router = useRouter();
+  const { slug } = useLocalSearchParams<{ slug: string }>();
+  const [source, setSource] = useState<SourceDTO | null>(null);
+  const [status, setStatus] = useState<'loading' | 'ready' | 'missing'>('loading');
+
+  // Prototype .gloss-block: bordered section with uppercase label + body text.
+  const GlossBlock = ({ label, children }: { label: string; children: React.ReactNode }) => (
     <View style={s.block}>
       <Text style={s.blockLabel}>{label}</Text>
       {children}
     </View>
   );
-}
-
-export function SourceGlossaryScreen() {
-  const router = useRouter();
-  const { slug } = useLocalSearchParams<{ slug: string }>();
-  const [source, setSource] = useState<SourceDTO | null>(null);
-  const [status, setStatus] = useState<'loading' | 'ready' | 'missing'>('loading');
 
   useEffect(() => {
     let alive = true;
@@ -118,7 +119,7 @@ export function SourceGlossaryScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   hero: { padding: 14, borderBottomWidth: 1, borderBottomColor: colors.line },
   heroRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginBottom: 10 },
@@ -147,7 +148,7 @@ const s = scaledSheet({
     borderBottomWidth: 1, borderBottomColor: colors.line,
   },
   blockLabel: {
-    fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: 'rgba(42,37,30,0.3)',
+    fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: colors.labelFaint,
     letterSpacing: 0.63, textTransform: 'uppercase', marginBottom: 5,
   },
   blockText: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink, lineHeight: 17.6 },
