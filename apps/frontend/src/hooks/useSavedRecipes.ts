@@ -13,18 +13,16 @@ export function useSavedRecipes() {
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let alive = true;
-    (async () => {
-      const stored = (await get<string[]>(KEY)) ?? [];
-      const payloads = await getMany<RecipeListItem>(stored.map(id => `saved:${id}`));
-      if (!alive) return;
-      setIds(stored);
-      setRecipes(stored.map(id => payloads[`saved:${id}`]).filter(Boolean));
-      setLoading(false);
-    })();
-    return () => { alive = false; };
+  // Exposed so screens can re-pull on focus (tabs stay mounted).
+  const reload = useCallback(async () => {
+    const stored = (await get<string[]>(KEY)) ?? [];
+    const payloads = await getMany<RecipeListItem>(stored.map(id => `saved:${id}`));
+    setIds(stored);
+    setRecipes(stored.map(id => payloads[`saved:${id}`]).filter(Boolean));
+    setLoading(false);
   }, []);
+
+  useEffect(() => { reload(); }, [reload]);
 
   // Writes both the id index and the offline payload SavedScreen reads.
   const save = useCallback((recipe: RecipeListItem) => {
@@ -52,5 +50,5 @@ export function useSavedRecipes() {
 
   const isSaved = useCallback((slug: string) => ids.includes(slug), [ids]);
 
-  return { ids, recipes, loading, save, unsave, isSaved };
+  return { ids, recipes, loading, reload, save, unsave, isSaved };
 }

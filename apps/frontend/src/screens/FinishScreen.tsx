@@ -19,6 +19,8 @@ function slugFallback(slug: string): RecipeListItem {
     category: 'solid',
     cookTimeMin: 0,
     contraCount: 0,
+    fit: null,
+    stepCount: 0,
   };
 }
 

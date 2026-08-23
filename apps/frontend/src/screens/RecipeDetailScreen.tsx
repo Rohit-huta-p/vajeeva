@@ -10,14 +10,16 @@ import { StepList } from '../components/shared/StepList';
 import { SourcePill } from '../components/shared/SourcePill';
 import { CTA } from '../components/shared/CTA';
 import { Disclaimer } from '../components/shared/Disclaimer';
+import { usePreferences } from '../hooks/usePreferences';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
 import { IconBack, IconHeart, IconShare, IconPlay, IllHero } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { recipesApi, sortImages, cloudThumb } from '../api/recipes';
+import { recipesApi, sortImages, cloudThumb, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeImage } from '../api/recipes';
+import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { scaledSheet, sc } from '../theme/scale';
 
 // Matches the API's Source slug scheme (lowercase, non-alphanumeric -> '-').
@@ -66,12 +68,21 @@ export function RecipeDetailScreen() {
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
   const [aromaOpen, setAromaOpen] = useState(false);
   const [recipe, setRecipe] = useState<DetailView | null>(null);
+  const { prefs, loading: prefsLoading } = usePreferences();
+
+  // Seed the g/cup toggle from the saved Units preference once it loads.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => { if (!prefsLoading) setUnit(prefs.units); }, [prefsLoading]);
 
   useEffect(() => {
     let alive = true;
     if (!slug) return;
     recipesApi.detail(slug)
-      .then((doc: RecipeDoc) => { if (alive) setRecipe(toDetailView(doc)); })
+      .then((doc: RecipeDoc) => {
+        if (!alive) return;
+        setRecipe(toDetailView(doc));
+        recordRecentlyViewed(toListItem(doc)); // feeds Home's "Jump back in" rail
+      })
       .catch(() => {});
     return () => { alive = false; };
   }, [slug]);

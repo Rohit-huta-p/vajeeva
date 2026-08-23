@@ -1,15 +1,18 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
-  View, FlatList, ScrollView, Text, TouchableOpacity, StyleSheet,
-  SafeAreaView, RefreshControl,
+  View, FlatList, ScrollView, Text, TouchableOpacity, RefreshControl, useWindowDimensions,
 } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts, shadows } from '../theme/tokens';
-import { RecipeCard } from '../components/shared/RecipeCard';
+import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { isFacet, facetLabel, matchFacet } from '../config/facets';
+import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { scaledSheet, sc } from '../theme/scale';
 
 const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
@@ -33,6 +36,18 @@ function textureToLabel(texture?: string): string {
   return label in LABEL_TO_CATEGORY ? label : 'All';
 }
 
+// Responsive column count: 2 on phones, 3 on md, 4 on lg — the desktop
+// prototype's recipe-grid (3 cols) / saved-grid (4 cols) breakpoints. Keyed to
+// window width (same 768 breakpoint as useIsDesktop / scale.ts DESKTOP_MIN).
+function columnsFor(width: number): number {
+  if (width >= 1024) return 4;
+  if (width >= 768) return 3;
+  return 2;
+}
+
+// A grid cell is either a recipe or an invisible spacer padding the last row.
+type GridItem = RecipeListItem | { filler: true; slug: string };
+
 // Round icon button per prototype .icobtn (IconButton atom is mid-refit by Pam).
 function IcoBtn({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) {
   return (
@@ -44,17 +59,24 @@ function IcoBtn({ children, onPress }: { children: React.ReactNode; onPress?: ()
 
 export function RecipeListScreen() {
   const router = useRouter();
-  const { texture } = useLocalSearchParams<{ texture?: string }>();
+  const insets = useSafeAreaInsets();
+  const { width } = useWindowDimensions();
+  const cols = columnsFor(width);
+  const { isSaved, save, unsave } = useSavedRecipes();
+  const { texture, facet } = useLocalSearchParams<{ texture?: string; facet?: string }>();
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
 
+  // A `facet` param (Home mood chips) filters within the selected texture, so
+  // the texture chips still narrow the results.
   const load = useCallback(async () => {
     try {
       const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
-      setRecipes(docs.map(toListItem));
+      const items = docs.map(toListItem);
+      setRecipes(isFacet(facet) ? items.filter(r => matchFacet(r, facet)) : items);
     } catch { }
-  }, [filter]);
+  }, [filter, facet]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -68,58 +90,125 @@ export function RecipeListScreen() {
     ? `${recipes.length} recipes · ${LABEL_SUB[filter]}`
     : `${recipes.length} recipes`;
 
+  // Pad the last row with invisible spacers so every row has `cols` cells. Without
+  // this a lone last-row card skips the column gap and renders wider (→ a taller
+  // aspect-ratio tile), breaking uniform card heights.
+  const gridData = useMemo<GridItem[]>(() => {
+    const rem = recipes.length % cols;
+    if (rem === 0) return recipes;
+    const fillers: GridItem[] = Array.from({ length: cols - rem }, (_, i) => ({ filler: true, slug: `__filler-${i}` }));
+    return [...recipes, ...fillers];
+  }, [recipes, cols]);
+
   return (
-    <SafeAreaView style={s.root}>
+    <View style={s.root}>
       <View style={s.page}>
-        {/* Header */}
+        {/* Header — stays on the bone ground */}
         <View style={s.header}>
           <IcoBtn onPress={() => router.back()}>
             <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
-            <Text style={s.title}>{filter === 'All' ? 'All Recipes' : filter}</Text>
+            <Text style={s.title}>{isFacet(facet) ? facetLabel(facet) : (filter === 'All' ? 'All Recipes' : filter)}</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
           <IcoBtn>
             <IconFilter size={sc(15)} color={colors.ink} />
           </IcoBtn>
         </View>
-        {/* Filter chips */}
+        {/* Filter chips — also on bone, part of the header zone */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.chips} contentContainerStyle={s.chipsContent}>
           {FILTERS.map(f => (
             <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f)} />
           ))}
           <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
         </ScrollView>
-        {/* List */}
-        <FlatList
-          data={recipes}
-          keyExtractor={r => r.slug}
-          renderItem={({ item }) => (
-            <RecipeCard recipe={item} onPress={() => router.push(`/recipe/${item.slug}`)} />
-          )}
-          contentContainerStyle={s.list}
-          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.green} />}
-        />
+        {/* Recessed well — the grid drops into a sand tray with a rounded lip,
+            so the recipes read as content held BELOW the header instead of on
+            the same continuous surface. The tray bleeds to the screen bottom
+            (drawer feel); the bottom safe-area inset is paid inside the grid. */}
+        <View style={s.well}>
+          <FlatList
+            // key forces a fresh mount when the column count changes — RN does
+            // not allow numColumns to change on an existing list.
+            key={`grid-${cols}`}
+            data={gridData}
+            keyExtractor={item => item.slug}
+            numColumns={cols}
+            columnWrapperStyle={s.gridRow}
+            renderItem={({ item }) => (
+              <View style={[s.col, { maxWidth: `${100 / cols}%` }]}>
+                {'filler' in item ? null : (
+                  <RecipeGridCard
+                    recipe={item}
+                    onPress={() => router.push(`/recipe/${item.slug}`)}
+                    saved={isSaved(item.slug)}
+                    onToggleSave={() => (isSaved(item.slug) ? unsave(item.slug) : save(item))}
+                  />
+                )}
+              </View>
+            )}
+            style={s.flatList}
+            contentContainerStyle={[s.list, { paddingBottom: sc(24) + insets.bottom }]}
+            showsVerticalScrollIndicator={false}
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.green} />}
+          />
+          {/* RN has no inset shadow, so a short top gradient casts the recess
+              onto the top of the scrolling content — the lip of the tray. */}
+          <LinearGradient
+            colors={['rgba(42,37,30,0.16)', 'rgba(42,37,30,0)']}
+            style={s.lip}
+            pointerEvents="none"
+          />
+        </View>
       </View>
-    </SafeAreaView>
+    </View>
   );
 }
 
 const s = scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
-  page: { flex: 1, paddingHorizontal: 14, paddingTop: 6, gap: 10 },
-  header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
+  // No horizontal padding on the page: the header and chips carry their own
+  // 14pt inset, while the well below bleeds edge-to-edge so the tray spans the
+  // full width. Column gap 10 sets the header→chips→tray rhythm.
+  page: { flex: 1, paddingTop: 14, gap: 10 },
+  header: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14 },
   grow: { flex: 1, minWidth: 0 },
-  title: { fontSize: 18, fontFamily: fonts.serif, fontWeight: '700', letterSpacing: -0.18, color: colors.ink },
-  subtitle: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
+  // Explicit lineHeights (prototype .screen line-height 1.4) so the two-line
+  // header block is the same height on every platform; left at `normal` the
+  // line box is font-metric-derived and leaves no gap between the two lines.
+  title: {
+    fontSize: 18, lineHeight: 25,
+    fontFamily: fonts.serif, fontWeight: '700', letterSpacing: -0.18, color: colors.ink,
+  },
+  subtitle: { fontSize: 10, lineHeight: 14, fontFamily: fonts.sans, color: colors.ink2 },
   icobtn: {
     width: 34, height: 34, borderRadius: 17,
     backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
     alignItems: 'center', justifyContent: 'center',
     ...shadows.card,
   },
+  // Full-bleed chip row: chips align with the header at 14pt and scroll under
+  // the screen edge, with a matching 14pt gutter at the end of the scroll.
   chips: { flexGrow: 0 },
-  chipsContent: { gap: 6, paddingBottom: 2 },
-  list: { gap: 10, paddingBottom: 40 },
+  chipsContent: { gap: 6, paddingHorizontal: 14 },
+  // The sand tray. Rounded top lip + a darker fill than bone create the
+  // recess; overflow:hidden clips the scrolling cards to the rounded corners.
+  well: {
+    flex: 1,
+    backgroundColor: colors.sand,
+    borderTopLeftRadius: 22,
+    borderTopRightRadius: 22,
+    overflow: 'hidden',
+  },
+  lip: { position: 'absolute', top: 0, left: 0, right: 0, height: 16 },
+  // flex:1 bounds the grid to the tray so it scrolls INSIDE the well (header
+  // and lip stay put) instead of growing the whole screen.
+  flatList: { flex: 1 },
+  // Grid spacing: gap between rows (list) and between columns (gridRow) both 10;
+  // col gets flex:1 with a per-breakpoint maxWidth (set inline) so a partial
+  // last row stays left-aligned at column width instead of stretching.
+  list: { gap: 10, paddingTop: 16, paddingHorizontal: 14 },
+  gridRow: { gap: 10 },
+  col: { flex: 1 },
 });
