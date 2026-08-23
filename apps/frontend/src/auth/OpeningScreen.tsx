@@ -3,8 +3,9 @@ import {
   View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, useWindowDimensions,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
 import { scaledSheet, sc } from '../theme/scale';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { IllHero, IconHeart, IconBook } from '../components/shared/icons';
 import { ContraDots } from '../components/shared/ContraDots';
 import { AuthContext } from './AuthContext';
@@ -27,6 +28,8 @@ const PANELS = [
 ];
 
 export function OpeningScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { continueAsGuest } = useContext(AuthContext);
   const { width } = useWindowDimensions();
@@ -87,7 +90,7 @@ export function OpeningScreen() {
 // Route adapter (app/auth/opening.tsx) default-imports; keep both exports.
 export default OpeningScreen;
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   pager: { flex: 1 },
   panel: { flex: 1, paddingHorizontal: 18, paddingTop: 8 },

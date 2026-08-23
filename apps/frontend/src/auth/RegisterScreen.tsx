@@ -3,8 +3,9 @@ import {
   View, Text, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts } from '../theme/tokens';
+import { fonts, type Colors } from '../theme/tokens';
 import { scaledSheet } from '../theme/scale';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { AuthContext } from './AuthContext';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import {
@@ -20,6 +21,8 @@ type Props = { navigation?: { navigate: (route: string) => void } };
 // name + optional phone; step 4 of the dots is the health profile
 // (/auth/onboarding). Default-exported for the app/auth/signup.tsx adapter.
 export default function RegisterScreen(_props: Props) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { register } = useContext(AuthContext);
   const [step, setStep] = useState<1 | 2 | 3>(1);
@@ -135,13 +138,13 @@ export default function RegisterScreen(_props: Props) {
 
 export { RegisterScreen };
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   flex: { flex: 1 },
   wrap: { flex: 1, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 16 },
   mid: { flex: 1, justifyContent: 'center', paddingBottom: 34 },
   lbl: {
-    fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: 'rgba(42,37,30,0.4)',
+    fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', color: colors.labelFaint,
     letterSpacing: 0.72, textTransform: 'uppercase', textAlign: 'center',
     marginTop: 14, marginBottom: 5,
   },

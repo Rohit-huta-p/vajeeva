@@ -3,8 +3,9 @@ import {
   View, Text, ScrollView, TouchableOpacity, SafeAreaView,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
 import { scaledSheet } from '../theme/scale';
+import { useThemedStyles } from '../theme/ThemeContext';
 import { StepDots } from './atoms';
 import { HealthFlagGrid } from '../components/shared/HealthFlagGrid';
 import { useHealthFlags } from '../hooks/useHealthFlags';
@@ -16,6 +17,7 @@ import { useHealthProfile } from '../hooks/useHealthProfile';
 // PATCH) are shared with the Settings health-profile editor so the two never
 // drift — see useHealthFlags / HealthFlagGrid / useHealthProfile.
 export function OnboardingScreen() {
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const flags = useHealthFlags();
   const { save } = useHealthProfile();
@@ -61,7 +63,7 @@ export function OnboardingScreen() {
 // Route adapter (app/auth/onboarding.tsx) default-imports; keep both exports.
 export default OnboardingScreen;
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   wrap: { flex: 1, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 16 },
   scroll: { paddingBottom: 10 },

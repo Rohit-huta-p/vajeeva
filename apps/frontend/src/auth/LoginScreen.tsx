@@ -3,8 +3,9 @@ import {
   View, StyleSheet, SafeAreaView, KeyboardAvoidingView, Platform, ActivityIndicator,
 } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors } from '../theme/tokens';
+import { type Colors } from '../theme/tokens';
 import { scaledSheet } from '../theme/scale';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { AuthContext } from './AuthContext';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import {
@@ -20,6 +21,8 @@ type Props = { navigation?: { navigate: (route: string) => void } };
 // password step slides in after Continue. Kept default-exported for the
 // app/auth/login.tsx route adapter.
 export default function LoginScreen(_props: Props) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { login } = useContext(AuthContext);
   const [step, setStep] = useState<1 | 2>(1);
@@ -105,7 +108,7 @@ export default function LoginScreen(_props: Props) {
 
 export { LoginScreen };
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   flex: { flex: 1 },
   wrap: { flex: 1, paddingHorizontal: 18, paddingTop: 8, paddingBottom: 16 },

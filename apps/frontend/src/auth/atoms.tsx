@@ -1,22 +1,27 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
 import { scaledSheet, sc } from '../theme/scale';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 
 // Shared atoms for the auth wave (refs: prototypes/screens/{opening,login-step*,
 // signup-step*,onboarding}.html). Auth-only — app-wide atoms stay in
 // src/components/shared/.
 
 export function AuthTitle({ children }: { children: React.ReactNode }) {
+  const s = useThemedStyles(makeStyles);
   return <Text style={s.title}>{children}</Text>;
 }
 
 export function AuthNote({ children }: { children: React.ReactNode }) {
+  const s = useThemedStyles(makeStyles);
   return <Text style={s.note}>{children}</Text>;
 }
 
 export function AuthInput(props: React.ComponentProps<typeof TextInput>) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <TextInput
       placeholderTextColor={colors.muted}
@@ -30,6 +35,7 @@ export function AuthInput(props: React.ComponentProps<typeof TextInput>) {
 export function ContinueButton({ enabled, label = 'Continue', onPress }: {
   enabled: boolean; label?: string; onPress: () => void;
 }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <TouchableOpacity
       style={[s.continue, enabled ? s.continueOn : s.continueOff]}
@@ -43,6 +49,7 @@ export function ContinueButton({ enabled, label = 'Continue', onPress }: {
 }
 
 export function OrDivider({ label = 'or continue with' }: { label?: string }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.div}>
       <View style={s.divLine} />
@@ -69,6 +76,7 @@ function GoogleG({ size }: { size: number }) {
  * SSO is wired, pass onPress and it becomes live.
  */
 export function GoogleButton({ onPress }: { onPress?: () => void }) {
+  const s = useThemedStyles(makeStyles);
   const [hint, setHint] = useState(false);
   const disabled = !onPress;
   return (
@@ -88,6 +96,7 @@ export function GoogleButton({ onPress }: { onPress?: () => void }) {
 
 /** Prototype .st-chip — entered-email recap with an Edit affordance. */
 export function EmailChip({ email, onEdit }: { email: string; onEdit: () => void }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.chipRow}>
       <View style={s.chip}>
@@ -100,6 +109,7 @@ export function EmailChip({ email, onEdit }: { email: string; onEdit: () => void
 
 /** Prototype .ob-dots — wizard progress (active dot is the 20px green pill). */
 export function StepDots({ total, active }: { total: number; active: number }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.dots}>
       {Array.from({ length: total }).map((_, i) => (
@@ -112,6 +122,7 @@ export function StepDots({ total, active }: { total: number; active: number }) {
 export function FootLink({ text, linkText, onPress }: {
   text: string; linkText: string; onPress: () => void;
 }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <Text style={s.foot}>
       {text}{' '}
@@ -121,14 +132,16 @@ export function FootLink({ text, linkText, onPress }: {
 }
 
 export function AuthHint({ children }: { children: React.ReactNode }) {
+  const s = useThemedStyles(makeStyles);
   return <Text style={s.hint}>{children}</Text>;
 }
 
 export function AuthError({ children }: { children: React.ReactNode }) {
+  const s = useThemedStyles(makeStyles);
   return <Text style={s.error}>{children}</Text>;
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   title: {
     fontFamily: fonts.serif, fontSize: 23, fontWeight: '700', color: colors.ink,
     textAlign: 'center', lineHeight: 28.75, marginHorizontal: 10, marginBottom: 6,
