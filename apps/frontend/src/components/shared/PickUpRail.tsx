@@ -1,7 +1,8 @@
 import React from 'react';
 import { ScrollView, TouchableOpacity, View, Text, Image } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useThemedStyles } from '../../theme/ThemeContext';
 import { CategoryIll, categoryTint } from './icons';
 import { cloudThumb } from '../../api/recipes';
 import type { RecipeListItem } from '../../api/recipes';
@@ -29,6 +30,7 @@ export function PickUpRail({ cook, recent, onResume, onOpenRecent }: {
   onResume: () => void;
   onOpenRecent: (slug: string) => void;
 }) {
+  const s = useThemedStyles(makeStyles);
   const list = cook ? recent.filter(r => r.slug !== cook.recipe.slug) : recent;
   const pct = cook && cook.totalSteps > 0
     ? Math.max(6, Math.min(100, Math.round((cook.currentStep / cook.totalSteps) * 100)))
@@ -70,7 +72,7 @@ export function PickUpRail({ cook, recent, onResume, onOpenRecent }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   rail: { flexGrow: 0, marginHorizontal: -14 },
   content: { gap: 9, paddingHorizontal: 14, paddingBottom: 2, alignItems: 'flex-start' },
 

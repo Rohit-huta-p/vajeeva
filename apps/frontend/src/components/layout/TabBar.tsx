@@ -1,8 +1,9 @@
 import React from 'react';
-import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconHome, IconBook, IconMore } from '../shared/icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -13,6 +14,8 @@ const TABS = [
 ] as const;
 
 export function TabBar() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const pathname = usePathname();
   const router = useRouter();
   const insets = useSafeAreaInsets();
@@ -37,7 +40,7 @@ export function TabBar() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   bar: {
     flexDirection: 'row',
     backgroundColor: colors.cream,

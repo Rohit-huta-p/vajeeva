@@ -1,10 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { View, Text } from 'react-native';
+import { fonts, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconLeaf } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
 export function OfflineBadge() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.pill}>
       <IconLeaf size={sc(11)} color={colors.green} />
@@ -13,7 +16,7 @@ export function OfflineBadge() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   pill: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
     backgroundColor: colors.sand, borderRadius: 999,

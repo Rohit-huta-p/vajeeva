@@ -1,17 +1,10 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconCheck, IconWarn, IconNo } from './icons';
 import type { FitLevel } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
-
-// Presentation for one fit level. Colour/label/icon per severity; the caller
-// decides whether to render it at all (feature flag + non-null level).
-const CONF: Record<FitLevel, { label: string; bg: string; fg: string; Icon: typeof IconCheck }> = {
-  safe:    { label: 'Safe',    bg: colors.green,     fg: colors.cream,  Icon: IconCheck },
-  caution: { label: 'Caution', bg: colors.amberSoft, fg: colors.amber2, Icon: IconWarn },
-  avoid:   { label: 'Avoid',   bg: colors.clay,      fg: colors.cream,  Icon: IconNo },
-};
 
 /**
  * Health-fit pill for a recipe card (Safe / Caution / Avoid). Pure presentation
@@ -24,6 +17,14 @@ const CONF: Record<FitLevel, { label: string; bg: string; fg: string; Icon: type
  * "Safe" can become "Safe for you" here without touching callers.
  */
 export function FitBadge({ level, compact = false }: { level: FitLevel; compact?: boolean }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
+  // Colour/label/icon per severity, built from the active palette.
+  const CONF: Record<FitLevel, { label: string; bg: string; fg: string; Icon: typeof IconCheck }> = {
+    safe:    { label: 'Safe',    bg: colors.green,     fg: colors.cream,  Icon: IconCheck },
+    caution: { label: 'Caution', bg: colors.amberSoft, fg: colors.amber2, Icon: IconWarn },
+    avoid:   { label: 'Avoid',   bg: colors.clay,      fg: colors.cream,  Icon: IconNo },
+  };
   const c = CONF[level];
   return (
     <View style={[s.badge, { backgroundColor: c.bg }]}>
@@ -33,7 +34,7 @@ export function FitBadge({ level, compact = false }: { level: FitLevel; compact?
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (_colors: Colors) => scaledSheet({
   badge: {
     flexDirection: 'row', alignItems: 'center', gap: 3,
     borderRadius: 999, paddingVertical: 3, paddingLeft: 5, paddingRight: 7,

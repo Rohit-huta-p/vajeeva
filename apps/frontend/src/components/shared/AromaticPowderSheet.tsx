@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { subrecipesApi } from '../../api';
 import { IconClose } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
@@ -38,6 +39,8 @@ const FALLBACK: SubRecipeSheet = {
 export function AromaticPowderSheet({ visible, onClose }: {
   visible: boolean; onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const [sheet, setSheet] = useState<SubRecipeSheet>(FALLBACK);
 
   useEffect(() => {
@@ -94,14 +97,11 @@ export function AromaticPowderSheet({ visible, onClose }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   overlay: { flex: 1, justifyContent: 'flex-end' },
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.3)' },
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.4)' },
   panel: {
     backgroundColor: colors.cream,
-    // Top radius only — the prototype's 32px bottom radius was a device-mock
-    // artifact (hugging the mock's rounded screen corners); a real sheet sits
-    // flush at the viewport bottom.
     borderTopLeftRadius: 18, borderTopRightRadius: 18,
     maxHeight: '78%',
   },
@@ -124,7 +124,7 @@ const s = scaledSheet({
     borderBottomWidth: 1, borderBottomColor: colors.line, marginBottom: 4,
   },
   row: { flexDirection: 'row', paddingVertical: 6, paddingHorizontal: 14 },
-  odd: { backgroundColor: 'rgba(233,225,208,0.4)' },
+  odd: { backgroundColor: colors.rowAlt },
   rowName: { flex: 1, fontSize: 11, fontFamily: fonts.sans, color: colors.ink },
   rowQty: { fontSize: 11, fontFamily: fonts.sans, color: colors.ink2, textAlign: 'right' },
   method: {

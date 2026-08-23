@@ -1,7 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { MkSprout, IconChev } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -11,6 +12,8 @@ import { scaledSheet, sc } from '../../theme/scale';
  * scrolls to + pulses the pillars (Home owns that animation).
  */
 export function WelcomeCard({ onChooseTexture }: { onChooseTexture: () => void }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <LinearGradient
       colors={[colors.greenSoft, colors.cream]}
@@ -32,7 +35,7 @@ export function WelcomeCard({ onChooseTexture }: { onChooseTexture: () => void }
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
     borderRadius: 16, borderWidth: 1, borderColor: colors.line, padding: 12,

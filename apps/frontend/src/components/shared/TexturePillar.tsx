@@ -1,12 +1,15 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, StyleSheet } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { TouchableOpacity, View, Text } from 'react-native';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconChev, CategoryIll, categoryTint } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
 export function TexturePillar({ name, subtitle, count, category, onPress }: {
   name: string; subtitle: string; count: number; category: string; onPress: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
       <View style={[s.tile, { backgroundColor: categoryTint(category) }]}>
@@ -22,7 +25,7 @@ export function TexturePillar({ name, subtitle, count, category, onPress }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 12,
     backgroundColor: colors.cream, borderRadius: 18,

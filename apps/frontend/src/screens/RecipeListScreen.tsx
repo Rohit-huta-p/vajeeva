@@ -5,7 +5,8 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
@@ -48,16 +49,9 @@ function columnsFor(width: number): number {
 // A grid cell is either a recipe or an invisible spacer padding the last row.
 type GridItem = RecipeListItem | { filler: true; slug: string };
 
-// Round icon button per prototype .icobtn (IconButton atom is mid-refit by Pam).
-function IcoBtn({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) {
-  return (
-    <TouchableOpacity style={s.icobtn} onPress={onPress}>
-      {children}
-    </TouchableOpacity>
-  );
-}
-
 export function RecipeListScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
@@ -67,6 +61,13 @@ export function RecipeListScreen() {
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Round icon button per prototype .icobtn.
+  const IcoBtn = ({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) => (
+    <TouchableOpacity style={s.icobtn} onPress={onPress}>
+      {children}
+    </TouchableOpacity>
+  );
 
   // A `facet` param (Home mood chips) filters within the selected texture, so
   // the texture chips still narrow the results.
@@ -166,7 +167,7 @@ export function RecipeListScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   // No horizontal padding on the page: the header and chips carry their own
   // 14pt inset, while the well below bleeds edge-to-edge so the tray spans the

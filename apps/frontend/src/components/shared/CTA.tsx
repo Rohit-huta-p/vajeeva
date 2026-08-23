@@ -1,11 +1,13 @@
 import React from 'react';
-import { TouchableOpacity, Text, View, StyleSheet } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { TouchableOpacity, Text, View } from 'react-native';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { scaledSheet } from '../../theme/scale';
+import { useThemedStyles } from '../../theme/ThemeContext';
 
 export function CTA({ label, onPress, icon }: {
   label: string; onPress: () => void; icon?: React.ReactNode;
 }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <TouchableOpacity style={s.btn} onPress={onPress} activeOpacity={0.85}>
       <View style={s.row}>
@@ -16,7 +18,7 @@ export function CTA({ label, onPress, icon }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   btn: {
     backgroundColor: colors.green, borderRadius: 14,
     paddingVertical: 14, paddingHorizontal: 15, alignItems: 'center',

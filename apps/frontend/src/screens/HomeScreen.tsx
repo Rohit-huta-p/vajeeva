@@ -4,7 +4,8 @@ import {
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useFocusEffect } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { SearchBar } from '../components/shared/SearchBar';
 import { TexturePillar } from '../components/shared/TexturePillar';
 import { PickUpRail } from '../components/shared/PickUpRail';
@@ -29,13 +30,6 @@ const PILLARS = [
   { key: 'semi-solid', name: 'Semi-solid', subtitle: 'Porridge · puddings · chutneys' },
 ] as const;
 
-// Mood-chip leading icon, resolved from the facet's icon id (facets.ts stays JSX-free).
-function facetIcon(icon: string) {
-  if (icon === 'clock') return <IconClock size={sc(12)} color={colors.amber2} />;
-  if (icon === 'drop')  return <IconDrop size={sc(12)} color={colors.green} />;
-  return <IconLeaf size={sc(12)} color={colors.green} />; // 'leaf' → No-cook
-}
-
 /**
  * Home is a calm four-zone funnel — resume → find → browse → your kitchen. The
  * greeting + search pin to the bone header; the zones drop into a sand "well"
@@ -44,6 +38,8 @@ function facetIcon(icon: string) {
  * guidance for a brand-new patient (WelcomeCard / SaveNudge).
  */
 export function HomeScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const [search, setSearch] = useState('');
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [sessionRecipe, setSessionRecipe] = useState<RecipeListItem | null>(null);
@@ -51,6 +47,13 @@ export function HomeScreen() {
   const { session, reload: reloadSession } = useCookSession();
   const { recipes: saved, unsave, reload: reloadSaved } = useSavedRecipes();
   const { recipes: recent, reload: reloadRecent } = useRecentlyViewed();
+
+  // Mood-chip leading icon, resolved from the facet's icon id (facets.ts stays JSX-free).
+  const facetIcon = (icon: string) => {
+    if (icon === 'clock') return <IconClock size={sc(12)} color={colors.amber2} />;
+    if (icon === 'drop')  return <IconDrop size={sc(12)} color={colors.green} />;
+    return <IconLeaf size={sc(12)} color={colors.green} />; // 'leaf' → No-cook
+  };
 
   // Texture-pulse cue: "Choose a texture" scrolls the doors into view and pulses
   // each one (staggered green ring) so a new patient's eye lands on the choice.
@@ -231,7 +234,7 @@ export function HomeScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   // Header carries its own 14pt inset and stays on the bone ground; the top
   // safe-area inset is paid by the (tabs) layout, the bottom by the TabBar.
