@@ -55,7 +55,10 @@ test('signed-in: shows identity, condition chips, and the section rows', () => {
   expect(getByText('Medical disclaimer')).toBeTruthy();
   expect(getByText('About Vajeeva')).toBeTruthy();
   expect(getByText('Send feedback')).toBeTruthy();
+  expect(getByText('Privacy Policy')).toBeTruthy();
+  expect(getByText('Terms of Service')).toBeTruthy();
   expect(getByText('Sign out')).toBeTruthy();
+  expect(getByText('Delete account')).toBeTruthy();
 });
 
 test('Sign out calls logout', () => {
@@ -76,4 +79,5 @@ test('guest: shows the conversion banner, no identity, no account controls', () 
   expect(getByText(/Create account or sign in/)).toBeTruthy();
   expect(queryByText('Rohith')).toBeNull();
   expect(queryByText('Sign out')).toBeNull();
+  expect(queryByText('Delete account')).toBeNull();
 });

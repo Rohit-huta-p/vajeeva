@@ -129,6 +129,23 @@ export function IconSun({ size = 16, color = colors.ink }: IconProps) {
   );
 }
 
+export function IconDoc({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M7 3h7l4 4v14H7z" />
+      <Path {...ln(color)} d="M14 3v4h4" />
+    </Svg>
+  );
+}
+
+export function IconTrash({ size = 16, color = colors.clay }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13" />
+    </Svg>
+  );
+}
+
 export function IconCheck({ size = 20, color = colors.cmGreen }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M5 12.5l4.5 4.5L19 7" /></Svg>;
 }

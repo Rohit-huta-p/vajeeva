@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { requireAuth } from '../middleware/requireAuth';
 import { User } from '../models/User';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
+import { SavedRecipe } from '../models/SavedRecipe';
 
 export const usersRouter = Router();
 export const publicHealthFlagsRouter = Router();
@@ -37,6 +38,18 @@ usersRouter.patch('/me', requireAuth, async (req, res, next) => {
     const user = await User.findByIdAndUpdate(userId, updates, { new: true }).lean();
     if (!user) { res.status(404).json({ error: 'User not found' }); return; }
     res.json(userToDTO(user));
+  } catch (err) { next(err); }
+});
+
+// ── DELETE /users/me — account deletion (App Store / Play requirement) ────────
+
+usersRouter.delete('/me', requireAuth, async (req, res, next) => {
+  try {
+    const userId = (req as any).user.userId;
+    await SavedRecipe.deleteMany({ userId });
+    const user = await User.findByIdAndDelete(userId).lean();
+    if (!user) { res.status(404).json({ error: 'User not found' }); return; }
+    res.status(204).end();
   } catch (err) { next(err); }
 });
 

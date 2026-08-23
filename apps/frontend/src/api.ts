@@ -79,3 +79,8 @@ export const savedApi = {
   push: (added: string[], removed: string[]) =>
     api.post('/api/sync/saved', { added, removed }),
 };
+
+export const usersApi = {
+  // Permanently delete the signed-in account + its saved recipes (204).
+  deleteMe: () => api.delete('/api/users/me'),
+};

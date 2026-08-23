@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Linking, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { AuthContext } from '../auth/AuthContext';
+import { usersApi } from '../api';
 import { colors, fonts, shadows } from '../theme/tokens';
 import { scaledSheet, sc } from '../theme/scale';
 import {
   IconUser, IconEdit, IconLeaf, IconShield, IconInfo, IconChat, IconStar, IconLogout,
-  IconRuler, IconSun,
+  IconRuler, IconSun, IconDoc, IconTrash,
 } from '../components/shared/icons';
 import { SettingsGroup, SettingsRow, SettingsToggle } from '../components/shared/Settings';
 import { HealthProfileSheet } from '../components/shared/HealthProfileSheet';
@@ -42,6 +43,24 @@ export default function ProfileScreen() {
   const initial = name ? name[0].toUpperCase() : null;
   const version = Constants.expoConfig?.version ?? '1.0.0';
   const labelFor = (code: string) => flags.find(f => f.code === code)?.label ?? code;
+
+  const onDeleteAccount = () => {
+    Alert.alert(
+      'Delete account?',
+      'This permanently removes your account and saved recipes from our servers. This cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: async () => {
+            try { await usersApi.deleteMe(); } catch { /* sign out regardless */ }
+            await logout();
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <View style={s.root}>
@@ -151,6 +170,16 @@ export default function ProfileScreen() {
             label="About Vajeeva"
             onPress={() => router.push('/about' as any)}
           />
+          <SettingsRow
+            icon={<IconDoc size={sc(15)} color={colors.ink} />}
+            label="Privacy Policy"
+            onPress={() => router.push('/privacy' as any)}
+          />
+          <SettingsRow
+            icon={<IconDoc size={sc(15)} color={colors.ink} />}
+            label="Terms of Service"
+            onPress={() => router.push('/terms' as any)}
+          />
         </SettingsGroup>
 
         {/* Support */}
@@ -178,6 +207,12 @@ export default function ProfileScreen() {
                 icon={<IconLogout size={sc(15)} color={colors.clay} />}
                 label="Sign out"
                 onPress={logout}
+              />
+              <SettingsRow
+                danger
+                icon={<IconTrash size={sc(15)} color={colors.clay} />}
+                label="Delete account"
+                onPress={onDeleteAccount}
               />
             </SettingsGroup>
           </>
