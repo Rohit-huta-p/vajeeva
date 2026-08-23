@@ -1,8 +1,9 @@
 import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconButton } from './IconButton';
 import { IconBack } from './icons';
 
@@ -10,6 +11,8 @@ import { IconBack } from './icons';
 // back header + centred serif title + scrollable body. The route file supplies
 // the top safe-area inset (RN core SafeAreaView is a no-op on Android).
 export function InfoScreen({ title, children }: { title: string; children: React.ReactNode }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   return (
     <View style={s.root}>
@@ -26,6 +29,7 @@ export function InfoScreen({ title, children }: { title: string; children: React
 }
 
 export function InfoSection({ label, children }: { label: string; children: React.ReactNode }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.section}>
       <Text style={s.eyebrow}>{label}</Text>
@@ -35,10 +39,11 @@ export function InfoSection({ label, children }: { label: string; children: Reac
 }
 
 export function InfoParagraph({ children, muted }: { children: React.ReactNode; muted?: boolean }) {
+  const s = useThemedStyles(makeStyles);
   return <Text style={[s.p, muted && s.pMuted]}>{children}</Text>;
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   header: {
     flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -53,7 +58,7 @@ const s = scaledSheet({
   section: { marginTop: 18 },
   eyebrow: {
     fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', letterSpacing: 0.72,
-    textTransform: 'uppercase', color: 'rgba(42,37,30,0.3)', marginBottom: 7,
+    textTransform: 'uppercase', color: colors.labelFaint, marginBottom: 7,
   },
   p: { fontSize: 12.5, fontFamily: fonts.sans, color: colors.ink2, lineHeight: 19, marginTop: 8 },
   pMuted: { fontSize: 10.5, color: colors.muted, marginTop: 14 },

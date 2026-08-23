@@ -1,14 +1,14 @@
 import React from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconClose, IconCheck } from './icons';
 
 export interface ChoiceOption<T extends string> { value: T; label: string; hint?: string }
 
-// Generic single-choice bottom-sheet (Units today; Appearance / Text size later).
-// Same Modal / scrim grammar as the other sheets; tapping an option commits
-// immediately and closes — no separate Save for a one-tap pick.
+// Generic single-choice bottom-sheet (Units, Appearance, …). Same Modal / scrim
+// grammar as the other sheets; tapping an option commits immediately and closes.
 export function ChoiceSheet<T extends string>({
   visible, title, options, selected, onSelect, onClose,
 }: {
@@ -19,6 +19,8 @@ export function ChoiceSheet<T extends string>({
   onSelect: (value: T) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
       <View style={s.overlay}>
@@ -59,9 +61,9 @@ export function ChoiceSheet<T extends string>({
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   overlay: { flex: 1, justifyContent: 'flex-end' },
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.34)' },
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.4)' },
   panel: { backgroundColor: colors.cream, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
   handle: { width: 34, height: 4, borderRadius: 2, backgroundColor: colors.sand, alignSelf: 'center', marginTop: 10 },
   head: {

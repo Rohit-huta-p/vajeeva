@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TextInput, TouchableOpacity, Pressable, StyleSheet } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconClose, IconCheck } from './icons';
 
 // Small bottom-sheet to edit the display name (Profile › identity edit). Same
@@ -9,6 +10,8 @@ import { IconClose, IconCheck } from './icons';
 export function NameEditSheet({ visible, name, onSave, onClose }: {
   visible: boolean; name: string; onSave: (name: string) => void; onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const [draft, setDraft] = useState(name);
   useEffect(() => { if (visible) setDraft(name); }, [visible, name]);
 
@@ -51,9 +54,9 @@ export function NameEditSheet({ visible, name, onSave, onClose }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   overlay: { flex: 1, justifyContent: 'flex-end' },
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.34)' },
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.4)' },
   panel: { backgroundColor: colors.cream, borderTopLeftRadius: 20, borderTopRightRadius: 20 },
   handle: { width: 34, height: 4, borderRadius: 2, backgroundColor: colors.sand, alignSelf: 'center', marginTop: 10 },
   head: {

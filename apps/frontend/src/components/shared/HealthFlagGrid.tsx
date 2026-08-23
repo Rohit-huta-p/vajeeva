@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useThemedStyles } from '../../theme/ThemeContext';
 import { IconCheck } from './icons';
 import type { HealthFlag } from '../../hooks/useHealthFlags';
 
@@ -13,6 +14,7 @@ export function HealthFlagGrid({ flags, selected, onToggle }: {
   selected: Set<string>;
   onToggle: (code: string) => void;
 }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.grid}>
       {flags.map(f => {
@@ -42,7 +44,7 @@ export function HealthFlagGrid({ flags, selected, onToggle }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   grid: { gap: 8 },
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 10,

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, View, Text, TouchableOpacity, Pressable, ScrollView, StyleSheet } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconClose, IconCheck } from './icons';
 import { HealthFlagGrid } from './HealthFlagGrid';
 import { useHealthFlags } from '../../hooks/useHealthFlags';
@@ -16,6 +17,8 @@ export function HealthProfileSheet({ visible, codes, onSave, onClose }: {
   onSave: (codes: string[]) => void;
   onClose: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const flags = useHealthFlags();
   const [draft, setDraft] = useState<Set<string>>(() => new Set(codes));
 
@@ -61,13 +64,11 @@ export function HealthProfileSheet({ visible, codes, onSave, onClose }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   overlay: { flex: 1, justifyContent: 'flex-end' },
-  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(42,37,30,0.34)' },
+  scrim: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,0.4)' },
   panel: {
     backgroundColor: colors.cream,
-    // Top radius only — a real sheet sits flush at the viewport bottom (the
-    // prototype's bottom radius was a device-mock artifact).
     borderTopLeftRadius: 20, borderTopRightRadius: 20,
     maxHeight: '84%',
   },

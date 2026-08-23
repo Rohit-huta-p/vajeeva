@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Switch } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { scaledSheet, sc } from '../../theme/scale';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconChev } from './icons';
 
 // Grouped-settings primitives (ref: prototypes/explorations/vajeeva-profile-production.html).
@@ -10,6 +11,7 @@ import { IconChev } from './icons';
 // self-divide — the group injects `first` so the top row skips its divider.
 
 export function SettingsGroup({ children, flush }: { children: React.ReactNode; flush?: boolean }) {
+  const s = useThemedStyles(makeStyles);
   const rows = React.Children.toArray(children).filter(React.isValidElement);
   return (
     <View style={[s.group, flush && s.groupFlush]}>
@@ -30,6 +32,8 @@ export function SettingsRow({
   danger?: boolean;
   first?: boolean;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const body = (
     <View style={[s.row, !first && s.rowDivider]}>
       <View style={[s.ico, danger && s.icoDanger]}>{icon}</View>
@@ -55,6 +59,7 @@ export function SettingsRow({
 export function SettingsToggle({ value, onValueChange }: {
   value: boolean; onValueChange: (v: boolean) => void;
 }) {
+  const { colors } = useTheme();
   return (
     <Switch
       value={value}
@@ -66,7 +71,7 @@ export function SettingsToggle({ value, onValueChange }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   group: {
     backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
     borderRadius: 14, marginHorizontal: 14, overflow: 'hidden', ...shadows.card,

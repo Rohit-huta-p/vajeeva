@@ -4,11 +4,12 @@ import { useRouter } from 'expo-router';
 import Constants from 'expo-constants';
 import { AuthContext } from '../auth/AuthContext';
 import { usersApi } from '../api';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
 import { scaledSheet, sc } from '../theme/scale';
+import { useTheme, useThemedStyles, type ThemeMode } from '../theme/ThemeContext';
 import {
   IconUser, IconEdit, IconLeaf, IconShield, IconInfo, IconChat, IconStar, IconLogout,
-  IconRuler, IconSun, IconDoc, IconTrash,
+  IconRuler, IconSun, IconDoc, IconTrash, IconTheme,
 } from '../components/shared/icons';
 import { SettingsGroup, SettingsRow, SettingsToggle } from '../components/shared/Settings';
 import { HealthProfileSheet } from '../components/shared/HealthProfileSheet';
@@ -27,22 +28,27 @@ const RATE_URL = 'https://apps.apple.com/app/vajeeva';
 // vajeeva-profile-production.html). Identity + health up top, then grouped
 // About / Support / Account sections. Guests see a conversion banner instead of
 // identity, and no account controls. Top inset is owned by the tab layout, so
-// the root is a plain View (matches HomeScreen).
+// the root is a plain View (matches HomeScreen). This surface is the theme
+// pilot — it reads the active palette from ThemeContext.
 export default function ProfileScreen() {
   const { user, isGuest, logout, updateProfile } = useContext(AuthContext);
   const { codes, save } = useHealthProfile();
   const flags = useHealthFlags();
   const { prefs, setPref } = usePreferences();
+  const { colors, mode, setMode } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const [editingHealth, setEditingHealth] = useState(false);
   const [editingName, setEditingName] = useState(false);
   const [unitsOpen, setUnitsOpen] = useState(false);
+  const [appearanceOpen, setAppearanceOpen] = useState(false);
 
   const signedIn = !!user && !isGuest;
   const name = user?.name?.trim();
   const initial = name ? name[0].toUpperCase() : null;
   const version = Constants.expoConfig?.version ?? '1.0.0';
   const labelFor = (code: string) => flags.find(f => f.code === code)?.label ?? code;
+  const appearanceLabel = mode.charAt(0).toUpperCase() + mode.slice(1);
 
   const onDeleteAccount = () => {
     Alert.alert(
@@ -146,6 +152,12 @@ export default function ProfileScreen() {
             onPress={() => setUnitsOpen(true)}
           />
           <SettingsRow
+            icon={<IconTheme size={sc(15)} color={colors.ink} />}
+            label="Appearance"
+            value={appearanceLabel}
+            onPress={() => setAppearanceOpen(true)}
+          />
+          <SettingsRow
             icon={<IconSun size={sc(15)} color={colors.ink} />}
             label="Keep screen awake cooking"
             right={<SettingsToggle value={prefs.keepAwake} onValueChange={v => setPref('keepAwake', v)} />}
@@ -247,11 +259,24 @@ export default function ProfileScreen() {
         onSelect={v => setPref('units', v)}
         onClose={() => setUnitsOpen(false)}
       />
+
+      <ChoiceSheet<ThemeMode>
+        visible={appearanceOpen}
+        title="Appearance"
+        selected={mode}
+        options={[
+          { value: 'system', label: 'System', hint: 'Match your device' },
+          { value: 'light', label: 'Light', hint: 'Always light' },
+          { value: 'dark', label: 'Dark', hint: 'Always dark' },
+        ]}
+        onSelect={setMode}
+        onClose={() => setAppearanceOpen(false)}
+      />
     </View>
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   scroll: { paddingBottom: 28 },
   sctitle: {
@@ -299,7 +324,7 @@ const s = scaledSheet({
   cardTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   cardLabel: {
     fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', letterSpacing: 0.72,
-    textTransform: 'uppercase', color: 'rgba(42,37,30,0.32)',
+    textTransform: 'uppercase', color: colors.labelFaint,
   },
   editBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
   editTxt: { fontSize: 11, fontFamily: fonts.sans, fontWeight: '800', color: colors.green },
@@ -319,7 +344,7 @@ const s = scaledSheet({
   // sections
   dslabel: {
     fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', letterSpacing: 0.72,
-    textTransform: 'uppercase', color: 'rgba(42,37,30,0.3)', paddingHorizontal: 18, marginTop: 17, marginBottom: 8,
+    textTransform: 'uppercase', color: colors.labelFaint, paddingHorizontal: 18, marginTop: 17, marginBottom: 8,
   },
   version: {
     fontSize: 9, fontFamily: fonts.mono, color: colors.muted, textAlign: 'center',

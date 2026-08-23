@@ -146,6 +146,15 @@ export function IconTrash({ size = 16, color = colors.clay }: IconProps) {
   );
 }
 
+export function IconTheme({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Circle {...ln(color)} cx={12} cy={12} r={8} />
+      <Path fill={color} d="M12 4a8 8 0 0 0 0 16z" />
+    </Svg>
+  );
+}
+
 export function IconCheck({ size = 20, color = colors.cmGreen }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M5 12.5l4.5 4.5L19 7" /></Svg>;
 }

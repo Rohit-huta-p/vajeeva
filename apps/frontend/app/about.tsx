@@ -1,10 +1,11 @@
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Constants from 'expo-constants';
-import { colors } from '../src/theme/tokens';
+import { useTheme } from '../src/theme/ThemeContext';
 import { InfoScreen, InfoSection, InfoParagraph } from '../src/components/shared/InfoScreen';
 
 // Route-level top inset — RN core SafeAreaView in the screen is a no-op on Android.
 export default function AboutRoute() {
+  const { colors } = useTheme();
   const version = Constants.expoConfig?.version ?? '1.0.0';
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { colors } from '../src/theme/tokens';
+import { useTheme } from '../src/theme/ThemeContext';
 import { sc } from '../src/theme/scale';
 import { InfoScreen, InfoParagraph } from '../src/components/shared/InfoScreen';
 import { SettingsGroup, SettingsRow } from '../src/components/shared/Settings';
@@ -13,6 +13,7 @@ interface SourceItem { slug: string; name: string; recipeCount?: number }
 
 // Route-level top inset — RN core SafeAreaView in the screen is a no-op on Android.
 export default function SourcesRoute() {
+  const { colors } = useTheme();
   const router = useRouter();
   const [sources, setSources] = useState<SourceItem[] | null>(null);
 

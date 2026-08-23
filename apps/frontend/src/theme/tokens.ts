@@ -9,6 +9,7 @@ export const colors = {
   muted:      '#9C9482',
   line:       '#E5DDCC',
   line2:      '#D8CEBA',
+  labelFaint: 'rgba(42,37,30,0.32)',
   green:      '#3E6B4F',
   greenPress: '#335B42',
   greenSoft:  '#E4EDE3',
@@ -63,3 +64,36 @@ export const shadows = {
     elevation: 6,
   },
 } as const;
+
+// ── Theming ──────────────────────────────────────────────────────────────────
+// `colors` above is the light palette (and stays the default `colors` export so
+// screens not yet converted keep rendering light). Themed screens read the
+// active palette from ThemeContext; the dark palette mirrors the warm cook-mode
+// look (parchment text on a #1A1814 ground, lighter green/amber accents).
+export type Colors = Record<keyof typeof colors, string>;
+
+export const lightColors: Colors = colors;
+
+export const darkColors: Colors = {
+  ...colors,
+  bone:       '#1A1814',
+  sand:       '#26221C',
+  cream:      '#231F18',
+  ink:        '#F0EAD8',
+  ink2:       'rgba(240,234,216,0.64)',
+  muted:      'rgba(240,234,216,0.42)',
+  line:       'rgba(240,234,216,0.10)',
+  line2:      'rgba(240,234,216,0.16)',
+  labelFaint: 'rgba(240,234,216,0.42)',
+  green:      '#5CAD78',
+  greenPress: '#4E9A68',
+  greenSoft:  'rgba(92,173,120,0.16)',
+  onGreen:    '#0C1A10',
+  amber:      '#D4A24A',
+  amber2:     '#C6902F',
+  amberSoft:  'rgba(198,144,47,0.16)',
+  clay:       '#D46A50',
+  claySoft:   'rgba(180,71,46,0.22)',
+  blue:       '#6BA0D0',
+  blueBg:     'rgba(59,107,160,0.18)',
+};

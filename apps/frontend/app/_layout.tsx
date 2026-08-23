@@ -3,6 +3,7 @@ import { useContext, useEffect, type ReactNode } from 'react';
 import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { AuthProvider, AuthContext } from '../src/auth/AuthContext';
+import { ThemeProvider } from '../src/theme/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -51,10 +52,12 @@ export default function RootLayout() {
   if (!fontsLoaded) return null;
 
   return (
-    <AuthProvider>
-      <AuthGate>
-        <Slot />
-      </AuthGate>
-    </AuthProvider>
+    <ThemeProvider>
+      <AuthProvider>
+        <AuthGate>
+          <Slot />
+        </AuthGate>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
