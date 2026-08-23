@@ -1,0 +1,293 @@
+<title>Vajeeva · Profile (production layout)</title>
+<style>
+:root{
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line-2:#D8CEBA;
+  --green:#3E6B4F; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E; --clay-soft:#F3E1D8;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --pg:#FBF8F1; --pgt:#2A251E; --pgm:rgba(42,37,30,.55); --chrome:#1C1814;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08;
+}}
+:root[data-theme="dark"]{ --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;font-family:var(--sans)}
+svg{display:block}
+body{background:var(--pg);color:var(--pgt);font-family:var(--sans);min-height:100vh;padding:48px 32px 64px}
+.pg-head{max-width:1060px;margin:0 auto 36px}
+.pg-title{font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.pg-sub{font-size:12.5px;color:var(--pgm);line-height:1.65;max-width:660px}
+.pg-sub code{font-family:var(--mono);font-size:11px}
+.legend{margin-top:16px;font-size:11px;color:var(--pgm);display:flex;flex-wrap:wrap;gap:7px 18px}
+.legend b{color:var(--pgt);font-weight:700}
+.tagpill{display:inline-block;font-size:9px;font-weight:800;letter-spacing:.03em;padding:2px 7px;border-radius:5px;margin-right:5px}
+.t-have{background:var(--green-soft);color:var(--green)}
+.t-store{background:var(--clay-soft);color:var(--clay)}
+.t-value{background:var(--amber-soft);color:var(--amber-2)}
+.phones-row{display:flex;gap:48px;overflow-x:auto;padding:8px 4px 22px;scrollbar-width:thin;scrollbar-color:var(--sand) transparent}
+.pw{display:flex;flex-direction:column;align-items:center;gap:14px;flex-shrink:0;width:292px}
+.opt-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pgt);display:flex;align-items:center;gap:8px}
+.opt-label .k{width:9px;height:9px;border-radius:50%}
+.opt-cap{font-size:11px;line-height:1.5;color:var(--pgm);text-align:center;max-width:270px;min-height:30px}
+.opt-cap b{color:var(--pgt);font-weight:700}
+.phone{width:292px;height:640px;background:var(--chrome);border-radius:52px;padding:10px;position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),0 28px 64px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.09)}
+.phone::before{content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);width:88px;height:28px;background:var(--chrome);border-radius:14px;z-index:20}
+.screen{position:relative;width:100%;height:100%;background:var(--bone);border-radius:42px;overflow:hidden;display:flex;flex-direction:column;color:var(--ink);font-size:12px;line-height:1.4}
+.sbar{flex:0 0 auto;height:44px;padding:0 24px 6px 26px;display:flex;align-items:flex-end;justify-content:space-between;background:var(--bone);color:var(--ink);font-size:11px;font-weight:700}
+.sa{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.sa::-webkit-scrollbar{display:none}
+.tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;background:var(--cream);border-top:1px solid var(--line);padding:8px 6px 11px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px;font-weight:600}
+.tab svg{width:20px;height:20px}
+.tab.on{color:var(--green)}
+.sctitle{font-family:var(--serif);font-size:18px;font-weight:700;letter-spacing:-.01em;color:var(--ink);padding:12px 16px 2px}
+.contd{font-size:9px;font-family:var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 16px 0;opacity:.7}
+
+/* identity */
+.ident{display:flex;align-items:center;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:16px;padding:12px;box-shadow:var(--shadow);margin:10px 14px 0}
+.avatar{width:52px;height:52px;border-radius:50%;background:var(--green-soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--green);font-family:var(--serif);font-weight:700;font-size:22px;flex:none}
+.avatar svg{width:26px;height:26px}
+.id-name{font-size:14.5px;font-weight:700;color:var(--ink)}
+.id-mail{font-size:10.5px;color:var(--ink-2);margin-top:2px}
+.id-since{font-size:8.5px;font-family:var(--mono);color:var(--muted);margin-top:3px;letter-spacing:.03em}
+.id-edit{width:30px;height:30px;border-radius:50%;background:var(--sand);display:grid;place-items:center;color:var(--ink-2);flex:none}
+.id-edit svg{width:14px;height:14px}
+
+/* guest banner */
+.guest{background:var(--green);color:var(--on-green);border-radius:16px;padding:13px 14px;box-shadow:var(--shadow);margin:10px 14px 0}
+.guest-h{font-family:var(--serif);font-size:14.5px;font-weight:700}
+.guest-b{font-size:10.5px;opacity:.9;line-height:1.5;margin-top:4px}
+.guest-cta{margin-top:10px;background:var(--on-green);color:var(--green);border:none;border-radius:11px;padding:10px;font-size:12px;font-weight:800;width:100%;display:flex;align-items:center;justify-content:center;gap:7px}
+.guest-cta svg{width:14px;height:14px}
+
+/* health card */
+.hpcard{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow);margin:12px 14px 0}
+.hpcard-top{display:flex;align-items:center;justify-content:space-between}
+.hpcard-h{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.32)}
+.hpcard-edit{font-size:11px;font-weight:800;color:var(--green);display:flex;align-items:center;gap:4px}
+.hpcard-edit svg{width:12px;height:12px}
+.hpchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.hpchip{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink);background:var(--green-soft);border:1px solid rgba(62,107,79,.28);border-radius:999px;padding:5px 11px}
+.hpchip .d{width:5px;height:5px;border-radius:50%;background:var(--clay);opacity:.75;flex:none}
+
+/* section + rows */
+.dslabel{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.3);padding:0 18px;margin:17px 0 8px}
+.set-group{background:var(--cream);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:0 14px;overflow:hidden}
+.set-row{display:flex;align-items:center;gap:11px;padding:11px 12px;border-top:1px solid var(--line)}
+.set-row:first-child{border-top:none}
+.set-ico{width:29px;height:29px;border-radius:8px;background:var(--sand);display:grid;place-items:center;color:var(--ink);flex:none}
+.set-ico svg{width:15px;height:15px}
+.set-name{font-size:12.5px;font-weight:600;color:var(--ink);flex:1}
+.set-right{display:flex;align-items:center;gap:7px}
+.set-val{font-size:10.5px;color:var(--muted)}
+.chev{width:15px;height:15px;color:var(--muted);flex:none}
+.set-row.danger .set-name{color:var(--clay)}
+.set-row.danger .set-ico{background:var(--clay-soft);color:var(--clay)}
+.sw{width:38px;height:22px;border-radius:11px;background:var(--line-2);position:relative;flex:none}
+.sw.on{background:var(--green)}
+.sw::after{content:'';position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25)}
+.sw.on::after{left:auto;right:2px}
+.ver{font-size:9px;font-family:var(--mono);color:var(--muted);text-align:center;letter-spacing:.05em;padding:16px 0 8px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><style>.ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.fl{fill:currentColor}</style></defs>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path class="ln" d="M4 20h4L18.5 9.5a2 2 0 0 0-2.8-2.8L5 17z"/><path class="ln" d="M14.5 7.5l2.8 2.8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="8.5" r="3.3"/><path class="ln" d="M5.5 19a6.5 6.5 0 0 1 13 0"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path class="ln" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path class="ln" d="M7 4h10v16l-5-3.5L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle class="fl" cx="5.5" cy="12" r="1.7"/><circle class="fl" cx="12" cy="12" r="1.7"/><circle class="fl" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-ruler" viewBox="0 0 24 24"><path class="ln" d="M3 8h18v8H3z"/><path class="ln" d="M7 8v3M11 8v4M15 8v3M19 8v4"/></symbol>
+  <symbol id="i-theme" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="fl" d="M12 4a8 8 0 0 0 0 16z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="4"/><path class="ln" d="M12 3v2M12 19v2M3 12h2M19 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path class="ln" d="M4 18l4.5-11 4.5 11M5.6 14h5.8"/><path class="ln" d="M15 18l2.6-7 2.6 7M15.9 15.8h3.4"/></symbol>
+  <symbol id="i-sync" viewBox="0 0 24 24"><path class="ln" d="M4 12a8 8 0 0 1 13.7-5.7L20 8"/><path class="ln" d="M20 4v4h-4"/><path class="ln" d="M20 12a8 8 0 0 1-13.7 5.7L4 16"/><path class="ln" d="M4 20v-4h4"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path class="ln" d="M12 3l7 3v5c0 4.6-3 7.9-7 9-4-1.1-7-4.4-7-9V6z"/><path class="ln" d="M9 12l2 2 4-4"/></symbol>
+  <symbol id="i-doc" viewBox="0 0 24 24"><path class="ln" d="M7 3h7l4 4v14H7z"/><path class="ln" d="M14 3v4h4"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path class="ln" d="M5 6h14v9H9l-4 4z"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8.5"/><path class="ln" d="M9.6 9.5a2.5 2.5 0 1 1 3.4 2.4c-.8.4-1 .8-1 1.6M12 16v.2"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path class="ln" d="M12 4l2.4 5 5.4.6-4 3.7 1.1 5.4L12 16l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path class="ln" d="M13 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7"/><path class="ln" d="M10 12h10M16.5 8l4 4-4 4"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path class="ln" d="M5 7h14M10 7V5h4v2M6 7l1 13h10l1-13"/></symbol>
+</svg>
+
+<div class="pg-head">
+  <div class="pg-title">Profile — production layout</div>
+  <div class="pg-sub">
+    A grouped settings hub with the identity header and health card up top. Corrections applied: the header
+    <b>shows the name</b> (signup captures it), and there's <b>no recipe-name language toggle</b>. The screen scrolls —
+    phones 1 &amp; 2 are the signed-in top &amp; continuation; phone 3 is the guest state.
+  </div>
+  <div class="legend">
+    <span><span class="tagpill t-have">BUILT</span>already shipped</span>
+    <span><span class="tagpill t-value">PRODUCT</span>high-value add</span>
+    <span><span class="tagpill t-store">STORE / LEGAL</span>needed to ship to App Store / Play</span>
+  </div>
+</div>
+
+<div class="phones-row">
+
+  <!-- PHONE 1 — signed in, top -->
+  <div class="pw">
+    <div class="opt-label"><span class="k" style="background:#3E6B4F"></span>Signed in · top</div>
+    <div class="phone"><div class="screen">
+      <div class="sbar"><span>9:41</span><span>5G&nbsp;&nbsp;100</span></div>
+      <div class="sa">
+        <div class="sctitle">Profile</div>
+        <div class="ident">
+          <div class="avatar">R</div>
+          <div style="flex:1;min-width:0">
+            <div class="id-name">Rohith</div>
+            <div class="id-mail">vcrohithuta@gmail.com</div>
+            <div class="id-since">Member since Aug 2026</div>
+          </div>
+          <button class="id-edit"><svg><use href="#i-edit"/></svg></button>
+        </div>
+
+        <div class="hpcard">
+          <div class="hpcard-top">
+            <div class="hpcard-h">Health profile</div>
+            <button class="hpcard-edit"><svg><use href="#i-edit"/></svg>Edit</button>
+          </div>
+          <div class="hpchips">
+            <span class="hpchip"><span class="d"></span>Overweight / Obesity</span>
+            <span class="hpchip"><span class="d"></span>Lactose intolerance</span>
+          </div>
+        </div>
+
+        <div class="dslabel">Preferences</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-ruler"/></svg></div><div class="set-name">Units</div><div class="set-right"><span class="set-val">Grams</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-theme"/></svg></div><div class="set-name">Appearance</div><div class="set-right"><span class="set-val">System</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-sun"/></svg></div><div class="set-name">Keep screen awake cooking</div><div class="sw on"></div></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-type"/></svg></div><div class="set-name">Text size</div><div class="set-right"><span class="set-val">Default</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+        </div>
+
+        <div class="dslabel">Your data</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-bookmark"/></svg></div><div class="set-name">Saved recipes</div><div class="set-right"><span class="set-val">12</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-sync"/></svg></div><div class="set-name">Offline &amp; sync</div><div class="set-right"><span class="set-val">Synced · 2m</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+        </div>
+        <div style="height:12px"></div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#i-home"/></svg>Home</div>
+        <div class="tab"><svg><use href="#i-bookmark"/></svg>Saved</div>
+        <div class="tab on"><svg><use href="#i-more"/></svg>More</div>
+      </div>
+    </div></div>
+    <div class="opt-cap">Identity + health up top, then the preferences and data that make an offline recipe app feel owned.</div>
+  </div>
+
+  <!-- PHONE 2 — signed in, continued -->
+  <div class="pw">
+    <div class="opt-label"><span class="k" style="background:#3E6B4F"></span>…continued (scroll)</div>
+    <div class="phone"><div class="screen">
+      <div class="sbar"><span>9:41</span><span>5G&nbsp;&nbsp;100</span></div>
+      <div class="sa">
+        <div class="contd">▲ Profile · Preferences · Your data</div>
+
+        <div class="dslabel">About &amp; trust</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-leaf"/></svg></div><div class="set-name">Our sources &amp; method</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-shield"/></svg></div><div class="set-name">Medical disclaimer</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-doc"/></svg></div><div class="set-name">Privacy Policy</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-doc"/></svg></div><div class="set-name">Terms of Service</div><svg class="chev"><use href="#i-chev"/></svg></div>
+        </div>
+
+        <div class="dslabel">Support</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-chat"/></svg></div><div class="set-name">Send feedback</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-help"/></svg></div><div class="set-name">Help &amp; FAQ</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-star"/></svg></div><div class="set-name">Rate Vajeeva</div><svg class="chev"><use href="#i-chev"/></svg></div>
+        </div>
+
+        <div class="dslabel">Account</div>
+        <div class="set-group">
+          <div class="set-row danger"><div class="set-ico"><svg><use href="#i-logout"/></svg></div><div class="set-name">Sign out</div></div>
+          <div class="set-row danger"><div class="set-ico"><svg><use href="#i-trash"/></svg></div><div class="set-name">Delete account</div></div>
+        </div>
+
+        <div class="ver">Vajeeva v1.0.0 (100) · grounded in classical texts</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#i-home"/></svg>Home</div>
+        <div class="tab"><svg><use href="#i-bookmark"/></svg>Saved</div>
+        <div class="tab on"><svg><use href="#i-more"/></svg>More</div>
+      </div>
+    </div></div>
+    <div class="opt-cap">Trust (sources, disclaimer, privacy/terms) + support + the account controls stores require — delete-account &amp; version.</div>
+  </div>
+
+  <!-- PHONE 3 — guest -->
+  <div class="pw">
+    <div class="opt-label"><span class="k" style="background:#C6902F"></span>Guest state</div>
+    <div class="phone"><div class="screen">
+      <div class="sbar"><span>9:41</span><span>5G&nbsp;&nbsp;100</span></div>
+      <div class="sa">
+        <div class="sctitle">Profile</div>
+        <div class="ident">
+          <div class="avatar"><svg><use href="#i-user"/></svg></div>
+          <div style="flex:1;min-width:0">
+            <div class="id-name">Guest</div>
+            <div class="id-mail">Not signed in</div>
+          </div>
+        </div>
+
+        <div class="guest">
+          <div class="guest-h">Keep your kitchen</div>
+          <div class="guest-b">Your saved recipes and health profile live only on this phone. Create an account to sync them and never lose them.</div>
+          <button class="guest-cta"><svg><use href="#i-user"/></svg>Create account or sign in</button>
+        </div>
+
+        <div class="hpcard">
+          <div class="hpcard-top">
+            <div class="hpcard-h">Health profile</div>
+            <button class="hpcard-edit"><svg><use href="#i-edit"/></svg>Edit</button>
+          </div>
+          <div class="hpchips">
+            <span class="hpchip"><span class="d"></span>Overweight / Obesity</span>
+          </div>
+        </div>
+
+        <div class="dslabel">Preferences</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-ruler"/></svg></div><div class="set-name">Units</div><div class="set-right"><span class="set-val">Grams</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-theme"/></svg></div><div class="set-name">Appearance</div><div class="set-right"><span class="set-val">System</span><svg class="chev"><use href="#i-chev"/></svg></div></div>
+        </div>
+
+        <div class="dslabel">About &amp; trust</div>
+        <div class="set-group">
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-leaf"/></svg></div><div class="set-name">Our sources &amp; method</div><svg class="chev"><use href="#i-chev"/></svg></div>
+          <div class="set-row"><div class="set-ico"><svg><use href="#i-shield"/></svg></div><div class="set-name">Medical disclaimer</div><svg class="chev"><use href="#i-chev"/></svg></div>
+        </div>
+        <div class="ver">Vajeeva v1.0.0 (100)</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#i-home"/></svg>Home</div>
+        <div class="tab"><svg><use href="#i-bookmark"/></svg>Saved</div>
+        <div class="tab on"><svg><use href="#i-more"/></svg>More</div>
+      </div>
+    </div></div>
+    <div class="opt-cap">No identity to show — instead the conversion banner (top retention lever). Health + prefs still work locally; no delete-account.</div>
+  </div>
+
+</div>
+
+<div style="max-width:1060px;margin:6px auto 0;font-size:11.5px;color:var(--pgm);line-height:1.7">
+  <b style="color:var(--pgt)">Dependencies</b> — a few rows front other gaps: <b>Appearance</b> needs a theme system,
+  <b>Keep-awake</b> ↔ Cook-mode gap #9, <b>Offline &amp; sync</b> uses the existing sync engine, <b>Delete account</b>
+  needs a new <code>DELETE /users/me</code>, and <b>Connected sign-ins</b> (Google/phone) appear once SSO lands.
+  Everything except those can be built now against the current API.
+</div>

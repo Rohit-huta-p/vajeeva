@@ -1,90 +1,191 @@
-# Graph Report - /Users/rohithutagonna/Documents/Rohit/recipe-app  (2026-08-18)
+# Graph Report - .  (2026-08-23)
 
 ## Corpus Check
-- Corpus is ~24,743 words - fits in a single context window. You may not need a graph.
+- 171 files · ~111,915 words
+- Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 59 nodes · 73 edges · 8 communities detected
-- Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 7 edges (avg confidence: 0.81)
-- Token cost: 22,000 input · 5,800 output
+- 297 nodes · 481 edges · 30 communities detected
+- Extraction: 100% EXTRACTED · 0% INFERRED · 0% AMBIGUOUS
+- Token cost: 0 input · 0 output
 
 ## God Nodes (most connected - your core abstractions)
-1. `Vajeeva Recipe Compendium (83 Recipes)` - 10 edges
-2. `User Flows Vajeeva` - 8 edges
-3. `Recipe Detail Screen` - 6 edges
-4. `Design Brief Ayurvedic Vajikarana App` - 5 edges
-5. `Offline Sync Strategy` - 5 edges
-6. `Recipe Mongoose Model` - 5 edges
-7. `Aromatic Powder Blend (Shared Sub-recipe)` - 4 edges
-8. `Contraindication Flags (DM / OW / LI / SD)` - 4 edges
-9. `Texture-First IA Decision` - 4 edges
-10. `Hero Flow P6` - 4 edges
+1. `toListItem()` - 3 edges
+2. `emit()` - 3 edges
+3. `tryRefresh()` - 3 edges
+4. `cap()` - 2 edges
+5. `texLabel()` - 2 edges
+6. `ln()` - 2 edges
+7. `IconBack()` - 2 edges
+8. `sc()` - 2 edges
+9. `scaledSheet()` - 2 edges
+10. `deriveFit()` - 2 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `Contraindication Flags (DM / OW / LI / SD)` --semantically_similar_to--> `Recipe Mongoose Model`  [INFERRED] [semantically similar]
-  content/vajeeva-recipes.md → docs/specs/2026-08-17-vajeeva-rn-design.md
-- `Offline Sync Strategy` --semantically_similar_to--> `Offline Flow P43`  [INFERRED] [semantically similar]
-  docs/specs/2026-08-17-vajeeva-rn-design.md → docs/User-Flows.md
-- `Design Brief Ayurvedic Vajikarana App` --references--> `Vajeeva Recipe Compendium (83 Recipes)`  [EXTRACTED]
-  docs/Design-Brief.md → content/vajeeva-recipes.md
-- `Recipe Detail Design Spec` --references--> `Vajeeva Recipe Compendium (83 Recipes)`  [EXTRACTED]
-  docs/specs/2026-08-17-recipe-detail-design.md → content/vajeeva-recipes.md
-- `Recipe Content Model (16 Fields)` --semantically_similar_to--> `RecipeSchema (Zod)`  [INFERRED] [semantically similar]
-  docs/Design-Brief.md → docs/superpowers/plans/2026-08-17-vajeeva-api.md
-
-## Hyperedges (group relationships)
-- **Safety Gate Pattern** — userflow_safety_p42, component_contraindication_card, vrecipes_contraindication_flags, screen_recipe_detail [EXTRACTED 0.93]
-- **Shared Types System** — arch_shared_package, schema_recipe_zod, model_recipe, route_admin [EXTRACTED 0.95]
-- **Sensitive Health Context UX Pattern** — actor_patient, principle_discretion, decision_anonymous_first, rationale_no_social_login [INFERRED 0.83]
+- None detected - all connections are within the same source files.
 
 ## Communities
 
-### Community 0 - "API Backend Layer"
-Cohesion: 0.19
-Nodes (14): @vajeeva/shared Package, requireAdmin Middleware, requireAuth Middleware, Recipe Mongoose Model, SavedRecipe Mongoose Model, User Mongoose Model, Rationale: Health Flags Inline, Admin CRUD Routes (+6 more)
+### Community 0 - "Community 0"
+Cohesion: 0.07
+Nodes (2): computeUsedIn(), seed()
 
-### Community 1 - "User Roles and IA Decisions"
-Cohesion: 0.22
-Nodes (11): Admin / Editor (CMS Web), Clinician (Secondary User, Deferred from v1), Patient (Primary User), Anonymous-First Browsing Decision, Texture-First IA Decision, Design Brief Ayurvedic Vajikarana App, Design Principle: Discretion and Dignity, Rationale: No Social Login (+3 more)
+### Community 1 - "Community 1"
+Cohesion: 0.05
+Nodes (4): api(), ApiError, setToken(), tryRefresh()
 
-### Community 2 - "Recipe Content and Sources"
+### Community 2 - "Community 2"
+Cohesion: 0.07
+Nodes (0): 
+
+### Community 3 - "Community 3"
+Cohesion: 0.12
+Nodes (2): sc(), scaledSheet()
+
+### Community 4 - "Community 4"
+Cohesion: 0.11
+Nodes (0): 
+
+### Community 5 - "Community 5"
+Cohesion: 0.12
+Nodes (5): handleFiles(), uploadFile(), emit(), move(), set()
+
+### Community 6 - "Community 6"
+Cohesion: 0.17
+Nodes (3): deriveFit(), sortImages(), toListItem()
+
+### Community 7 - "Community 7"
+Cohesion: 0.18
+Nodes (2): cap(), texLabel()
+
+### Community 8 - "Community 8"
 Cohesion: 0.24
-Nodes (10): Aromatic Powder Bottom Sheet Component, AYUSH Traditional Food Recipes, Bhojana Kutuhala (BK), ICMR-NIN Dietary Guidelines for Indians 2024, Ksemakutuhalam (KK), Aromatic Powder Blend (Shared Sub-recipe), Vajeeva Recipe Compendium (83 Recipes), Liquid Recipes (23) (+2 more)
+Nodes (2): IconBack(), ln()
 
-### Community 3 - "UI Components and Layouts"
-Cohesion: 0.22
-Nodes (10): Ingredient Table Component, Source Citation Pill Component, Additive Scroll Layout, Tabbed + Pinned Cook Layout, Design Principle: Evidence-Anchored Credibility, Cook Mode Screen, Glossary Term Screen (D4), Home / Discovery Screen (+2 more)
+### Community 9 - "Community 9"
+Cohesion: 0.25
+Nodes (0): 
 
-### Community 4 - "Architecture and Sync Strategy"
+### Community 10 - "Community 10"
+Cohesion: 0.29
+Nodes (0): 
+
+### Community 11 - "Community 11"
 Cohesion: 0.33
-Nodes (6): Vajeeva API Implementation Plan, Monorepo Architecture, Offline Sync Strategy, Rationale: No CRDTs, React Native App Design Spec, WatermelonDB
+Nodes (0): 
 
-### Community 5 - "Safety Gate"
+### Community 12 - "Community 12"
+Cohesion: 0.4
+Nodes (0): 
+
+### Community 13 - "Community 13"
+Cohesion: 0.4
+Nodes (0): 
+
+### Community 14 - "Community 14"
 Cohesion: 0.5
-Nodes (4): Contraindication Card Component, Design Principle: Safety-First, Safety Flow P42, Contraindication Flags (DM / OW / LI / SD)
+Nodes (0): 
 
-### Community 6 - "Design Spec and Tokens"
+### Community 15 - "Community 15"
 Cohesion: 0.67
-Nodes (3): Design Tokens, Recipe Content Model (16 Fields), Recipe Detail Design Spec
+Nodes (2): issueRefreshToken(), signRefresh()
 
-### Community 7 - "Screen Index"
+### Community 16 - "Community 16"
+Cohesion: 0.67
+Nodes (0): 
+
+### Community 17 - "Community 17"
 Cohesion: 1.0
-Nodes (1): Vajeeva v1 Screen Index
+Nodes (0): 
+
+### Community 18 - "Community 18"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 19 - "Community 19"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 20 - "Community 20"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 21 - "Community 21"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 22 - "Community 22"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 23 - "Community 23"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 24 - "Community 24"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 25 - "Community 25"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 26 - "Community 26"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 27 - "Community 27"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 28 - "Community 28"
+Cohesion: 1.0
+Nodes (0): 
+
+### Community 29 - "Community 29"
+Cohesion: 1.0
+Nodes (0): 
 
 ## Knowledge Gaps
-- **21 isolated node(s):** `Vajeeva v1 Screen Index`, `Vajeeva API Implementation Plan`, `Bhojana Kutuhala (BK)`, `Ksemakutuhalam (KK)`, `ICMR-NIN Dietary Guidelines for Indians 2024` (+16 more)
-  These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Screen Index`** (1 nodes): `Vajeeva v1 Screen Index`
+- **Thin community `Community 17`** (2 nodes): `setup.ts`, `setup()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 18`** (2 nodes): `teardown.ts`, `teardown()`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 19`** (1 nodes): `recipe.schema.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 20`** (1 nodes): `user.schema.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 21`** (1 nodes): `savedRecipe.schema.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 22`** (1 nodes): `jest.config.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 23`** (1 nodes): `metro.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 24`** (1 nodes): `babel.config.js`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 25`** (1 nodes): `opening.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 26`** (1 nodes): `onboarding.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 27`** (1 nodes): `saved.tsx`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 28`** (1 nodes): `theme.ts`
+  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **Thin community `Community 29`** (1 nodes): `vite.config.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `Vajeeva Recipe Compendium (83 Recipes)` connect `Recipe Content and Sources` to `User Roles and IA Decisions`, `Safety Gate`, `Design Spec and Tokens`?**
-  _High betweenness centrality (0.316) - this node is a cross-community bridge._
-- **Why does `Contraindication Flags (DM / OW / LI / SD)` connect `Safety Gate` to `API Backend Layer`, `Recipe Content and Sources`?**
-  _High betweenness centrality (0.280) - this node is a cross-community bridge._
-- **Why does `User Flows Vajeeva` connect `User Roles and IA Decisions` to `UI Components and Layouts`, `Safety Gate`?**
-  _High betweenness centrality (0.278) - this node is a cross-community bridge._
-- **What connects `Vajeeva v1 Screen Index`, `Vajeeva API Implementation Plan`, `Bhojana Kutuhala (BK)` to the rest of the system?**
-  _21 weakly-connected nodes found - possible documentation gaps or missing edges._
+- **Should `Community 0` be split into smaller, more focused modules?**
+  _Cohesion score 0.07 - nodes in this community are weakly interconnected._
+- **Should `Community 1` be split into smaller, more focused modules?**
+  _Cohesion score 0.05 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.07 - nodes in this community are weakly interconnected._
+- **Should `Community 3` be split into smaller, more focused modules?**
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._
+- **Should `Community 4` be split into smaller, more focused modules?**
+  _Cohesion score 0.11 - nodes in this community are weakly interconnected._
+- **Should `Community 5` be split into smaller, more focused modules?**
+  _Cohesion score 0.12 - nodes in this community are weakly interconnected._

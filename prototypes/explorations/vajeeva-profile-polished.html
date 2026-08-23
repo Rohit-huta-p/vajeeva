@@ -1,0 +1,209 @@
+<title>Vajeeva · Profile (More tab) — polished</title>
+<style>
+:root{
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line-2:#D8CEBA;
+  --green:#3E6B4F; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E; --clay-soft:#F3E1D8;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --pg:#FBF8F1; --pgt:#2A251E; --pgm:rgba(42,37,30,.55); --chrome:#1C1814;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08;
+}}
+:root[data-theme="dark"]{ --pg:#18150F; --pgt:#F2EDE1; --pgm:rgba(242,237,225,.55); --chrome:#0D0B08; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;font-family:var(--sans)}
+svg{display:block}
+body{background:var(--pg);color:var(--pgt);font-family:var(--sans);min-height:100vh;padding:48px 32px 72px}
+.pg-head{max-width:900px;margin:0 auto 40px}
+.pg-title{font-family:var(--serif);font-size:24px;font-weight:700;line-height:1.2;margin-bottom:8px}
+.pg-sub{font-size:12.5px;color:var(--pgm);line-height:1.65;max-width:620px}
+.pg-sub code{font-family:var(--mono);font-size:11px}
+.pg-note{margin-top:16px;font-size:11px;color:var(--pgm);display:flex;flex-wrap:wrap;gap:8px 20px;max-width:760px}
+.pg-note b{color:var(--pgt);font-weight:700}
+.phones-row{display:flex;gap:56px;justify-content:center;flex-wrap:wrap;padding:8px 4px 24px}
+.pw{display:flex;flex-direction:column;align-items:center;gap:14px;flex-shrink:0;width:292px}
+.opt-label{font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--pgt);display:flex;align-items:center;gap:8px}
+.opt-label .k{width:9px;height:9px;border-radius:50%}
+.opt-cap{font-size:11px;line-height:1.5;color:var(--pgm);text-align:center;max-width:270px;min-height:32px}
+.opt-cap b{color:var(--pgt);font-weight:700}
+.phone{width:292px;height:600px;background:var(--chrome);border-radius:52px;padding:10px;position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.07),0 28px 64px rgba(0,0,0,.45),0 8px 20px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.09)}
+.phone::before{content:'';position:absolute;top:18px;left:50%;transform:translateX(-50%);width:88px;height:28px;background:var(--chrome);border-radius:14px;z-index:20}
+.screen{position:relative;width:100%;height:100%;background:var(--bone);border-radius:42px;overflow:hidden;display:flex;flex-direction:column;color:var(--ink);font-size:12px;line-height:1.4}
+.sbar{flex:0 0 auto;height:46px;padding:0 24px 7px 26px;display:flex;align-items:flex-end;justify-content:space-between;background:var(--bone);color:var(--ink);font-size:11px;font-weight:700}
+.sa{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.sa::-webkit-scrollbar{display:none}
+.tabbar{flex:0 0 auto;display:flex;justify-content:space-around;align-items:center;background:var(--cream);border-top:1px solid var(--line);padding:9px 6px 12px}
+.tab{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px;font-weight:600}
+.tab svg{width:20px;height:20px}
+.tab.on{color:var(--green)}
+
+/* hero */
+.phero{display:flex;flex-direction:column;align-items:center;gap:5px;padding:24px 20px 6px;text-align:center}
+.avatar{width:64px;height:64px;border-radius:50%;background:var(--green-soft);border:1px solid var(--line);display:grid;place-items:center;color:var(--green);font-family:var(--serif);font-weight:700;font-size:26px;box-shadow:var(--shadow)}
+.phero-name{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);margin-top:4px}
+.phero-mail{font-size:10.5px;color:var(--ink-2)}
+
+/* section label */
+.dslabel{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.3);padding:0 18px;margin:18px 0 8px}
+
+/* health-profile card */
+.hpcard{background:var(--cream);border:1px solid var(--line);border-radius:14px;padding:12px;box-shadow:var(--shadow);margin:14px 18px 0}
+.hpcard-top{display:flex;align-items:center;justify-content:space-between}
+.hpcard-h{font-size:9px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(42,37,30,.32)}
+.hpcard-edit{font-size:11px;font-weight:800;color:var(--green);display:flex;align-items:center;gap:4px}
+.hpcard-edit svg{width:12px;height:12px}
+.hpchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px}
+.hpchip{display:flex;align-items:center;gap:6px;font-size:10.5px;color:var(--ink);background:var(--green-soft);border:1px solid rgba(62,107,79,.28);border-radius:999px;padding:5px 11px}
+.hpchip .d{width:5px;height:5px;border-radius:50%;background:var(--clay);opacity:.75;flex:none}
+.hpempty{font-size:10.5px;color:var(--muted);margin-top:10px;font-style:italic;font-family:var(--serif);line-height:1.5}
+.hpadd{margin-top:11px;display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--green);background:var(--green-soft);border:1px solid rgba(62,107,79,.28);border-radius:999px;padding:6px 12px}
+.hpadd svg{width:12px;height:12px}
+
+/* account rows */
+.set-group{background:var(--cream);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);margin:0 18px;overflow:hidden}
+.set-row{display:flex;align-items:center;gap:11px;padding:12px;border-top:1px solid var(--line)}
+.set-row:first-child{border-top:none}
+.set-ico{width:30px;height:30px;border-radius:9px;background:var(--sand);display:grid;place-items:center;color:var(--ink);flex:none}
+.set-ico svg{width:16px;height:16px}
+.set-name{font-size:12.5px;font-weight:600;color:var(--ink);flex:1}
+.chev{width:16px;height:16px;color:var(--muted);flex:none}
+.set-row.danger .set-name{color:var(--clay)}
+.set-row.danger .set-ico{background:var(--clay-soft);color:var(--clay)}
+
+/* lean sign-out */
+.signout{align-self:center;margin:22px auto 0;padding:11px 20px;font-size:12.5px;font-weight:800;color:var(--clay)}
+.footprint{font-size:9px;color:var(--muted);font-family:var(--mono);text-align:center;letter-spacing:.04em;padding:14px 0 4px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs><style>.ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.fl{fill:currentColor}</style></defs>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path class="ln" d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path class="ln" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path class="ln" d="M7 4h10v16l-5-3.5L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle class="fl" cx="5.5" cy="12" r="1.7"/><circle class="fl" cx="12" cy="12" r="1.7"/><circle class="fl" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-edit" viewBox="0 0 24 24"><path class="ln" d="M4 20h4L18.5 9.5a2 2 0 0 0-2.8-2.8L5 17z"/><path class="ln" d="M14.5 7.5l2.8 2.8"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="8.5" r="3.3"/><path class="ln" d="M5.5 19a6.5 6.5 0 0 1 13 0"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8.5"/><path class="ln" d="M12 11v5M12 8v.2"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="i-logout" viewBox="0 0 24 24"><path class="ln" d="M13 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7"/><path class="ln" d="M10 12h10M16.5 8l4 4-4 4"/></symbol>
+</svg>
+
+<div class="pg-head">
+  <div class="pg-title">Profile (More tab) — how it should look</div>
+  <div class="pg-sub">
+    The live screen looks bare only because it's a <b>guest</b> with an empty profile. Signed in and populated it
+    reads like this. Two ways to seat it so there's no empty void — pick one. Both keep approach&nbsp;C: the
+    condition <b>chips</b> summary and the <code>Edit</code>→bottom-sheet editor you already have.
+  </div>
+  <div class="pg-note">
+    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#3E6B4F;margin-right:6px"></span><b>Lean</b> — identity + health, sign-out sits just below</span>
+    <span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#C6902F;margin-right:6px"></span><b>Filled</b> — adds a small Account section so nothing floats</span>
+  </div>
+</div>
+
+<div class="phones-row">
+
+  <!-- LEAN -->
+  <div class="pw">
+    <div class="opt-label"><span class="k" style="background:#3E6B4F"></span>Lean · top-weighted</div>
+    <div class="phone"><div class="screen">
+      <div class="sbar"><span>9:41</span><span>5G&nbsp;&nbsp;100</span></div>
+      <div class="sa">
+        <div class="phero">
+          <div class="avatar">R</div>
+          <div class="phero-name">Rohith</div>
+          <div class="phero-mail">vcrohithuta@gmail.com</div>
+        </div>
+        <div class="hpcard">
+          <div class="hpcard-top">
+            <div class="hpcard-h">Health profile</div>
+            <button class="hpcard-edit"><svg><use href="#i-edit"/></svg>Edit</button>
+          </div>
+          <div class="hpchips">
+            <span class="hpchip"><span class="d"></span>Overweight / Obesity</span>
+            <span class="hpchip"><span class="d"></span>Lactose intolerance</span>
+          </div>
+        </div>
+        <button class="signout">Sign out</button>
+        <div class="footprint">grounded in classical texts · works offline</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#i-home"/></svg>Home</div>
+        <div class="tab"><svg><use href="#i-bookmark"/></svg>Saved</div>
+        <div class="tab on"><svg><use href="#i-more"/></svg>More</div>
+      </div>
+    </div></div>
+    <div class="opt-cap">Calm and minimal. Sign-out sits a comfortable step below the card — no content pinned to the far bottom.</div>
+  </div>
+
+  <!-- FILLED -->
+  <div class="pw">
+    <div class="opt-label"><span class="k" style="background:#C6902F"></span>Filled · with Account</div>
+    <div class="phone"><div class="screen">
+      <div class="sbar"><span>9:41</span><span>5G&nbsp;&nbsp;100</span></div>
+      <div class="sa">
+        <div class="phero">
+          <div class="avatar">R</div>
+          <div class="phero-name">Rohith</div>
+          <div class="phero-mail">vcrohithuta@gmail.com</div>
+        </div>
+        <div class="hpcard">
+          <div class="hpcard-top">
+            <div class="hpcard-h">Health profile</div>
+            <button class="hpcard-edit"><svg><use href="#i-edit"/></svg>Edit</button>
+          </div>
+          <div class="hpchips">
+            <span class="hpchip"><span class="d"></span>Overweight / Obesity</span>
+            <span class="hpchip"><span class="d"></span>Lactose intolerance</span>
+          </div>
+        </div>
+        <div class="dslabel">About</div>
+        <div class="set-group">
+          <div class="set-row">
+            <div class="set-ico"><svg><use href="#i-leaf"/></svg></div>
+            <div class="set-name">Sources &amp; method</div>
+            <svg class="chev"><use href="#i-chev"/></svg>
+          </div>
+          <div class="set-row">
+            <div class="set-ico"><svg><use href="#i-info"/></svg></div>
+            <div class="set-name">About Vajeeva</div>
+            <svg class="chev"><use href="#i-chev"/></svg>
+          </div>
+        </div>
+        <div style="height:16px"></div>
+        <div class="set-group">
+          <div class="set-row danger">
+            <div class="set-ico"><svg><use href="#i-logout"/></svg></div>
+            <div class="set-name">Sign out</div>
+          </div>
+        </div>
+        <div class="footprint">grounded in classical texts · works offline</div>
+      </div>
+      <div class="tabbar">
+        <div class="tab"><svg><use href="#i-home"/></svg>Home</div>
+        <div class="tab"><svg><use href="#i-bookmark"/></svg>Saved</div>
+        <div class="tab on"><svg><use href="#i-more"/></svg>More</div>
+      </div>
+    </div></div>
+    <div class="opt-cap">Fuller and more finished. A light Account group (real content that already exists) fills the middle; Sign-out anchors the bottom.</div>
+  </div>
+
+</div>
+
+<div style="max-width:900px;margin:8px auto 0;font-size:11.5px;color:var(--pgm);line-height:1.7">
+  <b style="color:var(--pgt)">First-run / empty &amp; guest states:</b> when no conditions are set, the health card shows
+  <i>“No conditions set yet”</i> plus a small <b>+ Add conditions</b> pill (instead of chips). As a guest there's no
+  name/email — the avatar shows a person glyph and a <b>“Sign in to sync”</b> line replaces the email, so it never
+  looks broken. Note the identity name/initial only appears once a name exists — today <code>register</code> drops it,
+  so that needs name-editing (or a register fix) to fill in.
+</div>
