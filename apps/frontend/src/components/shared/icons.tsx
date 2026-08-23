@@ -67,6 +67,68 @@ export function IconChev({ size = 18, color = colors.muted }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M9 5l7 7-7 7" /></Svg>;
 }
 
+export function IconEdit({ size = 15, color = colors.green }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M4 20h4L18.5 9.5a2 2 0 0 0-2.8-2.8L5 17z" />
+      <Path {...ln(color)} d="M14.5 7.5l2.8 2.8" />
+    </Svg>
+  );
+}
+
+export function IconShield({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M12 3l7 3v5c0 4.6-3 7.9-7 9-4-1.1-7-4.4-7-9V6z" />
+      <Path {...ln(color)} d="M9 12l2 2 4-4" />
+    </Svg>
+  );
+}
+
+export function IconInfo({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Circle {...ln(color)} cx={12} cy={12} r={8.5} />
+      <Path {...ln(color)} d="M12 11v5M12 8v.2" />
+    </Svg>
+  );
+}
+
+export function IconChat({ size = 16, color = colors.ink }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M5 6h14v9H9l-4 4z" /></Svg>;
+}
+
+export function IconStar({ size = 16, color = colors.ink }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M12 4l2.4 5 5.4.6-4 3.7 1.1 5.4L12 16l-4.9 2.7 1.1-5.4-4-3.7 5.4-.6z" /></Svg>;
+}
+
+export function IconLogout({ size = 16, color = colors.clay }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M13 4H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h7" />
+      <Path {...ln(color)} d="M10 12h10M16.5 8l4 4-4 4" />
+    </Svg>
+  );
+}
+
+export function IconRuler({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M3 8h18v8H3z" />
+      <Path {...ln(color)} d="M7 8v3M11 8v4M15 8v3M19 8v4" />
+    </Svg>
+  );
+}
+
+export function IconSun({ size = 16, color = colors.ink }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Circle {...ln(color)} cx={12} cy={12} r={4} />
+      <Path {...ln(color)} d="M12 3v2M12 19v2M3 12h2M19 12h2M6 6l1.4 1.4M16.6 16.6 18 18M18 6l-1.4 1.4M7.4 16.6 6 18" />
+    </Svg>
+  );
+}
+
 export function IconCheck({ size = 20, color = colors.cmGreen }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M5 12.5l4.5 4.5L19 7" /></Svg>;
 }
@@ -93,8 +155,56 @@ export function IconLeaf({ size = 11, color = colors.green }: IconProps) {
   );
 }
 
+export function IconDrop({ size = 13, color = colors.green }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M12 4.2c2.8 3.7 5.3 6.2 5.3 9.3a5.3 5.3 0 0 1-10.6 0C6.7 10.4 9.2 7.9 12 4.2z" /></Svg>;
+}
+
 export function IconHeart({ size = 15, color = colors.clay }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z" /></Svg>;
+}
+
+// Meta-row marks: steps (list) and yield (jar).
+export function IconList({ size = 11, color = colors.muted }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M8 6h12M8 12h12M8 18h12" />
+      <Circle fill={color} cx={4} cy={6} r={1.3} />
+      <Circle fill={color} cx={4} cy={12} r={1.3} />
+      <Circle fill={color} cx={4} cy={18} r={1.3} />
+    </Svg>
+  );
+}
+
+export function IconJar({ size = 11, color = colors.muted }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M8 4h8M7 8h10v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z" />
+      <Path {...ln(color)} d="M7 8l1-4M17 8l-1-4" />
+    </Svg>
+  );
+}
+
+export function IconHeartFilled({ size = 15, color = colors.clay }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path fill={color} d="M12 20.4S4.6 15.6 4.6 9.8A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.4 2.8c0 5.8-7.4 10.6-7.4 10.6z" /></Svg>;
+}
+
+// Caution triangle + prohibited circle — the fit badge's caution / avoid marks.
+export function IconWarn({ size = 11, color = colors.amber2 }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Path {...ln(color)} d="M12 4.5l8.5 15h-17z" />
+      <Path {...ln(color)} d="M12 10v4M12 16.6v.2" />
+    </Svg>
+  );
+}
+
+export function IconNo({ size = 11, color = colors.clay }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24">
+      <Circle {...ln(color)} cx={12} cy={12} r={8.5} />
+      <Path {...ln(color)} d="M6.2 6.2l11.6 11.6" />
+    </Svg>
+  );
 }
 
 export function IconShare({ size = 15, color = colors.ink }: IconProps) {

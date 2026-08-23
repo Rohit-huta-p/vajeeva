@@ -13,6 +13,8 @@ import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { recipesApi, parseTimerMin, sortImages, cloudThumb } from '../api/recipes';
 import type { RecipeDoc, RecipeImage } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
+import { usePreferences } from '../hooks/usePreferences';
+import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 interface CookStep { phase: string; text: string; timerSec: number; heat: string | null; images: RecipeImage[] }
 
@@ -63,14 +65,14 @@ export function CookModeScreen() {
 
   useEffect(() => { updateStep(step); }, [step, updateStep]);
 
-  // Web wake lock — keeps the screen on while cooking
+  // Keep the screen awake while cooking (dirty hands) — gated on the preference.
+  // expo-keep-awake covers web + native, replacing the old web-only wakeLock.
+  const { prefs } = usePreferences();
   useEffect(() => {
-    if (typeof navigator !== 'undefined' && 'wakeLock' in navigator) {
-      let lock: any;
-      (navigator as any).wakeLock.request('screen').then((l: any) => { lock = l; }).catch(() => {});
-      return () => { lock?.release?.(); };
-    }
-  }, []);
+    if (!prefs.keepAwake) return;
+    activateKeepAwakeAsync('cook-mode').catch(() => {});
+    return () => { try { deactivateKeepAwake('cook-mode'); } catch { /* noop */ } };
+  }, [prefs.keepAwake]);
 
   const goNext = useCallback(() => {
     if (step >= steps.length - 1) {

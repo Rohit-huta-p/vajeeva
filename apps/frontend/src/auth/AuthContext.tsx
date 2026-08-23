@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
-import { authApi, setAccessToken, setRefreshToken } from '../api';
+import { api, authApi, getAccessToken, setAccessToken, setRefreshToken } from '../api';
 import * as storage from '../offline/storage';
 
 // Contract with the route gate (app/_layout.tsx AuthGate, Jim's):
@@ -19,6 +19,7 @@ interface AuthState {
   register: (email: string, password: string, extra?: RegisterExtra) => Promise<void>;
   continueAsGuest: () => void;
   logout: () => Promise<void>;
+  updateProfile: (patch: { name?: string }) => Promise<void>;
 }
 
 interface StoredSession { email: string; name?: string; refreshToken: string }
@@ -90,8 +91,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await Promise.all([storage.del('session'), storage.del('guest')]).catch(() => {});
   }, []);
 
+  // Edit identity (name today). Local state + the persisted session are the
+  // source of truth; the PATCH is best-effort write-through when signed in.
+  const updateProfile = useCallback(async (patch: { name?: string }) => {
+    setUser(prev => (prev ? { ...prev, ...patch } : prev));
+    const session = await storage.get<StoredSession>('session').catch(() => null);
+    if (session) await storage.set<StoredSession>('session', { ...session, ...patch }).catch(() => {});
+    if (getAccessToken()) await api.patch('/api/users/me', patch).catch(() => {});
+  }, []);
+
   return (
-    <AuthContext.Provider value={{ user, isLoading, isGuest, login, register, continueAsGuest, logout }}>
+    <AuthContext.Provider value={{ user, isLoading, isGuest, login, register, continueAsGuest, logout, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );
