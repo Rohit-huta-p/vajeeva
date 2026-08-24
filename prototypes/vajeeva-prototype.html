@@ -73,6 +73,24 @@ body{margin:0;min-height:100vh;background:var(--bone);display:flex;flex-directio
 .ghost:active{color:var(--ink)}
 .disc{text-align:center;font-size:9.5px;color:var(--muted);padding:2px 6px}
 
+/* ── HOME redesign · patient-first zones (existing recipe data + on-device activity only) ── */
+.zhead{display:flex;align-items:baseline;justify-content:space-between;margin-top:2px}
+.zt{font-family:var(--serif);font-size:15px;font-weight:700}
+.zsee{font-size:10px;font-weight:800;color:var(--green);display:flex;align-items:center;gap:3px;cursor:pointer}
+.zsee svg{width:11px;height:11px}
+.s-eg{color:var(--amber-2);font-weight:700}
+.moodrow{display:flex;gap:7px;overflow-x:auto;overflow-y:hidden;flex:none;min-height:32px;margin:0 -14px;padding:0 14px 3px}
+.moodrow::-webkit-scrollbar{height:0}
+.rvrail{display:flex;gap:9px;overflow-x:auto;overflow-y:hidden;flex:none;min-height:100px;margin:0 -14px;padding:0 14px 2px}
+.rvrail::-webkit-scrollbar{height:0}
+.rvrail .rv{align-self:flex-start}
+.rv{flex:none;width:72px;cursor:pointer}
+.rvt{width:72px;height:60px;border-radius:11px;display:grid;place-items:center;border:1px solid var(--line);box-shadow:var(--shadow)}
+.rvt svg{width:50px;height:44px}
+.rv:active .rvt{background:var(--sand)}
+.rvn{font-family:var(--serif);font-size:9.5px;font-weight:700;line-height:1.15;margin-top:5px;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rvm{font-size:8px;color:var(--muted);font-family:var(--mono);margin-top:2px}
+
 /* Home pillars */
 .pillar{display:flex;align-items:center;gap:12px;background:var(--cream);border:1px solid var(--line);border-radius:18px;padding:10px 12px;box-shadow:var(--shadow);cursor:pointer}
 .pillar:active{background:var(--sand)}
@@ -315,6 +333,8 @@ table.bsit td:last-child{text-align:right;color:var(--ink-2)}
   <symbol id="i-play" viewBox="0 0 24 24"><path class="fl" d="M8 6.5l10 5.5-10 5.5z"/></symbol>
   <symbol id="i-clock" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="ln" d="M12 8v4.3l2.8 1.7"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path class="ln" d="M20 14.5A8 8 0 1 1 10 4a6.2 6.2 0 0 0 10 10.5z"/></symbol>
+  <symbol id="i-spoon" viewBox="0 0 24 24"><ellipse class="ln" cx="12" cy="7.3" rx="3.3" ry="4.5"/><path class="ln" d="M12 11.8V20"/></symbol>
+  <symbol id="i-drop" viewBox="0 0 24 24"><path class="ln" d="M12 4.2c2.8 3.7 5.3 6.2 5.3 9.3a5.3 5.3 0 0 1-10.6 0C6.7 10.4 9.2 7.9 12 4.2z"/></symbol>
   <symbol id="i-close" viewBox="0 0 24 24"><path class="ln" d="M6 6l12 12M18 6L6 18"/></symbol>
   <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
@@ -373,7 +393,7 @@ table.bsit td:last-child{text-align:right;color:var(--ink-2)}
     <!-- ═══ HOME ════════════════════════════════════════════ -->
     <div class="screen" id="s-home">
       <div class="sbar"><span>9:41</span><span style="display:flex;gap:5px;align-items:center">⚬⚬⚬ ⌃ ▮</span></div>
-      <div class="pad col" style="gap:10px;padding-top:6px;flex:1;overflow-y:auto">
+      <div class="pad col" style="gap:11px;padding-top:6px;flex:1;overflow-y:auto">
         <div class="row">
           <div style="width:30px;height:30px;border-radius:8px;background:var(--green-soft);border:1px solid var(--line);display:grid;place-items:center;box-shadow:var(--shadow)">
             <svg viewBox="0 0 32 32" style="width:18px;height:18px"><use href="#mk-sprout"/></svg>
@@ -383,18 +403,39 @@ table.bsit td:last-child{text-align:right;color:var(--ink-2)}
         </div>
         <div class="search">
           <svg style="width:15px;height:15px;color:var(--muted)"><use href="#i-search"/></svg>
-          <span style="font-size:11.5px">Search a recipe or ingredient…</span>
+          <span style="font-size:11.5px">Try <b class="s-eg">coconut</b> · a quick sweet · buttermilk</span>
         </div>
+
+        <!-- Zone 1 · Jump back in — in-progress cook + recently viewed (on-device) -->
+        <div class="zhead"><span class="zt">Jump back in</span></div>
         <div class="contcard" onclick="go('s-cook')">
           <div class="ct"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
           <div class="grow">
             <div class="cl">Continue · Coconut Laddu</div>
-            <div class="cs">Step 2 of 5</div>
+            <div class="cs">Step 2 of 5 · tap to resume</div>
             <div class="mprog"></div>
           </div>
           <div class="playbtn"><svg style="width:12px;height:12px"><use href="#i-play"/></svg></div>
         </div>
-        <div style="font-family:var(--serif);font-size:16px;font-weight:700">What would you like today?</div>
+        <div class="rvrail">
+          <div class="rv" onclick="go('s-detail')"><div class="rvt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="rvn">Wheat Balls</div><div class="rvm">viewed · today</div></div>
+          <div class="rv" onclick="go('s-detail')"><div class="rvt" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div><div class="rvn">Spiced Buttermilk</div><div class="rvm">viewed · today</div></div>
+          <div class="rv" onclick="go('s-detail')"><div class="rvt" style="background:var(--clay-soft)"><svg viewBox="0 0 64 64"><use href="#ill-bowl"/></svg></div><div class="rvn">Millet Porridge</div><div class="rvm">viewed · Fri</div></div>
+          <div class="rv" onclick="go('s-detail')"><div class="rvt" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div><div class="rvn">Date Laddoo</div><div class="rvm">viewed · Thu</div></div>
+        </div>
+
+        <!-- Zone 2 · Find something to cook — saved filters derived from existing fields -->
+        <div class="zhead"><span class="zt">Find something to cook</span></div>
+        <div class="moodrow">
+          <span class="fchip" onclick="go('s-texture')"><svg style="color:var(--amber-2)"><use href="#i-clock"/></svg>Quick</span>
+          <span class="fchip" onclick="go('s-texture')"><svg style="color:var(--green)"><use href="#i-leaf"/></svg>No-cook</span>
+          <span class="fchip" onclick="go('s-texture')"><svg style="color:var(--amber-2)"><use href="#i-moon"/></svg>Make-ahead</span>
+          <span class="fchip" onclick="go('s-texture')"><svg style="color:var(--clay)"><use href="#i-spoon"/></svg>Something sweet</span>
+          <span class="fchip" onclick="go('s-texture')"><svg style="color:var(--green)"><use href="#i-drop"/></svg>A cooling drink</span>
+        </div>
+
+        <!-- Zone 3 · Browse by texture — the kept spine -->
+        <div class="zhead"><span class="zt">Browse by texture</span></div>
         <div class="pillar" onclick="go('s-texture')">
           <div class="ptile s"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
           <div><div class="pn">Solid</div><div class="ps">Breads · sweets · snacks</div><div class="pc">44 recipes</div></div>
@@ -410,6 +451,22 @@ table.bsit td:last-child{text-align:right;color:var(--ink-2)}
           <div><div class="pn">Semi-solid</div><div class="ps">Porridge · puddings · chutneys</div><div class="pc">16 recipes</div></div>
           <svg style="width:18px;height:18px;margin-left:auto;color:var(--muted)"><use href="#i-chev"/></svg>
         </div>
+
+        <!-- Zone 4 · Your kitchen — saved recipes (on-device, offline) -->
+        <div class="zhead"><span class="zt">Your kitchen</span><span class="zsee" onclick="go('s-saved')">See all<svg><use href="#i-chev"/></svg></span></div>
+        <div class="grid2">
+          <div class="rcard" onclick="go('s-detail')">
+            <div class="rim" style="background:var(--green-soft)"><svg viewBox="0 0 64 64"><use href="#ill-cup"/></svg></div>
+            <div class="rn">Spiced Buttermilk</div><div class="rs">Takra</div>
+            <div class="rm"><svg style="width:11px;height:11px;color:var(--green)"><use href="#i-heart-f"/></svg><span class="rmeta">Saved · offline</span></div>
+          </div>
+          <div class="rcard" onclick="go('s-detail')">
+            <div class="rim" style="background:var(--amber-soft)"><svg viewBox="0 0 64 64"><use href="#ill-laddu"/></svg></div>
+            <div class="rn">Date Laddoo</div><div class="rs">Kharjura</div>
+            <div class="rm"><svg style="width:11px;height:11px;color:var(--green)"><use href="#i-heart-f"/></svg><span class="rmeta">Saved · offline</span></div>
+          </div>
+        </div>
+
         <div class="trust"><svg><use href="#i-leaf"/></svg> grounded in classical texts + ICMR-NIN 2024</div>
         <div style="height:8px"></div>
       </div>

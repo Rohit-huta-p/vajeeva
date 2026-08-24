@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva · Texture B — fit-sorted shelf</title>
+<!--
+  ═══ EXPLORATION: texture-b "fit-sorted shelf" ═════════════════════════════
+  A variation on ../texture.html (#s-texture). Palette, type stack, shadows,
+  radii and the SVG symbol set are copied VERBATIM from the prototype — this
+  is a variation of the *information architecture*, not of the visual system.
+
+  What changes, and why:
+
+  1. PERSONAL FIT BECOMES THE SORT AXIS, NOT A FILTER CHIP.
+     The original hides the single most personal datum on the card — the
+     contra-dots — as four unlabelled 5px dots in a corner, and demotes
+     "Safe for me" to the 4th chip in a scrolling row. Here the list is
+     banded: Suits you / In moderation / With care. Nothing is removed —
+     an Ayurvedic app should contextualise food, never hide it — so every
+     recipe still appears, just under an honest heading.
+
+  2. FLAGS BECOME ANSWERABLE.
+     Dots said "4 somethings". The caution ribbon says "3 cautions", and
+     tapping it opens the actual reasons (ingredient · why · which of YOUR
+     conditions) plus the closest recipe that does suit you.
+
+  3. FIT IS TWO-DIRECTIONAL.
+     The original could only warn. Cards can now also carry a green boost
+     chip ("rich in iron · for your low iron"), so the profile earns its
+     keep instead of only ever taking things away.
+
+  4. TEXTURE GETS A VISUAL LANGUAGE.
+     Texture is this product's organising spine, yet the original renders it
+     as a word in a header. Each texture now has a grain — stipple (solid),
+     short arcs (semi-solid), long waves (liquid) — used in the spectrum
+     switcher and washed over each card tile.
+
+  5. THE SPECTRUM SWITCHER REPLACES A BACK-TRIP.
+     Solid / Semi-solid / Liquid sit in-screen, so moving across the spine
+     costs one tap instead of back-then-forward.
+
+  6. THE SORT IS ACCOUNTABLE AND REVERSIBLE.
+     A mono line names the profile being applied ("using type 2 diabetes ·
+     low iron") next to an A–Z escape hatch, so the ranking is never a
+     silent algorithm.
+
+  Interactive (unlike the ../ reference set, which is deliberately static):
+  spectrum switch, sort toggle, category chips, reason drawers and the
+  "closest match" jump all work. Counts are computed from the data, never
+  hard-coded — per the board rule about literal placeholder counts.
+  Reference canvas: 390px wide.
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+<style>
+:root {
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line-2:#D8CEBA;
+  --green:#3E6B4F; --green-press:#335B42; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E; --clay-soft:#F3E1D8;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --shadow-lift:0 10px 28px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+
+  /* ── exploration-only additions ──────────────────────────────────────── */
+  --fit-suits:var(--green); --fit-mod:var(--amber); --fit-care:var(--clay);
+  /* texture grains — colour follows the Home pillar mapping:
+     solid=amber-soft, semi-solid=clay-soft, liquid=green-soft */
+  --grain-solid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Ccircle cx='2' cy='2' r='1.15' fill='%23C6902F'/%3E%3Ccircle cx='6' cy='6' r='1.15' fill='%23C6902F'/%3E%3C/svg%3E");
+  --grain-semi:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='9'%3E%3Cpath d='M1 6q2.2-3.4 4.4 0' fill='none' stroke='%23B4472E' stroke-width='1.5' stroke-linecap='round'/%3E%3Cpath d='M6.6 2.4q2.2-3.4 4.4 0' fill='none' stroke='%23B4472E' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  --grain-liquid:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='11'%3E%3Cpath d='M0 6q6-4.6 12 0t12 0' fill='none' stroke='%233E6B4F' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;min-height:100vh;background:var(--bone);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+
+/* ── verbatim from the prototype ─────────────────────────────────────────── */
+.ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fl{fill:currentColor}
+.il-sand{fill:var(--sand)}.il-cream{fill:var(--cream)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+.il-green{fill:var(--green)}.il-clay{fill:var(--clay)}
+.il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+.il-steam{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round;opacity:.45}
+.mk{fill:none;stroke:var(--green);stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round}
+.mk-l{fill:var(--green)}
+
+.screen{position:relative;background:var(--bone);display:flex;flex-direction:column;
+        font-size:12px;line-height:1.4;color:var(--ink);width:100%;height:100vh;height:100dvh}
+.sbar{display:flex;justify-content:space-between;align-items:center;padding:12px 18px 4px;font-size:11px;font-weight:700;flex:none}
+.pad{padding:8px 14px}
+.col{display:flex;flex-direction:column}
+.row{display:flex;align-items:center;gap:10px}
+.grow{flex:1;min-width:0}
+.h-serif{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.icobtn{width:34px;height:34px;border-radius:50%;background:var(--cream);border:1px solid var(--line);display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow);flex:none;cursor:pointer}
+.icobtn:active{background:var(--sand)}
+.bnav{display:flex;justify-content:space-around;align-items:center;background:var(--cream);border-top:1px solid var(--line);padding:10px 6px 12px;flex:none}
+.nav{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:9px;font-weight:600;cursor:pointer}
+.nav svg{width:20px;height:20px}
+.nav.on{color:var(--green)}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.chips::-webkit-scrollbar{height:0}
+.fchip{display:inline-flex;align-items:center;gap:5px;border:1.5px solid var(--line-2);background:var(--cream);border-radius:999px;padding:6px 11px;font-size:10.5px;font-weight:700;color:var(--ink-2);cursor:pointer;white-space:nowrap}
+.fchip svg{width:11px;height:11px}
+.fchip.on{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.ln1{font-family:var(--serif);font-size:13.5px;font-weight:700;line-height:1.15}
+.ln2{font-family:var(--serif);font-style:italic;font-size:10px;color:var(--amber);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.disc{text-align:center;font-size:9.5px;color:var(--muted);padding:2px 6px}
+
+/* ═══ EXPLORATION COMPONENTS ═════════════════════════════════════════════ */
+
+/* Header — pinned; only the shelf scrolls */
+.txh{flex:none;padding:6px 14px 9px;background:var(--bone);border-bottom:1px solid var(--line);
+     box-shadow:0 6px 14px -12px rgba(42,37,30,.5);z-index:4}
+.txh-sub{font-size:10px;color:var(--ink-2);margin-top:1px}
+
+/* ── 1. Texture spectrum ─────────────────────────────────────────────────
+   The three textures as one continuous strip. Each segment is filled with
+   its own grain, so the spine of the product is something you can see and
+   not just read. */
+.spectrum{display:flex;margin-top:11px;border:1px solid var(--line-2);border-radius:14px;
+          background:var(--cream);padding:3px;gap:3px;box-shadow:var(--shadow)}
+.sp{flex:1;border:none;background:none;padding:0;cursor:pointer;border-radius:11px;
+    display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px 2px 7px;
+    transition:background .18s ease}
+.sp-sw{width:100%;height:15px;border-radius:6px;background:var(--sand);position:relative;overflow:hidden;
+       transition:background .18s ease}
+.sp-sw::after{content:"";position:absolute;inset:0;opacity:.22;transition:opacity .18s ease}
+.sp[data-tex=solid]  .sp-sw::after{background:var(--grain-solid)}
+.sp[data-tex=semi]   .sp-sw::after{background:var(--grain-semi)}
+.sp[data-tex=liquid] .sp-sw::after{background:var(--grain-liquid)}
+.sp-n{font-size:10px;font-weight:700;color:var(--muted);letter-spacing:.01em}
+.sp.on{background:var(--bone)}
+.sp.on .sp-n{color:var(--ink)}
+.sp.on .sp-sw::after{opacity:.95}
+.sp[data-tex=solid].on  .sp-sw{background:var(--amber-soft)}
+.sp[data-tex=semi].on   .sp-sw{background:var(--clay-soft)}
+.sp[data-tex=liquid].on .sp-sw{background:var(--green-soft)}
+
+/* ── 2. The lens — what the sort is doing, and how to leave it ─────────── */
+.lens{display:flex;align-items:center;gap:8px;margin-top:10px}
+.lseg{display:flex;background:var(--sand);border-radius:999px;padding:2px;flex:none}
+.lseg button{border:none;background:none;cursor:pointer;border-radius:999px;padding:5px 10px;
+             font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.06em;
+             text-transform:uppercase;color:var(--ink-2)}
+.lseg button.on{background:var(--cream);color:var(--green);box-shadow:var(--shadow)}
+.lwhy{font-family:var(--mono);font-size:8.5px;line-height:1.35;color:var(--muted);min-width:0}
+.lwhy b{color:var(--ink-2);font-weight:700}
+.lwhy u{color:var(--green);cursor:pointer;text-decoration-style:dotted;text-underline-offset:2px}
+
+.txh .chips{margin-top:9px}
+
+/* ── The shelf ───────────────────────────────────────────────────────────── */
+.shelf{flex:1;overflow-y:auto;padding:4px 14px 14px}
+.shelf::-webkit-scrollbar{width:0}
+
+/* ── 3. Fit bands — every recipe still shown, honestly headed ───────────── */
+.band{display:flex;align-items:center;gap:7px;padding:15px 2px 7px;position:sticky;top:0;
+      background:var(--bone);z-index:2}
+.band::after{content:"";position:absolute;left:0;right:0;top:100%;height:10px;
+      background:linear-gradient(var(--bone),rgba(242,237,225,0));pointer-events:none}
+.band-mk{width:15px;height:15px;border-radius:50%;display:grid;place-items:center;flex:none;color:var(--cream)}
+.band-mk svg{width:10px;height:10px}
+.band-t{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase}
+.band-n{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--muted);
+        background:var(--sand);border-radius:999px;padding:1px 6px}
+.band--suits .band-mk{background:var(--fit-suits)} .band--suits .band-t{color:var(--fit-suits)}
+.band--mod   .band-mk{background:var(--fit-mod)}   .band--mod   .band-t{color:var(--amber-2)}
+.band--care  .band-mk{background:var(--fit-care)}  .band--care  .band-t{color:var(--fit-care)}
+.band--all   .band-mk{background:var(--ink-2)}     .band--all   .band-t{color:var(--ink-2)}
+.band-note{font-family:var(--mono);font-size:8.5px;color:var(--muted);padding:1px 2px 9px 24px;position:relative;z-index:1}
+
+/* ── The card ────────────────────────────────────────────────────────────── */
+.rc{position:relative;background:var(--cream);border:1px solid var(--line);border-radius:15px;
+    box-shadow:var(--shadow);margin-bottom:8px;overflow:hidden;cursor:pointer}
+.rc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px}
+.rc--suits::before{background:var(--fit-suits)}
+.rc--mod::before{background:var(--fit-mod)}
+.rc--care::before{background:var(--fit-care)}
+.rc-main{display:flex;align-items:center;gap:10px;padding:8px 10px 8px 13px}
+.rc:active .rc-main{background:var(--sand)}
+
+/* 4. tile carries the texture grain */
+.rc-tile{width:50px;height:50px;border-radius:12px;flex:none;display:grid;place-items:center;position:relative;overflow:hidden}
+.rc-tile svg{width:42px;height:42px;position:relative;z-index:1}
+.rc-tile::after{content:"";position:absolute;inset:0;opacity:.3}
+.rc-tile[data-tex=solid]::after{background:var(--grain-solid)}
+.rc-tile[data-tex=semi]::after{background:var(--grain-semi)}
+.rc-tile[data-tex=liquid]::after{background:var(--grain-liquid)}
+
+.rc-meta{display:flex;align-items:center;gap:6px;margin-top:4px;font-size:9px;color:var(--muted)}
+.rc-meta i{width:2px;height:2px;border-radius:50%;background:var(--line-2);flex:none}
+/* heaviness — guru/laghu, a second scan axis a generic recipe app can't offer */
+.wt{display:inline-flex;align-items:flex-end;gap:1.5px;height:9px}
+.wt s{width:2.5px;background:var(--line-2);border-radius:1px;text-decoration:none}
+.wt s:nth-child(1){height:4px}.wt s:nth-child(2){height:6.5px}.wt s:nth-child(3){height:9px}
+.wt s.on{background:var(--ink-2)}
+.rc-chev{width:18px;height:18px;color:var(--muted);flex:none}
+
+/* 3b. boost — the profile giving something back, not only taking away */
+.boost{display:inline-flex;align-items:center;gap:4px;margin-top:5px;background:var(--green-soft);
+       color:var(--green);border-radius:999px;padding:2.5px 8px;font-size:9px;font-weight:700}
+.boost svg{width:9px;height:9px}
+
+/* 2b. caution ribbon — a countable, answerable claim */
+.rc-flag{width:100%;border:none;border-top:1px dashed var(--line-2);background:rgba(180,71,46,.05);
+         display:flex;align-items:center;gap:6px;padding:7px 10px 7px 13px;cursor:pointer;
+         font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.05em;
+         text-transform:uppercase;color:var(--clay);text-align:left}
+.rc--mod .rc-flag{background:rgba(198,144,47,.07);color:var(--amber-2)}
+.rc-flag svg{width:11px;height:11px;flex:none}
+.rc-flag u{margin-left:auto;text-decoration:none;opacity:.75;display:flex;align-items:center;gap:3px}
+.rc-flag u svg{transition:transform .22s ease}
+.rc.open .rc-flag u svg{transform:rotate(90deg)}
+
+/* reason drawer */
+.rc-why{display:grid;grid-template-rows:0fr;transition:grid-template-rows .26s ease}
+.rc.open .rc-why{grid-template-rows:1fr}
+.rc-why-in{overflow:hidden}
+.why-b{padding:9px 12px 11px 13px;border-top:1px solid var(--line);background:var(--bone)}
+.why-h{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.14em;
+       text-transform:uppercase;color:var(--muted);margin-bottom:7px}
+.why-r{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.why-r:last-of-type{border-bottom:none}
+.why-i{font-family:var(--serif);font-size:11.5px;font-weight:700;flex:none;width:78px}
+.why-n{font-size:9.5px;color:var(--ink-2);line-height:1.35;flex:1}
+.why-c{font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+       color:var(--clay);background:var(--clay-soft);border-radius:4px;padding:2px 5px;align-self:flex-start;flex:none}
+.why-alt{width:100%;margin-top:9px;border:1px solid var(--green);background:var(--green-soft);color:var(--green);
+         border-radius:11px;padding:8px 10px;cursor:pointer;display:flex;align-items:center;gap:7px;
+         font-size:10.5px;font-weight:700;text-align:left}
+.why-alt b{font-family:var(--serif);font-size:12px}
+.why-alt svg{width:13px;height:13px;flex:none;margin-left:auto}
+
+@keyframes flash{0%,100%{box-shadow:var(--shadow)}
+                 25%,75%{box-shadow:0 0 0 3px var(--green-soft),0 0 0 4px var(--green)}}
+.rc.flash{animation:flash 1.15s ease}
+
+.shelf-end{text-align:center;padding:16px 10px 4px}
+.shelf-end .m{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.empty{text-align:center;color:var(--muted);font-size:11px;padding:40px 20px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path class="ln" d="M4 11l8-6.5 8 6.5v8a1 1 0 0 1-1 1h-4.5v-6h-5v6H5a1 1 0 0 1-1-1z"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path class="ln" d="M7 4h11v16l-5.5-4L7 20z"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24"><circle class="fl" cx="5.5" cy="12" r="1.7"/><circle class="fl" cx="12" cy="12" r="1.7"/><circle class="fl" cx="18.5" cy="12" r="1.7"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path class="ln" d="M4 6h16M7 12h10M10 18h4"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path class="ln" d="M12 4.5l8.5 15h-17z"/><path class="ln" d="M12 10v4M12 16.6v.2"/></symbol>
+  <symbol id="i-half" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="fl" d="M12 4a8 8 0 0 1 0 16z"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path class="fl" d="M12 3l1.9 5.6L19.5 10l-5.6 1.9L12 17.5l-1.9-5.6L4.5 10l5.6-1.4z"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/>
+    <circle class="il-a" cx="32" cy="33" r="15"/>
+    <circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/>
+    <circle class="il-a2" cx="33" cy="37" r="1.6"/><circle class="il-a2" cx="26" cy="38" r="1.2"/>
+    <circle class="il-a2" cx="38" cy="34" r="1.4"/><circle class="il-a2" cx="31" cy="33" r="1.2"/>
+    <ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/>
+  </symbol>
+  <symbol id="ill-cup" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="31" cy="51" rx="17" ry="4"/>
+    <path class="il-cream" d="M19 25h24l-2.6 20a4 4 0 0 1-4 3.5H25.6a4 4 0 0 1-4-3.5z"/>
+    <path class="il-green" d="M20.4 25h21.2l-.7 5.4H21.1z"/>
+    <path class="il-stroke" d="M43.5 28a7 7 0 0 1 0 12"/>
+    <path class="il-steam" d="M28 20c-2-2 2-4 0-6M36 20c-2-2 2-4 0-6"/>
+  </symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="50" rx="18" ry="4"/>
+    <path class="il-cream" d="M15 33a17 13 0 0 0 34 0z"/>
+    <ellipse class="il-a" cx="32" cy="33" rx="15" ry="4.6"/>
+    <circle class="il-clay" cx="28" cy="32" r="1.7"/><circle class="il-clay" cx="36" cy="33" r="1.5"/><circle class="il-green" cx="32" cy="31.5" r="1.6"/>
+    <path class="il-stroke" d="M40 22l-6 9" stroke-width="2.6"/>
+    <ellipse class="il-green" cx="41" cy="21" rx="3" ry="2" transform="rotate(35 41 21)"/>
+  </symbol>
+</svg>
+
+<div class="screen" id="s-texture-b">
+  <div class="sbar"><span>9:41</span><span>⚬⚬⚬ ⌃ ▮</span></div>
+
+  <div class="txh">
+    <div class="row">
+      <div class="icobtn" onclick="back()"><svg style="width:15px;height:15px"><use href="#i-back"/></svg></div>
+      <div class="grow">
+        <div class="h-serif" id="txTitle" style="font-size:18px">Solid</div>
+        <div class="txh-sub" id="txSub">—</div>
+      </div>
+      <div class="icobtn"><svg style="width:15px;height:15px"><use href="#i-filter"/></svg></div>
+    </div>
+
+    <div class="spectrum" id="txSpectrum"></div>
+
+    <div class="lens">
+      <div class="lseg" id="txSort">
+        <button class="on" data-sort="fit">For you</button>
+        <button data-sort="az">A–Z</button>
+      </div>
+      <div class="lwhy" id="txLensWhy"></div>
+    </div>
+
+    <div class="chips" id="txChips"></div>
+  </div>
+
+  <div class="shelf" id="txShelf"></div>
+
+  <div class="bnav">
+    <div class="nav on"><svg><use href="#i-home"/></svg>Home</div>
+    <div class="nav"><svg><use href="#i-book"/></svg>Saved</div>
+    <div class="nav"><svg><use href="#i-more"/></svg>More</div>
+  </div>
+</div>
+
+<script>
+/* prototype navigation stubs, same contract as the reference set */
+['go','back','openAroma','closeAroma','startCook','saveRecipe','reset'].forEach(f=>window[f]=()=>{});
+
+/* ── The signed-in body this screen is sorting for ────────────────────────
+   In the app this is `user.healthProfile`; named in the UI so the ranking
+   is accountable rather than silent. */
+const PROFILE = [
+  {code:'DM', label:'type 2 diabetes'},
+  {code:'LI', label:'low iron'}
+];
+
+/* fit is DERIVED from flags, never authored — same rule the API would follow */
+const fitOf = r => r.flags.length === 0 ? 'suits' : r.flags.length <= 1 ? 'mod' : 'care';
+
+const TEX = {
+  solid:{name:'Solid', tag:'breads · sweets · snacks', cats:['Sweets','Breads','Snacks'], items:[
+    {en:'Coconut Laddu', ta:'Narikela modaka', cat:'Sweets', min:25, wt:3, ill:'laddu', tint:'var(--amber-soft)',
+      flags:[
+        {i:'Jaggery',      n:'~42 g free sugar per serving — sharp post-meal rise', c:'DM'},
+        {i:'Coconut',      n:'high saturated fat, slows the sugar but adds load',   c:'DM'},
+        {i:'Ghee',         n:'energy-dense; keeps the portion small',               c:'DM'}]},
+    {en:'Wheat Balls', ta:'Godhuma laddu', cat:'Sweets', min:30, wt:3, ill:'laddu', tint:'var(--amber-soft)',
+      flags:[
+        {i:'Jaggery',      n:'~28 g free sugar per serving',                        c:'DM'},
+        {i:'Ghee',         n:'energy-dense; one ball is a serving',                 c:'DM'}]},
+    {en:'Golden Grain Halwa', ta:'Lalita', cat:'Sweets', min:35, wt:3, ill:'bowl', tint:'var(--clay-soft)',
+      flags:[
+        {i:'Sugar',        n:'~50 g free sugar per serving — the highest here',     c:'DM'},
+        {i:'Refined flour',n:'low fibre, fast release',                             c:'DM'},
+        {i:'Ghee',         n:'energy-dense',                                        c:'DM'}]},
+    {en:'Date Laddoo', ta:'Kharjura laddu', cat:'Sweets', min:15, wt:1, ill:'laddu', tint:'var(--green-soft)',
+      boost:'no added sugar · dates carry their own fibre', flags:[]},
+    {en:'Sesame Brittle', ta:'Ellu urundai', cat:'Snacks', min:25, wt:2, ill:'laddu', tint:'var(--green-soft)',
+      boost:'rich in iron · for your low iron', flags:[]},
+    {en:'Ragi Roti', ta:'Kezhvaragu roti', cat:'Breads', min:20, wt:2, ill:'bowl', tint:'var(--green-soft)',
+      boost:'iron + calcium · for your low iron', flags:[]},
+    {en:'Steamed Rice Dumpling', ta:'Kozhukattai', cat:'Snacks', min:40, wt:2, ill:'laddu', tint:'var(--amber-soft)',
+      flags:[{i:'Rice flour', n:'refined starch — pair it with a protein side', c:'DM'}]},
+    {en:'Roasted Gram Chikki', ta:'Pottukadalai urundai', cat:'Snacks', min:20, wt:2, ill:'laddu', tint:'var(--amber-soft)',
+      flags:[{i:'Jaggery', n:'~18 g free sugar per piece', c:'DM'}]}
+  ]},
+  semi:{name:'Semi-solid', tag:'porridge · puddings · chutneys', cats:['Porridge','Puddings','Chutneys'], items:[
+    {en:'Millet Porridge', ta:'Kambu koozh', cat:'Porridge', min:25, wt:1, ill:'bowl', tint:'var(--green-soft)',
+      boost:'iron-rich, fermented · for your low iron', flags:[]},
+    {en:'Curd Rice', ta:'Thayir sadam', cat:'Porridge', min:15, wt:2, ill:'bowl', tint:'var(--green-soft)',
+      boost:'cooling, easy on the gut', flags:[]},
+    {en:'Coconut Chutney', ta:'Thengai chutney', cat:'Chutneys', min:10, wt:2, ill:'bowl', tint:'var(--clay-soft)',
+      flags:[{i:'Coconut', n:'high saturated fat — two spoons is a serving', c:'DM'}]},
+    {en:'Ash Gourd Pudding', ta:'Poosanikai halwa', cat:'Puddings', min:40, wt:3, ill:'bowl', tint:'var(--clay-soft)',
+      flags:[
+        {i:'Sugar',  n:'~46 g free sugar per serving',            c:'DM'},
+        {i:'Ghee',   n:'energy-dense',                            c:'DM'},
+        {i:'Milk solids', n:'adds fat on top of the sugar load',  c:'DM'}]}
+  ]},
+  liquid:{name:'Liquid', tag:'drinks · soups · buttermilk', cats:['Drinks','Soups'], items:[
+    {en:'Buttermilk', ta:'Moru', cat:'Drinks', min:5, wt:1, ill:'cup', tint:'var(--green-soft)',
+      boost:'no sugar · aids digestion after a heavy meal', flags:[]},
+    {en:'Cumin Water', ta:'Jeeraka jala', cat:'Drinks', min:10, wt:1, ill:'cup', tint:'var(--green-soft)',
+      boost:'no sugar · settles the stomach', flags:[]},
+    {en:'Lentil Broth', ta:'Rasam', cat:'Soups', min:20, wt:1, ill:'cup', tint:'var(--green-soft)',
+      boost:'tamarind + lentil iron · for your low iron', flags:[]},
+    {en:'Almond Milk', ta:'Badam paal', cat:'Drinks', min:15, wt:2, ill:'cup', tint:'var(--amber-soft)',
+      flags:[{i:'Sugar', n:'~20 g free sugar as usually made — ask for it unsweetened', c:'DM'}]},
+    {en:'Palm Jaggery Coffee', ta:'Karupatti kaapi', cat:'Drinks', min:8, wt:1, ill:'cup', tint:'var(--clay-soft)',
+      flags:[
+        {i:'Palm jaggery', n:'still free sugar — the mineral content does not offset it', c:'DM'},
+        {i:'Whole milk',   n:'adds fat and lactose sugar',                                c:'DM'}]}
+  ]}
+};
+
+const BANDS = {
+  suits:{t:'Suits you',      icon:'i-check', note:'nothing flags against your profile'},
+  mod  :{t:'In moderation',  icon:'i-half',  note:'fine at a normal portion — one thing to watch'},
+  care :{t:'With care',      icon:'i-warn',  note:'nothing is hidden here — open a card to see exactly why'}
+};
+
+let tex = 'solid', sort = 'fit', cat = 'All';
+
+const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const condOf = code => (PROFILE.find(p => p.code === code) || {label:code}).label;
+const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+
+function visible(){
+  return TEX[tex].items.filter(r => cat === 'All' || r.cat === cat);
+}
+
+function cardHTML(r){
+  const fit = fitOf(r);
+  const wt  = [1,2,3].map(i => `<s class="${r.wt >= i ? 'on' : ''}"></s>`).join('');
+  const wtl = {1:'light', 2:'medium', 3:'heavy'}[r.wt];
+
+  const flagBar = r.flags.length ? `
+    <button class="rc-flag" onclick="toggleWhy(event,this)">
+      <svg><use href="#${fit === 'care' ? 'i-warn' : 'i-half'}"/></svg>
+      ${plural(r.flags.length, 'caution')} for you
+      <u>why <svg style="width:9px;height:9px"><use href="#i-chev"/></svg></u>
+    </button>
+    <div class="rc-why"><div class="rc-why-in"><div class="why-b">
+      <div class="why-h">flagged against your profile</div>
+      ${r.flags.map(f => `<div class="why-r">
+          <div class="why-i">${esc(f.i)}</div>
+          <div class="why-n">${esc(f.n)}</div>
+          <div class="why-c">${esc(condOf(f.c))}</div>
+        </div>`).join('')}
+      ${altHTML(r)}
+    </div></div></div>` : '';
+
+  return `<article class="rc rc--${fit}" data-en="${esc(r.en)}">
+    <div class="rc-main">
+      <div class="rc-tile" data-tex="${tex}" style="background:${r.tint}">
+        <svg viewBox="0 0 64 64"><use href="#ill-${r.ill}"/></svg>
+      </div>
+      <div class="grow">
+        <div class="ln1">${esc(r.en)}</div>
+        <div class="ln2">${esc(r.ta)}</div>
+        <div class="rc-meta">
+          <span>${esc(r.cat)}</span><i></i><span>~${r.min} min</span><i></i>
+          <span class="wt">${wt}</span><span>${wtl}</span>
+        </div>
+        ${r.boost ? `<div class="boost"><svg><use href="#i-spark"/></svg>${esc(r.boost)}</div>` : ''}
+      </div>
+      <svg class="rc-chev"><use href="#i-chev"/></svg>
+    </div>
+    ${flagBar}
+  </article>`;
+}
+
+/* the closest recipe in this texture that carries no flags — turns a dead-end
+   warning into a redirect */
+function altHTML(r){
+  const alt = TEX[tex].items.find(o => o.flags.length === 0 && o.cat === r.cat)
+           || TEX[tex].items.find(o => o.flags.length === 0);
+  if (!alt) return '';
+  return `<button class="why-alt" onclick="jumpTo(event,'${esc(alt.en)}')">
+    <span>Closest match that suits you<br><b>${esc(alt.en)}</b></span>
+    <svg><use href="#i-chev"/></svg></button>`;
+}
+
+function bandHTML(key, rows){
+  const b = BANDS[key];
+  return `<div class="band band--${key}">
+      <span class="band-mk"><svg><use href="#${b.icon}"/></svg></span>
+      <span class="band-t">${b.t}</span><span class="band-n">${rows.length}</span>
+    </div>
+    <div class="band-note">${b.note}</div>
+    ${rows.map(cardHTML).join('')}`;
+}
+
+function render(){
+  const t = TEX[tex], rows = visible();
+
+  txTitle.textContent = t.name;
+  txSub.textContent   = `${plural(t.items.length, 'recipe')} · ${t.tag}`;
+
+  txSpectrum.innerHTML = Object.keys(TEX).map(k =>
+    `<button class="sp ${k === tex ? 'on' : ''}" data-tex="${k}" onclick="setTex('${k}')">
+       <span class="sp-sw"></span><span class="sp-n">${TEX[k].name}</span></button>`).join('');
+
+  txChips.innerHTML = ['All', ...t.cats].map(c =>
+    `<span class="fchip ${c === cat ? 'on' : ''}" onclick="setCat('${c}')">
+       ${c === cat ? '<svg><use href="#i-check"/></svg>' : ''}${c}</span>`).join('');
+
+  txLensWhy.innerHTML = sort === 'fit'
+    ? `using <b>${PROFILE.map(p => p.label).join('</b> · <b>')}</b> <u onclick="alert('→ health profile')">edit</u>`
+    : `alphabetical · fit still shown on the card edge`;
+
+  if (!rows.length){ txShelf.innerHTML = `<div class="empty">No ${cat.toLowerCase()} in ${t.name.toLowerCase()} yet.</div>`; return; }
+
+  if (sort === 'az'){
+    const sorted = [...rows].sort((a,b) => a.en.localeCompare(b.en));
+    txShelf.innerHTML = `<div class="band band--all">
+        <span class="band-mk"><svg><use href="#i-book"/></svg></span>
+        <span class="band-t">All ${t.name}</span><span class="band-n">${sorted.length}</span></div>
+      <div class="band-note">sorted A–Z · the left edge still colours by fit</div>
+      ${sorted.map(cardHTML).join('')}${endHTML(rows)}`;
+  } else {
+    const g = {suits:[], mod:[], care:[]};
+    rows.forEach(r => g[fitOf(r)].push(r));
+    /* within a band, lighter first — the gentler thing is the easier yes */
+    Object.values(g).forEach(a => a.sort((x,y) => x.wt - y.wt || x.min - y.min));
+    txShelf.innerHTML = ['suits','mod','care']
+      .filter(k => g[k].length).map(k => bandHTML(k, g[k])).join('') + endHTML(rows);
+  }
+}
+
+function endHTML(rows){
+  const care = rows.filter(r => fitOf(r) === 'care').length;
+  return `<div class="shelf-end">
+      <div class="m">${plural(rows.length, 'recipe')} shown · ${care} ${care === 1 ? 'needs' : 'need'} care · none removed</div>
+      <div class="disc" style="margin-top:6px">Supportive dietary guidance · not a substitute for medical advice</div>
+    </div>`;
+}
+
+function setTex(k){ if (k === tex) return; tex = k; cat = 'All'; render(); txShelf.scrollTop = 0; }
+function setCat(c){ cat = c; render(); txShelf.scrollTop = 0; }
+
+txSort.onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  sort = b.dataset.sort;
+  [...txSort.children].forEach(x => x.classList.toggle('on', x === b));
+  render(); txShelf.scrollTop = 0;
+};
+
+function toggleWhy(e, el){
+  e.stopPropagation();
+  el.closest('.rc').classList.toggle('open');
+}
+
+function jumpTo(e, en){
+  e.stopPropagation();
+  const target = [...txShelf.querySelectorAll('.rc')].find(c => c.dataset.en === en);
+  if (!target) return;
+  target.scrollIntoView({behavior:'smooth', block:'center'});
+  target.classList.remove('flash'); void target.offsetWidth; target.classList.add('flash');
+}
+
+render();
+</script>
+</body>
+</html>

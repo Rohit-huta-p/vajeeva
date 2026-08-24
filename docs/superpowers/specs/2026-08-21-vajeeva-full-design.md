@@ -27,7 +27,7 @@ All three surfaces share one token set:
 --sand:     #E9E1D0   surface
 --cream:    #FBF8F1   card / elevated
 --ink:      #2A251E   primary text
---ink-2:    #6E6656   secondary text
+--ink-2:    #6E6656   secondary text (mobile)
 --muted:    #9C9482   tertiary / placeholder
 --line:     #E5DDCC   divider
 --line-2:   #D8CEBA   strong divider
@@ -43,12 +43,46 @@ All three surfaces share one token set:
 
 --clay:      #B4472E   contra / caution
 --clay-soft: #F3E1D8
+
+--blue:      #3B6BA0   liquid category accent
+--blue-bg:   #E8F0FA
+
+--shadow:      0 4px 14px rgba(42,37,30,.08), 0 1px 3px rgba(42,37,30,.05)
+--shadow-lift: 0 10px 28px rgba(42,37,30,.13), 0 2px 6px rgba(42,37,30,.06)
+```
+
+**Admin-only opacity tokens:**
+```
+--ink2: rgba(42,37,30,.55)   secondary text
+--ink3: rgba(42,37,30,.18)   borders / dividers
+--ink4: rgba(42,37,30,.06)   subtle fills
+--r:    8px                  standard border radius
+```
+
+**Cook Mode dark theme tokens** (applied on `#s-cook` and `#s-finish`):
+```
+--cm-bg:    #1A1814                    main background
+--cm-surf:  #26221C                    surface (buttons, close btn)
+--cm-surf2: #302B24                    dots background
+--cm-text:  #F0EAD8                    primary text
+--cm-muted: rgba(240,234,216,.42)      secondary text / labels
+--cm-line:  rgba(240,234,216,.08)      dividers
+--cm-amber: #C6902F                    phase strip, timer, chips
+--cm-green: #5CAD78                    next button, done dots, finish ring
+                                       ↑ lighter than --green, specific to dark theme
 ```
 
 **Typography:**
 - Serif: `"Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, serif`
 - Sans: `ui-sans-serif, -apple-system, system-ui, sans-serif`
 - Mono: `ui-monospace, "SF Mono", Menlo, Consolas, monospace`
+
+**Recipe card tile background rule (by texture):**
+- Solid → `--amber-soft`
+- Liquid → `--green-soft`
+- Semi-solid → `--clay-soft`
+
+**Liquid category colour** (admin chips + dashboard bars): `--blue` / `--blue-bg`
 
 ---
 
@@ -261,30 +295,38 @@ Bottom Sheet overlay:
   - Chevron
 
 #### RecipeDetailScreen
-- Illustration hero (radial gradient background)
-- Back button, heart (save), share
+- Illustration hero: radial gradient `green-soft → sand`, back-left / action-right overlay buttons
+- Back button, heart (save, clay tint), share
 - EN name (22px serif bold) + Tamil name (italic amber)
-- Classical source pills → SourceGlossaryScreen
-- Yield + shelf life badges
-- **Contra card** (always visible if any flags apply): lists active conditions
-- Ingredients table with g/cup toggle
-- Aromatic powder footnote pill → SubRecipeSheet
-- Method steps (numbered, phase label)
-- "Start Cook" CTA → CookModeScreen
+- "Classical sources" section label (mono caps, 28% ink opacity) + source pills (italic amber, dashed-border) → SourceGlossaryScreen
+- Yield badge (`🫙 Makes N`) + shelf life badge (`📅 Keeps N days`)
+- **Contra card** (always visible if any flags apply): clay left-border, "⚠ Use with caution" header, conditions listed
+- Ingredients section: "Ingredients" serif heading + g/cup toggle (green pill when active)
+- Ingredient table: alternating row tint (45% sand); **stage/phase rows** = amber caps separator (transparent bg, no alternating) between ingredient groups
+- Aromatic powder footnote: dashed amber pill → SubRecipeSheet
+- Method steps (numbered green circle, phase label in amber caps above text)
+- "Start Cook" green CTA button → CookModeScreen
+- Disclaimer below CTA: "Supportive dietary guidance · not a substitute for medical advice" (9.5px muted, centred)
 
 #### CookModeScreen
-- Dark kitchen theme (`#1A1814` bg)
-- Progress bar + dot navigation (tap dot = jump back)
-- Phase strip (amber mono)
-- Step text (serif 20px)
-- Illustration area (bg colour per step)
-- Ingredient chips for this step
-- Heat indicator (flame icon)
-- Timer pill (start/pause/resume/done)
-- Swipe left/right OR Prev/Next buttons
-- `wakeLock` to keep screen on
-- On last step → "Finish" → FinishScreen
-- On exit → PATCH cook-session, show confirmation
+- Dark kitchen theme (uses `--cm-*` token set, see §2)
+- Progress bar: amber→`#E8B44A` gradient, fills left-to-right per step
+- Close (✕) button top-left → exits cook mode, goes **back in stack** (not to Home), clears timer
+- Dot navigation: current dot = amber pill (width 20px), done = `rgba(cm-green, 0.5)`, future = `--cm-surf2`. **Tapping a dot only jumps backward** (future dots are non-interactive)
+- Step label "N / total" (mono, right-aligned)
+- Phase strip: mono 9px, `--cm-amber`, 0.18em letter-spacing
+- Step text: serif 20px, `--cm-text`, 1.38 line-height
+- Step transition animations: next → slide from right (`translateX 20px → 0`), prev → slide from left
+- Illustration area: coloured bg per step (each step has a `illColor` hex)
+- "This step" ingredient chips: amber border + amber text, pill shape
+- Heat indicator: flame icon + heat level text (hidden on steps with no heat)
+- Timer pill: `--cm-green` border + text; states: `· start` / `· pause` / `· resume` / `· done ✓`; tap to toggle; on done, tap resets
+- Prev button: dims to `opacity: 0.3` on step 0
+- Next button: `--cm-green` bg, dark text; last step reads "Finish ✓" → FinishScreen
+- Swipe left (44px threshold) = next, swipe right = prev
+- `navigator.wakeLock.request('screen')` on start
+- Footer caption: `"screen stays awake · swipe to navigate · works offline"` (8px mono muted)
+- On exit → PATCH `/users/me/cook-session` (step reached)
 
 #### FinishScreen
 - Dark theme (matches Cook Mode)

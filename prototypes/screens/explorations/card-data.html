@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva · What more the card can show</title>
+<!--
+  Quick study: what extra data the recipe grid card could carry. Every element
+  maps to a real RecipeDoc field (healthFlags severity, cookTimeMin, steps,
+  ingredients, yieldStr, shelfLife, sources) + a save action. Real tokens /
+  proportions = it looks like the RN RecipeGridCard we'd ship.
+-->
+<style>
+:root{
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line-2:#D8CEBA;
+  --green:#3E6B4F; --green-soft:#E4EDE3;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E; --clay-soft:#F3E1D8;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --shadow-lift:0 10px 28px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#E7E0D1;font-family:var(--sans);color:var(--ink);-webkit-font-smoothing:antialiased;padding:34px 24px 70px}
+.wrap{max-width:1120px;margin:0 auto}
+h1{font-family:var(--serif);font-size:24px;font-weight:700;margin:0 0 6px}
+.lead{margin:0 0 26px;font-size:13px;line-height:1.55;color:var(--ink-2);max-width:660px}
+h2{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);
+   margin:30px 0 14px;padding-bottom:7px;border-bottom:1px solid var(--line-2)}
+
+.il-sand{fill:var(--sand)}.il-cream{fill:var(--cream)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+.il-green{fill:var(--green)}.il-clay{fill:var(--clay)}.il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+.il-steam{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round;opacity:.45}
+.ln{fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fl{fill:currentColor}
+
+/* ── the card (matches RecipeGridCard: cream, r13, pad7, tile 5/4 r9) ──── */
+.card{width:212px;background:var(--cream);border:1px solid var(--line);border-radius:13px;padding:7px;box-shadow:var(--shadow)}
+.tile{position:relative;border-radius:9px;aspect-ratio:5/4;display:grid;place-items:center;overflow:hidden}
+.tile svg.ill{width:56%;height:56%}
+.name{font-family:var(--serif);font-size:13.5px;font-weight:700;line-height:1.18;margin-top:7px}
+.ta{font-family:var(--serif);font-style:italic;font-size:10px;color:var(--amber);margin-top:1px}
+.meta{font-size:9px;color:var(--muted);margin-top:4px}
+
+/* overlays on the tile */
+.tl,.tr,.bl{position:absolute}
+.tl{top:6px;left:6px}.tr{top:6px;right:6px}.bl{bottom:6px;left:6px}
+.fit{display:inline-flex;align-items:center;gap:3px;border-radius:999px;padding:3px 7px 3px 5px;font-size:9px;font-weight:800;
+     letter-spacing:.01em;box-shadow:var(--shadow)}
+.fit svg{width:10px;height:10px}
+.fit.safe{background:var(--green);color:var(--cream)}
+.fit.caution{background:var(--amber-soft);color:var(--amber-2)}
+.fit.avoid{background:var(--clay);color:var(--cream)}
+.save{width:24px;height:24px;border-radius:50%;background:rgba(251,248,241,.92);display:grid;place-items:center;color:var(--ink-2);box-shadow:var(--shadow)}
+.save svg{width:13px;height:13px}
+.save.on{color:var(--clay)}
+.timechip{display:inline-flex;align-items:center;gap:4px;background:rgba(251,248,241,.92);border-radius:999px;padding:3px 8px;
+          font-size:9px;font-weight:700;color:var(--ink);box-shadow:var(--shadow)}
+.timechip svg{width:10px;height:10px;color:var(--ink-2)}
+/* enriched meta row (icons) */
+.mrow{display:flex;align-items:center;gap:8px;margin-top:5px;font-size:9px;color:var(--ink-2);flex-wrap:wrap}
+.mi{display:inline-flex;align-items:center;gap:3px}
+.mi svg{width:11px;height:11px;color:var(--muted)}
+.mi b{font-weight:700;color:var(--ink-2)}
+.dotsep{width:2px;height:2px;border-radius:50%;background:var(--line-2)}
+/* caution dots (current) */
+.cdots{display:flex;gap:2.5px}
+.cdot{width:5px;height:5px;border-radius:50%;background:var(--clay);opacity:.7}
+
+/* layout helpers */
+.before-after{display:flex;gap:40px;align-items:flex-start;flex-wrap:wrap}
+.stack{display:flex;flex-direction:column;align-items:center;gap:9px}
+.tagline{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.tagline.pos{color:var(--green)}
+.arrow{align-self:center;color:var(--muted);font-size:24px;padding-top:70px}
+
+.legend{display:grid;grid-template-columns:repeat(auto-fill,minmax(232px,1fr));gap:12px;margin-top:2px}
+.lrow{display:flex;gap:10px;background:var(--cream);border:1px solid var(--line);border-radius:11px;padding:10px 12px;box-shadow:var(--shadow)}
+.lchip{flex:none;margin-top:1px}
+.ltext .t{font-size:12px;font-weight:700;color:var(--ink)}
+.ltext .s{font-size:10.5px;color:var(--ink-2);line-height:1.4;margin-top:2px}
+.ltext .src{font-family:var(--mono);font-size:8.5px;color:var(--muted);margin-top:4px;letter-spacing:.03em}
+.badge-demo{display:inline-flex;align-items:center;gap:3px;border-radius:999px;padding:3px 8px;font-size:9px;font-weight:800;box-shadow:var(--shadow)}
+.badge-demo svg{width:10px;height:10px}
+.cards-row{display:flex;gap:16px;flex-wrap:wrap}
+.rec{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--green);background:var(--green-soft);border-radius:5px;padding:2px 7px;margin-left:8px;letter-spacing:.04em}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path class="ln" d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z"/></symbol>
+  <symbol id="i-heart-f" viewBox="0 0 24 24"><path class="fl" d="M12 20.4S4.6 15.6 4.6 9.8A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.4 2.8c0 5.8-7.4 10.6-7.4 10.6z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8"/><path class="ln" d="M12 8v4.3l2.8 1.7"/></symbol>
+  <symbol id="i-warn" viewBox="0 0 24 24"><path class="ln" d="M12 4.5l8.5 15h-17z"/><path class="ln" d="M12 10v4M12 16.6v.2"/></symbol>
+  <symbol id="i-no" viewBox="0 0 24 24"><circle class="ln" cx="12" cy="12" r="8.5"/><path class="ln" d="M6.5 6.5l11 11"/></symbol>
+  <symbol id="i-list" viewBox="0 0 24 24"><path class="ln" d="M8 6h12M8 12h12M8 18h12"/><circle class="fl" cx="4" cy="6" r="1.3"/><circle class="fl" cx="4" cy="12" r="1.3"/><circle class="fl" cx="4" cy="18" r="1.3"/></symbol>
+  <symbol id="i-jar" viewBox="0 0 24 24"><path class="ln" d="M8 4h8M7 8h10v10a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2z"/><path class="ln" d="M7 8l1-4M17 8l-1-4"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect class="ln" x="4" y="5.5" width="16" height="15" rx="2"/><path class="ln" d="M4 9.5h16M8 3.5v3M16 3.5v3"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path class="ln" d="M7 4h11v16l-5.5-4L7 20z"/></symbol>
+  <symbol id="i-leaf" viewBox="0 0 24 24"><path class="ln" d="M5 19c0-8 6-13 14-13 0 8-5 13-13 13"/><path class="ln" d="M5 19c3-4 6-6 9-7"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64"><ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/><circle class="il-a" cx="32" cy="33" r="15"/><circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/><circle class="il-a2" cx="33" cy="37" r="1.6"/><circle class="il-a2" cx="26" cy="38" r="1.2"/><circle class="il-a2" cx="38" cy="34" r="1.4"/><ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/></symbol>
+  <symbol id="ill-cup" viewBox="0 0 64 64"><ellipse class="il-sand" cx="31" cy="51" rx="17" ry="4"/><path class="il-cream" d="M19 25h24l-2.6 20a4 4 0 0 1-4 3.5H25.6a4 4 0 0 1-4-3.5z"/><path class="il-green" d="M20.4 25h21.2l-.7 5.4H21.1z"/><path class="il-stroke" d="M43.5 28a7 7 0 0 1 0 12"/><path class="il-steam" d="M28 20c-2-2 2-4 0-6M36 20c-2-2 2-4 0-6"/></symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64"><ellipse class="il-sand" cx="32" cy="50" rx="18" ry="4"/><path class="il-cream" d="M15 33a17 13 0 0 0 34 0z"/><ellipse class="il-a" cx="32" cy="33" rx="15" ry="4.6"/><circle class="il-clay" cx="28" cy="32" r="1.7"/><circle class="il-clay" cx="36" cy="33" r="1.5"/><circle class="il-green" cx="32" cy="31.5" r="1.6"/><path class="il-stroke" d="M40 22l-6 9" stroke-width="2.6"/><ellipse class="il-green" cx="41" cy="21" rx="3" ry="2" transform="rotate(35 41 21)"/></symbol>
+</svg>
+
+<div class="wrap">
+  <h1>What more the recipe card can show</h1>
+  <p class="lead">The card currently uses a sliver of the recipe data. Below: the current card, a proposed
+     enriched card, and every add-on mapped to the exact <code>RecipeDoc</code> field it comes from — so you can
+     pick what ships. Same tokens and proportions as the RN card.</p>
+
+  <h2>Before → after</h2>
+  <div class="before-after">
+    <div class="stack">
+      <div class="tagline">Now</div>
+      <div class="card">
+        <div class="tile" style="background:var(--amber-soft)">
+          <svg class="ill" viewBox="0 0 64 64"><use href="#ill-laddu"/></svg>
+          <div class="tr"><div class="cdots"><div class="cdot"></div><div class="cdot"></div></div></div>
+        </div>
+        <div class="name">Coconut Laddu</div>
+        <div class="ta">Narikela modaka</div>
+        <div class="meta">Sweet · ~25 min</div>
+      </div>
+      <div class="tagline">4 fields</div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="stack">
+      <div class="tagline pos">Proposed</div>
+      <div class="card">
+        <div class="tile" style="background:var(--amber-soft)">
+          <svg class="ill" viewBox="0 0 64 64"><use href="#ill-laddu"/></svg>
+          <div class="tl"><span class="fit caution"><svg><use href="#i-warn"/></svg> Caution</span></div>
+          <div class="tr"><div class="save"><svg><use href="#i-heart"/></svg></div></div>
+          <div class="bl"><span class="timechip"><svg><use href="#i-clock"/></svg> 25 min</span></div>
+        </div>
+        <div class="name">Coconut Laddu</div>
+        <div class="ta">Narikela modaka</div>
+        <div class="mrow">
+          <span class="mi"><svg><use href="#i-list"/></svg><b>5</b> steps</span>
+          <span class="dotsep"></span>
+          <span class="mi"><svg><use href="#i-jar"/></svg>Makes <b>3–4</b></span>
+        </div>
+      </div>
+      <div class="tagline pos">health-aware · scannable</div>
+    </div>
+  </div>
+
+  <h2>The two-way health signal — the biggest win</h2>
+  <p class="lead" style="margin-bottom:16px">Today the card can only warn (caution dots). <code>healthFlags[].severity</code>
+     is <b>safe / caution / avoid</b>, so the card can also <b>reassure</b> — the point of a health-aware app.</p>
+  <div class="cards-row">
+    <div class="stack">
+      <div class="card">
+        <div class="tile" style="background:var(--green-soft)">
+          <svg class="ill" viewBox="0 0 64 64"><use href="#ill-laddu"/></svg>
+          <div class="tl"><span class="fit safe"><svg><use href="#i-check"/></svg> Safe for you</span></div>
+          <div class="tr"><div class="save on"><svg><use href="#i-heart-f"/></svg></div></div>
+          <div class="bl"><span class="timechip"><svg><use href="#i-clock"/></svg> No-cook</span></div>
+        </div>
+        <div class="name">Date Laddoo</div>
+        <div class="ta">Kharjura laddu</div>
+        <div class="mrow"><span class="mi"><svg><use href="#i-list"/></svg><b>4</b> steps</span><span class="dotsep"></span><span class="mi"><svg><use href="#i-jar"/></svg>Makes <b>8–10</b></span></div>
+      </div>
+      <div class="tagline pos">0 flags → reassure</div>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <div class="tile" style="background:var(--amber-soft)">
+          <svg class="ill" viewBox="0 0 64 64"><use href="#ill-laddu"/></svg>
+          <div class="tl"><span class="fit caution"><svg><use href="#i-warn"/></svg> Caution</span></div>
+          <div class="tr"><div class="save"><svg><use href="#i-heart"/></svg></div></div>
+          <div class="bl"><span class="timechip"><svg><use href="#i-clock"/></svg> 25 min</span></div>
+        </div>
+        <div class="name">Coconut Laddu</div>
+        <div class="ta">Narikela modaka</div>
+        <div class="mrow"><span class="mi"><svg><use href="#i-list"/></svg><b>5</b> steps</span><span class="dotsep"></span><span class="mi"><svg><use href="#i-jar"/></svg>Makes <b>3–4</b></span></div>
+      </div>
+      <div class="tagline">≥1 caution flag</div>
+    </div>
+    <div class="stack">
+      <div class="card">
+        <div class="tile" style="background:var(--clay-soft)">
+          <svg class="ill" viewBox="0 0 64 64"><use href="#ill-bowl"/></svg>
+          <div class="tl"><span class="fit avoid"><svg><use href="#i-no"/></svg> Avoid</span></div>
+          <div class="tr"><div class="save"><svg><use href="#i-heart"/></svg></div></div>
+          <div class="bl"><span class="timechip"><svg><use href="#i-clock"/></svg> 40 min</span></div>
+        </div>
+        <div class="name">Ash Gourd Pudding</div>
+        <div class="ta">Poosanikai halwa</div>
+        <div class="mrow"><span class="mi"><svg><use href="#i-list"/></svg><b>7</b> steps</span><span class="dotsep"></span><span class="mi"><svg><use href="#i-jar"/></svg>Makes <b>4</b></span></div>
+      </div>
+      <div class="tagline">an “avoid” flag present</div>
+    </div>
+  </div>
+
+  <h2>Every add-on ↔ its data field (pick what ships)</h2>
+  <div class="legend" id="legend"></div>
+</div>
+
+<script>
+const ADDONS = [
+  {chip:`<span class="fit safe"><svg><use href="#i-check"/></svg> Safe</span>`,
+   t:'Fit badge (safe / caution / avoid)', s:'Two-way health signal, colour-coded. Replaces the caution-only dots.',
+   src:'healthFlags[].severity', rec:true},
+  {chip:`<div class="save"><svg><use href="#i-heart"/></svg></div>`,
+   t:'Save / bookmark', s:'One-tap save from the grid — no need to open the recipe first.',
+   src:'action → savedApi', rec:true},
+  {chip:`<span class="timechip"><svg><use href="#i-clock"/></svg> 25 min</span>`,
+   t:'Cook-time chip', s:'On the tile for fast scanning; “No-cook” when time is 0.',
+   src:'cookTimeMin', rec:true},
+  {chip:`<span class="mi"><svg><use href="#i-list"/></svg><b>5</b> steps</span>`,
+   t:'Step count', s:'Sets effort expectation before opening.',
+   src:'steps.length', rec:true},
+  {chip:`<span class="mi"><svg><use href="#i-jar"/></svg>Makes <b>3–4</b></span>`,
+   t:'Yield', s:'How much a batch makes — useful when planning.',
+   src:'yieldStr', rec:true},
+  {chip:`<span class="mi"><svg><use href="#i-cal"/></svg>Keeps <b>5–7 d</b></span>`,
+   t:'Shelf life', s:'Good for make-ahead browsing. Optional — adds a line.',
+   src:'shelfLife'},
+  {chip:`<span class="mi"><svg><use href="#i-leaf"/></svg><b>6</b> ingredients</span>`,
+   t:'Ingredient count', s:'Simplicity signal; pairs with step count.',
+   src:'ingredients.length'},
+  {chip:`<span class="mi"><svg><use href="#i-book"/></svg>Cited</span>`,
+   t:'Classical-source mark', s:'“Grounded in classical texts” — reinforces trust on the card.',
+   src:'sources.length'},
+];
+document.getElementById('legend').innerHTML = ADDONS.map(a => `
+  <div class="lrow">
+    <div class="lchip">${a.chip}</div>
+    <div class="ltext">
+      <div class="t">${a.t}${a.rec?'<span class="rec">default</span>':''}</div>
+      <div class="s">${a.s}</div>
+      <div class="src">${a.src}</div>
+    </div>
+  </div>`).join('');
+</script>
+</body>
+</html>

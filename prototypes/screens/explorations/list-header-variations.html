@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vajeeva · RecipeList header treatments</title>
+<!--
+  ═══ EXPLORATION: making the RecipeListScreen header read as a header ═══════
+  Problem: header (back / title / filter), the chip row, and the recipe cards
+  are all cream-on-bone with the same shadow, so they merge into one surface.
+  Fix = introduce figure/ground. Five tiles: the current flat state, then four
+  distinct mechanisms for creating a header/content break. Tokens, type stack
+  and card markup are the app's real values. Design canvas per tile ≈ 272px
+  (the prototype stage), edge-to-edge (no device bezel), matching the RN screen.
+  ═══════════════════════════════════════════════════════════════════════════
+-->
+<style>
+:root{
+  --bone:#F2EDE1; --sand:#E9E1D0; --cream:#FBF8F1;
+  --ink:#2A251E; --ink-2:#6E6656; --muted:#9C9482;
+  --line:#E5DDCC; --line-2:#D8CEBA;
+  --green:#3E6B4F; --green-soft:#E4EDE3; --on-green:#FBF8F1;
+  --amber:#C6902F; --amber-2:#A9701F; --amber-soft:#F4E8CE;
+  --clay:#B4472E; --clay-soft:#F3E1D8;
+  --shadow:0 4px 14px rgba(42,37,30,.08),0 1px 3px rgba(42,37,30,.05);
+  --shadow-lift:0 10px 28px rgba(42,37,30,.13),0 2px 6px rgba(42,37,30,.06);
+  --edge:0 8px 16px -10px rgba(42,37,30,.45);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+  --sans:ui-sans-serif,-apple-system,system-ui,sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --grain:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='9' height='9'%3E%3Ccircle cx='2' cy='2' r='1' fill='%23C6902F'/%3E%3Ccircle cx='6.5' cy='6.5' r='1' fill='%23C6902F'/%3E%3C/svg%3E");
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:#E7E0D1;font-family:var(--sans);color:var(--ink);
+     -webkit-font-smoothing:antialiased;padding:34px 22px 60px}
+.pagehead{max-width:1180px;margin:0 auto 26px}
+.pagehead h1{font-family:var(--serif);font-size:24px;font-weight:700;margin:0 0 6px;letter-spacing:-.01em}
+.pagehead p{margin:0;font-size:13px;line-height:1.55;color:var(--ink-2);max-width:640px}
+.pagehead .prob{margin-top:10px;font-family:var(--mono);font-size:11px;color:var(--clay);
+     background:var(--clay-soft);border-radius:8px;padding:8px 11px;display:inline-block}
+
+.grid{display:flex;flex-wrap:wrap;gap:30px 26px;justify-content:center;max-width:1400px;margin:0 auto}
+.fig{width:252px}
+.tag{display:flex;align-items:baseline;gap:8px;margin-bottom:4px}
+.tag .k{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+        color:var(--cream);background:var(--ink);border-radius:5px;padding:2px 7px}
+.tag .n{font-family:var(--serif);font-size:15px;font-weight:700}
+.fig.now .tag .k{background:var(--clay)}
+.mech{font-size:11px;color:var(--ink-2);line-height:1.4;margin:0 0 9px;min-height:31px}
+.mech b{color:var(--ink)}
+
+/* ── phone canvas (edge-to-edge, no bezel) ─────────────────────────────── */
+.phone{position:relative;width:252px;height:520px;border-radius:26px;overflow:hidden;
+       background:var(--bone);border:1px solid rgba(42,37,30,.10);box-shadow:var(--shadow-lift)}
+.inset{height:16px;flex:none}                 /* empty safe-area, like the RN screen */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column}
+
+/* shared bits */
+.ln{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.fl{fill:currentColor}
+.il-sand{fill:var(--sand)}.il-cream{fill:var(--cream)}.il-a{fill:var(--amber)}.il-a2{fill:var(--amber-2)}
+.il-green{fill:var(--green)}.il-clay{fill:var(--clay)}.il-stroke{fill:none;stroke:var(--green);stroke-width:2.4;stroke-linecap:round}
+.il-steam{fill:none;stroke:var(--ink-2);stroke-width:1.5;stroke-linecap:round;opacity:.45}
+.row{display:flex;align-items:center;gap:9px}
+.grow{flex:1;min-width:0}
+.icobtn{width:32px;height:32px;border-radius:50%;background:var(--cream);border:1px solid var(--line);
+        display:grid;place-items:center;color:var(--ink);box-shadow:var(--shadow);flex:none}
+.icobtn svg{width:14px;height:14px}
+.h-serif{font-family:var(--serif);font-weight:700;letter-spacing:-.01em}
+.title{font-size:17px}
+.sub{font-size:9.5px;color:var(--ink-2);margin-top:1px}
+
+.chips{display:flex;gap:6px;overflow:hidden}
+.fchip{display:inline-flex;align-items:center;gap:4px;border:1.5px solid var(--line-2);background:var(--cream);
+       border-radius:999px;padding:5px 10px;font-size:10px;font-weight:700;color:var(--ink-2);white-space:nowrap;flex:none}
+.fchip svg{width:10px;height:10px}
+.fchip.on{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+.fchip.safe{border-color:var(--green);color:var(--green)}
+.fchip.oncream{background:var(--bone);border-color:var(--line-2)}
+.fchip.oncream.on{background:var(--green-soft);border-color:var(--green)}
+
+.list{display:flex;flex-direction:column;gap:9px;padding:11px 13px 16px;overflow:hidden}
+.lcard{position:relative;display:flex;align-items:center;gap:9px;background:var(--cream);border:1px solid var(--line);
+       border-radius:15px;padding:7px 9px;box-shadow:var(--shadow)}
+.lt{width:46px;height:46px;border-radius:11px;flex:none;display:grid;place-items:center}
+.lt svg{width:38px;height:38px}
+.ln1{font-family:var(--serif);font-size:13px;font-weight:700;line-height:1.15}
+.ln2{font-family:var(--serif);font-style:italic;font-size:9.5px;color:var(--amber);margin-top:1px}
+.lm{font-size:8.5px;color:var(--muted);margin-top:3px}
+.chev{width:16px;height:16px;color:var(--muted);flex:none}
+.cdots{position:absolute;top:8px;right:32px;display:flex;gap:2.5px}
+.cdot{width:4.5px;height:4.5px;border-radius:50%;background:var(--clay);opacity:.65}
+
+/* ═══ A · elevated app bar ══════════════════════════════════════════════ */
+.hA{background:var(--cream);padding:10px 13px 11px;border-bottom:1px solid var(--line);box-shadow:var(--edge);
+    position:relative;z-index:2;display:flex;flex-direction:column;gap:9px}
+.hA .chips{margin:0 -13px;padding:0 13px}
+
+/* ═══ B · recessed content well ═════════════════════════════════════════ */
+.hB{padding:10px 13px 10px;display:flex;flex-direction:column;gap:9px}          /* stays on bone */
+.wellB{flex:1;background:var(--sand);border-top-left-radius:22px;border-top-right-radius:22px;
+       box-shadow:inset 0 9px 12px -9px rgba(42,37,30,.28);overflow:hidden}
+.wellB .list{padding-top:15px}
+.wellB .lcard{box-shadow:0 3px 10px rgba(42,37,30,.07)}
+
+/* ═══ C · editorial shelf-label band ════════════════════════════════════ */
+.hC{position:relative;background:var(--cream);padding:12px 14px 0;overflow:hidden;
+    border-bottom:2px solid var(--ink);box-shadow:0 5px 12px -9px rgba(42,37,30,.4)}
+.hC::before{content:"";position:absolute;inset:0;background:var(--grain);opacity:.10;pointer-events:none}
+.hC .topline{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+.hC .backmin{color:var(--ink-2);display:grid;place-items:center;width:22px;height:22px}
+.hC .backmin svg{width:16px;height:16px}
+.hC .kicker{font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber-2)}
+.hC h2{font-family:var(--serif);font-size:26px;font-weight:700;margin:5px 0 2px;letter-spacing:-.02em;position:relative;z-index:1}
+.hC .rule{font-family:var(--mono);font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-2);
+          padding-bottom:9px;border-bottom:1px solid var(--line-2);position:relative;z-index:1}
+.hC .tabs{display:flex;gap:14px;position:relative;z-index:1;padding:9px 0 0}
+.tab{font-size:11px;font-weight:700;color:var(--muted);padding-bottom:9px;border-bottom:2px solid transparent;white-space:nowrap}
+.tab.on{color:var(--ink);border-color:var(--amber)}
+.hC-dbl{height:0;border-bottom:1px solid var(--line-2);margin:3px 12px 0}  /* the thin second rule of the double baseline */
+
+/* ═══ D · floating header panel ═════════════════════════════════════════ */
+.phone.d .scr{display:block}
+.panelD{position:absolute;top:24px;left:12px;right:12px;z-index:3;background:var(--cream);
+        border:1px solid var(--line);border-radius:18px;padding:10px 12px 11px;box-shadow:var(--shadow-lift);
+        display:flex;flex-direction:column;gap:9px}
+.panelD .chips{margin:0}
+.listD{position:absolute;inset:0;padding-top:150px}   /* first card tucks under the floating panel */
+.listD .list{padding-top:0}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-back" viewBox="0 0 24 24"><path class="ln" d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-filter" viewBox="0 0 24 24"><path class="ln" d="M4 6h16M7 12h10M10 18h4"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path class="ln" d="M5 12.5l4.5 4.5L19 7"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path class="ln" d="M9 5l7 7-7 7"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24"><path class="ln" d="M12 3l7 3v5c0 5-3 7.5-7 9-4-1.5-7-4-7-9V6z"/></symbol>
+  <symbol id="ill-laddu" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="49" rx="19" ry="4.5"/><circle class="il-a" cx="32" cy="33" r="15"/>
+    <circle class="il-a2" cx="27" cy="30" r="1.5"/><circle class="il-a2" cx="35" cy="28" r="1.3"/><circle class="il-a2" cx="33" cy="37" r="1.6"/>
+    <circle class="il-a2" cx="26" cy="38" r="1.2"/><circle class="il-a2" cx="38" cy="34" r="1.4"/><circle class="il-a2" cx="31" cy="33" r="1.2"/>
+    <ellipse class="il-green" cx="32" cy="19.5" rx="3.6" ry="2.3"/></symbol>
+  <symbol id="ill-bowl" viewBox="0 0 64 64">
+    <ellipse class="il-sand" cx="32" cy="50" rx="18" ry="4"/><path class="il-cream" d="M15 33a17 13 0 0 0 34 0z"/>
+    <ellipse class="il-a" cx="32" cy="33" rx="15" ry="4.6"/><circle class="il-clay" cx="28" cy="32" r="1.7"/>
+    <circle class="il-clay" cx="36" cy="33" r="1.5"/><circle class="il-green" cx="32" cy="31.5" r="1.6"/>
+    <path class="il-stroke" d="M40 22l-6 9" stroke-width="2.6"/><ellipse class="il-green" cx="41" cy="21" rx="3" ry="2" transform="rotate(35 41 21)"/></symbol>
+</svg>
+
+<div class="pagehead">
+  <h1>RecipeList — making the header read as a header</h1>
+  <p>Right now the back/title/filter row, the chips, and the cards are all cream-on-bone with the same
+     shadow, so they read as one continuous surface. Each option below introduces figure/ground a
+     different way — same content, same tokens.</p>
+  <div class="prob">the fix is contrast between “chrome” and “content”: material · elevation · depth · texture</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script>
+/* one content body, reused verbatim across every tile so only the header differs */
+const CARDS = [
+  {en:'Coconut Laddu', ta:'Narikela modaka', m:'Sweet · ~25 min', ill:'laddu', tint:'var(--amber-soft)', dots:4},
+  {en:'Wheat Balls',   ta:'Godhuma laddu',   m:'Sweet · ~30 min', ill:'laddu', tint:'var(--amber-soft)', dots:3},
+  {en:'Date Laddoo',   ta:'Kharjura laddu',  m:'No-cook · ~15 min', ill:'laddu', tint:'var(--green-soft)', dots:0},
+];
+const card = c => `<div class="lcard">
+  <div class="lt" style="background:${c.tint}"><svg viewBox="0 0 64 64"><use href="#ill-${c.ill}"/></svg></div>
+  <div class="grow"><div class="ln1">${c.en}</div><div class="ln2">${c.ta}</div><div class="lm">${c.m}</div></div>
+  <svg class="chev"><use href="#i-chev"/></svg>
+  ${c.dots?`<div class="cdots">${'<div class="cdot"></div>'.repeat(c.dots)}</div>`:''}</div>`;
+const listHTML = CARDS.map(card).join('');
+
+const chips = (cls='') => `<div class="chips">
+  <span class="fchip on ${cls}"><svg><use href="#i-check"/></svg> Sweets</span>
+  <span class="fchip ${cls}">Breads</span>
+  <span class="fchip ${cls}">Snacks</span>
+  <span class="fchip safe ${cls}"><svg><use href="#i-shield"/></svg> Safe</span></div>`;
+
+const hdrCore = `<div class="row">
+    <div class="icobtn"><svg><use href="#i-back"/></svg></div>
+    <div class="grow"><div class="h-serif title">Solid</div><div class="sub">44 recipes · breads · sweets · snacks</div></div>
+    <div class="icobtn"><svg><use href="#i-filter"/></svg></div></div>`;
+
+const TILES = [
+  { k:'NOW', n:'Current', now:true,
+    mech:'Everything shares the <b>bone</b> ground and the same card shadow — no break between chrome and list.',
+    body:`<div class="scr"><div class="inset"></div>
+      <div style="padding:10px 13px;display:flex;flex-direction:column;gap:9px">${hdrCore}${chips()}</div>
+      <div class="list">${listHTML}</div></div>` },
+
+  { k:'A', n:'Elevated bar',
+    mech:'Header on a <b>cream panel</b> with a hairline + drop edge; the list scrolls under it. Chips restyle to sit on cream.',
+    body:`<div class="scr"><div class="inset" style="background:var(--cream)"></div>
+      <div class="hA">${hdrCore}${chips('oncream')}</div>
+      <div class="list">${listHTML}</div></div>` },
+
+  { k:'B', n:'Recessed well',
+    mech:'Header stays on bone; the list sinks into a <b>sand tray</b> with rounded lip + inner shadow — content reads as a drawer.',
+    body:`<div class="scr"><div class="inset"></div>
+      <div class="hB">${hdrCore}${chips()}</div>
+      <div class="wellB"><div class="list">${listHTML}</div></div></div>` },
+
+  { k:'C', n:'Shelf-label band',
+    mech:'Header becomes a <b>chapter head</b>: faint grain, big serif, mono count on a rule, double baseline. Chips → understated tabs.',
+    body:`<div class="scr"><div class="inset" style="background:var(--cream)"></div>
+      <div class="hC">
+        <div class="topline"><span class="backmin"><svg><use href="#i-back"/></svg></span>
+          <span class="kicker">Solid texture</span>
+          <span class="backmin"><svg><use href="#i-filter"/></svg></span></div>
+        <h2>Solid</h2>
+        <div class="rule">44 recipes · breads · sweets · snacks</div>
+        <div class="tabs"><span class="tab on">Sweets</span><span class="tab">Breads</span><span class="tab">Snacks</span><span class="tab">Safe</span></div>
+      </div><div class="hC-dbl"></div>
+      <div class="list">${listHTML}</div></div>` },
+
+  { k:'D', n:'Floating panel',
+    mech:'Header detaches into a <b>floating card</b> above the list with an all-round gutter; cards visibly pass beneath it.',
+    body:`<div class="scr">
+      <div class="panelD">${hdrCore}${chips('oncream')}</div>
+      <div class="listD"><div class="list">${listHTML}</div></div></div>` },
+];
+
+document.getElementById('grid').innerHTML = TILES.map(t => `
+  <div class="fig ${t.now?'now':''}">
+    <div class="tag"><span class="k">${t.k}</span><span class="n">${t.n}</span></div>
+    <p class="mech">${t.mech}</p>
+    <div class="phone ${t.k==='D'?'d':''}">${t.body}</div>
+  </div>`).join('');
+</script>
+</body>
+</html>
