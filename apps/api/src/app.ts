@@ -17,9 +17,17 @@ import { uploadsRouter } from './routes/uploads.routes';
 export function createApp() {
   const app = express();
 
+  // Extra allowed origins for deployed browser clients (comma-separated),
+  // e.g. ALLOWED_ORIGINS=https://vajeeva-web.onrender.com
+  const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+
   app.use(cors({
     origin: (origin, cb) => {
       if (!origin || /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)) return cb(null, true);
+      if (allowedOrigins.includes(origin)) return cb(null, true);
       return cb(new Error('Not allowed by CORS'));
     },
     credentials: true,
