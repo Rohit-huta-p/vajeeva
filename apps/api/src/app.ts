@@ -9,6 +9,7 @@ import { adminRouter } from './routes/admin.routes';
 import { sourcesAdminRouter, sourcesPublicRouter } from './routes/sources.routes';
 import { subrecipesAdminRouter, subrecipesPublicRouter } from './routes/subrecipes.routes';
 import { healthFlagsAdminRouter } from './routes/healthflags.routes';
+import { tagsAdminRouter, tagsPublicRouter } from './routes/tags.routes';
 import { usersAdminRouter } from './routes/usersadmin.routes';
 import { usersRouter, publicHealthFlagsRouter } from './routes/users.routes';
 import { uploadsRouter } from './routes/uploads.routes';
@@ -33,10 +34,12 @@ export function createApp() {
   app.use('/api/admin/sources', sourcesAdminRouter);
   app.use('/api/admin/subrecipes', subrecipesAdminRouter);
   app.use('/api/admin/health-flags', healthFlagsAdminRouter);
+  app.use('/api/admin/tags', tagsAdminRouter);
   app.use('/api/admin/users', usersAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
   app.use('/api/subrecipes', subrecipesPublicRouter);
   app.use('/api/healthflags', publicHealthFlagsRouter);
+  app.use('/api/tags', tagsPublicRouter);
   app.use('/api/users', usersRouter);
   app.use('/api/admin/uploads', uploadsRouter);
 

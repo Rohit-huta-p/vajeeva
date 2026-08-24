@@ -43,6 +43,43 @@ describe('POST /api/auth/register — extended fields', () => {
     expect(res.status).toBe(201);
     expect(res.body.accessToken).toBeDefined();
   });
+
+  it('accepts age and gender, and they are persisted', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({
+        email: 'agegender@test.com', password: 'password123',
+        name: 'Rohit', age: 28, gender: 'male',
+      });
+    expect(res.status).toBe(201);
+    const user = await User.findOne({ email: 'agegender@test.com' });
+    expect(user?.age).toBe(28);
+    expect(user?.gender).toBe('male');
+  });
+
+  it('registers without age/gender (both optional)', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'noagegender@test.com', password: 'password123' });
+    expect(res.status).toBe(201);
+    const user = await User.findOne({ email: 'noagegender@test.com' });
+    expect(user?.age).toBeUndefined();
+    expect(user?.gender).toBeUndefined();
+  });
+
+  it('rejects an out-of-range age with 400', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'toddler@test.com', password: 'password123', age: 5 });
+    expect(res.status).toBe(400);
+  });
+
+  it('rejects an invalid gender value with 400', async () => {
+    const res = await request(app)
+      .post('/api/auth/register')
+      .send({ email: 'badgender@test.com', password: 'password123', gender: 'robot' });
+    expect(res.status).toBe(400);
+  });
 });
 
 // ── 2. Public GET /api/healthflags ────────────────────────────────────────────

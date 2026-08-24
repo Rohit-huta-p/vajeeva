@@ -47,6 +47,17 @@ export const RecipeSchema = z.object({
   sources: z.array(SourceSchema),
   yieldStr: z.string(),
   shelfLife: z.string(),
+  // Discovery tags — codes validated against the TagConfig vocab at the API.
+  // All optional/defaulted, so existing recipes and payloads stay valid.
+  // See docs/specs/2026-08-24-discovery-tags.md.
+  type: z.string().default(''),
+  meals: z.array(z.string()).default([]),
+  mainIngredients: z.array(z.string()).default([]),
+  methods: z.array(z.string()).default([]),
+  dietTags: z.array(z.string()).default([]),
+  makeAhead: z.boolean().default(false),
+  prepAheadNote: z.string().default(''),
+  totalTimeMin: z.number().int().min(0).optional(),
   status: z.enum(['published', 'draft']).default('draft'),
   images: z.array(ImageSchema).optional().default([]),
   updatedAt: z.date().default(() => new Date()),

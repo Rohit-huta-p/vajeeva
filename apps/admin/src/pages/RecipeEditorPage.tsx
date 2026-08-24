@@ -8,6 +8,7 @@ import { HealthFlagRows } from '../components/HealthFlagRows';
 import { SourceRows } from '../components/SourceRows';
 import { AppPreviewCard } from '../components/AppPreviewCard';
 import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
+import { TagRows, emptyVocab, type Vocab } from '../components/TagRows';
 
 const EMPTY_RECIPE: RecipeInput = {
   slug: '',
@@ -22,6 +23,13 @@ const EMPTY_RECIPE: RecipeInput = {
   yieldStr: '',
   shelfLife: '',
   status: 'draft',
+  type: '',
+  meals: [],
+  mainIngredients: [],
+  methods: [],
+  dietTags: [],
+  makeAhead: false,
+  prepAheadNote: '',
   images: [],
 };
 
@@ -31,6 +39,7 @@ export function RecipeEditorPage() {
   const [form, setForm] = useState<RecipeInput | null>(id ? null : EMPTY_RECIPE);
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const [vocab, setVocab] = useState<Vocab>(emptyVocab);
 
   useEffect(() => {
     if (!id) return;
@@ -42,10 +51,15 @@ export function RecipeEditorPage() {
           return;
         }
         const { _id, createdAt, updatedAt, ...input } = doc;
-        setForm(input);
+        setForm({ ...EMPTY_RECIPE, ...input });
       })
       .catch(e => setError(e.message));
   }, [id]);
+
+  // Load the discovery-tag vocabulary so the editor can offer valid codes.
+  useEffect(() => {
+    api<Vocab>('/api/admin/tags').then(setVocab).catch(() => { /* keep empty */ });
+  }, []);
 
   async function save(status: RecipeInput['status']) {
     if (!form) return;
@@ -86,7 +100,7 @@ export function RecipeEditorPage() {
   }
 
   return (
-    <main className="min-h-full bg-cream p-6 max-w-5xl mx-auto">
+    <main className=" bg-cream p-6 max-w-5xl mx-auto">
       <header className="flex items-center gap-3 mb-6">
         <Link to="/" className="text-ink/55 text-sm">← All Recipes</Link>
         <h1 className="font-serif text-xl font-semibold text-ink flex-1">
@@ -187,6 +201,20 @@ export function RecipeEditorPage() {
           <StepRows value={form.steps} onChange={steps => setForm({ ...form, steps })} />
           <HealthFlagRows value={form.healthFlags} onChange={healthFlags => setForm({ ...form, healthFlags })} />
           <SourceRows value={form.sources} onChange={sources => setForm({ ...form, sources })} />
+          <TagRows
+            value={{
+              type: form.type ?? '',
+              meals: form.meals ?? [],
+              mainIngredients: form.mainIngredients ?? [],
+              methods: form.methods ?? [],
+              dietTags: form.dietTags ?? [],
+              makeAhead: form.makeAhead ?? false,
+              prepAheadNote: form.prepAheadNote ?? '',
+              totalTimeMin: form.totalTimeMin,
+            }}
+            vocab={vocab}
+            onChange={patch => setForm({ ...form, ...patch })}
+          />
 
           {/* Hero Gallery */}
           <fieldset className="bg-white border border-ink/20 rounded-lg p-5 mb-4">

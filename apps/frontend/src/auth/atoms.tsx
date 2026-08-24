@@ -131,6 +131,35 @@ export function FootLink({ text, linkText, onPress }: {
   );
 }
 
+/** Single-select pill row (e.g. gender) — same on/off language as HealthFlagGrid. */
+export function ChoiceChips({ options, value, onChange }: {
+  options: { value: string; label: string }[];
+  value: string | null;
+  onChange: (value: string) => void;
+}) {
+  const s = useThemedStyles(makeStyles);
+  return (
+    <View style={s.choiceRow}>
+      {options.map(opt => {
+        const on = value === opt.value;
+        return (
+          <TouchableOpacity
+            key={opt.value}
+            style={[s.choice, on && s.choiceOn]}
+            onPress={() => onChange(opt.value)}
+            activeOpacity={0.85}
+            accessibilityRole="radio"
+            accessibilityState={{ checked: on }}
+            accessibilityLabel={opt.label}
+          >
+            <Text style={[s.choiceTxt, on && s.choiceTxtOn]}>{opt.label}</Text>
+          </TouchableOpacity>
+        );
+      })}
+    </View>
+  );
+}
+
 export function AuthHint({ children }: { children: React.ReactNode }) {
   const s = useThemedStyles(makeStyles);
   return <Text style={s.hint}>{children}</Text>;
@@ -194,4 +223,12 @@ const makeStyles = (colors: Colors) => scaledSheet({
   footLink: { color: colors.green, fontWeight: '800' },
   hint: { fontSize: 9.5, fontFamily: fonts.sans, color: colors.muted, textAlign: 'center', marginTop: 8 },
   error: { fontSize: 10, fontFamily: fonts.sans, fontWeight: '700', color: colors.clay, textAlign: 'center', marginTop: 8 },
+  choiceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 7, justifyContent: 'center', marginBottom: 4 },
+  choice: {
+    backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
+    borderRadius: 999, paddingVertical: 8, paddingHorizontal: 13, ...shadows.card,
+  },
+  choiceOn: { backgroundColor: colors.greenSoft, borderColor: colors.green },
+  choiceTxt: { fontSize: 11, fontFamily: fonts.sans, fontWeight: '700', color: colors.ink2 },
+  choiceTxtOn: { color: colors.green },
 });

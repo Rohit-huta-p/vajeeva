@@ -9,6 +9,7 @@ import { SourcesPage } from './pages/SourcesPage';
 import { SubRecipesPage } from './pages/SubRecipesPage';
 import { UsersPage } from './pages/UsersPage';
 import { HealthFlagsPage } from './pages/HealthFlagsPage';
+import { TagsPage } from './pages/TagsPage';
 
 export function App() {
   return (
@@ -25,6 +26,7 @@ export function App() {
             <Route path="/subrecipes" element={<SubRecipesPage />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/health-flags" element={<HealthFlagsPage />} />
+            <Route path="/tags" element={<TagsPage />} />
           </Route>
         </Route>
       </Routes>

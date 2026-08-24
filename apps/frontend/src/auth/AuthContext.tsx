@@ -9,7 +9,7 @@ import * as storage from '../offline/storage';
 // Session persists across restarts via offline/storage key 'session'
 // ({ email, name?, refreshToken }); guest choice persists under 'guest'.
 
-interface RegisterExtra { name?: string; phone?: string }
+interface RegisterExtra { name?: string; phone?: string; age?: number; gender?: string }
 
 interface AuthState {
   user: { email: string; name?: string } | null;
@@ -72,7 +72,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await persist(email, data.accessToken, (data as any).refreshToken ?? '');
   }, [persist]);
 
-  // extra.name / extra.phone ride along for BE-AUTH; today's API strips them.
+  // extra.name/.phone/.age/.gender all ride along to the backend; only name
+  // mirrors into local session state (age/gender aren't needed client-side today).
   const register = useCallback(async (email: string, password: string, extra?: RegisterExtra) => {
     const { data } = await authApi.register(email, password, extra);
     await persist(email, data.accessToken, (data as any).refreshToken ?? '', extra?.name);

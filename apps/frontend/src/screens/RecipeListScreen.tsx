@@ -12,7 +12,7 @@ import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
-import { isFacet, facetLabel, matchFacet } from '../config/facets';
+import { isFacet, facetLabel, matchFacet, matchTag, type TagAxis } from '../config/facets';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -29,6 +29,9 @@ const LABEL_SUB: Record<string, string> = {
   Liquid: 'drinks · soups · buttermilk',
   'Semi-solid': 'porridge · puddings · chutneys',
 };
+// Title-case a tag code for the header ('black-gram' → 'Black gram').
+const prettyTag = (v: string) => v.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+
 function textureToLabel(texture?: string): string {
   if (!texture) return 'All';
   const t = texture.toLowerCase();
@@ -57,7 +60,9 @@ export function RecipeListScreen() {
   const { width } = useWindowDimensions();
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
-  const { texture, facet } = useLocalSearchParams<{ texture?: string; facet?: string }>();
+  const { texture, facet, type, meal, ingredient, method } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string;
+  }>();
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -74,10 +79,16 @@ export function RecipeListScreen() {
   const load = useCallback(async () => {
     try {
       const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
-      const items = docs.map(toListItem);
-      setRecipes(isFacet(facet) ? items.filter(r => matchFacet(r, facet)) : items);
+      let items = docs.map(toListItem);
+      if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
+      // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
+      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method]];
+      for (const [axis, value] of axes) {
+        if (value) items = items.filter(r => matchTag(r, axis, value));
+      }
+      setRecipes(items);
     } catch { }
-  }, [filter, facet]);
+  }, [filter, facet, type, meal, ingredient, method]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -110,7 +121,14 @@ export function RecipeListScreen() {
             <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
-            <Text style={s.title}>{isFacet(facet) ? facetLabel(facet) : (filter === 'All' ? 'All Recipes' : filter)}</Text>
+            <Text style={s.title}>{
+              isFacet(facet) ? facetLabel(facet)
+                : ingredient ? prettyTag(ingredient)
+                : type ? prettyTag(type)
+                : meal ? prettyTag(meal)
+                : method ? prettyTag(method)
+                : (filter === 'All' ? 'All Recipes' : filter)
+            }</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
           <IcoBtn>

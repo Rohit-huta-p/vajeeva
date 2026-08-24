@@ -14,7 +14,7 @@ import { FilterChip } from '../components/shared/FilterChip';
 import { WelcomeCard } from '../components/shared/WelcomeCard';
 import { SaveNudge } from '../components/shared/SaveNudge';
 import {
-  MkSprout, IconUser, IconLeaf, IconChev, IconClock, IconDrop,
+  MkSprout, IconUser, IconLeaf, IconChev, IconClock, IconDrop, IconMoon, IconSpoon,
 } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
@@ -52,6 +52,8 @@ export function HomeScreen() {
   const facetIcon = (icon: string) => {
     if (icon === 'clock') return <IconClock size={sc(12)} color={colors.amber2} />;
     if (icon === 'drop')  return <IconDrop size={sc(12)} color={colors.green} />;
+    if (icon === 'moon')  return <IconMoon size={sc(12)} color={colors.amber2} />;
+    if (icon === 'spoon') return <IconSpoon size={sc(12)} color={colors.clay} />;
     return <IconLeaf size={sc(12)} color={colors.green} />; // 'leaf' → No-cook
   };
 

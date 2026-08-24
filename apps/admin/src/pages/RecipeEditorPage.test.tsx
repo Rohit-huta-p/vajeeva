@@ -42,7 +42,9 @@ function renderCreate() {
 }
 
 it('create mode: Publish posts a valid RecipeInput with status published', async () => {
-  const fetchMock = vi.fn().mockResolvedValue(new Response(JSON.stringify({}), { status: 201 }));
+  // Fresh Response per call — the editor also GETs /api/admin/tags on mount, and
+  // a reused Response body can only be read once.
+  const fetchMock = vi.fn((..._a: any[]) => Promise.resolve(new Response(JSON.stringify({}), { status: 201 })));
   vi.stubGlobal('fetch', fetchMock);
   setToken('t');
   renderCreate();
@@ -53,7 +55,7 @@ it('create mode: Publish posts a valid RecipeInput with status published', async
   await userEvent.click(screen.getByRole('button', { name: /publish/i }));
 
   expect(await screen.findByText('list')).toBeInTheDocument();
-  const [url, init] = fetchMock.mock.calls[0];
+  const [url, init] = fetchMock.mock.calls.find(c => c[0] === '/api/admin/recipes')!;
   expect(url).toBe('/api/admin/recipes');
   expect(init.method).toBe('POST');
   const body = JSON.parse(init.body);
@@ -63,7 +65,7 @@ it('create mode: Publish posts a valid RecipeInput with status published', async
 });
 
 it('create mode: invalid slug shows a validation error and sends nothing', async () => {
-  const fetchMock = vi.fn();
+  const fetchMock = vi.fn((..._a: any[]) => Promise.resolve(new Response(JSON.stringify({}), { status: 200 })));
   vi.stubGlobal('fetch', fetchMock);
   setToken('t');
   renderCreate();
@@ -73,13 +75,15 @@ it('create mode: invalid slug shows a validation error and sends nothing', async
   await userEvent.type(screen.getByLabelText(/step 1 text/i), 'Y');
   await userEvent.click(screen.getByRole('button', { name: /publish/i }));
   expect(await screen.findByRole('alert')).toHaveTextContent('slug');
-  expect(fetchMock).not.toHaveBeenCalled();
+  // Validation blocked the save — no recipe write happened (the mount vocab GET is allowed).
+  expect(fetchMock.mock.calls.some(c => c[0] === '/api/admin/recipes')).toBe(false);
 });
 
 it('edit mode: loads the recipe and PUTs on save', async () => {
-  const fetchMock = vi.fn()
-    .mockResolvedValueOnce(new Response(JSON.stringify([DOC]), { status: 200 }))
-    .mockResolvedValueOnce(new Response(JSON.stringify({}), { status: 200 }));
+  // URL-aware: GET /api/admin/recipes → [DOC]; the mount /api/admin/tags GET and
+  // the PUT both get {}. Fresh Response per call (bodies are single-read).
+  const fetchMock = vi.fn((...args: any[]) =>
+    Promise.resolve(new Response(JSON.stringify(args[0] === '/api/admin/recipes' ? [DOC] : {}), { status: 200 })));
   vi.stubGlobal('fetch', fetchMock);
   setToken('t');
   render(
@@ -93,7 +97,7 @@ it('edit mode: loads the recipe and PUTs on save', async () => {
   expect(await screen.findByDisplayValue('Coconut Burfi')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /save draft/i }));
   expect(await screen.findByText('list')).toBeInTheDocument();
-  const [url, init] = fetchMock.mock.calls[1];
+  const [url, init] = fetchMock.mock.calls.find(c => c[0] === '/api/admin/recipes/r1')!;
   expect(url).toBe('/api/admin/recipes/r1');
   expect(init.method).toBe('PUT');
   expect(JSON.parse(init.body).status).toBe('draft');
@@ -122,9 +126,9 @@ it('hero gallery: renders the "Add hero image" file input', async () => {
 });
 
 it('hero gallery: uploading a file calls /api/admin/uploads and shows thumbnail', async () => {
-  const uploadMock = vi.fn().mockResolvedValue(
+  const uploadMock = vi.fn(() => Promise.resolve(
     new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
-  );
+  ));
   vi.stubGlobal('fetch', uploadMock);
   setToken('admin-tok');
   renderCreate();
@@ -143,9 +147,9 @@ it('hero gallery: uploading a file calls /api/admin/uploads and shows thumbnail'
 });
 
 it('hero gallery: shows inline error when upload returns 400', async () => {
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+  vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(
     new Response(JSON.stringify({ error: 'File too large (max 8MB)' }), { status: 400 })
-  ));
+  )));
   setToken('admin-tok');
   renderCreate();
 
@@ -158,9 +162,9 @@ it('hero gallery: shows inline error when upload returns 400', async () => {
 });
 
 it('hero gallery: remove button deletes the image from the list', async () => {
-  vi.stubGlobal('fetch', vi.fn().mockResolvedValue(
+  vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(
     new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
-  ));
+  )));
   setToken('admin-tok');
   renderCreate();
 
