@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { View, Text } from 'react-native';
+import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet } from '../../theme/scale';
+import { useThemedStyles } from '../../theme/ThemeContext';
 
 export interface Ingredient {
   name: string;
@@ -13,6 +14,7 @@ export interface Ingredient {
 export function IngredientTable({ ingredients, unit }: {
   ingredients: Ingredient[]; unit: 'g' | 'cup';
 }) {
+  const s = useThemedStyles(makeStyles);
   let visibleIndex = 0;
   return (
     <View>
@@ -36,9 +38,9 @@ export function IngredientTable({ ingredients, unit }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   row: { flexDirection: 'row', paddingVertical: 7, paddingHorizontal: 14 },
-  odd: { backgroundColor: 'rgba(233,225,208,0.45)' },
+  odd: { backgroundColor: colors.rowAlt },
   stage: {
     fontSize: 8, fontFamily: fonts.sans, fontWeight: '800',
     color: colors.amber, letterSpacing: 0.6, paddingTop: 9, paddingBottom: 3, paddingHorizontal: 14,

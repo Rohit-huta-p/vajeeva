@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { TouchableOpacity, View, Text, Image } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { FitBadge } from './FitBadge';
 import { CategoryIll, categoryTint, IconClock, IconHeart, IconHeartFilled, IconList, IconJar } from './icons';
 import { cloudThumb } from '../../api/recipes';
@@ -22,6 +23,8 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
   saved?: boolean;
   onToggleSave?: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const [tileW, setTileW] = useState(0);
   const showFit = FEATURES.fitBadge && recipe.fit != null;
   const time = recipe.cookTimeMin > 0 ? `${recipe.cookTimeMin} min` : 'No-cook';
@@ -104,7 +107,7 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   card: {
     backgroundColor: colors.cream, borderWidth: 1, borderColor: colors.line,
     borderRadius: 13, padding: 7,

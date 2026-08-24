@@ -185,6 +185,14 @@ export function IconDrop({ size = 13, color = colors.green }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M12 4.2c2.8 3.7 5.3 6.2 5.3 9.3a5.3 5.3 0 0 1-10.6 0C6.7 10.4 9.2 7.9 12 4.2z" /></Svg>;
 }
 
+export function IconMoon({ size = 13, color = colors.amber2 }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M20 14.5A8 8 0 1 1 10 4a6.2 6.2 0 0 0 10 10.5z" /></Svg>;
+}
+
+export function IconSpoon({ size = 13, color = colors.clay }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Ellipse {...ln(color)} cx={12} cy={7.3} rx={3.3} ry={4.5} /><Path {...ln(color)} d="M12 11.8V20" /></Svg>;
+}
+
 export function IconHeart({ size = 15, color = colors.clay }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M12 20s-7-4.6-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.4-7 10-7 10z" /></Svg>;
 }

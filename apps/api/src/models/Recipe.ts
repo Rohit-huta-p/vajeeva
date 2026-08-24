@@ -38,6 +38,16 @@ const RecipeSchema = new mongoose.Schema({
   sources:     [{ text: String, citation: String }],
   yieldStr:    String,
   shelfLife:   String,
+  // Discovery tags — codes from the TagConfig vocab.
+  // See docs/specs/2026-08-24-discovery-tags.md.
+  type:            { type: String, default: '' },
+  meals:           { type: [String], default: [] },
+  mainIngredients: { type: [String], default: [] },
+  methods:         { type: [String], default: [] },
+  dietTags:        { type: [String], default: [] },
+  makeAhead:       { type: Boolean, default: false },
+  prepAheadNote:   { type: String, default: '' },
+  totalTimeMin:    { type: Number },
   status:      { type: String, enum: ['published', 'draft'], default: 'draft' },
   images:      { type: [ImageSchema], default: [] },
 }, { timestamps: true });

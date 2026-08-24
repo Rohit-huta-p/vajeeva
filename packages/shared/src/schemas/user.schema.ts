@@ -8,11 +8,15 @@ export const UserSchema = z.object({
   createdAt: z.date().default(() => new Date()),
 });
 
+export const GenderSchema = z.enum(['female', 'male', 'other', 'prefer_not_to_say']);
+
 export const RegisterInputSchema = z.object({
   email:    z.string().email(),
   password: z.string().min(8),
   name:     z.string().optional(),
   phone:    z.string().optional(),
+  age:      z.coerce.number().int().min(13).max(120).optional(),
+  gender:   GenderSchema.optional(),
 });
 
 // No min-length at login — password policy applies at registration only;

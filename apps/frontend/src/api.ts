@@ -50,8 +50,10 @@ api.interceptors.response.use(
 export const authApi = {
   login: (email: string, password: string) =>
     api.post<{ accessToken: string; refreshToken?: string }>('/api/auth/login', { email, password }),
-  // name/phone are forward-compat for BE-AUTH; today's zod schema strips them.
-  register: (email: string, password: string, extra?: { name?: string; phone?: string }) =>
+  register: (
+    email: string, password: string,
+    extra?: { name?: string; phone?: string; age?: number; gender?: string },
+  ) =>
     api.post<{ accessToken: string; refreshToken?: string }>('/api/auth/register', { email, password, ...extra }),
   refresh: (rt: string) =>
     api.post<{ accessToken: string }>('/api/auth/refresh', { refreshToken: rt }),

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, DimensionValue } from 'react-native';
-import { colors, fonts, shadows } from '../../theme/tokens';
+import { View, Text, TouchableOpacity, Image, DimensionValue } from 'react-native';
+import { fonts, shadows, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconPlay, CategoryIll } from './icons';
 import { cloudThumb } from '../../api/recipes';
 import type { RecipeListItem } from '../../api/recipes';
@@ -9,6 +10,8 @@ import { scaledSheet, sc } from '../../theme/scale';
 export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }: {
   recipe: RecipeListItem; currentStep: number; totalSteps: number; onPress: () => void;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const progress = totalSteps > 0 ? currentStep / totalSteps : 0;
   const fillWidth: DimensionValue = `${Math.round(progress * 100)}%`;
   return (
@@ -37,7 +40,7 @@ export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 10,
     backgroundColor: colors.green, borderRadius: 16,

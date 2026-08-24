@@ -5,13 +5,14 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
-import { isFacet, facetLabel, matchFacet } from '../config/facets';
+import { isFacet, facetLabel, matchFacet, matchTag, type TagAxis } from '../config/facets';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -28,6 +29,9 @@ const LABEL_SUB: Record<string, string> = {
   Liquid: 'drinks · soups · buttermilk',
   'Semi-solid': 'porridge · puddings · chutneys',
 };
+// Title-case a tag code for the header ('black-gram' → 'Black gram').
+const prettyTag = (v: string) => v.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
+
 function textureToLabel(texture?: string): string {
   if (!texture) return 'All';
   const t = texture.toLowerCase();
@@ -48,35 +52,43 @@ function columnsFor(width: number): number {
 // A grid cell is either a recipe or an invisible spacer padding the last row.
 type GridItem = RecipeListItem | { filler: true; slug: string };
 
-// Round icon button per prototype .icobtn (IconButton atom is mid-refit by Pam).
-function IcoBtn({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) {
-  return (
-    <TouchableOpacity style={s.icobtn} onPress={onPress}>
-      {children}
-    </TouchableOpacity>
-  );
-}
-
 export function RecipeListScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { width } = useWindowDimensions();
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
-  const { texture, facet } = useLocalSearchParams<{ texture?: string; facet?: string }>();
+  const { texture, facet, type, meal, ingredient, method } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string;
+  }>();
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+
+  // Round icon button per prototype .icobtn.
+  const IcoBtn = ({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) => (
+    <TouchableOpacity style={s.icobtn} onPress={onPress}>
+      {children}
+    </TouchableOpacity>
+  );
 
   // A `facet` param (Home mood chips) filters within the selected texture, so
   // the texture chips still narrow the results.
   const load = useCallback(async () => {
     try {
       const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
-      const items = docs.map(toListItem);
-      setRecipes(isFacet(facet) ? items.filter(r => matchFacet(r, facet)) : items);
+      let items = docs.map(toListItem);
+      if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
+      // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
+      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method]];
+      for (const [axis, value] of axes) {
+        if (value) items = items.filter(r => matchTag(r, axis, value));
+      }
+      setRecipes(items);
     } catch { }
-  }, [filter, facet]);
+  }, [filter, facet, type, meal, ingredient, method]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -109,7 +121,14 @@ export function RecipeListScreen() {
             <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
-            <Text style={s.title}>{isFacet(facet) ? facetLabel(facet) : (filter === 'All' ? 'All Recipes' : filter)}</Text>
+            <Text style={s.title}>{
+              isFacet(facet) ? facetLabel(facet)
+                : ingredient ? prettyTag(ingredient)
+                : type ? prettyTag(type)
+                : meal ? prettyTag(meal)
+                : method ? prettyTag(method)
+                : (filter === 'All' ? 'All Recipes' : filter)
+            }</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
           <IcoBtn>
@@ -166,7 +185,7 @@ export function RecipeListScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   // No horizontal padding on the page: the header and chips carry their own
   // 14pt inset, while the well below bleeds edge-to-edge so the tray spans the

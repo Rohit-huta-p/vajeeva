@@ -1,7 +1,7 @@
 import { Tabs } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { colors } from '../../src/theme/tokens';
+import { useTheme } from '../../src/theme/ThemeContext';
 import { useIsDesktop } from '../../src/hooks/useIsDesktop';
 import { TabBar } from '../../src/components/layout/TabBar';
 import { Sidebar } from '../../src/components/layout/Sidebar';
@@ -11,13 +11,14 @@ import { Sidebar } from '../../src/components/layout/Sidebar';
 // their own (iOS-frame-aware) SafeAreaView — no double padding. Bottom edge is
 // owned by TabBar / the screens.
 export default function TabsLayout() {
+  const { colors } = useTheme();
   const isDesktop = useIsDesktop();
 
   if (isDesktop) {
     // Desktop: Expo Router Tabs still handles routing; default tab bar is
     // hidden and the Sidebar renders alongside the screen area.
     return (
-      <SafeAreaView style={s.safe} edges={['top']}>
+      <SafeAreaView style={[s.safe, { backgroundColor: colors.bone }]} edges={['top']}>
         <View style={s.shell}>
           <Sidebar />
           <View style={s.main}>
@@ -29,14 +30,14 @@ export default function TabsLayout() {
   }
 
   return (
-    <SafeAreaView style={s.safe} edges={['top']}>
+    <SafeAreaView style={[s.safe, { backgroundColor: colors.bone }]} edges={['top']}>
       <Tabs tabBar={() => <TabBar />} screenOptions={{ headerShown: false }} />
     </SafeAreaView>
   );
 }
 
 const s = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: colors.bone },
+  safe: { flex: 1 },
   shell: { flex: 1, flexDirection: 'row' },
   main: { flex: 1 },
 });

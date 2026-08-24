@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { View, Text } from 'react-native';
+import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet } from '../../theme/scale';
+import { useThemedStyles } from '../../theme/ThemeContext';
 
 export interface Step {
   phase?: string;
@@ -9,6 +10,7 @@ export interface Step {
 }
 
 export function StepList({ steps }: { steps: Step[] }) {
+  const s = useThemedStyles(makeStyles);
   return (
     <View>
       {steps.map((step, i) => (
@@ -26,10 +28,10 @@ export function StepList({ steps }: { steps: Step[] }) {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   row: {
     flexDirection: 'row', gap: 9, paddingVertical: 7,
-    borderBottomWidth: 1, borderBottomColor: 'rgba(229,221,204,0.7)',
+    borderBottomWidth: 1, borderBottomColor: colors.line,
   },
   lastRow: { borderBottomWidth: 0 },
   circle: {

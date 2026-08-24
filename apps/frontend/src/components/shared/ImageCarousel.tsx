@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Image, FlatList, StyleSheet, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import { colors } from '../../theme/tokens';
+import { View, Image, FlatList, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { type Colors } from '../../theme/tokens';
+import { useThemedStyles } from '../../theme/ThemeContext';
 import { scaledSheet, sc } from '../../theme/scale';
 import type { RecipeImage } from '../../api/recipes';
 
@@ -16,6 +17,7 @@ export function ImageCarousel({ images, height, radius = 0, placeholderColor }: 
   /** surface shown while images load — match the host theme (default sand) */
   placeholderColor?: string;
 }) {
+  const s = useThemedStyles(makeStyles);
   const [width, setWidth] = useState(0);
   const [page, setPage] = useState(0);
 
@@ -62,7 +64,7 @@ export function ImageCarousel({ images, height, radius = 0, placeholderColor }: 
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   wrap: {
     width: '100%',
     overflow: 'hidden',

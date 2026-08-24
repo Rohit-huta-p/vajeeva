@@ -1,7 +1,8 @@
 import React from 'react';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { usePathname, useRouter } from 'expo-router';
-import { colors, fonts, spacing } from '../../theme/tokens';
+import { fonts, spacing, type Colors } from '../../theme/tokens';
+import { useThemedStyles } from '../../theme/ThemeContext';
 
 const NAV = [
   { href: '/', label: 'Home' },
@@ -10,6 +11,7 @@ const NAV = [
 ] as const;
 
 export function Sidebar() {
+  const s = useThemedStyles(makeStyles);
   const pathname = usePathname();
   const router = useRouter();
   return (
@@ -36,7 +38,7 @@ export function Sidebar() {
   );
 }
 
-const s = StyleSheet.create({
+const makeStyles = (colors: Colors) => StyleSheet.create({
   sidebar: {
     width: 240,
     backgroundColor: colors.sand,

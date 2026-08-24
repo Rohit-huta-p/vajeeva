@@ -1,41 +1,17 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, StyleSheet, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, SafeAreaView, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
-import { colors, fonts, shadows } from '../theme/tokens';
+import { fonts, shadows, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { CategoryIll, categoryTint } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { cloudThumb } from '../api/recipes';
-import type { RecipeListItem } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 
-// Prototype .rcard — compact 2-col grid card.
-function SavedCard({ recipe, onPress }: { recipe: RecipeListItem; onPress: () => void }) {
-  return (
-    <TouchableOpacity style={s.card} onPress={onPress} activeOpacity={0.92}>
-      <View style={[s.rim, { backgroundColor: categoryTint(recipe.category) }]}>
-        {recipe.imageUrl ? (
-          <Image
-            source={{ uri: cloudThumb(recipe.imageUrl, 500, 220) }}
-            accessibilityLabel={recipe.nameEn}
-            style={s.rimImg}
-            resizeMode="cover"
-          />
-        ) : (
-          <CategoryIll category={recipe.category} size={sc(60)} />
-        )}
-      </View>
-      <Text style={s.name} numberOfLines={1}>{recipe.nameEn}</Text>
-      {recipe.nameTa ? <Text style={s.skt} numberOfLines={1}>{recipe.nameTa}</Text> : null}
-      <Text style={s.meta}>
-        {recipe.category.charAt(0).toUpperCase() + recipe.category.slice(1)}
-        {recipe.cookTimeMin > 0 ? ` · ${recipe.cookTimeMin} min` : ''}
-      </Text>
-    </TouchableOpacity>
-  );
-}
-
 export function SavedScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { recipes, loading } = useSavedRecipes();
 
@@ -56,14 +32,36 @@ export function SavedScreen() {
             columnWrapperStyle={s.gridRow}
             renderItem={({ item }) => (
               <View style={s.col}>
-                <SavedCard recipe={item} onPress={() => router.push(`/recipe/${item.slug}` as any)} />
+                {/* Prototype .rcard — compact 2-col grid card. */}
+                <TouchableOpacity
+                  style={s.card}
+                  onPress={() => router.push(`/recipe/${item.slug}` as any)}
+                  activeOpacity={0.92}
+                >
+                  <View style={[s.rim, { backgroundColor: categoryTint(item.category) }]}>
+                    {item.imageUrl ? (
+                      <Image
+                        source={{ uri: cloudThumb(item.imageUrl, 500, 220) }}
+                        accessibilityLabel={item.nameEn}
+                        style={s.rimImg}
+                        resizeMode="cover"
+                      />
+                    ) : (
+                      <CategoryIll category={item.category} size={sc(60)} />
+                    )}
+                  </View>
+                  <Text style={s.name} numberOfLines={1}>{item.nameEn}</Text>
+                  {item.nameTa ? <Text style={s.skt} numberOfLines={1}>{item.nameTa}</Text> : null}
+                  <Text style={s.meta}>
+                    {item.category.charAt(0).toUpperCase() + item.category.slice(1)}
+                    {item.cookTimeMin > 0 ? ` · ${item.cookTimeMin} min` : ''}
+                  </Text>
+                </TouchableOpacity>
               </View>
             )}
             contentContainerStyle={s.grid}
             showsVerticalScrollIndicator={false}
-            ListEmptyComponent={
-              <Text style={s.empty}>No saved recipes yet.</Text>
-            }
+            ListEmptyComponent={<Text style={s.empty}>No saved recipes yet.</Text>}
           />
         )}
       </View>
@@ -71,7 +69,7 @@ export function SavedScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   page: { flex: 1, paddingHorizontal: 14, paddingTop: 8, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },

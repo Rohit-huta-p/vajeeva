@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, StyleSheet, SafeAreaView, ActivityIndicator,
+  View, Text, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { colors, fonts, spacing } from '../theme/tokens';
+import { fonts, type Colors } from '../theme/tokens';
+import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { ContraCard } from '../components/shared/ContraCard';
 import { IngredientTable } from '../components/shared/IngredientTable';
 import { StepList } from '../components/shared/StepList';
@@ -63,6 +64,8 @@ function toDetailView(doc: RecipeDoc): DetailView {
 }
 
 export function RecipeDetailScreen() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
@@ -183,7 +186,7 @@ export function RecipeDetailScreen() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   root: { flex: 1, backgroundColor: colors.bone },
   loading: { flex: 1 },
   hero: {
@@ -209,7 +212,7 @@ const s = scaledSheet({
     flexDirection: 'row', alignItems: 'center', gap: 6,
     paddingTop: 8, paddingBottom: 11,
   },
-  fnLabel: { fontSize: 9, fontFamily: fonts.sans, color: 'rgba(42,37,30,0.35)' },
+  fnLabel: { fontSize: 9, fontFamily: fonts.sans, color: colors.labelFaint },
   fnPill: {
     borderWidth: 1, borderStyle: 'dashed', borderColor: 'rgba(198,144,47,0.45)',
     borderRadius: 4, paddingHorizontal: 8, paddingVertical: 2,

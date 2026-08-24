@@ -31,6 +31,14 @@ export interface RecipeListItem {
   yieldStr?: string;
   /** raw URL of the recipe's first image, if any (thumb via cloudThumb) */
   imageUrl?: string;
+  // Discovery tags (admin-authored; empty until a recipe is tagged).
+  // See docs/specs/2026-08-24-discovery-tags.md.
+  type?: string;
+  meals?: string[];
+  mainIngredients?: string[];
+  methods?: string[];
+  dietTags?: string[];
+  makeAhead?: boolean;
 }
 
 /**
@@ -64,6 +72,12 @@ export interface RecipeDoc {
   yieldStr?: string;
   shelfLife?: string;
   images?: RecipeImage[] | null;
+  type?: string;
+  meals?: string[];
+  mainIngredients?: string[];
+  methods?: string[];
+  dietTags?: string[];
+  makeAhead?: boolean;
 }
 
 /** Valid images sorted by their order field (absent/null-safe). */
@@ -102,5 +116,11 @@ export function toListItem(doc: RecipeDoc): RecipeListItem {
     stepCount: (doc.steps ?? []).length,
     yieldStr: doc.yieldStr,
     imageUrl: sortImages(doc.images)[0]?.url,
+    type: doc.type,
+    meals: doc.meals,
+    mainIngredients: doc.mainIngredients,
+    methods: doc.methods,
+    dietTags: doc.dietTags,
+    makeAhead: doc.makeAhead,
   };
 }

@@ -59,6 +59,16 @@ const NAV_ITEMS = [
       </svg>
     ),
   },
+  {
+    to: '/tags',
+    label: 'Tags',
+    icon: (
+      <svg fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24" className="w-[17px] h-[17px] shrink-0">
+        <path d="M20.6 13.4 12 22l-9-9V4a1 1 0 0 1 1-1h9z" />
+        <circle cx="7.5" cy="7.5" r="1.4" fill="currentColor" stroke="none" />
+      </svg>
+    ),
+  },
 ];
 
 const PAGE_TITLES: Record<string, string> = {
@@ -68,6 +78,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/subrecipes': 'Sub-recipes',
   '/users': 'Users',
   '/health-flags': 'Health Flags',
+  '/tags': 'Tags',
   '/recipes/new': 'New Recipe',
 };
 
@@ -80,7 +91,7 @@ export function AdminLayout() {
   const { pathname } = useLocation();
 
   return (
-    <div className="flex h-full bg-cream">
+    <div className="flex max-h-full bg-cream">
       <aside className="w-[240px] bg-sand border-r border-ink/20 flex flex-col shrink-0">
         <div className="flex items-center gap-2.5 px-4 py-[18px] border-b border-ink/20">
           <div className="w-8 h-8 bg-brand text-white rounded-lg flex items-center justify-center font-serif text-lg font-bold shrink-0">
@@ -99,8 +110,7 @@ export function AdminLayout() {
               to={item.to}
               end={item.to === '/'}
               className={({ isActive }) =>
-                `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] transition-colors ${
-                  isActive ? 'bg-brand-bg text-brand' : 'text-ink/55 hover:bg-ink/5 hover:text-ink'
+                `flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13.5px] transition-colors ${isActive ? 'bg-brand-bg text-brand' : 'text-ink/55 hover:bg-ink/5 hover:text-ink'
                 }`
               }
             >

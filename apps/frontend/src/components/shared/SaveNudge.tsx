@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { fonts, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconHeart } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -9,6 +10,8 @@ import { scaledSheet, sc } from '../../theme/scale';
  * (the heart) and reassure that saved recipes stay offline for the kitchen.
  */
 export function SaveNudge() {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <View style={s.card}>
       <View style={s.ic}><IconHeart size={sc(17)} color={colors.clay} /></View>
@@ -17,7 +20,7 @@ export function SaveNudge() {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   card: {
     flexDirection: 'row', alignItems: 'center', gap: 11,
     backgroundColor: colors.cream, borderRadius: 14,

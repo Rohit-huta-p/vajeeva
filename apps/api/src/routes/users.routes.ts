@@ -14,6 +14,8 @@ function userToDTO(doc: any) {
     email:         doc.email,
     name:          doc.name  ?? '',
     phone:         doc.phone ?? '',
+    age:           doc.age   ?? null,
+    gender:        doc.gender ?? null,
     role:          doc.role,
     healthProfile: doc.healthProfile ?? [],
     joinedAt:      (doc.createdAt ?? doc._id.getTimestamp()).toISOString(),
@@ -25,14 +27,18 @@ function userToDTO(doc: any) {
 usersRouter.patch('/me', requireAuth, async (req, res, next) => {
   try {
     const userId = (req as any).user.userId;
-    const { name, phone, healthProfile } = req.body as {
+    const { name, phone, age, gender, healthProfile } = req.body as {
       name?: string;
       phone?: string;
+      age?: number;
+      gender?: string;
       healthProfile?: string[];
     };
     const updates: Record<string, unknown> = {};
     if (name          !== undefined) updates.name          = name;
     if (phone         !== undefined) updates.phone         = phone;
+    if (age           !== undefined) updates.age           = age;
+    if (gender        !== undefined) updates.gender        = gender;
     if (healthProfile !== undefined) updates.healthProfile = healthProfile;
 
     const user = await User.findByIdAndUpdate(userId, updates, { new: true }).lean();

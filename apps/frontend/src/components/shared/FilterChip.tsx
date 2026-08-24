@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
-import { colors, fonts } from '../../theme/tokens';
+import { TouchableOpacity, Text } from 'react-native';
+import { fonts, type Colors } from '../../theme/tokens';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconCheck } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -9,6 +10,8 @@ export function FilterChip({ label, active, onPress, safeForMe, icon }: {
   /** optional leading icon (e.g. Home mood chips); the active check takes its place */
   icon?: React.ReactNode;
 }) {
+  const { colors } = useTheme();
+  const s = useThemedStyles(makeStyles);
   return (
     <TouchableOpacity
       style={[s.chip, active && s.active, safeForMe && s.safeChip]}
@@ -20,7 +23,7 @@ export function FilterChip({ label, active, onPress, safeForMe, icon }: {
   );
 }
 
-const s = scaledSheet({
+const makeStyles = (colors: Colors) => scaledSheet({
   chip: {
     flexDirection: 'row', alignItems: 'center', gap: 5,
     paddingHorizontal: 11, paddingVertical: 6, borderRadius: 999,
