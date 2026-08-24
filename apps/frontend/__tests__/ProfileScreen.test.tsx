@@ -15,7 +15,7 @@ jest.mock('../src/hooks/useHealthFlags', () => ({
 }));
 // Isolate the screen from the Modal editors (covered by their own tests).
 jest.mock('../src/components/shared/HealthProfileSheet', () => ({ HealthProfileSheet: () => null }));
-jest.mock('../src/components/shared/NameEditSheet', () => ({ NameEditSheet: () => null }));
+jest.mock('../src/components/shared/ProfileEditSheet', () => ({ ProfileEditSheet: () => null }));
 jest.mock('../src/components/shared/ChoiceSheet', () => ({ ChoiceSheet: () => null }));
 
 import React from 'react';

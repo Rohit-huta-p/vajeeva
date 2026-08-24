@@ -13,11 +13,12 @@ import {
 } from '../components/shared/icons';
 import { SettingsGroup, SettingsRow, SettingsToggle } from '../components/shared/Settings';
 import { HealthProfileSheet } from '../components/shared/HealthProfileSheet';
-import { NameEditSheet } from '../components/shared/NameEditSheet';
+import { ProfileEditSheet } from '../components/shared/ProfileEditSheet';
 import { ChoiceSheet } from '../components/shared/ChoiceSheet';
 import { useHealthProfile } from '../hooks/useHealthProfile';
 import { useHealthFlags } from '../hooks/useHealthFlags';
 import { usePreferences } from '../hooks/usePreferences';
+import { genderLabel } from '../config/gender';
 
 // Placeholders until the real endpoints exist — a support inbox and the store
 // listing. Kept as consts so there's one spot to fill in at release.
@@ -39,13 +40,14 @@ export default function ProfileScreen() {
   const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const [editingHealth, setEditingHealth] = useState(false);
-  const [editingName, setEditingName] = useState(false);
+  const [editingProfile, setEditingProfile] = useState(false);
   const [unitsOpen, setUnitsOpen] = useState(false);
   const [appearanceOpen, setAppearanceOpen] = useState(false);
 
   const signedIn = !!user && !isGuest;
   const name = user?.name?.trim();
   const initial = name ? name[0].toUpperCase() : null;
+  const idMeta = [user?.age ? `${user.age}` : null, genderLabel(user?.gender)].filter(Boolean).join(' · ');
   const version = Constants.expoConfig?.version ?? '1.0.0';
   const labelFor = (code: string) => flags.find(f => f.code === code)?.label ?? code;
   const appearanceLabel = mode.charAt(0).toUpperCase() + mode.slice(1);
@@ -83,12 +85,13 @@ export default function ProfileScreen() {
             <View style={s.idText}>
               {name ? <Text style={s.idName}>{name}</Text> : null}
               {user?.email ? <Text style={s.idMail}>{user.email}</Text> : null}
+              {idMeta ? <Text style={s.idMeta}>{idMeta}</Text> : null}
             </View>
             <TouchableOpacity
               style={s.idEdit}
-              onPress={() => setEditingName(true)}
+              onPress={() => setEditingProfile(true)}
               accessibilityRole="button"
-              accessibilityLabel="Edit name"
+              accessibilityLabel="Edit profile"
               hitSlop={8}
             >
               <IconEdit size={sc(14)} color={colors.ink2} />
@@ -240,11 +243,13 @@ export default function ProfileScreen() {
         onClose={() => setEditingHealth(false)}
       />
       {signedIn ? (
-        <NameEditSheet
-          visible={editingName}
+        <ProfileEditSheet
+          visible={editingProfile}
           name={name ?? ''}
-          onSave={n => updateProfile({ name: n })}
-          onClose={() => setEditingName(false)}
+          age={user?.age}
+          gender={user?.gender}
+          onSave={updateProfile}
+          onClose={() => setEditingProfile(false)}
         />
       ) : null}
 
@@ -298,6 +303,7 @@ const makeStyles = (colors: Colors) => scaledSheet({
   idText: { flex: 1, minWidth: 0 },
   idName: { fontSize: 14.5, fontFamily: fonts.sans, fontWeight: '700', color: colors.ink },
   idMail: { fontSize: 10.5, fontFamily: fonts.sans, color: colors.ink2, marginTop: 2 },
+  idMeta: { fontSize: 10.5, fontFamily: fonts.sans, color: colors.muted, marginTop: 2 },
   idEdit: {
     width: 30, height: 30, borderRadius: 15, backgroundColor: colors.sand,
     alignItems: 'center', justifyContent: 'center', flexShrink: 0,
