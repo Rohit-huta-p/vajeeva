@@ -8,6 +8,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { fonts, shadows, type Colors } from '../theme/tokens';
 import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
+import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
@@ -49,8 +50,15 @@ function columnsFor(width: number): number {
   return 2;
 }
 
-// A grid cell is either a recipe or an invisible spacer padding the last row.
-type GridItem = RecipeListItem | { filler: true; slug: string };
+// A grid cell is a recipe, a loading skeleton, or an invisible spacer padding
+// the last row.
+type GridItem =
+  | RecipeListItem
+  | { skeleton: true; slug: string }
+  | { filler: true; slug: string };
+
+// Skeleton rows shown while the first fetch (or a filter change) is in flight.
+const SKELETON_ROWS = 3;
 
 export function RecipeListScreen() {
   const { colors } = useTheme();
@@ -66,6 +74,7 @@ export function RecipeListScreen() {
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Round icon button per prototype .icobtn.
   const IcoBtn = ({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) => (
@@ -87,10 +96,12 @@ export function RecipeListScreen() {
         if (value) items = items.filter(r => matchTag(r, axis, value));
       }
       setRecipes(items);
-    } catch { }
+    } catch { } finally { setLoading(false); }
   }, [filter, facet, type, meal, ingredient, method]);
 
-  useEffect(() => { load(); }, [load]);
+  // Show skeletons for the initial load and on every filter/facet change (a new
+  // query). Pull-to-refresh keeps the current list and uses the spinner instead.
+  useEffect(() => { setLoading(true); load(); }, [load]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -106,11 +117,14 @@ export function RecipeListScreen() {
   // this a lone last-row card skips the column gap and renders wider (→ a taller
   // aspect-ratio tile), breaking uniform card heights.
   const gridData = useMemo<GridItem[]>(() => {
+    if (loading) {
+      return Array.from({ length: cols * SKELETON_ROWS }, (_, i) => ({ skeleton: true as const, slug: `__skel-${i}` }));
+    }
     const rem = recipes.length % cols;
     if (rem === 0) return recipes;
     const fillers: GridItem[] = Array.from({ length: cols - rem }, (_, i) => ({ filler: true, slug: `__filler-${i}` }));
     return [...recipes, ...fillers];
-  }, [recipes, cols]);
+  }, [loading, recipes, cols]);
 
   return (
     <View style={s.root}>
@@ -157,7 +171,9 @@ export function RecipeListScreen() {
             columnWrapperStyle={s.gridRow}
             renderItem={({ item }) => (
               <View style={[s.col, { maxWidth: `${100 / cols}%` }]}>
-                {'filler' in item ? null : (
+                {'skeleton' in item ? (
+                  <SkeletonCard />
+                ) : 'filler' in item ? null : (
                   <RecipeGridCard
                     recipe={item}
                     onPress={() => router.push(`/recipe/${item.slug}`)}

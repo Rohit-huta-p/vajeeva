@@ -10,6 +10,8 @@ import { SearchBar } from '../components/shared/SearchBar';
 import { TexturePillar } from '../components/shared/TexturePillar';
 import { PickUpRail } from '../components/shared/PickUpRail';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
+import { SkeletonCard } from '../components/shared/SkeletonCard';
+import { SkeletonRail } from '../components/shared/SkeletonRail';
 import { FilterChip } from '../components/shared/FilterChip';
 import { WelcomeCard } from '../components/shared/WelcomeCard';
 import { SaveNudge } from '../components/shared/SaveNudge';
@@ -44,9 +46,9 @@ export function HomeScreen() {
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [sessionRecipe, setSessionRecipe] = useState<RecipeListItem | null>(null);
   const router = useRouter();
-  const { session, reload: reloadSession } = useCookSession();
-  const { recipes: saved, unsave, reload: reloadSaved } = useSavedRecipes();
-  const { recipes: recent, reload: reloadRecent } = useRecentlyViewed();
+  const { session, loading: sessionLoading, reload: reloadSession } = useCookSession();
+  const { recipes: saved, loading: savedLoading, unsave, reload: reloadSaved } = useSavedRecipes();
+  const { recipes: recent, loading: recentLoading, reload: reloadRecent } = useRecentlyViewed();
 
   // Mood-chip leading icon, resolved from the facet's icon id (facets.ts stays JSX-free).
   const facetIcon = (icon: string) => {
@@ -110,6 +112,9 @@ export function HomeScreen() {
     }, [reloadSession, reloadSaved, reloadRecent]),
   );
 
+  // First-mount loads only — reload() on tab re-focus doesn't reset these, so
+  // skeletons show once at launch, not on every return to Home.
+  const historyLoading = sessionLoading || recentLoading;
   const hasHistory = !!session || recent.length > 0;
 
   return (
@@ -134,8 +139,14 @@ export function HomeScreen() {
       {/* Content well — sand tray with a rounded lip (mirrors RecipeListScreen) */}
       <View style={s.well}>
         <ScrollView ref={scrollRef} contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
-          {/* Zone 1 · Jump back in — or a welcome for a brand-new patient */}
-          {hasHistory ? (
+          {/* Zone 1 · Jump back in — skeleton while on-device history loads,
+              then the rail, or a welcome for a brand-new patient */}
+          {historyLoading ? (
+            <>
+              <Text style={s.zone}>Jump back in</Text>
+              <SkeletonRail />
+            </>
+          ) : hasHistory ? (
             <>
               <Text style={s.zone}>Jump back in</Text>
               <PickUpRail
@@ -200,7 +211,13 @@ export function HomeScreen() {
               </TouchableOpacity>
             ) : null}
           </View>
-          {saved.length > 0 ? (
+          {savedLoading ? (
+            <View style={s.savedGrid}>
+              {[0, 1].map(i => (
+                <View key={i} style={s.savedCol}><SkeletonCard /></View>
+              ))}
+            </View>
+          ) : saved.length > 0 ? (
             <View style={s.savedGrid}>
               {saved.slice(0, 2).map(r => (
                 <View key={r.slug} style={s.savedCol}>

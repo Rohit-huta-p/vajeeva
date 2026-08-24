@@ -139,7 +139,7 @@ const makeStyles = (colors: Colors) => scaledSheet({
   // minHeight = 2 × lineHeight reserves two lines for every name, so a 1-line
   // name occupies the same vertical space as a 2-line one.
   name: { fontSize: 13, lineHeight: 15.5, minHeight: 31, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, marginTop: 7 },
-  tamil: { fontSize: 10, lineHeight: 14, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 1 },
+  tamil: { fontSize: 10, lineHeight: 14, minHeight: 14, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 1 },
   // Single row (no wrap): steps stays fixed, the yield item shrinks + ellipsizes.
   meta: { flexDirection: 'row', alignItems: 'center', marginTop: 5 },
   metaItem: { flexDirection: 'row', alignItems: 'center', gap: 3 },
