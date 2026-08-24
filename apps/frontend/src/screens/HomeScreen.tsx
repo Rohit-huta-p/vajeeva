@@ -133,6 +133,10 @@ export function HomeScreen() {
           placeholder="Try coconut · a quick sweet · buttermilk"
           value={search}
           onChangeText={setSearch}
+          onSubmit={() => {
+            const q = search.trim();
+            if (q) router.push(`/recipe-list?q=${encodeURIComponent(q)}` as any);
+          }}
         />
       </View>
 

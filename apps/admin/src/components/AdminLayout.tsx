@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom';
+import { Link, NavLink, Outlet, useLocation, useSearchParams } from 'react-router-dom';
 
 const NAV_ITEMS = [
   {
@@ -89,6 +89,20 @@ function pageTitle(pathname: string): string {
 
 export function AdminLayout() {
   const { pathname } = useLocation();
+  // The recipe list is small and already fetched whole client-side
+  // (RecipeListPage), so search here is a plain substring filter shared via
+  // the URL's `q` param rather than a server round-trip — RecipeListPage
+  // reads the same param to filter. Living in the URL (not local/context
+  // state) means it survives a refresh and only actually filters on the
+  // Recipes page, where a matching reader exists.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const q = searchParams.get('q') ?? '';
+
+  function handleSearchChange(value: string) {
+    const next = new URLSearchParams(searchParams);
+    if (value) next.set('q', value); else next.delete('q');
+    setSearchParams(next, { replace: true });
+  }
 
   return (
     <div className="flex max-h-full bg-cream">
@@ -145,6 +159,8 @@ export function AdminLayout() {
               type="text"
               aria-label="Search recipes"
               placeholder="Search recipes…"
+              value={q}
+              onChange={e => handleSearchChange(e.target.value)}
               className="w-[200px] bg-bone border border-ink/20 rounded-lg pl-8 pr-3 py-[7px] text-[13px] text-ink placeholder:text-ink/55 outline-none focus:border-brand focus:bg-white"
             />
           </div>

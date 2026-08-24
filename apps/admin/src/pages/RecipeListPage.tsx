@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api, type RecipeDoc } from '../api/client';
 
 const CATEGORY_LABEL = { solid: 'Solid', liquid: 'Liquid', 'semi-solid': 'Semi-solid' } as const;
@@ -14,6 +14,8 @@ export function RecipeListPage() {
   const [recipes, setRecipes] = useState<RecipeDoc[] | null>(null);
   const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
   const [error, setError] = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const q = (searchParams.get('q') ?? '').trim().toLowerCase();
 
   useEffect(() => {
     api<RecipeDoc[]>('/api/admin/recipes').then(setRecipes).catch(e => setError(e.message));
@@ -25,9 +27,22 @@ export function RecipeListPage() {
       : <p className="p-6 text-ink/55">Loading…</p>;
   }
 
-  const visible = statusFilter === 'all' ? recipes : recipes.filter(r => r.status === statusFilter);
-  const published = recipes.filter(r => r.status === 'published').length;
-  const drafts = recipes.filter(r => r.status === 'draft').length;
+  // AdminLayout's topbar search box writes `q` to the URL; matched against
+  // name/slug (small dataset, already fetched whole — a client-side filter is
+  // simplest, no need for the public search endpoint's Atlas-backed fuzzy
+  // matching here). Status tabs/stats count within the search, not the full
+  // corpus, so "Published (n)" always matches what's on screen; the "total"
+  // stat below stays the true unfiltered corpus size.
+  const searched = q
+    ? recipes.filter(r =>
+      r.nameEn.toLowerCase().includes(q) ||
+      (r.nameTa ?? '').toLowerCase().includes(q) ||
+      r.slug.toLowerCase().includes(q))
+    : recipes;
+
+  const visible = statusFilter === 'all' ? searched : searched.filter(r => r.status === statusFilter);
+  const published = searched.filter(r => r.status === 'published').length;
+  const drafts = searched.filter(r => r.status === 'draft').length;
 
   return (
     <div className="p-6">
@@ -53,8 +68,8 @@ export function RecipeListPage() {
           className="ml-auto flex gap-0.5 bg-bone border border-ink/20 rounded-lg p-0.5"
         >
           {STATUS_TABS.map(tab => {
-            const count = tab.value === 'all' ? recipes.length
-              : recipes.filter(r => r.status === tab.value).length;
+            const count = tab.value === 'all' ? searched.length
+              : searched.filter(r => r.status === tab.value).length;
             return (
               <button
                 key={tab.value}

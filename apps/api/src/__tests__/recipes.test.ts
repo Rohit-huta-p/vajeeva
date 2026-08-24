@@ -43,6 +43,28 @@ describe('GET /api/recipes', () => {
   });
 });
 
+describe('GET /api/recipes/search', () => {
+  // The $search aggregation stage needs a live Atlas Search index (see
+  // scripts/create-search-index.ts) and errors against mongodb-memory-server,
+  // which backs this test suite (jest.config.js globalSetup) — so only the
+  // no-op empty-query path is covered here. Verify the real $search query
+  // manually against the Atlas-connected dev server (curl/Postman) after
+  // running `npm run search:create-index`.
+  it('returns [] without querying $search when q is missing', async () => {
+    await Recipe.create(FIXTURE);
+    const res = await request(app).get('/api/recipes/search');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
+  });
+
+  it('returns [] without querying $search when q is blank', async () => {
+    await Recipe.create(FIXTURE);
+    const res = await request(app).get('/api/recipes/search?q=%20');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual([]);
+  });
+});
+
 describe('GET /api/recipes/:slug', () => {
   it('returns recipe by slug', async () => {
     await Recipe.create(FIXTURE);

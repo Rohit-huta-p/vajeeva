@@ -5,8 +5,10 @@ import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconSearch } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
-export function SearchBar({ placeholder = 'Search a recipe or ingredient…', value, onChangeText }: {
+export function SearchBar({ placeholder = 'Search a recipe or ingredient…', value, onChangeText, onSubmit }: {
   placeholder?: string; value: string; onChangeText: (t: string) => void;
+  /** Fired on the keyboard's search/return key — e.g. navigate to results. */
+  onSubmit?: () => void;
 }) {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
@@ -19,6 +21,8 @@ export function SearchBar({ placeholder = 'Search a recipe or ingredient…', va
         placeholderTextColor={colors.muted}
         value={value}
         onChangeText={onChangeText}
+        returnKeyType="search"
+        onSubmitEditing={onSubmit}
       />
     </View>
   );
