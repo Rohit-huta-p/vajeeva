@@ -4,15 +4,17 @@ import { colors, fonts } from '../../theme/tokens';
 import { IconCheck } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
-export function FilterChip({ label, active, onPress, safeForMe }: {
+export function FilterChip({ label, active, onPress, safeForMe, icon }: {
   label: string; active: boolean; onPress: () => void; safeForMe?: boolean;
+  /** optional leading icon (e.g. Home mood chips); the active check takes its place */
+  icon?: React.ReactNode;
 }) {
   return (
     <TouchableOpacity
       style={[s.chip, active && s.active, safeForMe && s.safeChip]}
       onPress={onPress}
     >
-      {active ? <IconCheck size={sc(11)} color={colors.green} /> : null}
+      {active ? <IconCheck size={sc(11)} color={colors.green} /> : (icon ?? null)}
       <Text style={[s.label, active && s.activeLabel, safeForMe && s.safeLabel]}>{label}</Text>
     </TouchableOpacity>
   );

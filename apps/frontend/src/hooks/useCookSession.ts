@@ -19,15 +19,14 @@ export function useCookSession() {
   const [session, setSession] = useState<CookSession | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    let alive = true;
-    get<CookSession>(KEY).then(s => {
-      if (!alive) return;
-      setSession(s);
-      setLoading(false);
-    });
-    return () => { alive = false; };
+  // Exposed so screens can re-pull on focus (tabs stay mounted).
+  const reload = useCallback(async () => {
+    const s = await get<CookSession>(KEY);
+    setSession(s);
+    setLoading(false);
   }, []);
+
+  useEffect(() => { reload(); }, [reload]);
 
   const startSession = useCallback((s: CookSession) => {
     set(KEY, s);
@@ -48,5 +47,5 @@ export function useCookSession() {
     setSession(null);
   }, []);
 
-  return { session, loading, startSession, updateStep, clearSession };
+  return { session, loading, reload, startSession, updateStep, clearSession };
 }
