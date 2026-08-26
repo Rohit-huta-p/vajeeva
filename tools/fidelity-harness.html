@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Vajeeva fidelity harness</title>
+<style>
+  body { margin: 0; padding: 16px; background: #DDD6C6; font: 12px ui-monospace, Menlo, monospace; color: #2A251E; }
+  .bar { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .bar label { font-weight: 700; }
+  .frames { display: flex; gap: 16px; align-items: flex-start; }
+  .col { position: relative; }
+  .col h2 { margin: 0 0 6px; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+  iframe { width: 390px; height: 844px; border: 1px solid #9C9482; background: #F2EDE1; display: block; }
+  .grid { position: absolute; top: 23px; left: 0; width: 390px; height: 844px; pointer-events: none; display: none;
+          background-image: linear-gradient(rgba(180,71,46,.25) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(180,71,46,.25) 1px, transparent 1px);
+          background-size: 10px 10px; }
+  .grid.on { display: block; }
+</style>
+</head>
+<body>
+<div class="bar">
+  <label>Screen:</label>
+  <select id="screen"></select>
+  <button id="gridBtn">10px grid</button>
+  <span>app :8081 (left) vs prototype :8090 (right) · both viewports 390px</span>
+</div>
+<div class="frames">
+  <div class="col">
+    <h2>App (expo web)</h2>
+    <iframe id="app"></iframe>
+    <div class="grid" id="gridA"></div>
+  </div>
+  <div class="col">
+    <h2>Prototype</h2>
+    <iframe id="proto"></iframe>
+    <div class="grid" id="gridB"></div>
+  </div>
+</div>
+<script>
+// app route + standalone reference file (prototypes/screens/ — true
+// edge-to-edge 390px phone canvases, extracted from the device mock)
+const SCREENS = {
+  home:     { app: '/',                                       ref: 'home.html' },
+  list:     { app: '/recipe-list',                            ref: 'texture.html' },
+  detail:   { app: '/recipe/coconut-laddu-narikela-modaka',   ref: 'detail.html' },
+  sheet:    { app: '/recipe/coconut-laddu-narikela-modaka',   ref: 'aromatic-sheet.html' },
+  cook:     { app: '/cook/coconut-laddu-narikela-modaka',     ref: 'cook.html' },
+  finish:   { app: '/finish/coconut-laddu-narikela-modaka',   ref: 'finish.html' },
+  saved:    { app: '/saved',                                  ref: 'saved.html' },
+  glossary: { app: '/source/samayamulu',                      ref: 'glossary.html' },
+  // auth wave (routes land with AUTH-WAVE-1; refs already exist)
+  opening:  { app: '/auth/opening',                           ref: 'opening.html' },
+  login1:   { app: '/auth/login',                             ref: 'login-step1.html' },
+  login2:   { app: '/auth/login?step=2',                      ref: 'login-step2.html' },
+  signup1:  { app: '/auth/signup',                            ref: 'signup-step1.html' },
+  signup2:  { app: '/auth/signup?step=2',                     ref: 'signup-step2.html' },
+  signup3:  { app: '/auth/signup?step=3',                     ref: 'signup-step3.html' },
+  onboard:  { app: '/auth/onboarding',                        ref: 'onboarding.html' },
+};
+const sel = document.getElementById('screen');
+for (const k of Object.keys(SCREENS)) sel.add(new Option(k, k));
+
+const appFrame = document.getElementById('app');
+const protoFrame = document.getElementById('proto');
+
+function show(key) {
+  const t = SCREENS[key];
+  if (!t) return;
+  appFrame.src = 'http://localhost:8081' + t.app;
+  const refSrc = '/prototypes/screens/' + t.ref;
+  if (!protoFrame.src.endsWith(refSrc)) protoFrame.src = refSrc;
+  history.replaceState(null, '', '?screen=' + key);
+}
+
+sel.onchange = () => show(sel.value);
+
+document.getElementById('gridBtn').onclick = () => {
+  document.getElementById('gridA').classList.toggle('on');
+  document.getElementById('gridB').classList.toggle('on');
+};
+
+const initial = new URLSearchParams(location.search).get('screen') || 'list';
+sel.value = SCREENS[initial] ? initial : 'list';
+show(sel.value);
+</script>
+</body>
+</html>

@@ -1,13 +1,42 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { api, type RecipeDoc } from '../api/client';
 
-const CATEGORY_LABEL = { solid: 'Solid', liquid: 'Liquid', 'semi-solid': 'Semi-solid' } as const;
+type CatFilter = 'all' | 'solid' | 'liquid' | 'semi-solid';
+type SortBy    = 'recent' | 'az' | 'za';
+
+const CAT_LABEL: Record<string, string> = {
+  solid: 'Solid', liquid: 'Liquid', 'semi-solid': 'Semi-solid',
+};
+
+// Category accent colour for the top stripe on each card
+const CAT_STRIPE: Record<string, string> = {
+  solid:       '#3E6B4F',
+  liquid:      '#3E709C',
+  'semi-solid':'#C6902F',
+};
+
+// Category badge styles
+const CAT_BADGE: Record<string, string> = {
+  solid:       'bg-brand-bg text-brand',
+  liquid:      'bg-sky-bg text-sky',
+  'semi-solid':'bg-amber-bg text-amber',
+};
+
+const CAT_CHIPS: { value: CatFilter; label: string }[] = [
+  { value: 'all',        label: 'All'       },
+  { value: 'solid',      label: 'Solid'     },
+  { value: 'liquid',     label: 'Liquid'    },
+  { value: 'semi-solid', label: 'Semi-solid'},
+];
 
 export function RecipeListPage() {
-  const [recipes, setRecipes] = useState<RecipeDoc[] | null>(null);
-  const [statusFilter, setStatusFilter] = useState<'all' | 'published' | 'draft'>('all');
-  const [error, setError] = useState<string | null>(null);
+  const [recipes,   setRecipes]   = useState<RecipeDoc[] | null>(null);
+  const [catFilter, setCatFilter] = useState<CatFilter>('all');
+  const [sort,      setSort]      = useState<SortBy>('recent');
+  const [error,     setError]     = useState<string | null>(null);
+  const [searchParams] = useSearchParams();
+  const q = (searchParams.get('q') ?? '').trim().toLowerCase();
 
   useEffect(() => {
     api<RecipeDoc[]>('/api/admin/recipes').then(setRecipes).catch(e => setError(e.message));
@@ -16,77 +45,117 @@ export function RecipeListPage() {
   if (!recipes) {
     return error
       ? <p role="alert" className="p-6 text-clay">{error}</p>
-      : <p className="p-6 text-ink/55">Loading…</p>;
+      : <p className="p-6 text-ink/45">Loading…</p>;
   }
 
-  const visible = statusFilter === 'all' ? recipes : recipes.filter(r => r.status === statusFilter);
+  // Filter
+  const searched = q
+    ? recipes.filter(r =>
+        r.nameEn.toLowerCase().includes(q) ||
+        (r.nameTa ?? '').toLowerCase().includes(q) ||
+        r.slug.toLowerCase().includes(q))
+    : recipes;
+
+  const filtered = catFilter === 'all' ? searched : searched.filter(r => r.category === catFilter);
+
+  // Sort
+  const sorted = [...filtered].sort((a, b) => {
+    if (sort === 'az') return a.nameEn.localeCompare(b.nameEn);
+    if (sort === 'za') return b.nameEn.localeCompare(a.nameEn);
+    return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+  });
+
+  const drafts    = sorted.filter(r => r.status === 'draft');
+  const published = sorted.filter(r => r.status === 'published');
 
   return (
-    <main className="min-h-screen bg-cream p-6">
-      <header className="flex items-center gap-4 mb-6">
-        <h1 className="font-serif text-xl font-semibold text-ink flex-1">Recipes</h1>
+    <div className="p-5 md:p-6">
+
+      {/* ── Filter / sort bar ─────────────────── */}
+      <div className="flex flex-wrap items-center gap-2.5 mb-5">
+        {/* Category chips */}
+        <div className="flex gap-1.5 flex-wrap">
+          {CAT_CHIPS.map(c => (
+            <button
+              key={c.value}
+              type="button"
+              onClick={() => setCatFilter(c.value)}
+              className={[
+                'px-3 py-[5px] rounded-full text-[12px] font-semibold border-[1.5px] transition-all',
+                catFilter === c.value
+                  ? c.value === 'all'
+                    ? 'bg-ink text-cream border-ink'
+                    : c.value === 'solid'
+                      ? 'bg-brand-bg text-brand border-brand/30'
+                      : c.value === 'liquid'
+                        ? 'bg-sky-bg text-sky border-sky/30'
+                        : 'bg-amber-bg text-amber border-amber/30'
+                  : 'bg-bone text-ink/55 border-ink/[0.11] hover:border-ink/30',
+              ].join(' ')}
+            >
+              {c.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Sort select */}
         <select
-          aria-label="Filter by status"
-          value={statusFilter}
-          onChange={e => setStatusFilter(e.target.value as typeof statusFilter)}
-          className="border border-ink/20 rounded-lg px-3 py-2 bg-bone text-sm"
+          value={sort}
+          onChange={e => setSort(e.target.value as SortBy)}
+          className="ml-auto border border-ink/[0.11] rounded-[10px] bg-bone px-3 py-[5px] text-[12.5px] text-ink cursor-pointer"
         >
-          <option value="all">All statuses</option>
-          <option value="published">Published</option>
-          <option value="draft">Draft</option>
+          <option value="recent">Recently updated</option>
+          <option value="az">Name A–Z</option>
+          <option value="za">Name Z–A</option>
         </select>
-        <Link to="/recipes/new" className="bg-brand text-white rounded-lg px-4 py-2 text-sm font-medium">
-          New Recipe
-        </Link>
-      </header>
+      </div>
 
       {error && <p role="alert" className="mb-4 text-clay text-sm">{error}</p>}
 
-      <table className="w-full bg-white border border-ink/20 rounded-lg text-sm">
-        <thead>
-          <tr className="bg-bone text-left text-xs uppercase text-ink/55">
-            <th className="px-4 py-2.5 font-semibold">Name</th>
-            <th className="px-4 py-2.5 font-semibold">Slug</th>
-            <th className="px-4 py-2.5 font-semibold">Category</th>
-            <th className="px-4 py-2.5 font-semibold">Status</th>
-            <th className="px-4 py-2.5 font-semibold">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {visible.map(r => (
-            <tr key={r._id} className="border-t border-ink/10">
-              <td className="px-4 py-3">
-                <span className="font-serif font-semibold">{r.nameEn}</span>
-                {r.nameTa && <span className="block text-xs text-ink/55">{r.nameTa}</span>}
-              </td>
-              <td className="px-4 py-3 text-ink/55">{r.slug}</td>
-              <td className="px-4 py-3">{CATEGORY_LABEL[r.category]}</td>
-              <td className="px-4 py-3">
-                <span
-                  className={
-                    r.status === 'published'
-                      ? 'bg-brand-bg text-brand rounded-full px-2.5 py-0.5 text-xs'
-                      : 'bg-amber-bg text-amber rounded-full px-2.5 py-0.5 text-xs'
-                  }
-                >
-                  {r.status}
-                </span>
-              </td>
-              <td className="px-4 py-3 space-x-3">
-                <button type="button" onClick={() => toggleStatus(r)} className="text-brand underline">
-                  {r.status === 'published' ? 'Unpublish' : 'Publish'}
-                </button>
-                <Link to={`/recipes/${r._id}/edit`} className="text-brand underline">Edit</Link>
-                <button type="button" onClick={() => remove(r)} className="text-clay underline">
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      {visible.length === 0 && <p className="p-4 text-ink/55">No recipes match this filter.</p>}
-    </main>
+      {/* ── Kanban columns ────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+
+        {/* Draft column */}
+        <div className="rounded-[14px] p-3.5 bg-amber-bg border border-amber/[0.16]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[11px] font-[800] tracking-[0.07em] uppercase text-amber">Draft</span>
+            <span className="text-[10.5px] font-[800] px-2 py-0.5 rounded-full bg-amber/[0.15] text-amber">
+              {drafts.length}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2.5" id="col-draft">
+            {drafts.map(r => (
+              <RecipeCard key={r._id} recipe={r} onToggle={toggleStatus} onDelete={remove} />
+            ))}
+            {drafts.length === 0 && (
+              <p className="text-center py-6 text-[12.5px] text-amber/60">No drafts</p>
+            )}
+          </div>
+        </div>
+
+        {/* Published column */}
+        <div className="rounded-[14px] p-3.5 bg-brand-bg border border-brand/[0.16]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[11px] font-[800] tracking-[0.07em] uppercase text-brand">Published</span>
+            <span className="text-[10.5px] font-[800] px-2 py-0.5 rounded-full bg-brand/[0.15] text-brand">
+              {published.length}
+            </span>
+          </div>
+          <div className="flex flex-col gap-2.5" id="col-pub">
+            {published.map(r => (
+              <RecipeCard key={r._id} recipe={r} onToggle={toggleStatus} onDelete={remove} />
+            ))}
+            {published.length === 0 && (
+              <p className="text-center py-6 text-[12.5px] text-brand/60">No published recipes</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {sorted.length === 0 && (
+        <p className="text-center py-8 text-ink/45">No recipes match this filter.</p>
+      )}
+    </div>
   );
 
   async function toggleStatus(r: RecipeDoc) {
@@ -115,4 +184,70 @@ export function RecipeListPage() {
       setError((e as Error).message);
     }
   }
+}
+
+// ── Recipe card ────────────────────────────────────────────────────────────
+function RecipeCard({
+  recipe: r,
+  onToggle,
+  onDelete,
+}: {
+  recipe: RecipeDoc;
+  onToggle: (r: RecipeDoc) => void;
+  onDelete:  (r: RecipeDoc) => void;
+}) {
+  const isDraft = r.status === 'draft';
+
+  return (
+    <div className="bg-bone border border-ink/[0.11] rounded-[10px] overflow-hidden shadow-[0_1px_3px_rgba(42,37,30,.07)] hover:shadow-[0_4px_14px_rgba(42,37,30,.10)] transition-shadow">
+      {/* Category stripe */}
+      <div className="h-[3px]" style={{ backgroundColor: CAT_STRIPE[r.category] ?? '#8A8278' }} />
+
+      <div className="p-3 pb-2.5">
+        {/* Name */}
+        <div className="font-serif text-[13.5px] font-semibold text-ink leading-tight">{r.nameEn}</div>
+        {r.nameTa && (
+          <div className="text-[12px] text-ink/55 italic mt-0.5">{r.nameTa}</div>
+        )}
+
+        {/* Category badge */}
+        <div className="mt-2">
+          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${CAT_BADGE[r.category] ?? 'bg-sand text-ink/55'}`}>
+            {CAT_LABEL[r.category] ?? r.category}
+          </span>
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-ink/[0.08]">
+          <div className="flex gap-3">
+            <Link
+              to={`/recipes/${r._id}/edit`}
+              className="text-[11.5px] font-semibold text-brand hover:underline"
+            >
+              Edit
+            </Link>
+            <button
+              type="button"
+              onClick={() => onDelete(r)}
+              className="text-[11.5px] font-semibold text-clay hover:underline"
+            >
+              Delete
+            </button>
+          </div>
+          <button
+            type="button"
+            onClick={() => onToggle(r)}
+            className={[
+              'text-[11.5px] font-bold px-3 py-1 rounded-full transition-colors',
+              isDraft
+                ? 'bg-brand/10 text-brand hover:bg-brand/20'
+                : 'bg-amber/10 text-amber hover:bg-amber/20',
+            ].join(' ')}
+          >
+            {isDraft ? 'Publish →' : '← Draft'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
 }

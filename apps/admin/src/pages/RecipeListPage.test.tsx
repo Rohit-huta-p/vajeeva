@@ -30,14 +30,15 @@ it('renders one row per recipe with slug and status', async () => {
   expect(await screen.findByText('Coconut Burfi')).toBeInTheDocument();
   expect(screen.getByText('coconut-burfi')).toBeInTheDocument();
   expect(screen.getByText('Dates Ladoo')).toBeInTheDocument();
-  expect(screen.getByText('published')).toBeInTheDocument();
-  expect(screen.getByText('draft')).toBeInTheDocument();
+  // Stats row also renders "published" and "draft" labels, so allow multiple matches
+  expect(screen.getAllByText('published').length).toBeGreaterThanOrEqual(1);
+  expect(screen.getAllByText('draft').length).toBeGreaterThanOrEqual(1);
 });
 
-it('filters by status', async () => {
+it('filters by status using tab buttons', async () => {
   renderList();
   await screen.findByText('Coconut Burfi');
-  await userEvent.selectOptions(screen.getByLabelText(/filter by status/i), 'draft');
+  await userEvent.click(screen.getByRole('tab', { name: /draft/i }));
   expect(screen.queryByText('Coconut Burfi')).not.toBeInTheDocument();
   expect(screen.getByText('Dates Ladoo')).toBeInTheDocument();
 });
@@ -55,7 +56,8 @@ it('publish toggle PATCHes and flips the badge optimistically', async () => {
   expect(url).toBe('/api/admin/recipes/2');
   expect(init.method).toBe('PATCH');
   expect(JSON.parse(init.body)).toEqual({ status: 'published' });
-  expect(screen.getAllByText('published')).toHaveLength(2);
+  // 2 recipe badges + 1 stats-row "published" label = 3 total
+  expect(screen.getAllByText('published')).toHaveLength(3);
 });
 
 it('reverts the status when the PATCH fails', async () => {

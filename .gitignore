@@ -4,3 +4,5 @@ dist/
 *.local
 .turbo/
 .yarn/
+.expo/
+graphify-out/

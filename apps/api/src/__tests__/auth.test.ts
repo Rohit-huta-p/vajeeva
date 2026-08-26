@@ -1,8 +1,13 @@
 import './env';
 import request from 'supertest';
 import { createApp } from '../app';
+import { User } from '../models/User';
 
 const app = createApp();
+
+beforeAll(async () => {
+  await User.deleteMany({});
+});
 
 describe('POST /api/auth/register', () => {
   it('creates user and returns accessToken', async () => {

@@ -6,6 +6,12 @@ const UserSchema = new mongoose.Schema({
   role:         { type: String, enum: ['user', 'admin'], default: 'user' },
   lastSyncAt:   { type: Date, default: () => new Date(0) },
   createdAt:    { type: Date, default: Date.now },
+  // Extended fields (optional)
+  name:          { type: String, default: '' },
+  phone:         { type: String, default: '' },
+  age:           { type: Number },
+  gender:        { type: String, enum: ['female', 'male', 'other', 'prefer_not_to_say'] },
+  healthProfile: { type: [String], default: [] },
 });
 
 export const User = mongoose.model('User', UserSchema);

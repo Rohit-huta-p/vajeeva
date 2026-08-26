@@ -1,13 +1,100 @@
 @import "tailwindcss";
 
+/* Ensure h-screen / percentage-height flex chains resolve to the real viewport. */
+html,
+body,
+#root {
+  height: 100%;
+}
+
+/* Remove all focus outlines */
+input,
+button,
+textarea,
+select {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+button:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 @theme {
-  --color-cream: #FBF8F1;
-  --color-bone: #F2EDE1;
-  --color-sand: #E9E1D0;
-  --color-ink: #2A251E;
-  --color-brand: #3E6B4F;
+  /* Palette */
+  --color-cream:    #FBF8F1;
+  --color-bone:     #F2EDE1;
+  --color-sand:     #E9E1D0;
+  --color-ink:      #2A251E;
+  --color-ink-2:    #5A5248;
+  --color-ink-3:    #8A8278;
+  --color-brand:    #3E6B4F;
+  --color-brand-mid:#5B9470;
   --color-brand-bg: #EBF2EE;
-  --color-amber: #C6902F;
+  --color-sky:      #3E709C;
+  --color-sky-bg:   #E8F1F8;
+  --color-amber:    #C6902F;
   --color-amber-bg: #FBF3E3;
-  --color-clay: #B4472E;
+  --color-clay:     #B4472E;
+  --color-clay-bg:  #FAEDE9;
+
+  /* Typography — override Tailwind's default stacks so all existing
+     font-serif / font-sans classes pick up the new faces automatically. */
+  --font-serif: 'Fraunces', Georgia, serif;
+  --font-sans:  'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-cream);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────────
+   Two ways dark activates:
+   1. OS prefers dark and no explicit choice → :root:not([data-theme="light"])
+   2. User clicked the toggle         → :root[data-theme="dark"]
+   Token overrides only — components consume via Tailwind utilities. */
+
+:root:not([data-theme="light"]) {
+  @media (prefers-color-scheme: dark) {
+    --color-cream:    #1A1713;
+    --color-bone:     #221F1A;
+    --color-sand:     #2D2924;
+    --color-ink:      #EDE8DF;
+    --color-ink-2:    #A8A098;
+    --color-ink-3:    #6E6760;
+    --color-brand:    #5B9470;
+    --color-brand-mid:#3E6B4F;
+    --color-brand-bg: #1A2E22;
+    --color-sky:      #6AAAD4;
+    --color-sky-bg:   #172130;
+    --color-amber:    #D4A84B;
+    --color-amber-bg: #2A2010;
+    --color-clay:     #D4694E;
+    --color-clay-bg:  #2E1812;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-cream:    #1A1713;
+  --color-bone:     #221F1A;
+  --color-sand:     #2D2924;
+  --color-ink:      #EDE8DF;
+  --color-ink-2:    #A8A098;
+  --color-ink-3:    #6E6760;
+  --color-brand:    #5B9470;
+  --color-brand-mid:#3E6B4F;
+  --color-brand-bg: #1A2E22;
+  --color-sky:      #6AAAD4;
+  --color-sky-bg:   #172130;
+  --color-amber:    #D4A84B;
+  --color-amber-bg: #2A2010;
+  --color-clay:     #D4694E;
+  --color-clay-bg:  #2E1812;
 }
