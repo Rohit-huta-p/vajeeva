@@ -50,6 +50,51 @@ select:focus {
 
 body {
   font-family: var(--font-sans);
+  background-color: var(--color-cream);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Dark mode ────────────────────────────────────────────────────────────
+   Two ways dark activates:
+   1. OS prefers dark and no explicit choice → :root:not([data-theme="light"])
+   2. User clicked the toggle         → :root[data-theme="dark"]
+   Token overrides only — components consume via Tailwind utilities. */
+
+:root:not([data-theme="light"]) {
+  @media (prefers-color-scheme: dark) {
+    --color-cream:    #1A1713;
+    --color-bone:     #221F1A;
+    --color-sand:     #2D2924;
+    --color-ink:      #EDE8DF;
+    --color-ink-2:    #A8A098;
+    --color-ink-3:    #6E6760;
+    --color-brand:    #5B9470;
+    --color-brand-mid:#3E6B4F;
+    --color-brand-bg: #1A2E22;
+    --color-sky:      #6AAAD4;
+    --color-sky-bg:   #172130;
+    --color-amber:    #D4A84B;
+    --color-amber-bg: #2A2010;
+    --color-clay:     #D4694E;
+    --color-clay-bg:  #2E1812;
+  }
+}
+
+:root[data-theme="dark"] {
+  --color-cream:    #1A1713;
+  --color-bone:     #221F1A;
+  --color-sand:     #2D2924;
+  --color-ink:      #EDE8DF;
+  --color-ink-2:    #A8A098;
+  --color-ink-3:    #6E6760;
+  --color-brand:    #5B9470;
+  --color-brand-mid:#3E6B4F;
+  --color-brand-bg: #1A2E22;
+  --color-sky:      #6AAAD4;
+  --color-sky-bg:   #172130;
+  --color-amber:    #D4A84B;
+  --color-amber-bg: #2A2010;
+  --color-clay:     #D4694E;
+  --color-clay-bg:  #2E1812;
 }

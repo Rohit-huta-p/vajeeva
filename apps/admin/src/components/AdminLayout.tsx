@@ -1,5 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, NavLink, Outlet, useLocation, useSearchParams } from 'react-router-dom';
+
+// ── Theme toggle ──────────────────────────────────────────────────────────
+type Theme = 'light' | 'dark';
+
+function getInitialTheme(): Theme {
+  const stored = localStorage.getItem('vajeeva-theme');
+  if (stored === 'light' || stored === 'dark') return stored;
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+function applyTheme(t: Theme) {
+  document.documentElement.setAttribute('data-theme', t);
+  localStorage.setItem('vajeeva-theme', t);
+}
+
+function useTheme() {
+  const [theme, setTheme] = useState<Theme>(getInitialTheme);
+  useEffect(() => { applyTheme(theme); }, [theme]);
+  const toggle = () => setTheme(t => (t === 'light' ? 'dark' : 'light'));
+  return { theme, toggle };
+}
 
 const NAV_GROUPS = [
   {
@@ -116,6 +137,7 @@ function pageTitle(pathname: string): string {
 
 export function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { theme, toggle: toggleTheme } = useTheme();
   const { pathname } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const q = searchParams.get('q') ?? '';
@@ -157,10 +179,37 @@ export function AdminLayout() {
           <div className="w-[30px] h-[30px] rounded-[7px] bg-brand flex items-center justify-center text-white font-serif text-[17px] font-semibold shrink-0">
             V
           </div>
-          <div>
+          <div className="flex-1 min-w-0">
             <div className="font-serif text-[14.5px] font-semibold text-ink leading-tight tracking-tight">Vajeeva</div>
             <div className="text-[10px] font-bold text-ink/50 uppercase tracking-[0.07em]">Admin</div>
           </div>
+          {/* Theme toggle */}
+          <button
+            type="button"
+            aria-label={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
+            onClick={toggleTheme}
+            className="w-7 h-7 rounded-[7px] flex items-center justify-center text-ink/45 hover:bg-ink/[0.08] hover:text-ink transition-colors shrink-0"
+          >
+            {theme === 'light' ? (
+              /* Moon */
+              <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-[14px] h-[14px]">
+                <path d="M13 9.5A6 6 0 0 1 5.5 2a6 6 0 1 0 7.5 7.5Z" strokeLinejoin="round" />
+              </svg>
+            ) : (
+              /* Sun */
+              <svg viewBox="0 0 15 15" fill="none" stroke="currentColor" strokeWidth="1.4" className="w-[14px] h-[14px]">
+                <circle cx="7.5" cy="7.5" r="2.5" />
+                <line x1="7.5" y1="1"   x2="7.5" y2="3"   strokeLinecap="round" />
+                <line x1="7.5" y1="12"  x2="7.5" y2="14"  strokeLinecap="round" />
+                <line x1="1"   y1="7.5" x2="3"   y2="7.5" strokeLinecap="round" />
+                <line x1="12"  y1="7.5" x2="14"  y2="7.5" strokeLinecap="round" />
+                <line x1="3.2" y1="3.2" x2="4.6" y2="4.6" strokeLinecap="round" />
+                <line x1="10.4" y1="10.4" x2="11.8" y2="11.8" strokeLinecap="round" />
+                <line x1="11.8" y1="3.2" x2="10.4" y2="4.6" strokeLinecap="round" />
+                <line x1="4.6" y1="10.4" x2="3.2" y2="11.8" strokeLinecap="round" />
+              </svg>
+            )}
+          </button>
         </div>
 
         {/* Nav groups */}
