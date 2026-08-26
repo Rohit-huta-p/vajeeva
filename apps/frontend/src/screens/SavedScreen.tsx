@@ -1,16 +1,19 @@
 import React from 'react';
-import { View, Text, FlatList, TouchableOpacity, Image, SafeAreaView, ActivityIndicator } from 'react-native';
+import { View, Text, FlatList, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { fonts, shadows, type Colors } from '../theme/tokens';
-import { useTheme, useThemedStyles } from '../theme/ThemeContext';
+import { useThemedStyles } from '../theme/ThemeContext';
 import { OfflineBadge } from '../components/shared/OfflineBadge';
+import { SkeletonSavedCard } from '../components/shared/SkeletonSavedCard';
 import { CategoryIll, categoryTint } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { cloudThumb } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 
+// Placeholder cells shown while saved recipes load from on-device storage.
+const SAVED_SKELETONS = [0, 1, 2, 3, 4, 5];
+
 export function SavedScreen() {
-  const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const { recipes, loading } = useSavedRecipes();
@@ -23,7 +26,15 @@ export function SavedScreen() {
           <OfflineBadge />
         </View>
         {loading ? (
-          <ActivityIndicator style={s.loading} color={colors.green} />
+          <FlatList
+            data={SAVED_SKELETONS}
+            keyExtractor={i => `skel-${i}`}
+            numColumns={2}
+            columnWrapperStyle={s.gridRow}
+            renderItem={() => <View style={s.col}><SkeletonSavedCard /></View>}
+            contentContainerStyle={s.grid}
+            showsVerticalScrollIndicator={false}
+          />
         ) : (
           <FlatList
             data={recipes}
@@ -74,7 +85,6 @@ const makeStyles = (colors: Colors) => scaledSheet({
   page: { flex: 1, paddingHorizontal: 14, paddingTop: 8, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10 },
   title: { flex: 1, fontSize: 18, fontFamily: fonts.serif, fontWeight: '700', letterSpacing: -0.18, color: colors.ink },
-  loading: { marginTop: 60 },
   grid: { paddingBottom: 24, gap: 9 },
   gridRow: { gap: 9 },
   // maxWidth keeps a lone card in the last row at column width instead of

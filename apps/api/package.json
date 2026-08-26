@@ -8,7 +8,8 @@
     "test": "jest --runInBand",
     "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts",
     "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts",
-    "seed:tags": "ts-node src/scripts/seed-tags.ts"
+    "seed:tags": "ts-node src/scripts/seed-tags.ts",
+    "search:create-index": "ts-node src/scripts/create-search-index.ts"
   },
   "dependencies": {
     "@types/cors": "^2.8.19",

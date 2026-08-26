@@ -63,6 +63,10 @@ export const recipesApi = {
   list: (category?: string) =>
     api.get<any[]>('/api/recipes', { params: category ? { category } : undefined }).then(r => r.data),
   detail: (slug: string) => api.get<any>(`/api/recipes/${slug}`).then(r => r.data),
+  // Free-text search (name/ingredient/description; fuzzy + diacritic-folded
+  // server-side — see apps/api/src/routes/recipes.routes.ts). Blank q short-
+  // circuits to [] server-side, so callers don't need to guard against it.
+  search: (q: string) => api.get<any[]>('/api/recipes/search', { params: { q } }).then(r => r.data),
 };
 
 export const subrecipesApi = {

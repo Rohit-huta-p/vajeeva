@@ -8,6 +8,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { fonts, shadows, type Colors } from '../theme/tokens';
 import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
+import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
@@ -49,8 +50,15 @@ function columnsFor(width: number): number {
   return 2;
 }
 
-// A grid cell is either a recipe or an invisible spacer padding the last row.
-type GridItem = RecipeListItem | { filler: true; slug: string };
+// A grid cell is a recipe, a loading skeleton, or an invisible spacer padding
+// the last row.
+type GridItem =
+  | RecipeListItem
+  | { skeleton: true; slug: string }
+  | { filler: true; slug: string };
+
+// Skeleton rows shown while the first fetch (or a filter change) is in flight.
+const SKELETON_ROWS = 3;
 
 export function RecipeListScreen() {
   const { colors } = useTheme();
@@ -60,12 +68,17 @@ export function RecipeListScreen() {
   const { width } = useWindowDimensions();
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
-  const { texture, facet, type, meal, ingredient, method } = useLocalSearchParams<{
-    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string;
+  const { texture, facet, type, meal, ingredient, method, q } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string;
   }>();
+  // A free-text search (Home SearchBar submit) replaces the texture/facet/tag
+  // browse flow entirely for this load — see load() below — rather than
+  // composing with it, matching v1 scope (P12 in docs/User-Flows.md).
+  const isSearch = !!q?.trim();
   const [filter, setFilter] = useState(textureToLabel(texture));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Round icon button per prototype .icobtn.
   const IcoBtn = ({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) => (
@@ -78,6 +91,11 @@ export function RecipeListScreen() {
   // the texture chips still narrow the results.
   const load = useCallback(async () => {
     try {
+      if (isSearch) {
+        const docs: RecipeDoc[] = await recipesApi.search(q!.trim());
+        setRecipes(docs.map(toListItem));
+        return;
+      }
       const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
       let items = docs.map(toListItem);
       if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
@@ -87,10 +105,12 @@ export function RecipeListScreen() {
         if (value) items = items.filter(r => matchTag(r, axis, value));
       }
       setRecipes(items);
-    } catch { }
-  }, [filter, facet, type, meal, ingredient, method]);
+    } catch { } finally { setLoading(false); }
+  }, [filter, facet, type, meal, ingredient, method, isSearch, q]);
 
-  useEffect(() => { load(); }, [load]);
+  // Show skeletons for the initial load and on every filter/facet change (a new
+  // query). Pull-to-refresh keeps the current list and uses the spinner instead.
+  useEffect(() => { setLoading(true); load(); }, [load]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
@@ -98,19 +118,24 @@ export function RecipeListScreen() {
     setRefreshing(false);
   }, [load]);
 
-  const sub = LABEL_SUB[filter]
-    ? `${recipes.length} recipes · ${LABEL_SUB[filter]}`
-    : `${recipes.length} recipes`;
+  const sub = isSearch
+    ? `${recipes.length} result${recipes.length === 1 ? '' : 's'}`
+    : LABEL_SUB[filter]
+      ? `${recipes.length} recipes · ${LABEL_SUB[filter]}`
+      : `${recipes.length} recipes`;
 
   // Pad the last row with invisible spacers so every row has `cols` cells. Without
   // this a lone last-row card skips the column gap and renders wider (→ a taller
   // aspect-ratio tile), breaking uniform card heights.
   const gridData = useMemo<GridItem[]>(() => {
+    if (loading) {
+      return Array.from({ length: cols * SKELETON_ROWS }, (_, i) => ({ skeleton: true as const, slug: `__skel-${i}` }));
+    }
     const rem = recipes.length % cols;
     if (rem === 0) return recipes;
     const fillers: GridItem[] = Array.from({ length: cols - rem }, (_, i) => ({ filler: true, slug: `__filler-${i}` }));
     return [...recipes, ...fillers];
-  }, [recipes, cols]);
+  }, [loading, recipes, cols]);
 
   return (
     <View style={s.root}>
@@ -121,8 +146,9 @@ export function RecipeListScreen() {
             <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
-            <Text style={s.title}>{
-              isFacet(facet) ? facetLabel(facet)
+            <Text style={s.title} numberOfLines={1}>{
+              isSearch ? `“${q}”`
+                : isFacet(facet) ? facetLabel(facet)
                 : ingredient ? prettyTag(ingredient)
                 : type ? prettyTag(type)
                 : meal ? prettyTag(meal)
@@ -135,13 +161,17 @@ export function RecipeListScreen() {
             <IconFilter size={sc(15)} color={colors.ink} />
           </IcoBtn>
         </View>
-        {/* Filter chips — also on bone, part of the header zone */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.chips} contentContainerStyle={s.chipsContent}>
-          {FILTERS.map(f => (
-            <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f)} />
-          ))}
-          <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
-        </ScrollView>
+        {/* Filter chips — also on bone, part of the header zone. Hidden for a
+            free-text search: chips filter the browse list this screen also
+            renders, and don't compose with search results in v1. */}
+        {!isSearch && (
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.chips} contentContainerStyle={s.chipsContent}>
+            {FILTERS.map(f => (
+              <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f)} />
+            ))}
+            <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
+          </ScrollView>
+        )}
         {/* Recessed well — the grid drops into a sand tray with a rounded lip,
             so the recipes read as content held BELOW the header instead of on
             the same continuous surface. The tray bleeds to the screen bottom
@@ -157,7 +187,9 @@ export function RecipeListScreen() {
             columnWrapperStyle={s.gridRow}
             renderItem={({ item }) => (
               <View style={[s.col, { maxWidth: `${100 / cols}%` }]}>
-                {'filler' in item ? null : (
+                {'skeleton' in item ? (
+                  <SkeletonCard />
+                ) : 'filler' in item ? null : (
                   <RecipeGridCard
                     recipe={item}
                     onPress={() => router.push(`/recipe/${item.slug}`)}
@@ -168,9 +200,18 @@ export function RecipeListScreen() {
               </View>
             )}
             style={s.flatList}
-            contentContainerStyle={[s.list, { paddingBottom: sc(24) + insets.bottom }]}
+            contentContainerStyle={[s.list, { paddingBottom: sc(24) + insets.bottom }, recipes.length === 0 && !loading && s.listEmpty]}
             showsVerticalScrollIndicator={false}
             refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.green} />}
+            ListEmptyComponent={!loading ? (
+              <View style={s.empty}>
+                <Text style={s.emptyText}>
+                  {isSearch
+                    ? `No recipes match “${q}”. Try a different spelling or ingredient.`
+                    : 'No recipes here yet.'}
+                </Text>
+              </View>
+            ) : null}
           />
           {/* RN has no inset shadow, so a short top gradient casts the recess
               onto the top of the scrolling content — the lip of the tray. */}
@@ -228,6 +269,10 @@ const makeStyles = (colors: Colors) => scaledSheet({
   // col gets flex:1 with a per-breakpoint maxWidth (set inline) so a partial
   // last row stays left-aligned at column width instead of stretching.
   list: { gap: 10, paddingTop: 16, paddingHorizontal: 14 },
+  // Lets the empty state center in the well instead of pinning to the top.
+  listEmpty: { flexGrow: 1, justifyContent: 'center' },
   gridRow: { gap: 10 },
   col: { flex: 1 },
+  empty: { paddingHorizontal: 30, alignItems: 'center' },
+  emptyText: { fontSize: 12.5, lineHeight: 18, fontFamily: fonts.sans, color: colors.ink2, textAlign: 'center' },
 });

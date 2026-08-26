@@ -1,9 +1,11 @@
 import { z } from 'zod';
 
 export const IngredientSchema = z.object({
-  nameEn: z.string().min(1),
-  quantityG: z.string(),
+  nameEn:      z.string().min(1),
+  quantityG:   z.string(),
+  quantityMl:  z.string().optional(),
   quantityCup: z.string(),
+  note:        z.string().optional(),
 });
 
 /** Image attachment for recipe hero gallery or per-step gallery. */
