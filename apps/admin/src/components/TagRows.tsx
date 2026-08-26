@@ -37,13 +37,12 @@ export function TagRows({ value, vocab, onChange }: {
   onChange: (patch: Partial<TagValue>) => void;
 }) {
   const chip = (on: boolean) =>
-    `px-3 py-1.5 rounded-full text-sm border transition-colors ${
-      on ? 'bg-brand text-white border-brand' : 'bg-bone text-ink/70 border-ink/20 hover:border-ink/40'
+    `px-3 py-1.5 rounded-full text-[13px] border transition-colors ${
+      on ? 'bg-brand text-white border-brand' : 'bg-cream text-ink/70 border-ink/[0.11] hover:border-ink/30'
     }`;
 
   return (
-    <fieldset className="bg-white border border-ink/20 rounded-lg p-5 mb-4">
-      <legend className="text-xs font-bold uppercase text-ink/55 px-1">Discovery tags</legend>
+    <div className="flex flex-col gap-4">
 
       {FACETS.map(({ facet, field, label, single }) => {
         const opts = (vocab[facet] ?? []).filter(o => o.enabled !== false);
@@ -52,9 +51,9 @@ export function TagRows({ value, vocab, onChange }: {
           : (value[field] as string[]);
 
         return (
-          <div key={facet} className="mb-4">
-            <p className="text-xs uppercase tracking-wider text-ink/55 font-semibold mb-2">
-              {label}{single && <span className="normal-case font-normal text-ink/40"> · pick one</span>}
+          <div key={facet}>
+            <p className="text-[10.5px] uppercase tracking-[0.08em] text-ink/45 font-bold mb-2">
+              {label}{single && <span className="normal-case font-normal text-ink/35"> · pick one</span>}
             </p>
             {opts.length === 0 ? (
               <p className="text-xs text-ink/40">
@@ -91,12 +90,13 @@ export function TagRows({ value, vocab, onChange }: {
       })}
 
       {/* Make-ahead + total time */}
-      <div className="border-t border-ink/10 pt-3 mt-1 flex flex-col gap-2">
-        <label className="flex items-center gap-2 text-sm text-ink">
+      <div className="border-t border-ink/[0.08] pt-4 flex flex-col gap-3">
+        <label className="flex items-center gap-2 text-[13px] text-ink cursor-pointer">
           <input
             type="checkbox"
             checked={value.makeAhead}
             onChange={e => onChange({ makeAhead: e.target.checked })}
+            className="w-4 h-4 accent-brand"
           />
           Make-ahead (needs an overnight soak / advance prep)
         </label>
@@ -105,20 +105,20 @@ export function TagRows({ value, vocab, onChange }: {
             placeholder="Prep-ahead note — e.g. soak black gram overnight"
             value={value.prepAheadNote}
             onChange={e => onChange({ prepAheadNote: e.target.value })}
-            className="w-full border border-ink/20 rounded-lg px-3 py-2 bg-bone text-sm"
+            className="w-full border border-ink/[0.11] rounded-[8px] px-3 py-2 bg-cream text-[13px] text-ink placeholder:text-ink/35"
           />
         )}
-        <label className="text-xs uppercase tracking-wider text-ink/55 font-semibold">
+        <label className="block text-[10.5px] uppercase tracking-[0.08em] text-ink/45 font-bold">
           Total time (min) — optional, when soaks/hangs exceed the step timers
           <input
             type="number"
             min={0}
             value={value.totalTimeMin ?? ''}
             onChange={e => onChange({ totalTimeMin: e.target.value === '' ? undefined : Number(e.target.value) })}
-            className="mt-1 block w-32 border border-ink/20 rounded-lg px-3 py-2 bg-bone text-sm normal-case"
+            className="mt-1.5 block w-32 border border-ink/[0.11] rounded-[8px] px-3 py-2 bg-cream text-[13px] text-ink normal-case"
           />
         </label>
       </div>
-    </fieldset>
+    </div>
   );
 }

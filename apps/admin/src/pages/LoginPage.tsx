@@ -33,7 +33,7 @@ export function LoginPage() {
 
   return (
     <main className="min-h-screen bg-cream flex items-center justify-center">
-      <form onSubmit={onSubmit} className="bg-white border border-ink/20 rounded-lg p-8 w-80 space-y-4">
+      <form onSubmit={onSubmit} className="bg-bone border border-ink/[0.11] rounded-[16px] p-8 w-80 space-y-4">
         <h1 className="font-serif text-xl font-semibold text-ink">Vajeeva Admin</h1>
         {error && <p role="alert" className="text-clay text-sm">{error}</p>}
         <label className="block text-xs font-semibold uppercase text-ink/55">

@@ -126,7 +126,8 @@ function SourceModal({ source, onSave, onClose }: SourceModalProps) {
   }
 
   return (
-    <div role="dialog" aria-modal="true" className="fixed inset-0 bg-ink/40 flex items-center justify-center z-50 overflow-y-auto py-8 px-4">
+    <div role="dialog" aria-modal="true" className="fixed inset-0 bg-ink/40 z-50 overflow-y-auto">
+      <div className="flex min-h-full items-center justify-center p-4 py-8">
       <div className="bg-cream rounded-[16px] shadow-2xl p-6 w-full max-w-[480px]">
         <h2 className="font-serif text-[18px] font-light text-ink mb-4">
           {source ? 'Edit Source' : 'New Source'}
@@ -169,6 +170,7 @@ function SourceModal({ source, onSave, onClose }: SourceModalProps) {
             {saving ? 'Saving…' : 'Save'}
           </button>
         </div>
+      </div>
       </div>
     </div>
   );
