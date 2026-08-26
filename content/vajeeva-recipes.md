@@ -152,12 +152,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Dhanyavishesha & Bhakshyavishesha, pp. 13, 51 · ICMR  
 **Yield:** 2–3 medium roti
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Barley flour | 80–100 g (½ cup) |
-| Water | as needed (warm preferred) |
-| Rock salt | a pinch |
-| Ghee | 4–6 ml (1 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Barley flour | 80–100 | — | ½ cup | — |
+| Water | — | — | — | as needed (warm preferred) |
+| Rock salt | — | — | — | a pinch |
+| Ghee | — | 4–6 | 1 tsp | — |
 
 **Method**
 1. Combine barley flour and rock salt. Gradually add warm water; knead into a soft, smooth dough. Cover and rest 15–20 min.
@@ -172,14 +172,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Bhakshyavishesha, p. 53 · ICMR  
 **Yield:** 2–3 medium Vedanika
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 80–100 g (½ cup) |
-| De-husked black gram | 50–70 g (¼–⅓ cup) |
-| Water | as needed |
-| Sesame oil | 10–20 ml (2–4 tsp) |
-| Ghee | 10–20 ml (2–4 tsp) |
-| Rock salt | a pinch |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 80–100 | — | ½ cup | — |
+| De-husked black gram | 50–70 | — | ¼–⅓ cup | — |
+| Water | — | — | — | as needed |
+| Sesame oil | — | 10–20 | 2–4 tsp | — |
+| Ghee | — | 10–20 | 2–4 tsp | — |
+| Rock salt | — | — | — | a pinch |
 
 **Method**
 1. Soak de-husked black gram 6–8 hr or overnight; grind to a smooth paste.
@@ -194,13 +194,13 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Bhakshyavishesha, p. 53 · ICMR  
 **Yield:** 2–3 medium Vadori
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 80–100 g (½ cup) |
-| Black gram | 50–70 g (¼–⅓ cup) |
-| Water | as needed |
-| Ghee | for deep frying |
-| Rock salt | a pinch |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 80–100 | — | ½ cup | — |
+| Black gram | 50–70 | — | ¼–⅓ cup | — |
+| Water | — | — | — | as needed |
+| Ghee | — | — | — | for deep frying |
+| Rock salt | — | — | — | a pinch |
 
 **Method**
 1. Soak black gram 6–8 hr; grind to a smooth paste.
@@ -215,12 +215,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Bhakshyavishesha, p. 66 · ICMR  
 **Yield:** 2–3 medium roti
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Black gram flour | 80–100 g (½ cup) |
-| Water | as needed |
-| Rock salt | a pinch |
-| Ghee | 5–10 ml (1–2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Black gram flour | 80–100 | — | ½ cup | — |
+| Water | — | — | — | as needed |
+| Rock salt | — | — | — | a pinch |
+| Ghee | — | 5–10 | 1–2 tsp | — |
 
 **Method**
 1. Mix flour and rock salt; gradually add water and knead into a soft dough. Cover and rest 15–20 min.
@@ -234,12 +234,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Bhakshyavishesha, p. 66 · ICMR  
 **Yield:** 2–3 medium roti
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 80–100 g (½ cup) |
-| Milk | as needed for soft dough |
-| Ghee | 5–10 ml (1–2 tsp) |
-| Rock salt | a pinch (optional) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 80–100 | — | ½ cup | — |
+| Milk | — | — | — | as needed for soft dough |
+| Ghee | — | 5–10 | 1–2 tsp | — |
+| Rock salt | — | — | — | a pinch (optional) |
 
 **Method**
 1. Add milk gradually to flour; knead into a soft dough. Cover and rest 5–10 min.
@@ -253,12 +253,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BP 12/33–34 · BK — Bhakshyavishesha, p. 51 · KK 10th Utsava · ICMR  
 **Yield:** 2–3 medium baati
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 80–100 g (½ cup) |
-| Ghee | 3–4 tsp in dough + extra for finishing |
-| Water | as needed |
-| Rock salt | a pinch |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 80–100 | — | ½ cup | — |
+| Ghee | — | — | 3–4 tsp in | dough + extra for finishing |
+| Water | — | — | — | as needed |
+| Rock salt | — | — | — | a pinch |
 
 **Method**
 1. Mix flour, rock salt, and 3–4 tsp ghee. Add water gradually and knead into a firm dough. Rest 15–20 min.
@@ -279,10 +279,10 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Bhaksha Prakarana, p. 49 · ICMR  
 **Yield:** 2–3 medium roti
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Refined wheat flour (samita) | 80–100 g (½ cup) |
-| Water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Refined wheat flour (samita) | 80–100 | — | ½ cup | — |
+| Water | — | — | — | as needed |
 
 **Method**
 1. Add water gradually; knead into a soft, smooth dough. Cover and rest 5–10 min.
@@ -296,12 +296,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** KN 5/161–163, p. 426 · ICMR  
 **Yield:** 2 medium discs
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Barley flour | 50–60 g (¼ cup) |
-| Hot water | 35–40 ml |
-| Rock salt | 1.5 g (to taste) |
-| Mustard oil | 5–10 ml (2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Barley flour | 50–60 | — | ¼ cup | — |
+| Hot water | — | 35–40 | — | — |
+| Rock salt | 1.5 | — | — | to taste |
+| Mustard oil | — | 5–10 | 2 tsp | — |
 
 **Method**
 1. Combine flour, rock salt, and mustard oil. Add hot water gradually; knead into a smooth dough.
@@ -318,14 +318,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Vatakavishesha, p. 54 · ICMR  
 **Yield:** 3–4 medium vada
 
-| Ingredient | Quantity |
-|-----------|----------|
-| De-husked black gram | 80–100 g (½ cup) |
-| Rock salt | a pinch |
-| Wet ginger paste | 2 g (¼ tsp) |
-| Hingu (asafoetida) | 1 g (⅛ tsp) |
-| Oil | for frying |
-| Water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| De-husked black gram | 80–100 | — | ½ cup | — |
+| Rock salt | — | — | — | a pinch |
+| Wet ginger paste | 2 | — | ¼ tsp | — |
+| Hingu (asafoetida) | 1 | — | ⅛ tsp | — |
+| Oil | — | — | — | for frying |
+| Water | — | — | — | as needed |
 
 **Method**
 1. Wash black gram; soak 4–6 hr. Drain and grind with minimal water into a smooth, thick batter. Beat until light and fluffy.
@@ -340,18 +340,18 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Vatakavishesha, p. 54 · ICMR  
 **Yield:** 3–4 medium vada
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Black gram flour | 80–100 g (½ cup) |
-| Pumpkin paste | 40–60 g (¼ cup) |
-| Rock salt | a pinch |
-| Wet ginger paste | ¼ tsp |
-| Hingu | 1 g (⅛ tsp) |
-| Black pepper | 0.5 g (pinch) |
-| Cumin seeds | 1 g (⅛ tsp) |
-| Fenugreek seeds | 1 g (⅛ tsp) |
-| Oil | for frying |
-| Water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Black gram flour | 80–100 | — | ½ cup | — |
+| Pumpkin paste | 40–60 | — | ¼ cup | — |
+| Rock salt | — | — | — | a pinch |
+| Wet ginger paste | — | — | ¼ tsp | — |
+| Hingu | 1 | — | ⅛ tsp | — |
+| Black pepper | 0.5 | — | pinch | — |
+| Cumin seeds | 1 | — | ⅛ tsp | — |
+| Fenugreek seeds | 1 | — | ⅛ tsp | — |
+| Oil | — | — | — | for frying |
+| Water | — | — | — | as needed |
 
 **Method**
 1. Combine flour, pumpkin paste, rock salt, ginger paste, hingu, black pepper, fenugreek, and cumin. Add water gradually to form a smooth, thick, fluffy batter.
@@ -364,15 +364,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Vatakavishesha, p. 65 · ICMR  
 **Yield:** 4 medium purika
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Refined wheat flour | 40–60 g (¼ cup) |
-| Gram flour (besan) | 40–60 g (¼ cup) |
-| Cumin seeds | 2 g (½ tsp) |
-| Hingu | 1 g (pinch) |
-| Black pepper powder | 1 g (2 pinches) |
-| Ghee / Oil | for deep frying |
-| Water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Refined wheat flour | 40–60 | — | ¼ cup | — |
+| Gram flour (besan) | 40–60 | — | ¼ cup | — |
+| Cumin seeds | 2 | — | ½ tsp | — |
+| Hingu | 1 | — | pinch | — |
+| Black pepper powder | 1 | — | 2 pinches | — |
+| Ghee / Oil | — | — | — | for deep frying |
+| Water | — | — | — | as needed |
 
 **Method**
 1. Mix both flours with cumin, hingu, and black pepper. Add 2–3 tsp ghee and rub in. Add water gradually; knead into a soft, smooth dough.
@@ -386,16 +386,16 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BK — Vatakavishesha, p. 65 · ICMR  
 **Yield:** 4–6 medium Candrika
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Rice flour | 20–30 g (¼ cup) |
-| Green gram flour | 20–30 g (¼ cup) |
-| Black gram flour | 20–30 g (¼ cup) |
-| Cumin seeds | 3–4 g (1 tsp) |
-| Hingu | 1–2 g (2 pinches) |
-| Black pepper powder | 1–2 g (pinch) |
-| Ghee / Oil | for deep frying |
-| Water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Rice flour | 20–30 | — | ¼ cup | — |
+| Green gram flour | 20–30 | — | ¼ cup | — |
+| Black gram flour | 20–30 | — | ¼ cup | — |
+| Cumin seeds | 3–4 | — | 1 tsp | — |
+| Hingu | 1–2 | — | 2 pinches | — |
+| Black pepper powder | 1–2 | — | pinch | — |
+| Ghee / Oil | — | — | — | for deep frying |
+| Water | — | — | — | as needed |
 
 **Method**
 1. Mix all three flours with cumin, hingu, and black pepper. Add 2–3 tsp ghee; mix. Add water gradually; knead into a soft, smooth dough.
@@ -409,15 +409,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BP 12/117–118 · ICMR  
 **Yield:** several sticks
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour / Samita | 50–60 g (¼ cup) |
-| Ghee | for deep frying |
-| Water | 25–30 ml |
-| Clove powder | 1–2 g (¼ tsp) |
-| Edible camphor (Karpura) | a pinch |
-| Pepper powder | 1–2 g (¼ tsp) |
-| Rock sugar powder | 15–20 g (to taste) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour / Samita | 50–60 | — | ¼ cup | — |
+| Ghee | — | — | — | for deep frying |
+| Water | — | 25–30 | — | — |
+| Clove powder | 1–2 | — | ¼ tsp | — |
+| Edible camphor (Karpura) | — | — | — | a pinch |
+| Pepper powder | 1–2 | — | ¼ tsp | — |
+| Rock sugar powder | 15–20 | — | — | to taste |
 
 **Method**
 1. Knead flour with water and ghee into a smooth dough.
@@ -432,15 +432,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** BP 12/132–135 · ICMR  
 **Yield:** 3–4 dumplings (1 serving)
 
-| Stage | Ingredient | Quantity |
-|-------|-----------|----------|
-| Chena | Cow's milk | 500 ml |
-| | Lemon juice | 10 ml (to curdle) |
-| Dough | Rice flour | 10 g (2 tsp) |
-| Filling | Rock sugar | 20 g |
-| | Edible camphor | a pinch |
-| Syrup | Sugar | 20 g + 40 ml water |
-| Frying | Ghee | 150 g |
+| Stage | Ingredient | g | ml | Cups | Note |
+|-------|-----------|-----|-----|------|------|
+| Chena | Cow's milk | — | 500 | — | — |
+|  | Lemon juice | — | 10 | — | to curdle |
+| Dough | Rice flour | 10 | — | 2 tsp | — |
+| Filling | Rock sugar | 20 | — | — | — |
+|  | Edible camphor | — | — | — | a pinch |
+| Syrup | Sugar | 20 | — | — | + 40 ml water |
+| Frying | Ghee | 150 | — | — | — |
 
 **Method**
 1. **Make chena:** Boil milk; add lemon juice gradually while stirring until milk curdles. Strain through muslin, wash with clean water, hang 20–30 min to drain.
@@ -463,14 +463,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** AYUSH  
 **Yield:** 4–5 pancakes
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Ripe pumpkin, chopped | 150 g (¾ cup) |
-| Cowpeas / soybeans | 25 g (¼ cup) |
-| Ragi flour | 30 g (¼ cup) |
-| Jaggery syrup | 15 ml (3 tsp) |
-| Grated coconut | 30 g (¼ cup) |
-| Ghee | 10 ml (2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Ripe pumpkin, chopped | 150 | — | ¾ cup | — |
+| Cowpeas / soybeans | 25 | — | ¼ cup | — |
+| Ragi flour | 30 | — | ¼ cup | — |
+| Jaggery syrup | — | 15 | 3 tsp | — |
+| Grated coconut | 30 | — | ¼ cup | — |
+| Ghee | — | 10 | 2 tsp | — |
 
 **Method**
 1. Soak cowpeas/soybeans 4 hr; pressure cook until soft. Add pumpkin pieces; cook further with a glass of water.
@@ -485,15 +485,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** AYUSH  
 **Yield:** 2–3 medium chila
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Green gram sprouts | 200 g (1 cup) |
-| Chopped fenugreek leaves | 100 g (½ cup) |
-| Ginger | a small piece |
-| Bengal gram flour | 10 g (2 tsp) |
-| Turmeric powder | 1–2 g (¼ tsp) |
-| Salt | to taste |
-| Ghee / Oil | 5 ml (1 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Green gram sprouts | 200 | — | 1 cup | — |
+| Chopped fenugreek leaves | 100 | — | ½ cup | — |
+| Ginger | — | — | a small piece | — |
+| Bengal gram flour | 10 | — | 2 tsp | — |
+| Turmeric powder | 1–2 | — | ¼ tsp | — |
+| Salt | — | — | — | to taste |
+| Ghee / Oil | — | 5 | 1 tsp | — |
 
 **Method**
 1. Grind sprouts with ginger to a smooth batter consistency.
@@ -511,12 +511,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** KK 8/121 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Methi (fenugreek) leaves | 75–100 g (½ cup) |
-| Hingu | 0.5–1 g (a pinch) |
-| Ghee | 5 ml (1 tsp) |
-| Rock salt | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Methi (fenugreek) leaves | 75–100 | — | ½ cup | — |
+| Hingu | 0.5–1 | — | — | a pinch |
+| Ghee | — | 5 | 1 tsp | — |
+| Rock salt | — | — | — | to taste |
 
 **Method**
 1. Clean methi leaves thoroughly with water.
@@ -530,15 +530,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 183  
 **Yield:** 1 serving
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Dark green leafy vegetable | 125 g (½ cup) |
-| Ghee / Oil | 7 ml (1½ tsp) |
-| Cumin seeds | 1–2 g (¼ tsp) |
-| Turmeric powder | 0.6–1 g (pinch) |
-| Hingu | 0.5–1 g (pinch) |
-| Onion (optional) | 7–10 g (2 tsp) |
-| Garlic paste | 1–1.5 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Dark green leafy vegetable | 125 | — | ½ cup | — |
+| Ghee / Oil | — | 7 | 1½ tsp | — |
+| Cumin seeds | 1–2 | — | ¼ tsp | — |
+| Turmeric powder | 0.6–1 | — | pinch | — |
+| Hingu | 0.5–1 | — | pinch | — |
+| Onion (optional) | 7–10 | — | 2 tsp | — |
+| Garlic paste | 1–1.5 | — | ¼ tsp | — |
 
 **Method**
 1. Wash and chop greens.
@@ -553,15 +553,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** KK 6/179–180 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Brinjal | 100–120 g (½ cup) |
-| Oil | 15–20 ml (3–4 tsp) |
-| Lemon juice | 5–10 ml (1–2 tsp) |
-| Hingu | 2–3 g (½ tsp) |
-| Ginger paste | 3–4 g (1 tsp) |
-| Rock salt | 3–4 g (1 tsp) |
-| Coriander leaves | 8–10 g (2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Brinjal | 100–120 | — | ½ cup | — |
+| Oil | — | 15–20 | 3–4 tsp | — |
+| Lemon juice | — | 5–10 | 1–2 tsp | — |
+| Hingu | 2–3 | — | ½ tsp | — |
+| Ginger paste | 3–4 | — | 1 tsp | — |
+| Rock salt | 3–4 | — | 1 tsp | — |
+| Coriander leaves | 8–10 | — | 2 tsp | — |
 
 **Method**
 1. Wash and slice brinjal thin.
@@ -576,12 +576,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** KK 6/41 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Pointed gourd (parval) | 10–20 g |
-| Ghee | 15–20 ml (3–4 tsp) |
-| Hingu | 2–3 g (½ tsp) |
-| Rock salt | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Pointed gourd (parval) | 10–20 | — | — | — |
+| Ghee | — | 15–20 | 3–4 tsp | — |
+| Hingu | 2–3 | — | ½ tsp | — |
+| Rock salt | 2–3 | — | ½ tsp | — |
 
 **Method**
 1. Wash and slice pointed gourd thin.
@@ -596,15 +596,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** GO p. 163 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Eggplant | 100–120 g (½ cup) |
-| Mustard seeds | 2–3 g (½ tsp) |
-| Cumin seeds | 2–3 g (½ tsp) |
-| Curry leaves | 4–6 leaves |
-| Turmeric powder | 2–3 g (½ tsp) |
-| Onion | 30–40 g (¼ cup) |
-| Oil | 10–15 ml (2–3 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Eggplant | 100–120 | — | ½ cup | — |
+| Mustard seeds | 2–3 | — | ½ tsp | — |
+| Cumin seeds | 2–3 | — | ½ tsp | — |
+| Curry leaves | — | — | 4–6 leaves | — |
+| Turmeric powder | 2–3 | — | ½ tsp | — |
+| Onion | 30–40 | — | ¼ cup | — |
+| Oil | — | 10–15 | 2–3 tsp | — |
 
 **Method**
 1. Slice eggplant; sprinkle with salt, let sweat, wash off salt, and pat dry.
@@ -618,17 +618,17 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** GO p. 173 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Sliced pumpkin | 100–120 g (½ cup) |
-| Sliced almonds | 25–30 g (2 tbsp) |
-| Ghee | 5 g (1 tsp) |
-| Mustard seeds | 2–3 g (½ tsp) |
-| Cumin seeds | 2–3 g (½ tsp) |
-| Curry leaves | 4–5 leaves |
-| Chopped onion | 30–40 g (¼ cup) |
-| Turmeric | 2–3 g (½ tsp) |
-| Rock salt | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Sliced pumpkin | 100–120 | — | ½ cup | — |
+| Sliced almonds | 25–30 | — | 2 tbsp | — |
+| Ghee | 5 | — | 1 tsp | — |
+| Mustard seeds | 2–3 | — | ½ tsp | — |
+| Cumin seeds | 2–3 | — | ½ tsp | — |
+| Curry leaves | — | — | 4–5 leaves | — |
+| Chopped onion | 30–40 | — | ¼ cup | — |
+| Turmeric | 2–3 | — | ½ tsp | — |
+| Rock salt | — | — | — | to taste |
 
 **Method**
 1. Steam pumpkin cubes until soft.
@@ -643,18 +643,18 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** GO p. 177 · ICMR  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Chopped pumpkin | 100 g (½ cup) |
-| Chopped sweet potato | 75 g (5 tbsp) |
-| Ghee | for sauté |
-| Mustard seeds | 2 g (¼ tsp) |
-| Cumin seeds | 2 g (¼ tsp) |
-| Curry leaves | 6–8 leaves |
-| Chopped onion | 20 g (4 tsp) |
-| Ginger paste | 3 g (½ tsp) |
-| Turmeric powder | 0.5 g (pinch) |
-| Rock salt | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Chopped pumpkin | 100 | — | ½ cup | — |
+| Chopped sweet potato | 75 | — | 5 tbsp | — |
+| Ghee | — | — | — | for sauté |
+| Mustard seeds | 2 | — | ¼ tsp | — |
+| Cumin seeds | 2 | — | ¼ tsp | — |
+| Curry leaves | — | — | 6–8 leaves | — |
+| Chopped onion | 20 | — | 4 tsp | — |
+| Ginger paste | 3 | — | ½ tsp | — |
+| Turmeric powder | 0.5 | — | pinch | — |
+| Rock salt | — | — | — | to taste |
 
 **Method**
 1. Steam pumpkin and sweet potato until soft.
@@ -668,14 +668,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** AYUSH  
 **Yield:** ½ cup
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Indian gooseberry (amla) | 170 g (⅞ cup) |
-| Sesame oil | 10 ml (2 tsp) |
-| Curry leaves | 8–10 leaves |
-| Black pepper powder | 2 g (¼ tsp) |
-| Turmeric powder | 2 g (¼ tsp) |
-| Salt | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Indian gooseberry (amla) | 170 | — | ⅞ cup | — |
+| Sesame oil | — | 10 | 2 tsp | — |
+| Curry leaves | — | — | 8–10 leaves | — |
+| Black pepper powder | 2 | — | ¼ tsp | — |
+| Turmeric powder | 2 | — | ¼ tsp | — |
+| Salt | — | — | — | to taste |
 
 **Method**
 1. Wash and dry amla; cut and remove seeds.
@@ -693,20 +693,20 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** AYUSH  
 **Yield:** ~20 small pieces · keeps ~1 month
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh ginger | 250 g (1¼ cup) |
-| Jaggery | 250 g (1¼ cup) |
-| Ghee | 125 g (½ cup) |
-| Dry ginger powder | 25 g (5 tsp) |
-| Cumin | 25 g (5 tsp) |
-| Black pepper | 25 g (5 tsp) |
-| Cardamom powder | 25 g (5 tsp) |
-| Cinnamon powder | 25 g (5 tsp) |
-| Indian bay leaf powder | 25 g (5 tsp) |
-| Coriander powder | 25 g (5 tsp) |
-| Sesame seeds (optional) | 5–10 g (1–2 tsp) |
-| Nagakesar (if available) | 25 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh ginger | 250 | — | 1¼ cup | — |
+| Jaggery | 250 | — | 1¼ cup | — |
+| Ghee | 125 | — | ½ cup | — |
+| Dry ginger powder | 25 | — | 5 tsp | — |
+| Cumin | 25 | — | 5 tsp | — |
+| Black pepper | 25 | — | 5 tsp | — |
+| Cardamom powder | 25 | — | 5 tsp | — |
+| Cinnamon powder | 25 | — | 5 tsp | — |
+| Indian bay leaf powder | 25 | — | 5 tsp | — |
+| Coriander powder | 25 | — | 5 tsp | — |
+| Sesame seeds (optional) | 5–10 | — | 1–2 tsp | — |
+| Nagakesar (if available) | 25 | — | — | — |
 
 **Method**
 1. Cook jaggery until a thick syrup forms. Add grated ginger; stir and cook 5–7 min on low flame.
@@ -722,14 +722,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium laddoos · keeps 5–7 days  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Grated coconut | 40–50 g (¼ cup) |
-| Milk | 30–40 ml |
-| Ghee | 10–15 ml (2–3 tsp) |
-| Rock sugar powder | 15–20 g (3–4 tsp) |
-| Cardamom powder | 2–3 g (½ tsp) |
-| Dry ginger powder | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Grated coconut | 40–50 | — | ¼ cup | — |
+| Milk | — | 30–40 | — | — |
+| Ghee | — | 10–15 | 2–3 tsp | — |
+| Rock sugar powder | 15–20 | — | 3–4 tsp | — |
+| Cardamom powder | 2–3 | — | ½ tsp | — |
+| Dry ginger powder | 2–3 | — | ½ tsp | — |
 
 **Method**
 1. Cook grated coconut in milk until well cooked.
@@ -746,15 +746,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 2–3 medium momo  
 🔴 DM · OW · SD
 
-| Stage | Ingredient | Quantity |
-|-------|-----------|----------|
-| Dough | Wheat flour | 50–60 g (¼ cup) |
-| | Ghee | for deep frying |
-| Filling | Grated coconut | 30–40 g (¼ cup) |
-| | Dry grapes | 10 g (2 tsp) |
-| | Chopped dates (kharjura) | 15 g (3 tsp) |
-| | Rock sugar powder | 10–15 g (2–3 tsp) |
-| | Aromatic powder* | 2–3 g (½ tsp) |
+| Stage | Ingredient | g | ml | Cups | Note |
+|-------|-----------|-----|-----|------|------|
+| Dough | Wheat flour | 50–60 | — | ¼ cup | — |
+|  | Ghee | — | — | — | for deep frying |
+| Filling | Grated coconut | 30–40 | — | ¼ cup | — |
+|  | Dry grapes | 10 | — | 2 tsp | — |
+|  | Chopped dates (kharjura) | 15 | — | 3 tsp | — |
+|  | Rock sugar powder | 10–15 | — | 2–3 tsp | — |
+|  | Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Aromatic powder: cardamom 3–4 · clove 2–3 · pepper 2–3 · cinnamon 2–3 inch · dry ginger 2–3 inch · edible camphor 2–3 crystals — finely powdered together.
 
@@ -772,14 +772,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium laddoos  
 🔴 DM · OW · SD
 
-| Stage | Ingredient | Quantity |
-|-------|-----------|----------|
-| Batter | De-husked black gram | 30–50 g (¼ cup) |
-| | Water | as needed |
-| Frying | Ghee | for deep frying |
-| Syrup | Rock sugar powder | 20–30 g |
-| | Aromatic powder* | 2–3 g (½ tsp) |
-| Garnish | Dry fruits (choice) | as desired |
+| Stage | Ingredient | g | ml | Cups | Note |
+|-------|-----------|-----|-----|------|------|
+| Batter | De-husked black gram | 30–50 | — | ¼ cup | — |
+|  | Water | — | — | — | as needed |
+| Frying | Ghee | — | — | — | for deep frying |
+| Syrup | Rock sugar powder | 20–30 | — | — | — |
+|  | Aromatic powder* | 2–3 | — | ½ tsp | — |
+| Garnish | Dry fruits (choice) | — | — | — | as desired |
 
 *Aromatic powder: same blend as S-24.
 
@@ -797,13 +797,13 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium laddoos  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 40–60 g (¼ cup) |
-| Ghee | 15–20 g (3–4 tsp) |
-| Jaggery | 15–20 g (to taste) |
-| Cardamom powder | 2–3 g (½ tsp) |
-| Dry ginger powder | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 40–60 | — | ¼ cup | — |
+| Ghee | 15–20 | — | 3–4 tsp | — |
+| Jaggery | 15–20 | — | — | to taste |
+| Cardamom powder | 2–3 | — | ½ tsp | — |
+| Dry ginger powder | 2–3 | — | ½ tsp | — |
 
 **Method**
 1. Heat ghee; add wheat flour and roast on medium flame until done.
@@ -819,13 +819,13 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium manda  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Refined wheat flour | 40–50 g (¼ cup) |
-| Ghee | as needed (dough + frying) |
-| Rock sugar | to taste |
-| Water | as needed |
-| Aromatic powder* | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Refined wheat flour | 40–50 | — | ¼ cup | — |
+| Ghee | — | — | — | as needed (dough + frying) |
+| Rock sugar | — | — | — | to taste |
+| Water | — | — | — | as needed |
+| Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Aromatic powder: cardamom 4 · clove 2 · pepper 2 · cinnamon 2 inch · dry ginger 2 inch · edible camphor 2 crystals — finely powdered.
 
@@ -844,12 +844,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium laddoos  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Refined wheat flour | 50–70 g (¼ cup) |
-| Ghee | for dough + cooking |
-| Rock sugar powder | 15–20 g |
-| Aromatic powder* | 2–3 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Refined wheat flour | 50–70 | — | ¼ cup | — |
+| Ghee | — | — | — | for dough + cooking |
+| Rock sugar powder | 15–20 | — | — | — |
+| Aromatic powder* | 2–3 | — | ¼ tsp | — |
 
 *Same blend as S-27.
 
@@ -865,13 +865,13 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** AYUSH  
 **Yield:** 10–12 laddoos
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Dates (kharjur) | 250 g |
-| Cashews | 10 |
-| Almonds | 10 |
-| Grated dry coconut | 100 g |
-| Ghee | 2 tsp (for roasting) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Dates (kharjur) | 250 | — | — | — |
+| Cashews | — | — | 10 | — |
+| Almonds | — | — | 10 | — |
+| Grated dry coconut | 100 | — | — | — |
+| Ghee | — | — | 2 tsp | (for roasting) |
 
 **Method**
 1. Remove seeds from dates; chop small. Chop cashews and almonds.
@@ -886,11 +886,11 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 1 serving  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fine wheat flour (Samita) | 50–60 g (¼ cup) |
-| Ghee | for deep frying |
-| Rock sugar | 20–30 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fine wheat flour (Samita) | 50–60 | — | ¼ cup | — |
+| Ghee | — | — | — | for deep frying |
+| Rock sugar | 20–30 | — | — | — |
 
 **Method**
 1. Knead flour with ghee and enough water into a smooth dough.
@@ -906,12 +906,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium balls  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fine wheat flour (Samita) | 50 g (¼ cup) |
-| Rock sugar | 50 g (¼ cup) |
-| Ghee | 10 g (2 tsp) |
-| Cow's milk (Dugdha) | 100 ml (½ cup) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fine wheat flour (Samita) | 50 | — | ¼ cup | — |
+| Rock sugar | 50 | — | ¼ cup | — |
+| Ghee | 10 | — | 2 tsp | — |
+| Cow's milk (Dugdha) | — | 100 | ½ cup | — |
 
 **Method**
 1. Combine flour, milk, and ghee; mix into a thin batter.
@@ -926,14 +926,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium balls  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fine wheat flour (Samita) | 50–60 g (¼ cup) |
-| Ghee | 30–40 g |
-| Rock sugar | 20–30 g |
-| Clove | 1–2 g (¼ tsp) |
-| Pepper | 1–2 g (¼ tsp) |
-| Cardamom | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fine wheat flour (Samita) | 50–60 | — | ¼ cup | — |
+| Ghee | 30–40 | — | — | — |
+| Rock sugar | 20–30 | — | — | — |
+| Clove | 1–2 | — | ¼ tsp | — |
+| Pepper | 1–2 | — | ¼ tsp | — |
+| Cardamom | 1–2 | — | ¼ tsp | — |
 
 **Method**
 1. Fry Samita in ghee until colour changes; cool.
@@ -948,12 +948,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 3–4 medium balls  
 🔴 DM · OW · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 50 g (¼ cup) |
-| Ghee | 150 g (¾ cup) |
-| Rock sugar | 25 g |
-| Edible camphor (Karpura) | a pinch |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 50 | — | ¼ cup | — |
+| Ghee | 150 | — | ¾ cup | — |
+| Rock sugar | 25 | — | — | — |
+| Edible camphor (Karpura) | — | — | — | a pinch |
 
 **Method**
 1. Knead flour with ghee and water into a smooth dough.
@@ -968,11 +968,11 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** Ayurveda sara Samgraha — Avaleha-Paka Prakarana, p. 532 · Rasa Tantrasara, pt. 1, p. 405 · ICMR  
 **Yield:** 10–12 preserved amla · keeps refrigerated weeks
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh amla | 100 g |
-| Sugar | 200 g (1 cup) |
-| Food-grade lime water | 600 ml (clear supernatant) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh amla | 100 | — | — | — |
+| Sugar | 200 | — | 1 cup | — |
+| Food-grade lime water | — | 600 | — | clear supernatant |
 
 **Method**
 1. Dissolve food-grade lime (calcium hydroxide) in water; let particles settle; use only the clear supernatant.
@@ -989,10 +989,10 @@ Recipes carrying contraindications are flagged. Common flags:
 **Yield:** 1 serving  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Cow's milk | 200 ml |
-| Fresh grated coconut | 50 g (¼ cup) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Cow's milk | — | 200 | — | — |
+| Fresh grated coconut | 50 | — | ¼ cup | — |
 
 **Method**
 1. Cook grated coconut in milk until a thick consistency is reached.
@@ -1009,14 +1009,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 73  
 **Yield:** ½ medium cup
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Sweet potato | 150 g (¾ cup) |
-| Fresh ginger paste | 4 g (1 tsp) |
-| Fresh lemon juice | 15 ml (3 tsp) |
-| Honey | 2.5 ml (½ tsp) |
-| Sesame oil | 8–9 ml (2 tsp) |
-| Rock salt | 1 g (to taste) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Sweet potato | 150 | — | ¾ cup | — |
+| Fresh ginger paste | 4 | — | 1 tsp | — |
+| Fresh lemon juice | — | 15 | 3 tsp | — |
+| Honey | — | 2.5 | ½ tsp | — |
+| Sesame oil | — | 8–9 | 2 tsp | — |
+| Rock salt | 1 | — | — | to taste |
 
 **Method**
 1. Boil sweet potato; peel and cut into medium square cubes.
@@ -1030,16 +1030,16 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 169  
 **Yield:** 24–28 biscuits
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour / barley flour | 240 g (1 cup + 3 tbsp) |
-| Salt | 5 g (1 tsp) |
-| Baking powder | 10 g (2 tsp) |
-| Baking soda | 1.2 g (2 pinches) |
-| Butter / Ghee | 56 g (¼ cup) |
-| Boiled, mashed sweet potato | 150 g (¾ cup) |
-| Lemon juice | 30 ml (2 tbsp) |
-| Cow's milk | 60–70 ml (¼ cup) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour / barley flour | 240 | — | 1 cup + 3 tbsp | — |
+| Salt | 5 | — | 1 tsp | — |
+| Baking powder | 10 | — | 2 tsp | — |
+| Baking soda | 1.2 | — | 2 pinches | — |
+| Butter / Ghee | 56 | — | ¼ cup | — |
+| Boiled, mashed sweet potato | 150 | — | ¾ cup | — |
+| Lemon juice | — | 30 | 2 tbsp | — |
+| Cow's milk | — | 60–70 | ¼ cup | — |
 
 **Method**
 1. Mix flour, salt, baking powder, and baking soda. Add butter/ghee; mix well.
@@ -1054,15 +1054,15 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 174  
 **Yield:** 12 muffins
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Dried organic apricot | 9 pieces (72 g) |
-| Ripe banana | 2 (240 g) |
-| Almond oil | 42 ml (¼ cup) |
-| Maple syrup / sugar syrup | 80 ml |
-| Wheat flour / barley flour | 150 g (¾ cup) |
-| Baking powder | 5 g (1 tsp) |
-| Rock salt | 3 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Dried organic apricot | — | — | 9 pieces (72 g) | — |
+| Ripe banana | — | — | 2 (240 g) | — |
+| Almond oil | — | 42 | ¼ cup | — |
+| Maple syrup / sugar syrup | — | 80 | — | — |
+| Wheat flour / barley flour | 150 | — | ¾ cup | — |
+| Baking powder | 5 | — | 1 tsp | — |
+| Rock salt | 3 | — | — | — |
 
 **Method**
 1. Soak apricots in hot water 15 min; finely chop.
@@ -1077,14 +1077,14 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 257  
 **Yield:** 18–20 pieces
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Finely ground raw almonds | 14 g (1 tbsp) |
-| Brown sugar (powdered) | 36 g |
-| Wheat flour / barley flour | 150 g (¾ cup) |
-| Rock salt | to taste |
-| Cold butter | 56 g (¼ cup) |
-| Cold water | 60 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Finely ground raw almonds | 14 | — | 1 tbsp | — |
+| Brown sugar (powdered) | 36 | — | — | — |
+| Wheat flour / barley flour | 150 | — | ¾ cup | — |
+| Rock salt | — | — | — | to taste |
+| Cold butter | 56 | — | ¼ cup | — |
+| Cold water | — | 60 | — | — |
 
 **Method**
 1. Mix flour, almond powder, powdered sugar, and salt. Add cold butter and cold water; make a dough.
@@ -1103,13 +1103,13 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** MC p. 202  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Rice | 50 g (¼ cup) |
-| Ghee | 8–10 g (2 tsp) |
-| Rock salt | 1.5 g |
-| Sesame seeds | 10 g (2 tsp) |
-| Desiccated coconut | 5 g (1 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Rice | 50 | — | ¼ cup | — |
+| Ghee | 8–10 | — | 2 tsp | — |
+| Rock salt | 1.5 | — | — | — |
+| Sesame seeds | 10 | — | 2 tsp | — |
+| Desiccated coconut | 5 | — | 1 tsp | — |
 
 **Method**
 1. Cook rice with water, ghee, and rock salt.
@@ -1123,12 +1123,12 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** Ayurveda Mahodadhi — Pakvannavarga, 16th varga, shloka 11 · ICMR  
 **Yield:** varies
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Rice flour | 40–50 g (¼ cup) |
-| Black gram flour | 20–30 g (2 tbsp) |
-| Rock salt | to taste |
-| Water | 60–70 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Rice flour | 40–50 | — | ¼ cup | — |
+| Black gram flour | 20–30 | — | 2 tbsp | — |
+| Rock salt | — | — | — | to taste |
+| Water | — | 60–70 | — | — |
 
 **Method**
 1. Mix both flours with water to a smooth batter — not too thick or thin. Ferment overnight.
@@ -1150,11 +1150,11 @@ Recipes carrying contraindications are flagged. Common flags:
 **Source:** KK 12/63 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Coconut water | 150–180 ml |
-| Rock sugar powder | 10 g |
-| Citron fruit juice (rough lemon) | 10 ml (2 tbsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Coconut water | — | 150–180 | — | — |
+| Rock sugar powder | 10 | — | — | — |
+| Citron fruit juice (rough lemon) | — | 10 | 2 tbsp | — |
 
 **Method**
 Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Filter through a sieve and serve.
@@ -1166,13 +1166,13 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 **Source:** BK — Panaka Prakarana, p. 200 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Raw mango | 50 g |
-| Rock sugar | 10 g |
-| Rock salt | to taste |
-| Aromatic powder* | 1–2 g (¼ tsp) |
-| Cold water | as needed |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Raw mango | 50 | — | — | — |
+| Rock sugar | 10 | — | — | — |
+| Rock salt | — | — | — | to taste |
+| Aromatic powder* | 1–2 | — | ¼ tsp | — |
+| Cold water | — | — | — | as needed |
 
 *Same blend as S-27.
 
@@ -1187,12 +1187,12 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 **Source:** BK — Panaka Prakarana, p. 201 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Coriander seeds | 10 g (2 tsp) |
-| Sugar | 15 g |
-| Edible camphor | a pinch |
-| Water | 200 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Coriander seeds | 10 | — | 2 tsp | — |
+| Sugar | 15 | — | — | — |
+| Edible camphor | — | — | — | a pinch |
+| Water | — | 200 | — | — |
 
 **Method**
 1. Wash coriander seeds; soak 20–30 min. Macerate thoroughly with mortar and pestle or grinding slab.
@@ -1205,15 +1205,15 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 **Source:** AYUSH  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh amla | 80 g |
-| Dry ginger powder | 1 g (¼ tsp) |
-| Cardamom powder | 1 g (¼ tsp) |
-| Rock sugar / jaggery | 30 g |
-| Rock salt | 0.5–1 g |
-| Honey | 5 g (1 tsp) |
-| Water | 200 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh amla | 80 | — | — | — |
+| Dry ginger powder | 1 | — | ¼ tsp | — |
+| Cardamom powder | 1 | — | ¼ tsp | — |
+| Rock sugar / jaggery | 30 | — | — | — |
+| Rock salt | 0.5–1 | — | — | — |
+| Honey | 5 | — | 1 tsp | — |
+| Water | — | 200 | — | — |
 
 **Method**
 1. Steam amla until soft; cool, remove seeds, grind to smooth paste.
@@ -1226,12 +1226,12 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 **Source:** BK — Panaka Prakarana, p. 199 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Cold water | 200 ml |
-| Rock sugar | 20 g (4 tsp) |
-| Rock salt | to taste |
-| Aromatic powder* | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Cold water | — | 200 | — | — |
+| Rock sugar | 20 | — | 4 tsp | — |
+| Rock salt | — | — | — | to taste |
+| Aromatic powder* | 1–2 | — | ¼ tsp | — |
 
 *Same blend as S-27.
 
@@ -1245,13 +1245,13 @@ Dissolve rock sugar in cold water (not refrigerated). Add aromatic powder and ro
 **Source:** AYUSH  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Seedless grapes | 15 g (3 tsp) |
-| Soft dates | 10 g |
-| Roasted puffed paddy | 7–8 g (1–2 tsp) |
-| Jaggery | 5 g (1 tsp) |
-| Water | 150 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Seedless grapes | 15 | — | 3 tsp | — |
+| Soft dates | 10 | — | — | — |
+| Roasted puffed paddy | 7–8 | — | 1–2 tsp | — |
+| Jaggery | 5 | — | 1 tsp | — |
+| Water | — | 150 | — | — |
 
 **Method**
 Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed paddy, and jaggery until smooth. Serve fresh.
@@ -1263,15 +1263,15 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 **Source:** AYUSH  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Amla | 2 |
-| Candy sugar | to taste |
-| Rock salt | to taste |
-| Roasted cumin powder | ½ tsp |
-| Pepper powder | ¼ tsp |
-| Black salt | to taste |
-| Water | 150–170 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Amla | — | — | 2 | — |
+| Candy sugar | — | — | — | to taste |
+| Rock salt | — | — | — | to taste |
+| Roasted cumin powder | — | — | ½ tsp | — |
+| Pepper powder | — | — | ¼ tsp | — |
+| Black salt | — | — | — | to taste |
+| Water | — | 150–170 | — | — |
 
 **Method**
 1. Boil amla until soft; cool, remove seeds, grind to smooth paste.
@@ -1289,18 +1289,18 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 **Source:** AYUSH  
 **Yield:** 200–250 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh curd | 100 ml (½ cup) |
-| Pepper powder | 3 g (½ tsp) |
-| Jaggery / sugar | 10 g |
-| Salt | 2 g |
-| Ghee / Butter | 5 ml (1 tsp) |
-| Mustard seeds | 5 g (1 tsp) |
-| Fenugreek seeds | 3 g (½ tsp) |
-| Cumin seeds | 3 g (½ tsp) |
-| Crushed red chilli (optional) | to taste |
-| Curry leaves | 5–6 |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh curd | — | 100 | ½ cup | — |
+| Pepper powder | 3 | — | ½ tsp | — |
+| Jaggery / sugar | 10 | — | — | — |
+| Salt | 2 | — | — | — |
+| Ghee / Butter | — | 5 | 1 tsp | — |
+| Mustard seeds | 5 | — | 1 tsp | — |
+| Fenugreek seeds | 3 | — | ½ tsp | — |
+| Cumin seeds | 3 | — | ½ tsp | — |
+| Crushed red chilli (optional) | — | — | — | to taste |
+| Curry leaves | — | — | 5–6 | — |
 
 **Method**
 1. Add pepper, jaggery/sugar, and salt to curd; blend or churn until smooth.
@@ -1314,20 +1314,20 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 **Source:** AYUSH  
 **Yield:** 200–250 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh curd | 100 ml (½ cup) |
-| Water | 60–80 ml |
-| Pepper powder | 3 g (½ tsp) |
-| Jaggery / sugar | 10 g |
-| Salt | 2 g |
-| Ghee / Butter | 5 g (1 tsp) |
-| Mustard seeds | 5 g (1 tsp) |
-| Fenugreek seeds | 3 g (½ tsp) |
-| Cumin seeds | 3 g (½ tsp) |
-| Crushed red chilli (optional) | to taste |
-| Curry leaves | 5–6 |
-| Half lemon juice | 5–10 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh curd | — | 100 | ½ cup | — |
+| Water | — | 60–80 | — | — |
+| Pepper powder | 3 | — | ½ tsp | — |
+| Jaggery / sugar | 10 | — | — | — |
+| Salt | 2 | — | — | — |
+| Ghee / Butter | 5 | — | 1 tsp | — |
+| Mustard seeds | 5 | — | 1 tsp | — |
+| Fenugreek seeds | 3 | — | ½ tsp | — |
+| Cumin seeds | 3 | — | ½ tsp | — |
+| Crushed red chilli (optional) | — | — | — | to taste |
+| Curry leaves | — | — | 5–6 | — |
+| Half lemon juice | — | 5–10 | — | — |
 
 **Method**
 1. Blend curd, water, pepper, jaggery/sugar, and salt until smooth buttermilk consistency.
@@ -1340,14 +1340,14 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 **Source:** AYUSH  
 **Yield:** 150–160 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Buttermilk | 150 ml (¾ cup) |
-| Fresh ginger paste | 5 g (1 tsp) |
-| Hingu | a pinch |
-| Turmeric powder | 1–2 g (¼ tsp) |
-| Rock salt | to taste |
-| Pepper powder | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Buttermilk | — | 150 | ¾ cup | — |
+| Fresh ginger paste | 5 | — | 1 tsp | — |
+| Hingu | — | — | — | a pinch |
+| Turmeric powder | 1–2 | — | ¼ tsp | — |
+| Rock salt | — | — | — | to taste |
+| Pepper powder | 1–2 | — | ¼ tsp | — |
 
 **Method**
 Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, pepper, hingu, and rock salt; mix well. Turn off flame. Serve hot.
@@ -1363,17 +1363,17 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** KK 6/25–26 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Green gram | 30 g (2 tbsp) |
-| Water | 300 ml |
-| Rock salt | to taste |
-| Pepper | 1–2 g (¼ tsp) |
-| Ghee | 5 g (1 tsp) |
-| Mustard seeds | 1–2 g (¼ tsp) |
-| Fenugreek seeds | 1–2 g (¼ tsp) |
-| Curry leaves | 4–5 |
-| Lemon juice | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Green gram | 30 | — | 2 tbsp | — |
+| Water | — | 300 | — | — |
+| Rock salt | — | — | — | to taste |
+| Pepper | 1–2 | — | ¼ tsp | — |
+| Ghee | 5 | — | 1 tsp | — |
+| Mustard seeds | 1–2 | — | ¼ tsp | — |
+| Fenugreek seeds | 1–2 | — | ¼ tsp | — |
+| Curry leaves | — | — | 4–5 | — |
+| Lemon juice | — | — | — | to taste |
 
 **Method**
 1. Soak green gram 4–5 hr. Pressure cook with water until soft.
@@ -1388,17 +1388,17 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** KK 6/27 · ICMR  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Black gram | 30 g (2 tbsp) |
-| Water | 300 ml |
-| Rock salt | to taste |
-| Pepper | 1–2 g (¼ tsp) |
-| Ghee | 5 g (1 tsp) |
-| Mustard seeds | 1–2 g (¼ tsp) |
-| Fenugreek seeds | 1–2 g (¼ tsp) |
-| Curry leaves | 4–5 |
-| Lemon juice | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Black gram | 30 | — | 2 tbsp | — |
+| Water | — | 300 | — | — |
+| Rock salt | — | — | — | to taste |
+| Pepper | 1–2 | — | ¼ tsp | — |
+| Ghee | 5 | — | 1 tsp | — |
+| Mustard seeds | 1–2 | — | ¼ tsp | — |
+| Fenugreek seeds | 1–2 | — | ¼ tsp | — |
+| Curry leaves | — | — | 4–5 | — |
+| Lemon juice | — | — | — | to taste |
 
 **Method**
 1. Soak black gram 4–5 hr. Cook until soft and well done.
@@ -1413,16 +1413,16 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** AYUSH  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fenugreek / spinach / any green leafy vegetable | 50 g (¼ cup) |
-| Finely chopped onion | 50 g (¼ cup) |
-| Finely chopped ripe tomato | 50 g (¼ cup) |
-| Garlic cloves | 3–4 |
-| Dal water (supernatant of boiled pulses) | 200–400 ml |
-| Oil | 5 ml (1 tsp) |
-| Salt | to taste |
-| Pepper powder | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fenugreek / spinach / any green leafy vegetable | 50 | — | ¼ cup | — |
+| Finely chopped onion | 50 | — | ¼ cup | — |
+| Finely chopped ripe tomato | 50 | — | ¼ cup | — |
+| Garlic cloves | — | — | 3–4 | — |
+| Dal water (supernatant of boiled pulses) | — | 200–400 | — | — |
+| Oil | — | 5 | 1 tsp | — |
+| Salt | — | — | — | to taste |
+| Pepper powder | 1–2 | — | ¼ tsp | — |
 
 **Method**
 1. Heat oil; fry onion and garlic paste. Add tomato; cook 2–3 min. Add greens; cook until soft.
@@ -1437,15 +1437,15 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** MC p. 99  
 **Yield:** 350–400 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Sweet potato | 200 g |
-| Fresh ginger | 6 g |
-| Cow's milk | 90–100 ml |
-| Sugar (optional) | 5 g |
-| Rock salt | 1 g |
-| Pepper powder | 1–2 g (¼ tsp) |
-| Spices | as desired |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Sweet potato | 200 | — | — | — |
+| Fresh ginger | 6 | — | — | — |
+| Cow's milk | — | 90–100 | — | — |
+| Sugar (optional) | 5 | — | — | — |
+| Rock salt | 1 | — | — | — |
+| Pepper powder | 1–2 | — | ¼ tsp | — |
+| Spices | — | — | — | as desired |
 
 **Method**
 1. Boil sweet potato with ginger until soft.
@@ -1459,13 +1459,13 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** MC p. 103  
 **Yield:** 450–500 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Sliced beetroot | 200 g (1 cup) |
-| Fresh ginger | 5–6 slices |
-| Olive oil | 5–7 ml (1 tsp) |
-| Rock salt | to taste |
-| Black pepper powder | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Sliced beetroot | 200 | — | 1 cup | — |
+| Fresh ginger | — | — | 5–6 slices | — |
+| Olive oil | — | 5–7 | 1 tsp | — |
+| Rock salt | — | — | — | to taste |
+| Black pepper powder | — | — | — | to taste |
 
 **Method**
 1. Peel and slice beetroot and ginger.
@@ -1480,15 +1480,15 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Source:** MC p. 106  
 **Yield:** 380–420 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Split mung dal | 50 g (¼ cup) |
-| Hingu | 1–2 g (¼ tsp) |
-| Fresh ginger | 3 g (½ tsp) |
-| Coriander leaves | 8–10 g (2 tsp) |
-| Cumin | 5 g (1 tsp) |
-| Rock salt | to taste |
-| Olive oil | 10 ml (1–2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Split mung dal | 50 | — | ¼ cup | — |
+| Hingu | 1–2 | — | ¼ tsp | — |
+| Fresh ginger | 3 | — | ½ tsp | — |
+| Coriander leaves | 8–10 | — | 2 tsp | — |
+| Cumin | 5 | — | 1 tsp | — |
+| Rock salt | — | — | — | to taste |
+| Olive oil | — | 10 | 1–2 tsp | — |
 
 **Method**
 1. Boil mung dal with water, chopped ginger, and hingu until soft and fully cooked.
@@ -1507,14 +1507,14 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Yield:** 150–180 ml  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Grated tender coconut | 50 g (¼ cup) |
-| Milk | 240 ml |
-| Ghee | 5 ml (1 tsp) |
-| Rock sugar | 10 g |
-| Dry fruits (choice) | 10 g (2 tsp) |
-| Aromatic powder* | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Grated tender coconut | 50 | — | ¼ cup | — |
+| Milk | — | 240 | — | — |
+| Ghee | — | 5 | 1 tsp | — |
+| Rock sugar | 10 | — | — | — |
+| Dry fruits (choice) | 10 | — | 2 tsp | — |
+| Aromatic powder* | 1–2 | — | ¼ tsp | — |
 
 *Same blend as S-27.
 
@@ -1530,11 +1530,11 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Yield:** ~150 ml  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Cow's milk | 150 ml |
-| Rock sugar powder | to taste |
-| Aromatic powder* | 1–2 g (¼ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Cow's milk | — | 150 | — | — |
+| Rock sugar powder | — | — | — | to taste |
+| Aromatic powder* | 1–2 | — | ¼ tsp | — |
 
 *Cardamom 4 · clove 2 · pepper 2 · cinnamon 2 inch · dry ginger 2 inch · edible camphor 2 crystals — finely powdered.
 
@@ -1550,12 +1550,12 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 **Yield:** ~200 ml  
 🔴 DM · LI
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Black gram powder | 20 g (4 tsp) |
-| Ghee | 10 g (2 tsp) |
-| Milk | 200 ml |
-| Rock sugar powder | 10 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Black gram powder | 20 | — | 4 tsp | — |
+| Ghee | 10 | — | 2 tsp | — |
+| Milk | — | 200 | — | — |
+| Rock sugar powder | 10 | — | — | — |
 
 **Method**
 Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boil. Add rock sugar; stir until dissolved. Boil 2–3 min. Serve hot or warm.
@@ -1567,12 +1567,12 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** MC p. 269  
 **Yield:** 200–240 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Milk | 100 ml |
-| Water | 100 ml |
-| Fresh ginger paste | 3–4 g (1 tsp) |
-| Honey (optional) | 5 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Milk | — | 100 | — | — |
+| Water | — | 100 | — | — |
+| Fresh ginger paste | 3–4 | — | 1 tsp | — |
+| Honey (optional) | 5 | — | — | — |
 
 **Method**
 1. Combine milk and water; bring to heat. Add ginger paste; boil 3–5 min until reduced to ~1 cup.
@@ -1585,15 +1585,15 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** MC p. 275  
 **Yield:** ~200 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Almonds | 10 g |
-| Milk | 180–200 ml |
-| Water | 240 ml (for soaking) |
-| Rose petals | 2 g |
-| Saffron (optional) | 2 strands |
-| Cardamom powder | 2–3 g (½ tsp) |
-| Honey | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Almonds | 10 | — | — | — |
+| Milk | — | 180–200 | — | — |
+| Water | — | 240 | — | for soaking |
+| Rose petals | 2 | — | — | — |
+| Saffron (optional) | — | — | 2 strands | — |
+| Cardamom powder | 2–3 | — | ½ tsp | — |
+| Honey | — | — | — | to taste |
 
 **Method**
 1. Soak almonds overnight; remove skins.
@@ -1606,10 +1606,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** MC p. 277  
 **Yield:** 240–250 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Almonds | 14 g |
-| Water | 240 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Almonds | 14 | — | — | — |
+| Water | — | 240 | — | — |
 
 **Method**
 1. Soak almonds overnight; remove skins.
@@ -1623,13 +1623,13 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** GO p. 131  
 **Yield:** ~240 ml
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Milk | 200 ml |
-| Water | 200 ml |
-| Crushed cardamom | 2–3 pods |
-| Ginger paste | 2–3 g (½ tsp) |
-| Turmeric powder | a pinch |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Milk | — | 200 | — | — |
+| Water | — | 200 | — | — |
+| Crushed cardamom | — | — | 2–3 pods | — |
+| Ginger paste | 2–3 | — | ½ tsp | — |
+| Turmeric powder | — | — | — | a pinch |
 
 **Method**
 1. Combine milk and water; bring to a boil.
@@ -1651,11 +1651,11 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** CC 11/19 · ICMR  
 **Yield:** 1 bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Barley | 30 g (2 tbsp) |
-| Cow's milk | 200 ml |
-| Cow's ghee | 5 g (1 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Barley | 30 | — | 2 tbsp | — |
+| Cow's milk | — | 200 | — | — |
+| Cow's ghee | 5 | — | 1 tsp | — |
 
 **Method**
 1. Mix barley flour (or ground barley) with a little milk to form a smooth paste.
@@ -1669,11 +1669,11 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** CS 2/32 · ICMR  
 **Yield:** 1 bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Split black gram | 30 g (¾ cup measured dry) |
-| Milk | 180 ml |
-| Ghee | 10–15 ml (2–3 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Split black gram | 30 | — | ¾ cup measured dry | — |
+| Milk | — | 180 | — | — |
+| Ghee | — | 10–15 | 2–3 tsp | — |
 
 **Method**
 1. Wash split black gram thoroughly.
@@ -1691,14 +1691,14 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** KK (general) · ICMR  
 **Yield:** 1 serving
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh curd | 50 g (¼ cup) |
-| Rock sugar powder | to taste |
-| Cardamom powder | 3 g (½ tsp) |
-| Cinnamon powder | 2 g (¼ tsp) |
-| Ginger powder | 2–3 g (¼ tsp) |
-| Saffron (optional) | 2 strands |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh curd | 50 | — | ¼ cup | — |
+| Rock sugar powder | — | — | — | to taste |
+| Cardamom powder | 3 | — | ½ tsp | — |
+| Cinnamon powder | 2 | — | ¼ tsp | — |
+| Ginger powder | 2–3 | — | ¼ tsp | — |
+| Saffron (optional) | — | — | 2 strands | — |
 
 **Method**
 1. Hang fresh curd in muslin cloth 4–6 hr or overnight to drain all water.
@@ -1712,14 +1712,14 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** KK 8/26 · ICMR  
 **Yield:** 200–210 g
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Brinjal | 130–150 g (¾ cup) |
-| Ghee | 10–15 g (3–4 tsp) |
-| Mustard seeds | 2–3 g (½ tsp) |
-| Jeera (cumin) | 2–3 g (½ tsp) |
-| Rock salt | to taste |
-| Yoghurt | 100 g (½ cup) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Brinjal | 130–150 | — | ¾ cup | — |
+| Ghee | 10–15 | — | 3–4 tsp | — |
+| Mustard seeds | 2–3 | — | ½ tsp | — |
+| Jeera (cumin) | 2–3 | — | ½ tsp | — |
+| Rock salt | — | — | — | to taste |
+| Yoghurt | 100 | — | ½ cup | — |
 
 **Method**
 1. Steam brinjal 10–15 min until soft and well cooked; cool.
@@ -1738,13 +1738,13 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** KK 8/6 · ICMR  
 **Yield:** 1 small bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Indian gooseberry (amla) | 100 g (½ cup) |
-| Ghee | 10 g (2 tsp) |
-| Jeera (cumin) | 5 g (1 tsp) |
-| Saindhava (rock salt) | to taste |
-| Hingu | 0.1 g (a pinch) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Indian gooseberry (amla) | 100 | — | ½ cup | — |
+| Ghee | 10 | — | 2 tsp | — |
+| Jeera (cumin) | 5 | — | 1 tsp | — |
+| Saindhava (rock salt) | — | — | — | to taste |
+| Hingu | 0.1 | — | — | a pinch |
 
 **Method**
 1. Steam amla 10–15 min until soft; cool, remove seeds, crush well.
@@ -1758,18 +1758,18 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** AYUSH  
 **Yield:** 240–242 g
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Black sesame seeds | 50–54 g (¼ cup) |
-| Peanut | 18 g (3–4 tsp) |
-| Coriander leaves | 40 g (¼ cup) |
-| Garlic cloves | 6 |
-| Cumin seeds | 3 g (½ tsp) |
-| Black pepper powder | 2 g (¼ tsp) |
-| Lemon juice | 75 ml (5 tbsp) |
-| Rock salt | to taste |
-| Rock sugar | 5 g (1 tsp) |
-| Water | 20–30 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Black sesame seeds | 50–54 | — | ¼ cup | — |
+| Peanut | 18 | — | 3–4 tsp | — |
+| Coriander leaves | 40 | — | ¼ cup | — |
+| Garlic cloves | — | — | 6 | — |
+| Cumin seeds | 3 | — | ½ tsp | — |
+| Black pepper powder | 2 | — | ¼ tsp | — |
+| Lemon juice | — | 75 | 5 tbsp | — |
+| Rock salt | — | — | — | to taste |
+| Rock sugar | 5 | — | 1 tsp | — |
+| Water | — | 20–30 | — | — |
 
 **Method**
 1. Dry roast peanuts until lightly golden; cool. Dry roast sesame on low flame — do not burn.
@@ -1783,23 +1783,23 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** AYUSH  
 **Yield:** ½ medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Drumstick / fenugreek / spinach leaves | 30–50 g |
-| Peanut / Bengal gram / Black gram | 10–12 g (2–3 tsp) |
-| Grated coconut | 15–20 g (3–4 tsp) |
-| Fenugreek seeds | 2–3 g (½ tsp) |
-| Cumin seeds | 2–3 g (½ tsp) |
-| Coriander seeds | 2–3 g (½ tsp) |
-| Cloves | 2–3 |
-| Black pepper powder | 2–3 g (¼ tsp) |
-| Hingu | 1–2 g (a pinch) |
-| Chopped tomato | 15–20 g (3–4 tsp) |
-| Lemon juice / tamarind | 5–10 ml |
-| Rock salt | 2–3 g |
-| Jaggery | 1–2 g |
-| Curd | 15–20 g (3–4 tsp) |
-| Water | 10–15 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Drumstick / fenugreek / spinach leaves | 30–50 | — | — | — |
+| Peanut / Bengal gram / Black gram | 10–12 | — | 2–3 tsp | — |
+| Grated coconut | 15–20 | — | 3–4 tsp | — |
+| Fenugreek seeds | 2–3 | — | ½ tsp | — |
+| Cumin seeds | 2–3 | — | ½ tsp | — |
+| Coriander seeds | 2–3 | — | ½ tsp | — |
+| Cloves | — | — | 2–3 | — |
+| Black pepper powder | 2–3 | — | ¼ tsp | — |
+| Hingu | 1–2 | — | — | a pinch |
+| Chopped tomato | 15–20 | — | 3–4 tsp | — |
+| Lemon juice / tamarind | — | 5–10 | — | — |
+| Rock salt | 2–3 | — | — | — |
+| Jaggery | 1–2 | — | — | — |
+| Curd | 15–20 | — | 3–4 tsp | — |
+| Water | — | 10–15 | — | — |
 
 **Method**
 1. Dry roast legumes and fenugreek seeds; set aside. Dry roast cumin, coriander seeds, and cloves; cool.
@@ -1814,13 +1814,13 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 **Source:** GO p. 52  
 **Yield:** 145–150 g (¾ cup)
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Tamarind paste | 80 g (½ cup) |
-| Dates (pitted) | 40 g (¼ cup) |
-| Brown sugar | 25 g |
-| Cumin powder | 5 g (1 tsp) |
-| Rock salt | to taste |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Tamarind paste | 80 | — | ½ cup | — |
+| Dates (pitted) | 40 | — | ¼ cup | — |
+| Brown sugar | 25 | — | — | — |
+| Cumin powder | 5 | — | 1 tsp | — |
+| Rock salt | — | — | — | to taste |
 
 **Method**
 Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve with plain rice.
@@ -1837,15 +1837,15 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Yield:** 100–150 g (¾ cup)  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Wheat flour | 25–30 g (¼ cup) |
-| Ghee | 15–20 g (3–4 tsp) |
-| Rock sugar powder | 20–30 g |
-| Priyala (chironji) | 5–10 g (2 tsp) |
-| Dry fruits (coarse powder) | 5–10 g (2 tsp) |
-| Milk | 90–100 ml (½ cup) |
-| Aromatic powder* | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Wheat flour | 25–30 | — | ¼ cup | — |
+| Ghee | 15–20 | — | 3–4 tsp | — |
+| Rock sugar powder | 20–30 | — | — | — |
+| Priyala (chironji) | 5–10 | — | 2 tsp | — |
+| Dry fruits (coarse powder) | 5–10 | — | 2 tsp | — |
+| Milk | — | 90–100 | ½ cup | — |
+| Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Same blend as S-27.
 
@@ -1863,14 +1863,14 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Yield:** 150–180 g (1 medium cup)  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Chopped ash gourd | 80–100 g (½ cup) |
-| Milk | 100–120 ml |
-| Ghee | 20–30 g |
-| Rock sugar powder | 30–40 g |
-| Dry fruits (choice) | 10–15 g (1 tbsp) |
-| Aromatic powder* | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Chopped ash gourd | 80–100 | — | ½ cup | — |
+| Milk | — | 100–120 | — | — |
+| Ghee | 20–30 | — | — | — |
+| Rock sugar powder | 30–40 | — | — | — |
+| Dry fruits (choice) | 10–15 | — | 1 tbsp | — |
+| Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Same blend as S-27.
 
@@ -1888,13 +1888,13 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Yield:** 1 bowl  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Fresh grated coconut | 50 g (¼ cup) |
-| Cow's milk | 100 ml |
-| Rock sugar powder | 20 g |
-| Cow's ghee | 10 g (2 tsp) |
-| Aromatic powder* | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Fresh grated coconut | 50 | — | ¼ cup | — |
+| Cow's milk | — | 100 | — | — |
+| Rock sugar powder | 20 | — | — | — |
+| Cow's ghee | 10 | — | 2 tsp | — |
+| Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Same blend as S-27.
 
@@ -1911,13 +1911,13 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Yield:** 1 bowl  
 🔴 DM · OW · LI · SD
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Refined wheat flour | 30 g (⅛ cup) |
-| Ghee | 15 g (1 tbsp) |
-| Milk | 90–100 ml (½ cup) |
-| Sugar | to taste |
-| Aromatic powder* | 2–3 g (½ tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Refined wheat flour | 30 | — | ⅛ cup | — |
+| Ghee | 15 | — | 1 tbsp | — |
+| Milk | — | 90–100 | ½ cup | — |
+| Sugar | — | — | — | to taste |
+| Aromatic powder* | 2–3 | — | ½ tsp | — |
 
 *Same blend as S-27.
 
@@ -1937,13 +1937,13 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Source:** MC p. 44  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Cooked rice | 100–120 g (½ cup) |
-| Cow's milk | 120–140 ml (¾ cup) |
-| Dry coriander powder | 2–3 g (½ tsp) |
-| Cardamom powder | 2–3 g (½ tsp) |
-| Ghee | 5–10 g (2 tsp) |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Cooked rice | 100–120 | — | ½ cup | — |
+| Cow's milk | — | 120–140 | ¾ cup | — |
+| Dry coriander powder | 2–3 | — | ½ tsp | — |
+| Cardamom powder | 2–3 | — | ½ tsp | — |
+| Ghee | 5–10 | — | 2 tsp | — |
 
 **Method**
 1. Heat milk on medium flame; bring to a boil.
@@ -1957,13 +1957,13 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Source:** MC p. 44  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Uncooked rice | 50 g (¼ cup) |
-| Raw almonds | 45 g (3 tbsp) |
-| Rock salt | a pinch |
-| Ghee | 3–5 ml (1 tsp) |
-| Rock sugar | 15–20 g |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Uncooked rice | 50 | — | ¼ cup | — |
+| Raw almonds | 45 | — | 3 tbsp | — |
+| Rock salt | — | — | — | a pinch |
+| Ghee | — | 3–5 | 1 tsp | — |
+| Rock sugar | 15–20 | — | — | — |
 
 **Method**
 1. Soak almonds overnight; grind to a fine powder or paste.
@@ -1978,14 +1978,14 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 **Source:** GO p. 147  
 **Yield:** 1 medium bowl
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Rice | 50 g (¼ cup) |
-| Dates | 6 |
-| Cinnamon powder | 1–2 g (¼ tsp) |
-| Ginger paste | 4–5 g (1 tsp) |
-| Saffron | 2–3 strands |
-| Milk | 120–150 ml |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Rice | 50 | — | ¼ cup | — |
+| Dates | — | — | 6 | — |
+| Cinnamon powder | 1–2 | — | ¼ tsp | — |
+| Ginger paste | 4–5 | — | 1 tsp | — |
+| Saffron | — | — | 2–3 strands | — |
+| Milk | — | 120–150 | — | — |
 
 **Method**
 Cook all ingredients together with the appropriate quantity of water in a vessel or cooker. Add more milk/water for a creamier texture. Serve warm.
@@ -1997,11 +1997,11 @@ Cook all ingredients together with the appropriate quantity of water in a vessel
 **Source:** GO p. 235  
 **Yield:** ~210 g (1 bowl)
 
-| Ingredient | Quantity |
-|-----------|----------|
-| Cooked rice | 40–50 g (½ cup) |
-| Milk | 140–150 ml |
-| Dates, chopped | 10 |
+| Ingredient | g | ml | Cups | Note |
+|-----------|-----|-----|------|------|
+| Cooked rice | 40–50 | — | ½ cup | — |
+| Milk | — | 140–150 | — | — |
+| Dates, chopped | — | — | 10 | — |
 
 **Method**
 1. Boil milk; add chopped dates and stir until milk turns a brown colour.
