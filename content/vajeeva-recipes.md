@@ -1154,7 +1154,7 @@ Recipes carrying contraindications are flagged. Common flags:
 |-----------|-----|-----|------|------|
 | Coconut water | — | 150–180 | — | — |
 | Rock sugar powder | 10 | — | — | — |
-| Citron fruit juice (rough lemon) | — | 10 | 2 tbsp | — |
+| Citron fruit juice (rough lemon) | — | 10 | 2 tsp | — |
 
 **Method**
 Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Filter through a sieve and serve.
@@ -1320,7 +1320,7 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 | Water | — | 60–80 | — | — |
 | Pepper powder | 3 | — | ½ tsp | — |
 | Jaggery / sugar | 10 | — | — | — |
-| Salt | 2 | — | — | — |
+| Salt | 2 | — | ½ tsp | — |
 | Ghee / Butter | 5 | — | 1 tsp | — |
 | Mustard seeds | 5 | — | 1 tsp | — |
 | Fenugreek seeds | 3 | — | ½ tsp | — |
