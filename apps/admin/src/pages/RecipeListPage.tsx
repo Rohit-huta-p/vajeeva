@@ -206,6 +206,17 @@ function RecipeCard({
       <div className="h-[3px]" style={{ backgroundColor: CAT_STRIPE[r.category] ?? '#8A8278' }} />
 
       <div className="flex items-stretch gap-0">
+        {/* Thumbnail — left side */}
+        {thumbUrl && (
+          <div className="w-[72px] shrink-0 self-stretch overflow-hidden border-r border-ink/[0.08]">
+            <img
+              src={thumbUrl}
+              alt={r.nameEn}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+
         {/* Text content */}
         <div className="flex-1 p-3 pb-2.5 min-w-0">
           {/* Name */}
@@ -253,16 +264,6 @@ function RecipeCard({
           </div>
         </div>
 
-        {/* Thumbnail — only when an image exists */}
-        {thumbUrl && (
-          <div className="w-[72px] shrink-0 self-stretch overflow-hidden border-l border-ink/[0.08]">
-            <img
-              src={thumbUrl}
-              alt={r.nameEn}
-              className="w-full h-full object-cover"
-            />
-          </div>
-        )}
       </div>
     </div>
   );
