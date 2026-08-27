@@ -77,6 +77,7 @@ interface RecipeParsed {
   description: string;
   ingredients: Ingredient[]; steps: Step[];
   healthFlags: HealthFlag[]; sources: Source[];
+  totalTimeMin?: number;
   yieldStr: string; shelfLife: string;
   type: string; meals: string[]; mainIngredients: string[];
   methods: string[]; dietTags: string[];
