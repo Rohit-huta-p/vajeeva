@@ -1,4 +1,5 @@
 import React, { createContext, useState, useEffect, useCallback } from 'react';
+import axios from 'axios';
 import { api, authApi, getAccessToken, setAccessToken, setRefreshToken } from '../api';
 import * as storage from '../offline/storage';
 
@@ -28,6 +29,13 @@ interface StoredSession extends Identity { refreshToken: string }
 
 export const AuthContext = createContext<AuthState>({} as AuthState);
 
+// A dead refresh token (401) means the session is genuinely invalid and must be
+// cleared. A network error (offline) or a transient server error must NOT log the
+// user out — offline launch has to keep working against the on-device cache.
+function isAuthError(err: unknown): boolean {
+  return axios.isAxiosError(err) && err.response?.status === 401;
+}
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<Identity | null>(null);
   const [isGuest, setIsGuest] = useState(false);
@@ -42,16 +50,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           storage.get<boolean>('guest'),
         ]);
         if (session?.refreshToken) {
-          const { data } = await authApi.refresh(session.refreshToken);
-          setAccessToken(data.accessToken);
-          setRefreshToken(session.refreshToken);
-          setUser({ email: session.email, name: session.name, age: session.age, gender: session.gender });
+          const identity: Identity = {
+            email: session.email, name: session.name, age: session.age, gender: session.gender,
+          };
+          try {
+            const { data } = await authApi.refresh(session.refreshToken);
+            setAccessToken(data.accessToken);
+            setRefreshToken(session.refreshToken);
+            setUser(identity);
+          } catch (err) {
+            if (isAuthError(err)) {
+              // Refresh token is genuinely dead (expired/revoked) — drop the session.
+              await storage.del('session').catch(() => {});
+            } else {
+              // Offline or a transient server error — keep the user signed in against
+              // the on-device cache. Seed the refresh token so the axios 401-interceptor
+              // recovers on the first request once connectivity returns.
+              setRefreshToken(session.refreshToken);
+              setUser(identity);
+            }
+          }
         } else if (guest) {
           setIsGuest(true);
         }
-      } catch {
-        // Refresh failed (expired/revoked) — drop the stale session.
-        await storage.del('session').catch(() => {});
       } finally {
         setIsLoading(false);
       }
