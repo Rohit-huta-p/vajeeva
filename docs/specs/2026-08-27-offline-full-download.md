@@ -66,9 +66,12 @@ network/offline ⇒ keep the user signed in against the cache. **Guests are alre
 The whole published catalog lives on-device; screens read it synchronously from memory.
 
 **`apps/frontend/src/offline/catalog.ts` (new)**
-- `syncCatalog()` — `GET /api/sync/recipes` (full pull; `?since=` deferred). Writes each doc to
-  `recipe:{slug}`, replaces `catalog:index` (slug list), stamps `catalog:meta = { lastSyncedAt }`.
-  Reconciles deletions: any `recipe:{slug}` / image whose slug left the index is purged.
+- `syncCatalog()` — **`GET /api/recipes`** (full pull; `?since=` deferred). Uses the *public* list
+  endpoint, not the auth-gated `/api/sync/recipes`, because it must work for **guests** too — and the
+  list already returns full `Recipe.find().lean()` docs (`recipes.routes.ts:7`), so one endpoint powers
+  list, detail, and search offline. Writes each doc to `recipe:{slug}`, replaces `catalog:index` (slug
+  list), stamps `catalog:meta = { lastSyncedAt }`. Reconciles deletions: any `recipe:{slug}` / image
+  whose slug left the index is purged.
 - `hydrateCatalog()` — load `catalog:index` + all `recipe:{slug}` into an in-memory map at boot
   (instant, offline). This is what screens read.
 - `getAllRecipes(): RecipeDoc[]`, `getRecipe(slug): RecipeDoc | undefined` — synchronous reads.
@@ -145,8 +148,9 @@ The health angle makes staleness matter (recipes carry `healthFlags` contraindic
 
 ## 5. Backend
 
-Mostly already in place. `GET /api/sync/recipes?since=` returns published lean docs
-(`sync.routes.ts:10`); saved push/pull merge exists (`/api/sync/saved`).
+Mostly already in place. The client's full-replace pull uses the public `GET /api/recipes`
+(guest-compatible, full docs); `GET /api/sync/recipes?since=` (`sync.routes.ts:10`) returns published
+lean docs and is reserved for a future signed-in delta; saved push/pull merge exists (`/api/sync/saved`).
 - **Now:** no change required for a full-replace client.
 - **Later (optimization, only if the corpus grows):** a lightweight `GET /api/sync/manifest` →
   `[{ slug, updatedAt, imageUrl }]` so the client can diff without pulling full bodies, plus tombstones
