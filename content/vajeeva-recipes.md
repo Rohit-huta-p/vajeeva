@@ -347,7 +347,7 @@ Recipes carrying contraindications are flagged. Common flags:
 | Rock salt | — | — | — | a pinch |
 | Wet ginger paste | — | — | ¼ tsp | — |
 | Hingu | 1 | — | ⅛ tsp | — |
-| Black pepper | 0.5 | — | pinch | — |
+| Black pepper | 0.5 | — | — | a pinch |
 | Cumin seeds | 1 | — | ⅛ tsp | — |
 | Fenugreek seeds | 1 | — | ⅛ tsp | — |
 | Oil | — | — | — | for frying |
@@ -369,8 +369,8 @@ Recipes carrying contraindications are flagged. Common flags:
 | Refined wheat flour | 40–60 | — | ¼ cup | — |
 | Gram flour (besan) | 40–60 | — | ¼ cup | — |
 | Cumin seeds | 2 | — | ½ tsp | — |
-| Hingu | 1 | — | pinch | — |
-| Black pepper powder | 1 | — | 2 pinches | — |
+| Hingu | 1 | — | — | a pinch |
+| Black pepper powder | 1 | — | — | 2 pinches |
 | Ghee / Oil | — | — | — | for deep frying |
 | Water | — | — | — | as needed |
 
@@ -392,8 +392,8 @@ Recipes carrying contraindications are flagged. Common flags:
 | Green gram flour | 20–30 | — | ¼ cup | — |
 | Black gram flour | 20–30 | — | ¼ cup | — |
 | Cumin seeds | 3–4 | — | 1 tsp | — |
-| Hingu | 1–2 | — | 2 pinches | — |
-| Black pepper powder | 1–2 | — | pinch | — |
+| Hingu | 1–2 | — | — | 2 pinches |
+| Black pepper powder | 1–2 | — | — | a pinch |
 | Ghee / Oil | — | — | — | for deep frying |
 | Water | — | — | — | as needed |
 
@@ -535,8 +535,8 @@ Recipes carrying contraindications are flagged. Common flags:
 | Dark green leafy vegetable | 125 | — | ½ cup | — |
 | Ghee / Oil | — | 7 | 1½ tsp | — |
 | Cumin seeds | 1–2 | — | ¼ tsp | — |
-| Turmeric powder | 0.6–1 | — | pinch | — |
-| Hingu | 0.5–1 | — | pinch | — |
+| Turmeric powder | 0.6–1 | — | — | a pinch |
+| Hingu | 0.5–1 | — | — | a pinch |
 | Onion (optional) | 7–10 | — | 2 tsp | — |
 | Garlic paste | 1–1.5 | — | ¼ tsp | — |
 
@@ -653,7 +653,7 @@ Recipes carrying contraindications are flagged. Common flags:
 | Curry leaves | — | — | 6–8 leaves | — |
 | Chopped onion | 20 | — | 4 tsp | — |
 | Ginger paste | 3 | — | ½ tsp | — |
-| Turmeric powder | 0.5 | — | pinch | — |
+| Turmeric powder | 0.5 | — | — | a pinch |
 | Rock salt | — | — | — | to taste |
 
 **Method**
@@ -1035,7 +1035,7 @@ Recipes carrying contraindications are flagged. Common flags:
 | Wheat flour / barley flour | 240 | — | 1 cup + 3 tbsp | — |
 | Salt | 5 | — | 1 tsp | — |
 | Baking powder | 10 | — | 2 tsp | — |
-| Baking soda | 1.2 | — | 2 pinches | — |
+| Baking soda | 1.2 | — | — | 2 pinches |
 | Butter / Ghee | 56 | — | ¼ cup | — |
 | Boiled, mashed sweet potato | 150 | — | ¾ cup | — |
 | Lemon juice | — | 30 | 2 tbsp | — |
