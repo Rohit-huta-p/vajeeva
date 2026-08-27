@@ -35,15 +35,26 @@ if (!MONGO_URI) {
   process.exit(1);
 }
 
-// ── Load the parsed recipe data ───────────────────────────────────────────────
+// ── Load the parsed/enriched recipe data ──────────────────────────────────────
+// Prefers recipes-enriched.json (produced by  npm run enrich:recipes).
+// Falls back to recipes-parsed.json if the enriched file doesn't exist yet.
 
-const JSON_PATH = path.resolve(__dirname, '../../../../../content/recipes-parsed.json');
+const ENRICHED_PATH = path.resolve(__dirname, '../../../../../content/recipes-enriched.json');
+const PARSED_PATH   = path.resolve(__dirname, '../../../../../content/recipes-parsed.json');
+
+const JSON_PATH = fs.existsSync(ENRICHED_PATH) ? ENRICHED_PATH : PARSED_PATH;
 
 if (!fs.existsSync(JSON_PATH)) {
-  console.error(`❌  recipes-parsed.json not found at:\n   ${JSON_PATH}`);
-  console.error('   Run  npm run parse:md  first.');
+  console.error('❌  No recipe JSON found. Expected one of:');
+  console.error(`   ${ENRICHED_PATH}`);
+  console.error(`   ${PARSED_PATH}`);
+  console.error('   Run  npm run parse:md  (and optionally  npm run enrich:recipes)  first.');
   process.exit(1);
 }
+
+const usingEnriched = JSON_PATH === ENRICHED_PATH;
+console.log(`\n📂  Loading ${usingEnriched ? 'enriched' : 'parsed'} recipe JSON`);
+console.log(`    ${JSON_PATH}`);
 
 const parsed: RecipeParsed[] = JSON.parse(fs.readFileSync(JSON_PATH, 'utf-8'));
 
@@ -97,18 +108,21 @@ async function seed() {
         healthFlags: recipe.healthFlags,
       };
 
-      // Fields set only on first insert — never overwrite admin enrichment
+      // Fields set only on first insert — never overwrite admin enrichment.
+      // When an enriched JSON is loaded these fields come pre-populated;
+      // on re-seed of an existing doc they are silently ignored by $setOnInsert.
       const insertOnlyFields = {
-        description:     '',
-        shelfLife:       '',
+        description:     recipe.description     ?? '',
+        shelfLife:       recipe.shelfLife        ?? '',
         status:          'draft' as const,
-        type:            '',
-        meals:           [] as string[],
-        mainIngredients: [] as string[],
-        methods:         [] as string[],
-        dietTags:        [] as string[],
-        makeAhead:       false,
-        prepAheadNote:   '',
+        type:            recipe.type             ?? '',
+        meals:           recipe.meals            ?? [],
+        mainIngredients: recipe.mainIngredients  ?? [],
+        methods:         recipe.methods          ?? [],
+        dietTags:        recipe.dietTags         ?? [],
+        makeAhead:       recipe.makeAhead        ?? false,
+        prepAheadNote:   recipe.prepAheadNote    ?? '',
+        totalTimeMin:    recipe.totalTimeMin,
         images:          [] as never[],
       };
 

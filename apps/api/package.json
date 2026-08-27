@@ -7,6 +7,7 @@
     "start": "node dist/index.js",
     "test": "jest --runInBand",
     "parse:md": "ts-node src/scripts/parse-md.ts",
+    "enrich:recipes": "ts-node src/scripts/enrich-recipes.ts",
     "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts",
     "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts",
     "seed:tags": "ts-node src/scripts/seed-tags.ts",
