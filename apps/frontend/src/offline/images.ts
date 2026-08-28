@@ -92,6 +92,8 @@ export async function syncImages(recipes: RecipeDoc[]): Promise<void> {
  * ignores w/h — one rendition serves every size, RN downsamples), else the sized
  * remote Cloudinary thumb. The single choke point every <Image> goes through.
  */
+export function imageSource(slug: string, remoteUrl: string, w: number, h: number): { uri: string };
+export function imageSource(slug: string, remoteUrl: string | undefined, w: number, h: number): { uri: string } | undefined;
 export function imageSource(slug: string, remoteUrl: string | undefined, w: number, h: number): { uri: string } | undefined {
   const local = localImageUri(slug);
   if (local) return { uri: local };

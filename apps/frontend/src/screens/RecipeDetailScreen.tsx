@@ -134,7 +134,7 @@ export function RecipeDetailScreen() {
         {/* Hero — photo carousel when the recipe has images, illustration otherwise */}
         <View style={s.hero}>
           {recipe.images.length ? (
-            <ImageCarousel images={recipe.images} height={sc(172)} />
+            <ImageCarousel images={recipe.images} slug={slug} height={sc(172)} />
           ) : (
             <LinearGradient colors={[colors.greenSoft, colors.sand]} style={s.heroFill}>
               <IllHero width={sc(174)} height={sc(130)} />

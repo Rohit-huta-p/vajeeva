@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, DimensionValue } from 'react-nativ
 import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconPlay, CategoryIll } from './icons';
-import { cloudThumb } from '../../api/recipes';
+import { imageSource } from '../../offline/images';
 import type { RecipeListItem } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -19,7 +19,7 @@ export function ContinueCookingCard({ recipe, currentStep, totalSteps, onPress }
       <View style={s.tile}>
         {recipe.imageUrl ? (
           <Image
-            source={{ uri: cloudThumb(recipe.imageUrl, 150, 150) }}
+            source={imageSource(recipe.slug, recipe.imageUrl, 150, 150)}
             accessibilityLabel={recipe.nameEn}
             style={s.tileImg}
             resizeMode="cover"
