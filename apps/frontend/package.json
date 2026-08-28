@@ -9,7 +9,8 @@
     "ios": "expo start --ios",
     "build": "expo export --platform web",
     "build:catalog-seed": "node scripts/build-catalog-seed.mjs",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "eas-build-pre-install": "corepack enable"
   },
   "dependencies": {
     "@expo-google-fonts/libre-baskerville": "^0.4.3",
@@ -33,7 +34,6 @@
     "expo-secure-store": "~14.0.0",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~1.5.0",
-    "expo-web": "^0.0.14",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
