@@ -10,7 +10,7 @@
  * Fields filled:
  *   Recipe level: description · type · meals · mainIngredients · methods
  *                 dietTags · makeAhead · prepAheadNote · shelfLife · totalTimeMin
- *   Step level:   phase · heat · timerStr   (overwrite placeholders from parse-md)
+ *   Step level:   phase · heat   (overwrite placeholders from parse-md)
  *
  * Run:  npm run enrich:recipes   (from apps/api)
  * Then: npm run seed:recipes     (loads enriched.json if present)
@@ -32,7 +32,7 @@ interface Ingredient {
 }
 interface Step {
   order: number; text: string; phase: string;
-  heat: string | null; timerStr: string | null;
+  heat: string | null;
   stepIngredients: string[]; illColor: string;
 }
 interface Source     { citation: string; text: string; }
@@ -79,7 +79,7 @@ function shortSource(sources: Source[]): string {
 //  Step enrichment
 // ─────────────────────────────────────────────────────────────────────────────
 
-function enrichStep(text: string, idx: number, total: number): Pick<Step,'phase'|'heat'|'timerStr'> {
+function enrichStep(text: string, idx: number, total: number): Pick<Step,'phase'|'heat'> {
   const t = text.toLowerCase();
 
   // ── PHASE ─────────────────────────────────────────────────────────────────
@@ -94,64 +94,28 @@ function enrichStep(text: string, idx: number, total: number): Pick<Step,'phase'
 
   // Priority: Serve > Shape > Prep > Rest > Cook
   // Prep beats Rest intentionally — a step that kneads dough AND rests is Prep.
-  if      (isServe)                   phase = 'Serve';
-  else if (isShape)                   phase = 'Shape';
-  else if (isPrep)                    phase = 'Prep';
-  else if (isRest)                    phase = 'Rest';
-  else {
-    // Cook sub-types (fry, boil, steam, roast, bake) all stored as 'Cook'.
-    phase = 'Cook';
-  }
+  if      (isServe) phase = 'Serve';
+  else if (isShape) phase = 'Shape';
+  else if (isPrep)  phase = 'Prep';
+  else if (isRest)  phase = 'Rest';
+  // else Cook (default)
 
   // ── HEAT ──────────────────────────────────────────────────────────────────
   let heat: string | null = null;
 
-  if (phase === 'Prep' || phase === 'Shape' || phase === 'Rest' || phase === 'Serve') {
-    heat = null; // non-cooking phases never have heat
-  } else {
+  if (phase !== 'Prep' && phase !== 'Shape' && phase !== 'Rest' && phase !== 'Serve') {
     if      (/low[\s-]?flame|gentle[\s-]?heat|low[\s-]?heat|very low|slow.*simmer|gentle.*simmer/i.test(t)) heat = 'low';
     else if (/medium[\s-]?high|moderately[\s-]?high/i.test(t))                                             heat = 'high';
     else if (/medium[\s-]?(hot|flame|heat)|medium heat|medium flame/i.test(t))                             heat = 'medium';
     else if (/high[\s-]?flame|high[\s-]?heat|high heat/i.test(t))                                         heat = 'high';
-    // Contextual defaults for common actions (when no explicit level given)
     else if (/deep[\s-]?fry/i.test(t))                           heat = 'high';
     else if (/pressure[\s-]?cook/i.test(t))                      heat = 'high';
     else if (/\bboil\b/i.test(t) && !/simmer/i.test(t))          heat = 'high';
     else if (/\bsimmer\b/i.test(t))                               heat = 'low';
     else if (/\btawa\b|\bgriddle\b|\bpan\b/i.test(t))            heat = 'medium';
-    // Otherwise leave null — admin fills in
   }
 
-  // ── TIMERSTR ──────────────────────────────────────────────────────────────
-  let timerStr: string | null = null;
-
-  // Skip timers for shape/serve
-  if (phase !== 'Shape' && phase !== 'Serve') {
-    // "X–Y min" ranges — take upper bound
-    const rangeMin = t.match(/(\d+)\s*[–\-]\s*(\d+)\s*min/);
-    if (rangeMin) {
-      const mins = parseInt(rangeMin[2]);
-      timerStr = mins < 99 ? `${String(mins).padStart(2,'0')}:00` : null;
-    } else {
-      // "X min"
-      const exactMin = t.match(/\b(\d+)\s*min/);
-      if (exactMin) {
-        const mins = parseInt(exactMin[1]);
-        timerStr = mins < 99 ? `${String(mins).padStart(2,'0')}:00` : null;
-      }
-    }
-    // Hours: only short ones (≤ 1 hr) make sense as cook timers
-    if (!timerStr) {
-      const hrMatch = t.match(/\b(\d+)\s*hr\b/);
-      if (hrMatch) {
-        const hrs = parseInt(hrMatch[1]);
-        if (hrs === 1) timerStr = '60:00';
-        // 2+ hr → null (prep/soak time, not a cook timer)
-      }
-    }
-  }
-
-  return { phase, heat, timerStr };
+  return { phase, heat };
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -509,8 +473,8 @@ function enrich() {
 
     // ── Step enrichment ─────────────────────────────────────────────────────
     const enrichedSteps = recipe.steps.map((step, idx) => {
-      const { phase, heat, timerStr } = enrichStep(step.text, idx, recipe.steps.length);
-      return { ...step, phase, heat, timerStr };
+      const { phase, heat } = enrichStep(step.text, idx, recipe.steps.length);
+      return { ...step, phase, heat };
     });
 
     // ── Recipe-level enrichment ─────────────────────────────────────────────
@@ -563,7 +527,7 @@ function enrich() {
     console.log(`    description: "${r.description.slice(0, 100)}…"`);
     console.log('    steps:');
     r.steps.forEach(s => {
-      console.log(`      [${s.order}] phase=${s.phase} heat=${s.heat ?? 'null'} timer=${s.timerStr ?? 'null'}`);
+      console.log(`      [${s.order}] phase=${s.phase} heat=${s.heat ?? 'null'}`);
     });
   });
   console.log('\n─────────────────────────────────────────────────────────────────────\n');

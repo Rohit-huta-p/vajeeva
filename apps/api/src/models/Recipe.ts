@@ -15,7 +15,6 @@ const ImageSchema = new mongoose.Schema({
 const StepSchema = new mongoose.Schema({
   order: Number, text: String, phase: String,
   heat: { type: String, default: null },
-  timerStr: { type: String, default: null },
   stepIngredients: [String],
   illColor: String,
   images: { type: [ImageSchema], default: [] },

@@ -66,7 +66,7 @@ interface Ingredient {
 }
 interface Step {
   order: number; text: string; phase: string; heat: string | null;
-  timerStr: string | null; stepIngredients: string[]; illColor: string;
+  stepIngredients: string[]; illColor: string;
 }
 interface HealthFlag { condition: string; severity: string; note: string; }
 interface Source    { citation: string; text: string; }
