@@ -1,6 +1,6 @@
 # Offline-first with full download — implementation spec
 
-**Status:** proposed · **Date:** 2026-08-27
+**Status:** implemented — phases 0–2 + 4 (merged to `main` via PR #7); phase 3 (freshness UI) pending · **Date:** 2026-08-27
 **Problem:** the app is online-dependent for all recipe content. List / detail / search / sources
 fetch straight through axios with no cache (`apps/frontend/src/api.ts`); only *saved* recipes and
 local UI state survive offline. Worse, a signed-in user who opens the app **offline is logged out** —
@@ -189,8 +189,12 @@ apps/frontend/src/offline/
    point. Header photos are on-device → **whole app offline complete.**
 4. **Phase 3 — Freshness + storage UI + reconnect polish.** OfflineBadge wiring, “updated X ago”,
    NetInfo-driven resync, Settings → Offline.
-5. **Phase 4 (optional) — bundled text seed** (`assets/catalog-seed.json`, ~0.5 MB) so a brand-new
-   install shows all 100 recipes before its first sync; images fill in on first connect.
+5. **Phase 4 — bundled first-launch seed** ✅ `scripts/build-catalog-seed.mjs` builds
+   `assets/catalog-seed.json` from the audited `content/recipes-enriched.json` (83 recipes, ~162 KB
+   minified; workflow `status` dropped, images empty). `catalog.ts` loads it when nothing is synced
+   yet, so a brand-new offline install shows the catalog on first launch; the first sync full-replaces
+   it and images fill in on first connect. (The live published `/api/recipes` stays the runtime source
+   of truth — a DB-driven export could later narrow the seed to exactly the published set.)
 
 ---
 
