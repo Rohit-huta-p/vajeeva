@@ -41,7 +41,6 @@
         "text": "Combine barley flour and rock salt. Gradually add warm water; knead into a soft, smooth dough. Cover and rest 15–20 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -50,7 +49,6 @@
         "text": "Divide into equal balls. Dust with flour and roll into thin, round rotis.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -59,7 +57,6 @@
         "text": "Cook on a medium-hot tawa. Apply ghee; cook until bubbles form, then flip. Apply ghee on second side; press gently with spatula until puffed and cooked through.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -68,7 +65,6 @@
         "text": "Serve hot with curry, dal, or chutney.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -111,7 +107,7 @@
   },
   {
     "slug": "s-02",
-    "nameEn": "Royal Blackgram Stuffed Paratha",
+    "nameEn": "Blackgram Stuffed Paratha",
     "nameTa": "Vedanika",
     "category": "solid",
     "description": "Blackgram Stuffed Paratha (Vedanika) is an Ayurvedic stuffed flatbread made with wheat flour, de-husked black gram and sesame oil, dust and roll thin — a classical recipe from Bhojana Kutuhala. Black gram (Masha) builds strength and nourishes the tissues.",
@@ -165,7 +161,6 @@
         "text": "Soak de-husked black gram 6–8 hr or overnight; grind to a smooth paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -174,7 +169,6 @@
         "text": "Make soft wheat dough with rock salt and water; cover and rest 15–20 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -183,7 +177,6 @@
         "text": "Portion the paste into balls for stuffing. Flatten each dough ball, place paste in centre, seal edges.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -192,7 +185,6 @@
         "text": "Dust and roll thin. Cook on a medium tawa with ghee or sesame oil until golden brown spots appear on both sides. Serve hot with ghee.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -284,7 +276,6 @@
         "text": "Soak black gram 6–8 hr; grind to a smooth paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -293,7 +284,6 @@
         "text": "Knead wheat flour with water into a soft dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -302,7 +292,6 @@
         "text": "Make stuffing balls from paste. Flatten dough, fill, seal, and apply a little oil; roll thin and round.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -311,7 +300,6 @@
         "text": "Heat ghee in a deep pan. Slide each puri in gently; press lightly with a slotted spoon to puff. Fry until both sides are golden brown. Drain on paper and serve hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -396,7 +384,6 @@
         "text": "Mix flour and rock salt; gradually add water and knead into a soft dough. Cover and rest 15–20 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -405,7 +392,6 @@
         "text": "Roll into thin, round rotis. Cook on a medium tawa with ghee, flipping when bubbles appear. Press gently to puff.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -414,7 +400,6 @@
         "text": "Serve hot with curry, dal, or chutney.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -498,7 +483,6 @@
         "text": "Add milk gradually to flour; knead into a soft dough. Cover and rest 5–10 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "10:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -507,7 +491,6 @@
         "text": "Roll into thin, round rotis. Cook on a medium tawa with ghee on both sides, pressing to puff.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -516,7 +499,6 @@
         "text": "Serve hot with curry, dal, or chutney.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -599,7 +581,6 @@
         "text": "Mix flour, rock salt, and 3–4 tsp ghee. Add water gradually and knead into a firm dough. Rest 15–20 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -608,7 +589,6 @@
         "text": "Divide into medium balls. Cook using one of the following methods:",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -617,7 +597,6 @@
         "text": "Cool slightly. Dip in melted ghee or pour ghee generously over each. Serve with dal.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -693,7 +672,6 @@
         "text": "Add water gradually; knead into a soft, smooth dough. Cover and rest 5–10 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "10:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -702,7 +680,6 @@
         "text": "Roll into thin, round rotis. Cook on a medium tawa with ghee on both sides, pressing to puff.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -711,7 +688,6 @@
         "text": "Serve with milk, ghee, and rock sugar.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -789,7 +765,6 @@
         "text": "Combine flour, rock salt, and mustard oil. Add hot water gradually; knead into a smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -798,7 +773,6 @@
         "text": "Shape into small round discs (2–3 inches). Steam until fully cooked. Remove from heat and serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -893,7 +867,6 @@
         "text": "Wash black gram; soak 4–6 hr. Drain and grind with minimal water into a smooth, thick batter. Beat until light and fluffy.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -902,7 +875,6 @@
         "text": "Mix in rock salt, ginger paste, and hingu.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -911,7 +883,6 @@
         "text": "Heat oil over medium flame. Wet hands; take batter, shape into vada with a hole in the centre. Slide gently into hot oil; deep fry until golden and crisp on both sides.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -920,7 +891,6 @@
         "text": "Drain on paper. Serve with a side dish of your choice.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1045,7 +1015,6 @@
         "text": "Combine flour, pumpkin paste, rock salt, ginger paste, hingu, black pepper, fenugreek, and cumin. Add water gradually to form a smooth, thick, fluffy batter.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1054,7 +1023,6 @@
         "text": "Heat oil over medium flame. Shape into vada with a hole; deep fry until golden and crisp. Drain and serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1157,7 +1125,6 @@
         "text": "Mix both flours with cumin, hingu, and black pepper. Add 2–3 tsp ghee and rub in. Add water gradually; knead into a soft, smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1166,7 +1133,6 @@
         "text": "Divide; roll each ball thin and round (applying a little ghee/oil to prevent sticking).",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1175,7 +1141,6 @@
         "text": "Deep fry in hot ghee until puffed and golden on both sides. Drain and serve hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1282,7 +1247,6 @@
         "text": "Mix all three flours with cumin, hingu, and black pepper. Add 2–3 tsp ghee; mix. Add water gradually; knead into a soft, smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1291,7 +1255,6 @@
         "text": "Divide; roll thin and round (apply a little oil to prevent sticking).",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1300,7 +1263,6 @@
         "text": "Deep fry in hot ghee until puffed and golden on both sides. Drain and serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1403,7 +1365,6 @@
         "text": "Knead flour with water and ghee into a smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1412,7 +1373,6 @@
         "text": "Shape dough into small elongated tubes (3–5 cm).",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1421,7 +1381,6 @@
         "text": "Mix clove powder, pepper, camphor, and rock sugar into a filling powder. Stuff tubes; press and seal both ends.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1430,7 +1389,6 @@
         "text": "Deep fry in ghee until golden and crispy.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1533,7 +1491,6 @@
         "text": "**Make chena:** Boil milk; add lemon juice gradually while stirring until milk curdles. Strain through muslin, wash with clean water, hang 20–30 min to drain.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "30:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1542,7 +1499,6 @@
         "text": "**Dough:** Add rice flour to chena; knead 8–10 min until smooth and crack-free.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "10:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1551,7 +1507,6 @@
         "text": "**Shape:** Divide into 3–4 balls (25–30 g each). Roll smooth.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1560,7 +1515,6 @@
         "text": "**First fry:** Deep fry in medium-hot ghee until light golden. Cool slightly.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1569,7 +1523,6 @@
         "text": "**Stuff:** Make a small cavity in each; fill with reserved chena mixed with a little sugar and camphor. Seal.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1578,7 +1531,6 @@
         "text": "**Second fry:** Fry again until golden brown. Drain.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1587,7 +1539,6 @@
         "text": "**Syrup:** Boil 20 g sugar in 40 ml water to 1–2 thread consistency; add a pinch of camphor.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1596,7 +1547,6 @@
         "text": "**Soak:** Immerse dumplings in warm syrup for 10–15 min. Serve warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1694,7 +1644,6 @@
         "text": "Soak cowpeas/soybeans 4 hr; pressure cook until soft. Add pumpkin pieces; cook further with a glass of water.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1703,7 +1652,6 @@
         "text": "Mix ragi flour into 1 cup water to a smooth paste (no lumps).",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1712,7 +1660,6 @@
         "text": "Add ragi paste to the cooked pumpkin; boil, stirring. Add jaggery syrup, coconut, and ghee; mix well.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1721,7 +1668,6 @@
         "text": "Heat a lightly greased pan; pour a ladle of batter, spread gently. Cook until edges set; flip and cook until golden brown.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1824,7 +1770,6 @@
         "text": "Grind sprouts with ginger to a smooth batter consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1833,7 +1778,6 @@
         "text": "Add fenugreek leaves, Bengal gram flour, turmeric, and salt; mix well. Rest 15 min.",
         "phase": "Rest",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1842,7 +1786,6 @@
         "text": "Heat a flat pan; grease lightly with oil. Pour a ladleful of batter; spread in a circular motion. Cook until crispy. Serve with a side dish.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -1919,7 +1862,6 @@
         "text": "Clean methi leaves thoroughly with water.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1928,7 +1870,6 @@
         "text": "Boil in water 3–5 min until soft; squeeze out excess water to form a compact mass.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": "05:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -1937,7 +1878,6 @@
         "text": "Heat ghee; add hingu, then the squeezed methi mass and rock salt. Roast properly.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2039,7 +1979,6 @@
         "text": "Wash and chop greens.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2048,7 +1987,6 @@
         "text": "Heat oil; add cumin, turmeric, and hingu.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2057,7 +1995,6 @@
         "text": "Add garlic paste and onion (optional); fry until golden brown.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2066,7 +2003,6 @@
         "text": "Add greens; cook on medium heat until done. Season with rock salt as needed.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2161,7 +2097,6 @@
         "text": "Wash and slice brinjal thin.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2170,7 +2105,6 @@
         "text": "Heat oil; fry brinjal on medium flame, stirring occasionally, until soft and edges are crispy.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2179,7 +2113,6 @@
         "text": "Add hingu, ginger paste, and rock salt; cook 2–3 min more. Turn off flame.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "03:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2188,7 +2121,6 @@
         "text": "Add lemon juice; mix well. Cover 3–5 min. Garnish with coriander leaves before serving.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2266,7 +2198,6 @@
         "text": "Wash and slice pointed gourd thin.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2275,7 +2206,6 @@
         "text": "Heat ghee; fry slices on medium flame, stirring occasionally.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2284,7 +2214,6 @@
         "text": "Add hingu, rock salt, and any additional spices to taste. Cook dry on moderate flame until soft.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2293,7 +2222,6 @@
         "text": "Turn off flame; cover 3–5 min. Serve hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2395,7 +2323,6 @@
         "text": "Slice eggplant; sprinkle with salt, let sweat, wash off salt, and pat dry.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2404,7 +2331,6 @@
         "text": "Heat oil; pop mustard seeds, then cumin, curry leaves, and onion. Stir.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2413,7 +2339,6 @@
         "text": "When onion is translucent, add turmeric. Add eggplant; cover and cook until soft. Season with salt.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2525,7 +2450,6 @@
         "text": "Steam pumpkin cubes until soft.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2534,7 +2458,6 @@
         "text": "Heat ghee; pop mustard seeds, then cumin, curry leaves, and onion until golden.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2543,7 +2466,6 @@
         "text": "In a separate pan, toast sliced almonds until golden.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2552,7 +2474,6 @@
         "text": "Add steamed pumpkin to the spice pan; fry. Add almonds, turmeric, and salt. Mix well; cover 3–4 min.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": "04:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2677,7 +2598,6 @@
         "text": "Steam pumpkin and sweet potato until soft.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2686,7 +2606,6 @@
         "text": "Heat ghee; add mustard seeds, cumin, curry leaves, onion, ginger paste, and turmeric. Fry well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2695,7 +2614,6 @@
         "text": "Add steamed vegetables; season with rock salt. Mix; cover 2–3 min.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "03:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2790,7 +2708,6 @@
         "text": "Wash and dry amla; cut and remove seeds.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2799,7 +2716,6 @@
         "text": "Heat sesame oil; fry amla pieces well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2808,7 +2724,6 @@
         "text": "Add curry leaves, pepper, turmeric, salt, and hingu; mix well. Serve as a side dish.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -2941,7 +2856,6 @@
         "text": "Cook jaggery until a thick syrup forms. Add grated ginger; stir and cook 5–7 min on low flame.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": "07:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2950,7 +2864,6 @@
         "text": "Add ghee; mix well and cook 5–10 min more. Add powdered spices; cook another 5–10 min.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "10:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2959,7 +2872,6 @@
         "text": "Add sesame seeds if desired. Pour onto a ghee-greased plate; spread evenly.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -2968,7 +2880,6 @@
         "text": "Cool before cutting into pieces. Store in an airtight container.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3062,7 +2973,6 @@
         "text": "Cook grated coconut in milk until well cooked.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3071,7 +2981,6 @@
         "text": "Roast the cooked coconut in ghee until properly done.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3080,7 +2989,6 @@
         "text": "Prepare a sugar syrup in a separate pan with rock sugar and water; boil to a proper binding consistency.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3089,7 +2997,6 @@
         "text": "Add roasted coconut to the syrup. Add cardamom and dry ginger powder; mix well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3098,7 +3005,6 @@
         "text": "Shape into small laddoos while warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3224,7 +3130,6 @@
         "text": "**Dough:** Mix wheat flour with ghee and water; knead into soft dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3233,7 +3138,6 @@
         "text": "**Filling:** Heat ghee; add coconut, dry grapes, dates, rock sugar, and aromatic powder. Roast on medium flame; work into a paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3242,7 +3146,6 @@
         "text": "**Shape:** Divide dough into small balls; roll thin. Place filling in centre; fold and pleat edges to seal.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3251,7 +3154,6 @@
         "text": "Deep fry in ghee on low–medium flame until golden brown.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3364,7 +3266,6 @@
         "text": "**Batter:** Soak black gram 4–6 hr; grind with minimal water to a soft, pouring batter.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3373,7 +3274,6 @@
         "text": "**Boondi:** Heat ghee; hold a perforated ladle over ghee, pour batter through, tapping to make small drops. Fry until cooked but not crispy. Drain.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3382,7 +3282,6 @@
         "text": "**Syrup:** Dissolve sugar in water; heat to syrup consistency. Add aromatic powder.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3391,7 +3290,6 @@
         "text": "**Assembly:** Add fried boondi to hot syrup; mix so boondi absorbs syrup. Add ghee-roasted dry fruits. Shape into laddoos while warm; add a little warm syrup/water if mixture is too dry.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3500,7 +3398,6 @@
         "text": "Heat ghee; add wheat flour and roast on medium flame until done.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3509,7 +3406,6 @@
         "text": "In a separate pan, make jaggery syrup with enough water to a binding consistency.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3518,7 +3414,6 @@
         "text": "Turn off flame; slowly fold in roasted flour, stirring continuously to avoid lumps. Add cardamom and dry ginger; mix.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3527,7 +3422,6 @@
         "text": "Shape into laddoos while still warm. Add a little ghee or warm syrup if mixture is too dry.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3628,7 +3522,6 @@
         "text": "Mix flour with 2–3 tsp melted ghee; add water gradually and knead into a soft, smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3637,7 +3530,6 @@
         "text": "Divide; roll into smooth, crack-free balls.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3646,7 +3538,6 @@
         "text": "Fry balls in medium-hot ghee until golden brown on all sides. Drain.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3655,7 +3546,6 @@
         "text": "Prepare sugar syrup with aromatic powder. Turn off flame.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3664,7 +3554,6 @@
         "text": "Once balls cool to moderate temperature, transfer to warm syrup. Soak 2–3 hr. Enjoy.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3762,7 +3651,6 @@
         "text": "Make a firm dough with flour, a pinch of rock salt, ghee, and water. Rest 15–20 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3771,7 +3659,6 @@
         "text": "Form into medium balls. Cook using any baati method (see S-06) — charcoal, oven (180 °C / 25–30 min), air fryer, pressure cooker, or stovetop. Cool completely.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": "30:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3780,7 +3667,6 @@
         "text": "Powder the cooked balls in a mixing bowl. Add rock sugar powder and aromatic powder; mix. Add ghee as needed to bind into laddoos.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3887,7 +3773,6 @@
         "text": "Remove seeds from dates; chop small. Chop cashews and almonds.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3896,7 +3781,6 @@
         "text": "Lightly roast nuts in 2 tsp ghee until golden. Mix in chopped dates.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3905,7 +3789,6 @@
         "text": "Shape mixture into small laddoos; roll in grated coconut. (Roasted sesame seeds may be used instead.)",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -3977,7 +3860,6 @@
         "text": "Knead flour with ghee and enough water into a smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3986,7 +3868,6 @@
         "text": "Heat ghee; hold a perforated ladle over ghee, pour batter through to make small drops. Fry until crispy and golden.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -3995,7 +3876,6 @@
         "text": "Immerse fried pieces in one-thread sugar syrup until absorbed.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4004,7 +3884,6 @@
         "text": "Remove from syrup; shape into small balls (modaka).",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4102,7 +3981,6 @@
         "text": "Combine flour, milk, and ghee; mix into a thin batter.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4111,7 +3989,6 @@
         "text": "Cook on low heat; once half cooked, add ghee and continue until thicker.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4120,7 +3997,6 @@
         "text": "Remove from heat; cool. Add equal amount of sugar; mix thoroughly. Shape into small balls.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4238,7 +4114,6 @@
         "text": "Fry Samita in ghee until colour changes; cool.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4247,7 +4122,6 @@
         "text": "Add rock sugar and powdered cardamom, clove, and pepper; mix thoroughly.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4256,7 +4130,6 @@
         "text": "Shape into small balls.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4354,7 +4227,6 @@
         "text": "Knead flour with ghee and water into a smooth dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4363,7 +4235,6 @@
         "text": "Heat ghee; pass batter through a perforated ladle to form drops. Fry until crispy and golden.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4372,7 +4243,6 @@
         "text": "Immerse in one-thread sugar syrup until absorbed.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4381,7 +4251,6 @@
         "text": "Remove; add edible camphor and shape into small balls.",
         "phase": "Shape",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4472,7 +4341,6 @@
         "text": "Dissolve food-grade lime (calcium hydroxide) in water; let particles settle; use only the clear supernatant.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4481,7 +4349,6 @@
         "text": "Wash amla; prick each 8–10 times with a clean fork. Submerge completely in lime water. Cover and keep at room temperature 3–4 days, replacing lime water every 24 hr.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4490,7 +4357,6 @@
         "text": "Wash amla thoroughly 2–3 times to remove residual lime.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4499,7 +4365,6 @@
         "text": "Make syrup: dissolve 200 g sugar in 100 ml water; boil to syrup consistency. Add washed amla; simmer on low heat 10–15 min until well coated without breaking.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4508,7 +4373,6 @@
         "text": "Cool; transfer amla and syrup to a sterilized glass jar. Rest 2–3 days for full absorption. Serve 1–2 fruits with a little syrup per serving.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4577,7 +4441,6 @@
         "text": "Cook grated coconut in milk until a thick consistency is reached.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4586,7 +4449,6 @@
         "text": "Spread evenly on a flat plate; cool slightly. Cut into small pieces and serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4702,7 +4564,6 @@
         "text": "Boil sweet potato; peel and cut into medium square cubes.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4711,7 +4572,6 @@
         "text": "In a mixing bowl, combine sweet potato with ginger paste, lemon juice, honey, and rock salt.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4720,7 +4580,6 @@
         "text": "Heat sesame oil and drizzle over. Toss well. Serve warm or cool.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4823,7 +4682,6 @@
         "text": "Mix flour, salt, baking powder, and baking soda. Add butter/ghee; mix well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4832,7 +4690,6 @@
         "text": "Add sweet potato, lemon juice, and milk; mix into a soft dough (adjust flour or milk as needed). Rest 15 min. Preheat oven to 450 °F.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4841,7 +4698,6 @@
         "text": "Roll gently; cut into biscuit shapes. Place on a greased baking tray.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4850,7 +4706,6 @@
         "text": "Bake until light golden brown. Cool completely. Store in an airtight container.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -4950,7 +4805,6 @@
         "text": "Soak apricots in hot water 15 min; finely chop.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4959,7 +4813,6 @@
         "text": "Mash bananas; combine with almond oil and maple syrup.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4968,7 +4821,6 @@
         "text": "Add flour, baking powder, and salt; fold in chopped apricot. Add water to reach a thick batter.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -4977,7 +4829,6 @@
         "text": "Pour into a lightly oiled muffin tin. Bake at 350 °F for ~25 min until a toothpick comes out clean. Cool before serving.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "25:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -5067,7 +4918,6 @@
         "text": "Mix flour, almond powder, powdered sugar, and salt. Add cold butter and cold water; make a dough.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5076,7 +4926,6 @@
         "text": "Rest 15 min. Preheat oven to 375 °F.",
         "phase": "Rest",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5085,7 +4934,6 @@
         "text": "Roll gently; cut into shapes. Place on a greased baking tray.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5094,7 +4942,6 @@
         "text": "Bake ~15 min or until light golden. Cool completely. Store in an airtight container.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -5178,7 +5025,6 @@
         "text": "Cook rice with water, ghee, and rock salt.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5187,7 +5033,6 @@
         "text": "Heat ghee; toast sesame seeds and desiccated coconut until slightly darkened.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5196,7 +5041,6 @@
         "text": "Add cooked rice; mix well. Garnish with coriander leaves.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -5278,7 +5122,6 @@
         "text": "Mix both flours with water to a smooth batter — not too thick or thin. Ferment overnight.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5287,7 +5130,6 @@
         "text": "Next morning, add rock salt to the fermented batter; mix well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       },
@@ -5296,7 +5138,6 @@
         "text": "Steam in an idli maker or steamer until properly cooked.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F5F0E8"
       }
@@ -5372,7 +5213,6 @@
         "text": "Combine coconut water and rock sugar; stir to dissolve.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5381,7 +5221,6 @@
         "text": "Add lemon juice; mix.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5390,7 +5229,6 @@
         "text": "Filter through a sieve and serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5476,7 +5314,6 @@
         "text": "Boil raw mango in a pressure cooker or pot until soft. Cool; remove skin and squeeze to a smooth liquid paste.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5485,7 +5322,6 @@
         "text": "Add rock sugar, cold water (not refrigerated), aromatic powder, and rock salt; stir. Serve immediately.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5564,7 +5400,6 @@
         "text": "Wash coriander seeds; soak 20–30 min. Macerate thoroughly with mortar and pestle or grinding slab.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "30:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5573,7 +5408,6 @@
         "text": "Filter through a cloth with sufficient water. Add rock sugar powder and fine camphor; mix well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5671,7 +5505,6 @@
         "text": "Steam amla until soft; cool, remove seeds, grind to smooth paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5680,7 +5513,6 @@
         "text": "Add 1 glass water to paste; mix. Add dry ginger, cardamom, rock sugar/jaggery, rock salt, and honey; stir well. Serve fresh.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5756,7 +5588,6 @@
         "text": "Dissolve rock sugar in cold water (not refrigerated).",
         "phase": "Rest",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5765,7 +5596,6 @@
         "text": "Add aromatic powder and rock salt; stir well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5774,7 +5604,6 @@
         "text": "Serve as needed.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5860,7 +5689,6 @@
         "text": "Soak grapes and dates in water 1 hr.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "60:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5869,7 +5697,6 @@
         "text": "Blend with soaked fruit, water, puffed paddy, and jaggery until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5878,7 +5705,6 @@
         "text": "Serve fresh.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -5974,7 +5800,6 @@
         "text": "Boil amla until soft; cool, remove seeds, grind to smooth paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5983,7 +5808,6 @@
         "text": "Make a one-strand sugar syrup (double the paste quantity) in a separate pan.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -5992,7 +5816,6 @@
         "text": "Combine pulp and syrup; mix. Add water if needed. Add rock salt, cumin powder, pepper, and black salt; stir well. Serve fresh.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6109,7 +5932,6 @@
         "text": "Add pepper, jaggery/sugar, and salt to curd; blend or churn until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6118,7 +5940,6 @@
         "text": "Heat ghee; splutter mustard seeds, add fenugreek, cumin, red chilli, and curry leaves. Use as seasoning over curd mixture.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6127,7 +5948,6 @@
         "text": "Serve with roti or rice.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6261,7 +6081,6 @@
         "text": "Blend curd, water, pepper, jaggery/sugar, and salt until smooth buttermilk consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6270,7 +6089,6 @@
         "text": "Heat ghee; splutter mustard, add fenugreek, cumin, red chilli, and curry leaves. Add seasoning to buttermilk; add lemon juice; mix well. Serve fresh.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6363,7 +6181,6 @@
         "text": "Heat buttermilk on medium flame; add ginger paste and boil 1 min.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": "01:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6372,7 +6189,6 @@
         "text": "Add turmeric, pepper, hingu, and rock salt; mix well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6381,7 +6197,6 @@
         "text": "Turn off flame.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6390,7 +6205,6 @@
         "text": "Serve hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6500,7 +6314,6 @@
         "text": "Soak green gram 4–5 hr. Pressure cook with water until soft.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6509,7 +6322,6 @@
         "text": "Mash lightly or partially blend to a smooth soup consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6518,7 +6330,6 @@
         "text": "Heat ghee; splutter mustard, add fenugreek and curry leaves; pour into soup.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6527,7 +6338,6 @@
         "text": "Add rock salt, pepper, and lemon juice; mix. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6646,7 +6456,6 @@
         "text": "Soak black gram 4–5 hr. Cook until soft and well done.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6655,7 +6464,6 @@
         "text": "Mash lightly or partially blend to a smooth soup consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6664,7 +6472,6 @@
         "text": "Heat ghee; splutter mustard, add fenugreek and curry leaves; pour into soup.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6673,7 +6480,6 @@
         "text": "Add rock salt, pepper, and lemon juice; mix. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6785,7 +6591,6 @@
         "text": "Heat oil; fry onion and garlic paste. Add tomato; cook 2–3 min. Add greens; cook until soft.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "03:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6794,7 +6599,6 @@
         "text": "Add dal water and salt; simmer 15 min.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6803,7 +6607,6 @@
         "text": "Take half the soup, cool, and blend smooth; return to pot. Simmer 5 min more.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "05:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6812,7 +6615,6 @@
         "text": "Add pepper; mix. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -6909,7 +6711,6 @@
         "text": "Boil sweet potato with ginger until soft.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6918,7 +6719,6 @@
         "text": "Blend boiled sweet potato (peeled), ginger, hot milk, salt, optional sugar, spices, and pepper until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -6927,7 +6727,6 @@
         "text": "Add more milk or water to reach a creamy consistency. Serve fresh and hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7011,7 +6810,6 @@
         "text": "Peel and slice beetroot and ginger.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7020,7 +6818,6 @@
         "text": "Boil in water until beetroot is soft.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7029,7 +6826,6 @@
         "text": "Blend boiled beetroot and ginger with water, olive oil, salt, and black pepper until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7038,7 +6834,6 @@
         "text": "Add more water for desired consistency. Serve fresh.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7134,7 +6929,6 @@
         "text": "Boil mung dal with water, chopped ginger, and hingu until soft and fully cooked.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7143,7 +6937,6 @@
         "text": "Blend with ginger, coriander, cumin, salt, and olive oil until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7152,7 +6945,6 @@
         "text": "Add water to reach creamy consistency. Serve fresh and hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7242,7 +7034,6 @@
         "text": "Fry grated coconut in ghee until slightly golden. Add boiled milk; stir continuously until thickened.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7251,7 +7042,6 @@
         "text": "Add sugar; stir until dissolved. Add aromatic powder and ghee-roasted dry fruits; mix well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7348,7 +7138,6 @@
         "text": "Gently boil milk; add rock sugar and stir until dissolved.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7357,7 +7146,6 @@
         "text": "Boil until mildly thick. Add aromatic powder; cook 2–3 min more. Serve hot or warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7460,7 +7248,6 @@
         "text": "Heat ghee; roast black gram powder until golden.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7469,7 +7256,6 @@
         "text": "Add milk; bring to a gentle boil.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7478,7 +7264,6 @@
         "text": "Add rock sugar; stir until dissolved.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7487,7 +7272,6 @@
         "text": "Boil 2–3 min.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": "03:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7496,7 +7280,6 @@
         "text": "Serve hot or warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7591,7 +7374,6 @@
         "text": "Combine milk and water; bring to heat. Add ginger paste; boil 3–5 min until reduced to ~1 cup.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": "05:00",
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7600,7 +7382,6 @@
         "text": "Strain and serve with honey to taste.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7698,7 +7479,6 @@
         "text": "Soak almonds overnight; remove skins.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7707,7 +7487,6 @@
         "text": "Blend with milk, water, cardamom, saffron, rose petals, and honey until smooth. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7770,7 +7549,6 @@
         "text": "Soak almonds overnight; remove skins.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7779,7 +7557,6 @@
         "text": "Blend with water until smooth. Strain for a smoother consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7788,7 +7565,6 @@
         "text": "Serve with optional honey as sweetener.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7870,7 +7646,6 @@
         "text": "Combine milk and water; bring to a boil.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7879,7 +7654,6 @@
         "text": "Add crushed cardamom, ginger paste, and turmeric. Boil until reduced by half (~1 cup).",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       },
@@ -7888,7 +7662,6 @@
         "text": "Strain cardamom pods and ginger. Serve hot.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#E8F0F5"
       }
@@ -7958,7 +7731,6 @@
         "text": "Mix barley flour (or ground barley) with a little milk to form a smooth paste.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -7967,7 +7739,6 @@
         "text": "Add remaining milk; cook over low flame with continuous stirring until barley is fully cooked.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -7976,7 +7747,6 @@
         "text": "Add ghee, mix well, and serve warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8051,7 +7821,6 @@
         "text": "Wash split black gram thoroughly.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8060,7 +7829,6 @@
         "text": "Bring milk to a boil in a vessel; add black gram and boil on medium flame until fully soft and semi-solid consistency is reached (add more milk if needed).",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8069,7 +7837,6 @@
         "text": "Add ghee; mix well. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8166,7 +7933,6 @@
         "text": "Hang fresh curd in muslin cloth 4–6 hr or overnight to drain all water.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8175,7 +7941,6 @@
         "text": "Transfer thick hung curd to a bowl. Add sugar, cardamom, cinnamon, ginger, and saffron (soaked in a little milk first).",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8184,7 +7949,6 @@
         "text": "Mix well. Garnish with chopped almonds and pistachios if desired. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8279,7 +8043,6 @@
         "text": "Steam brinjal 10–15 min until soft and well cooked; cool.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8288,7 +8051,6 @@
         "text": "Remove stalk; mash thoroughly until smooth.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8297,7 +8059,6 @@
         "text": "Heat ghee; splutter mustard and cumin. Add mashed brinjal; mix well. Turn off flame and cool.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8306,7 +8067,6 @@
         "text": "Fold in yoghurt and rock salt; mix well. Cover 3–5 min before serving.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "05:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8394,7 +8154,6 @@
         "text": "Steam amla 10–15 min until soft; cool, remove seeds, crush well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "15:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8403,7 +8162,6 @@
         "text": "Heat ghee; add cumin — let crackle. Add hingu.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8412,7 +8170,6 @@
         "text": "Add crushed amla; fry until cooked properly. Add rock salt; mix well.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8537,7 +8294,6 @@
         "text": "Dry roast peanuts until lightly golden; cool. Dry roast sesame on low flame — do not burn.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8546,7 +8302,6 @@
         "text": "Grind all ingredients (roasted peanuts, sesame, garlic, pepper, cumin, coriander, rock sugar, rock salt) with water to a smooth chutney consistency.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8555,7 +8310,6 @@
         "text": "Add lemon juice; mix well. Serve with any dish.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8710,7 +8464,6 @@
         "text": "Dry roast legumes and fenugreek seeds; set aside. Dry roast cumin, coriander seeds, and cloves; cool.",
         "phase": "Rest",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8719,7 +8472,6 @@
         "text": "Grind roasted ingredients with coconut and water/curd to a smooth paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8728,7 +8480,6 @@
         "text": "Add green leaves, tomato, pepper, rock salt, jaggery, and tamarind; blend until smooth.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8737,7 +8488,6 @@
         "text": "Optional: season with oil, mustard seeds, curry leaves, and red chillies.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8824,7 +8574,6 @@
         "text": "Combine all ingredients in a pan; cook well together, mixing thoroughly.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8833,7 +8582,6 @@
         "text": "Serve with plain rice.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -8928,7 +8676,6 @@
         "text": "Toast dry fruits and chironji in ghee until golden; set aside.",
         "phase": "Rest",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8937,7 +8684,6 @@
         "text": "Heat remaining ghee; roast wheat flour on medium flame until done.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8946,7 +8692,6 @@
         "text": "Add sugar, roasted dry fruits, and chironji. Add milk gradually, stirring continuously to prevent lumps.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -8955,7 +8700,6 @@
         "text": "Add more ghee if needed. Cook, stirring until the mixture leaves the sides of the pan and reaches a smooth halwa consistency. Add aromatic powder; mix well.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9073,7 +8817,6 @@
         "text": "Steam ash gourd 15–20 min until soft.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": "20:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9082,7 +8825,6 @@
         "text": "Cook steamed pieces in milk on medium flame, stirring, until milk is absorbed. Mash to a smooth consistency (add more milk as needed).",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9091,7 +8833,6 @@
         "text": "Heat ghee in a pan; sauté mashed ash gourd 8–10 min until raw smell disappears.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": "10:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9100,7 +8841,6 @@
         "text": "Add sugar; mix well and cook to a halwa consistency. Add ghee-roasted dry fruits and aromatic powder; cook 2–3 min. Serve hot or warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9211,7 +8951,6 @@
         "text": "Grind coconut without much water — keep slightly coarse.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9220,7 +8959,6 @@
         "text": "Boil milk; add coarse coconut and cook on medium flame, stirring continuously 5–8 min until mildly thick.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": "08:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9229,7 +8967,6 @@
         "text": "Add rock sugar; stir to dissolve. Add ghee and aromatic powder (optional); mix 1 min. Switch off flame. Garnish with dry fruits. Serve hot or warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9339,7 +9076,6 @@
         "text": "Heat ghee on low flame; add wheat flour and roast well on medium flame.",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9348,7 +9084,6 @@
         "text": "Add milk and sugar; stir continuously until mixture solidifies.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9357,7 +9092,6 @@
         "text": "Add aromatic powder; mix well. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9466,7 +9200,6 @@
         "text": "Heat milk on medium flame; bring to a boil.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9475,7 +9208,6 @@
         "text": "Add soft cooked rice, coriander powder, cardamom powder, and ghee; simmer 5 min.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": "05:00",
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9484,7 +9216,6 @@
         "text": "Serve as is, or blend smooth for a creamier texture. Add optional honey if desired.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9569,7 +9300,6 @@
         "text": "Soak almonds overnight; grind to a fine powder or paste.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9578,7 +9308,6 @@
         "text": "Grind rice to a fine powder.",
         "phase": "Prep",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9587,7 +9316,6 @@
         "text": "Boil 3 cups water with a pinch of rock salt. Reduce to medium flame; add ground rice and almond powders, stirring continuously to prevent lumps.",
         "phase": "Cook",
         "heat": "medium",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9596,7 +9324,6 @@
         "text": "Cook ~5 min until done. Add ghee and rock sugar; mix well. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9690,7 +9417,6 @@
         "text": "Cook all ingredients together with the appropriate quantity of water in a vessel or cooker.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9699,7 +9425,6 @@
         "text": "Add more milk/water for a creamier texture.",
         "phase": "Cook",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9708,7 +9433,6 @@
         "text": "Serve warm.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
@@ -9778,7 +9502,6 @@
         "text": "Boil milk; add chopped dates and stir until milk turns a brown colour.",
         "phase": "Cook",
         "heat": "high",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9787,7 +9510,6 @@
         "text": "Add cooked rice; simmer until mixture thickens (add more milk if needed).",
         "phase": "Cook",
         "heat": "low",
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       },
@@ -9796,7 +9518,6 @@
         "text": "Once creamy, switch off flame. Serve.",
         "phase": "Serve",
         "heat": null,
-        "timerStr": null,
         "stepIngredients": [],
         "illColor": "#F0EDE8"
       }
