@@ -25,6 +25,7 @@ import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
+import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { FACETS } from '../config/facets';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -90,7 +91,7 @@ export function HomeScreen() {
 
   // Texture counts come from the offline catalog (no network) — recompute when
   // the cache hydrates at boot and after each background sync.
-  const { ready, lastSyncedAt } = useOffline();
+  const { ready, lastSyncedAt, isOnline } = useOffline();
   useEffect(() => {
     const next: Record<string, number> = {};
     getAllRecipes().forEach(d => { next[d.category] = (next[d.category] ?? 0) + 1; });
@@ -139,6 +140,7 @@ export function HomeScreen() {
             <Text style={s.greeting}>Good morning</Text>
             <Text style={s.greetingSub}>Vajeeva</Text>
           </View>
+          {!isOnline ? <OfflineBadge /> : null}
           <View style={s.avatar}><IconUser size={sc(15)} color={colors.green} /></View>
         </View>
         <SearchBar
