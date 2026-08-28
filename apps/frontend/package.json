@@ -34,7 +34,6 @@
     "expo-secure-store": "~14.0.0",
     "expo-splash-screen": "~31.0.13",
     "expo-status-bar": "~1.5.0",
-    "expo-web": "^0.0.14",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "react-native": "0.81.5",
