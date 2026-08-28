@@ -21,6 +21,7 @@ import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
 import { recipesApi, sortImages, cloudThumb, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeImage, RecipeListItem } from '../api/recipes';
+import { getRecipe } from '../offline/catalog';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -90,15 +91,17 @@ export function RecipeDetailScreen() {
   useEffect(() => {
     let alive = true;
     if (!slug) return;
-    recipesApi.detail(slug)
-      .then((doc: RecipeDoc) => {
-        if (!alive) return;
-        setRecipe(toDetailView(doc));
-        const item = toListItem(doc);
-        setListItem(item);
-        recordRecentlyViewed(item); // feeds Home's "Jump back in" rail
-      })
-      .catch(() => {});
+    const apply = (doc: RecipeDoc) => {
+      setRecipe(toDetailView(doc));
+      const item = toListItem(doc);
+      setListItem(item);
+      recordRecentlyViewed(item); // feeds Home's "Jump back in" rail
+    };
+    // Catalog first (instant, offline). Fall back to the network only for a slug
+    // not yet cached — e.g. a deep link opened before the first sync completes.
+    const cached = getRecipe(slug);
+    if (cached) apply(cached);
+    else recipesApi.detail(slug).then((doc: RecipeDoc) => { if (alive) apply(doc); }).catch(() => {});
     return () => { alive = false; };
   }, [slug]);
 
