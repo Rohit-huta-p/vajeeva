@@ -1,0 +1,31 @@
+/* Remove browser default input focus styling for React Native Web */
+input,
+textarea,
+select,
+[role="textbox"] {
+  outline: none !important;
+  -webkit-outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+[role="textbox"]:focus {
+  outline: none !important;
+  -webkit-outline: none !important;
+  box-shadow: none !important;
+  -webkit-box-shadow: none !important;
+}
+
+/* Target React Native TextInput web equivalent */
+[class*="TextInput"] {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+[class*="TextInput"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

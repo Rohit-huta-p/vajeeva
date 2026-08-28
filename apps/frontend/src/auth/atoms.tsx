@@ -22,10 +22,13 @@ export function AuthNote({ children }: { children: React.ReactNode }) {
 export function AuthInput(props: React.ComponentProps<typeof TextInput>) {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
+  const [focused, setFocused] = useState(false);
   return (
     <TextInput
       placeholderTextColor={colors.muted}
-      style={s.input}
+      style={[s.input, focused && s.inputFocused]}
+      onFocus={() => setFocused(true)}
+      onBlur={() => setFocused(false)}
       {...props}
     />
   );
@@ -184,6 +187,9 @@ const makeStyles = (colors: Colors) => scaledSheet({
     borderRadius: 12, paddingVertical: 13, paddingHorizontal: 14,
     fontSize: 12.5, fontFamily: fonts.sans, color: colors.ink, textAlign: 'center',
     ...shadows.card,
+  },
+  inputFocused: {
+    borderColor: colors.line,
   },
   continue: { borderRadius: 14, padding: 14, alignItems: 'center', marginTop: 10 },
   continueOn: { backgroundColor: colors.green, ...shadows.card },

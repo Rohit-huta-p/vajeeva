@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicator,
+  View, Text, ScrollView, TouchableOpacity, SafeAreaView, ActivityIndicator, Share, Platform,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { fonts, type Colors } from '../theme/tokens';
@@ -12,14 +12,15 @@ import { SourcePill } from '../components/shared/SourcePill';
 import { CTA } from '../components/shared/CTA';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import { usePreferences } from '../hooks/usePreferences';
+import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
-import { IconBack, IconHeart, IconShare, IconPlay, IllHero } from '../components/shared/icons';
+import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
 import { recipesApi, sortImages, cloudThumb, toListItem } from '../api/recipes';
-import type { RecipeDoc, RecipeImage } from '../api/recipes';
+import type { RecipeDoc, RecipeImage, RecipeListItem } from '../api/recipes';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -27,6 +28,13 @@ import { scaledSheet, sc } from '../theme/scale';
 function toSourceSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
+
+// Public web origin for shareable recipe links (the Expo web export — see the
+// `build` script — once it's deployed there). EXPO_PUBLIC_WEB_URL overrides
+// per environment (e.g. a staging domain); same override pattern as
+// EXPO_PUBLIC_API_URL in api.ts. Until that export is actually deployed at
+// this domain, shared links will 404.
+const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://vajeeva.app';
 
 interface DetailView {
   nameEn: string;
@@ -71,7 +79,9 @@ export function RecipeDetailScreen() {
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
   const [aromaOpen, setAromaOpen] = useState(false);
   const [recipe, setRecipe] = useState<DetailView | null>(null);
+  const [listItem, setListItem] = useState<RecipeListItem | null>(null);
   const { prefs, loading: prefsLoading } = usePreferences();
+  const { isSaved, save, unsave } = useSavedRecipes();
 
   // Seed the g/cup toggle from the saved Units preference once it loads.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -84,7 +94,9 @@ export function RecipeDetailScreen() {
       .then((doc: RecipeDoc) => {
         if (!alive) return;
         setRecipe(toDetailView(doc));
-        recordRecentlyViewed(toListItem(doc)); // feeds Home's "Jump back in" rail
+        const item = toListItem(doc);
+        setListItem(item);
+        recordRecentlyViewed(item); // feeds Home's "Jump back in" rail
       })
       .catch(() => {});
     return () => { alive = false; };
@@ -97,6 +109,21 @@ export function RecipeDetailScreen() {
       </SafeAreaView>
     );
   }
+
+  const saved = listItem ? isSaved(listItem.slug) : false;
+  const onToggleSave = () => {
+    if (!listItem) return;
+    if (saved) unsave(listItem.slug); else save(listItem);
+  };
+
+  const onShare = () => {
+    const link = `${WEB_URL}/recipe/${slug}`;
+    Share.share({
+      title: recipe.nameEn,
+      message: Platform.OS === 'ios' ? recipe.nameEn : `${recipe.nameEn} — a Vajeeva recipe\n${link}`,
+      ...(Platform.OS === 'ios' ? { url: link } : {}),
+    }).catch(() => {});
+  };
 
   return (
     <SafeAreaView style={s.root}>
@@ -113,8 +140,13 @@ export function RecipeDetailScreen() {
           <View style={s.heroBar}>
             <IconButton icon={<IconBack size={sc(15)} color={colors.ink} />} onPress={() => router.back()} />
             <View style={s.heroActs}>
-              <IconButton icon={<IconHeart size={sc(15)} color={colors.clay} />} onPress={() => {}} />
-              <IconButton icon={<IconShare size={sc(15)} color={colors.ink} />} onPress={() => {}} />
+              <IconButton
+                icon={saved
+                  ? <IconHeartFilled size={sc(15)} color={colors.clay} />
+                  : <IconHeart size={sc(15)} color={colors.clay} />}
+                onPress={onToggleSave}
+              />
+              <IconButton icon={<IconShare size={sc(15)} color={colors.ink} />} onPress={onShare} />
             </View>
           </View>
         </View>
