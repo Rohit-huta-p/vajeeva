@@ -23,6 +23,8 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { getAllRecipes } from '../offline/catalog';
+import { useOffline } from '../offline/OfflineProvider';
 import { FACETS } from '../config/facets';
 import { scaledSheet, sc } from '../theme/scale';
 
@@ -86,16 +88,14 @@ export function HomeScreen() {
     Animated.stagger(110, rings.map(v => Animated.sequence([onePulse(v), onePulse(v)]))).start();
   }, [rings]);
 
+  // Texture counts come from the offline catalog (no network) — recompute when
+  // the cache hydrates at boot and after each background sync.
+  const { ready, lastSyncedAt } = useOffline();
   useEffect(() => {
-    let alive = true;
-    recipesApi.list().then((docs: RecipeDoc[]) => {
-      if (!alive) return;
-      const next: Record<string, number> = {};
-      docs.forEach(d => { next[d.category] = (next[d.category] ?? 0) + 1; });
-      setCounts(next);
-    }).catch(() => {});
-    return () => { alive = false; };
-  }, []);
+    const next: Record<string, number> = {};
+    getAllRecipes().forEach(d => { next[d.category] = (next[d.category] ?? 0) + 1; });
+    setCounts(next);
+  }, [ready, lastSyncedAt]);
 
   // Resolve the in-progress recipe for the pick-up rail's cook lead; the session
   // itself is the offline fallback if the fetch fails.
