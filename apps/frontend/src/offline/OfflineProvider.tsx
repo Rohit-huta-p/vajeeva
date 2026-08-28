@@ -2,7 +2,8 @@ import React, {
   createContext, useContext, useEffect, useState, useCallback, useRef,
 } from 'react';
 import NetInfo from '@react-native-community/netinfo';
-import { hydrateCatalog, syncCatalog, getMeta } from './catalog';
+import { hydrateCatalog, syncCatalog, getMeta, getAllRecipes } from './catalog';
+import { hydrateImages, syncImages } from './images';
 
 // Drives the offline catalog: hydrate the on-device cache at boot (so the app is
 // usable before any network), track connectivity, and sync (full replace) on
@@ -10,7 +11,7 @@ import { hydrateCatalog, syncCatalog, getMeta } from './catalog';
 // synchronously via catalog.ts; this provider only exposes status + a manual
 // resync, and the OfflineBadge reads `isOnline`.
 
-type SyncPhase = 'idle' | 'syncing' | 'done' | 'error';
+type SyncPhase = 'idle' | 'syncing' | 'images' | 'done' | 'error';
 
 interface OfflineState {
   /** true once the persisted catalog is loaded into memory (safe to render). */
@@ -44,6 +45,10 @@ export function OfflineProvider({ children }: { children: React.ReactNode }) {
       await syncCatalog();
       const meta = await getMeta();
       setLastSyncedAt(meta.lastSyncedAt);
+      // Catalog (text) is live now; download header images in the background. A
+      // failure here doesn't fail the sync — recipes fall back to remote images.
+      setSyncPhase('images');
+      await syncImages(getAllRecipes()).catch(() => {});
       setSyncPhase('done');
     } catch {
       // Offline or server error — the cached catalog stays valid and readable.
@@ -59,6 +64,7 @@ export function OfflineProvider({ children }: { children: React.ReactNode }) {
     let alive = true;
     (async () => {
       await hydrateCatalog().catch(() => {});
+      await hydrateImages().catch(() => {});
       const meta = await getMeta().catch(() => ({ lastSyncedAt: null }));
       if (!alive) return;
       setLastSyncedAt(meta.lastSyncedAt);

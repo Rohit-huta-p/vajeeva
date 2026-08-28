@@ -4286,6 +4286,7 @@ __metadata:
     axios: "npm:^1.7.2"
     expo: "npm:~54.0.0"
     expo-constants: "npm:~18.0.14"
+    expo-file-system: "npm:~19.0.24"
     expo-font: "npm:~13.0.0"
     expo-keep-awake: "npm:~15.0.8"
     expo-linear-gradient: "npm:~15.0.8"

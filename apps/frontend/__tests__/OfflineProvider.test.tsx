@@ -9,6 +9,11 @@ jest.mock('../src/offline/catalog', () => ({
   hydrateCatalog: jest.fn(() => Promise.resolve()),
   syncCatalog: jest.fn(() => Promise.resolve({ count: 3 })),
   getMeta: jest.fn(() => Promise.resolve({ lastSyncedAt: '2026-08-27T00:00:00.000Z' })),
+  getAllRecipes: jest.fn(() => []),
+}));
+jest.mock('../src/offline/images', () => ({
+  hydrateImages: jest.fn(() => Promise.resolve()),
+  syncImages: jest.fn(() => Promise.resolve()),
 }));
 
 import React from 'react';
