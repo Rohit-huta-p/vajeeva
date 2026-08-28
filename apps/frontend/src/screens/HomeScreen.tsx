@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import {
-  View, Text, ScrollView, TouchableOpacity, Animated,
+  View, Text, ScrollView, TouchableOpacity, Animated, useWindowDimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter, useFocusEffect } from 'expo-router';
@@ -32,6 +32,15 @@ const PILLARS = [
   { key: 'semi-solid', name: 'Semi-solid', subtitle: 'Porridge · puddings · chutneys' },
 ] as const;
 
+// Responsive columns for the "Your kitchen" preview row — 2 on phones, 3 at md
+// (≥768), 4 at lg (≥1024). Same breakpoints as RecipeListScreen.columnsFor so a
+// saved card is the same size on Home as on the full list.
+function columnsFor(width: number): number {
+  if (width >= 1024) return 4;
+  if (width >= 768) return 3;
+  return 2;
+}
+
 /**
  * Home is a calm four-zone funnel — resume → find → browse → your kitchen. The
  * greeting + search pin to the bone header; the zones drop into a sand "well"
@@ -49,6 +58,9 @@ export function HomeScreen() {
   const { session, loading: sessionLoading, reload: reloadSession } = useCookSession();
   const { recipes: saved, loading: savedLoading, unsave, reload: reloadSaved } = useSavedRecipes();
   const { recipes: recent, loading: recentLoading, reload: reloadRecent } = useRecentlyViewed();
+  // Saved preview fills exactly one responsive row (2 / 3 / 4 cards by width).
+  const { width } = useWindowDimensions();
+  const savedCols = columnsFor(width);
 
   // Mood-chip leading icon, resolved from the facet's icon id (facets.ts stays JSX-free).
   const facetIcon = (icon: string) => {
@@ -217,14 +229,17 @@ export function HomeScreen() {
           </View>
           {savedLoading ? (
             <View style={s.savedGrid}>
-              {[0, 1].map(i => (
-                <View key={i} style={s.savedCol}><SkeletonCard /></View>
+              {Array.from({ length: savedCols }, (_, i) => (
+                <View key={i} style={[s.savedCol, { maxWidth: `${100 / savedCols}%` }]}><SkeletonCard /></View>
               ))}
             </View>
           ) : saved.length > 0 ? (
             <View style={s.savedGrid}>
-              {saved.slice(0, 2).map(r => (
-                <View key={r.slug} style={s.savedCol}>
+              {saved.slice(0, savedCols).map(r => (
+                // maxWidth caps each cell at one column, so a partial row (e.g. a
+                // lone saved card, or 2 cards in a 4-col desktop grid) keeps its
+                // card width and stays left-aligned instead of stretching (flex:1).
+                <View key={r.slug} style={[s.savedCol, { maxWidth: `${100 / savedCols}%` }]}>
                   <RecipeGridCard
                     recipe={r}
                     onPress={() => router.push(`/recipe/${r.slug}` as any)}
