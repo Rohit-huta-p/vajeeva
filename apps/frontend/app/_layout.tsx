@@ -4,6 +4,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useFonts } from 'expo-font';
 import { AuthProvider, AuthContext } from '../src/auth/AuthContext';
 import { ThemeProvider } from '../src/theme/ThemeContext';
+import { OfflineProvider } from '../src/offline/OfflineProvider';
+import '../src/web.css';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -67,9 +69,11 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AuthProvider>
-        <AuthGate>
-          <Slot />
-        </AuthGate>
+        <OfflineProvider>
+          <AuthGate>
+            <Slot />
+          </AuthGate>
+        </OfflineProvider>
       </AuthProvider>
     </ThemeProvider>
   );

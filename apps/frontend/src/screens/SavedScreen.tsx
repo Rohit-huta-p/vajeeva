@@ -7,7 +7,7 @@ import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { SkeletonSavedCard } from '../components/shared/SkeletonSavedCard';
 import { CategoryIll, categoryTint } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
-import { cloudThumb } from '../api/recipes';
+import { imageSource } from '../offline/images';
 import { scaledSheet, sc } from '../theme/scale';
 
 // Placeholder cells shown while saved recipes load from on-device storage.
@@ -52,7 +52,7 @@ export function SavedScreen() {
                   <View style={[s.rim, { backgroundColor: categoryTint(item.category) }]}>
                     {item.imageUrl ? (
                       <Image
-                        source={{ uri: cloudThumb(item.imageUrl, 500, 220) }}
+                        source={imageSource(item.slug, item.imageUrl, 500, 220)}
                         accessibilityLabel={item.nameEn}
                         style={s.rimImg}
                         resizeMode="cover"

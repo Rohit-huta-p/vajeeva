@@ -13,6 +13,8 @@ import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
+import { getAllRecipes, searchCatalog } from '../offline/catalog';
+import { useOffline } from '../offline/OfflineProvider';
 import { isFacet, facetLabel, matchFacet, matchTag, type TagAxis } from '../config/facets';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { scaledSheet, sc } from '../theme/scale';
@@ -68,6 +70,7 @@ export function RecipeListScreen() {
   const { width } = useWindowDimensions();
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
+  const { ready, lastSyncedAt, resync } = useOffline();
   const { texture, facet, type, meal, ingredient, method, q } = useLocalSearchParams<{
     texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string;
   }>();
@@ -91,13 +94,20 @@ export function RecipeListScreen() {
   // the texture chips still narrow the results.
   const load = useCallback(async () => {
     try {
+      // Offline-first: read from the cached catalog (works with no network);
+      // category + facet/tag narrowing run client-side over it. Fall back to the
+      // network only before the catalog has populated (first run, pre-sync).
+      const cached = getAllRecipes();
       if (isSearch) {
-        const docs: RecipeDoc[] = await recipesApi.search(q!.trim());
+        const docs: RecipeDoc[] = cached.length
+          ? searchCatalog(q!.trim())
+          : await recipesApi.search(q!.trim());
         setRecipes(docs.map(toListItem));
         return;
       }
-      const docs: RecipeDoc[] = await recipesApi.list(LABEL_TO_CATEGORY[filter]);
+      const docs: RecipeDoc[] = cached.length ? cached : await recipesApi.list();
       let items = docs.map(toListItem);
+      if (LABEL_TO_CATEGORY[filter]) items = items.filter(r => r.category === LABEL_TO_CATEGORY[filter]);
       if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
       // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
       const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method]];
@@ -110,13 +120,14 @@ export function RecipeListScreen() {
 
   // Show skeletons for the initial load and on every filter/facet change (a new
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
-  useEffect(() => { setLoading(true); load(); }, [load]);
+  useEffect(() => { setLoading(true); load(); }, [load, ready, lastSyncedAt]);
 
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    await load();
+    resync();       // best-effort catalog re-pull; the effect reloads on completion
+    await load();   // re-render from the current cache immediately
     setRefreshing(false);
-  }, [load]);
+  }, [load, resync]);
 
   const sub = isSearch
     ? `${recipes.length} result${recipes.length === 1 ? '' : 's'}`

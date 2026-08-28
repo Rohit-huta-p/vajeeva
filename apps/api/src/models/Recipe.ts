@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 
 const IngredientSchema = new mongoose.Schema({
-  nameEn: String, quantityG: String, quantityCup: String,
+  nameEn: String, quantityG: String, quantityMl: { type: String, default: '' },
+  quantityCup: String, note: { type: String, default: '' },
 }, { _id: false });
 
 /** Shared image sub-document for hero gallery and per-step gallery. */

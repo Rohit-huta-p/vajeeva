@@ -25,6 +25,8 @@ export function ProfileEditSheet({ visible, name, age, gender, onSave, onClose }
   const [nameDraft, setNameDraft] = useState(name);
   const [ageDraft, setAgeDraft] = useState(age ? String(age) : '');
   const [genderDraft, setGenderDraft] = useState<string | null>(gender ?? null);
+  const [nameFocused, setNameFocused] = useState(false);
+  const [ageFocused, setAgeFocused] = useState(false);
 
   // Re-seed each time the sheet opens so a prior cancel never lingers.
   useEffect(() => {
@@ -69,9 +71,11 @@ export function ProfileEditSheet({ visible, name, age, gender, onSave, onClose }
               onChangeText={setNameDraft}
               placeholder="Your name"
               placeholderTextColor={colors.muted}
-              style={s.input}
+              style={[s.input, nameFocused && s.inputFocused]}
               autoFocus
               accessibilityLabel="Name"
+              onFocus={() => setNameFocused(true)}
+              onBlur={() => setNameFocused(false)}
             />
 
             <Text style={s.label}>Age</Text>
@@ -80,10 +84,12 @@ export function ProfileEditSheet({ visible, name, age, gender, onSave, onClose }
               onChangeText={setAgeDraft}
               placeholder="Your age"
               placeholderTextColor={colors.muted}
-              style={s.input}
+              style={[s.input, ageFocused && s.inputFocused]}
               keyboardType="number-pad"
               maxLength={3}
               accessibilityLabel="Age"
+              onFocus={() => setAgeFocused(true)}
+              onBlur={() => setAgeFocused(false)}
             />
             {!ageOk ? <Text style={s.err}>Enter an age between 13 and 120.</Text> : null}
 
@@ -144,6 +150,9 @@ const makeStyles = (colors: Colors) => scaledSheet({
   input: {
     backgroundColor: colors.bone, borderWidth: 1, borderColor: colors.line, borderRadius: 12,
     paddingVertical: 12, paddingHorizontal: 14, fontSize: 14, fontFamily: fonts.sans, color: colors.ink,
+  },
+  inputFocused: {
+    borderColor: colors.line,
   },
   err: { fontSize: 10, fontFamily: fonts.sans, color: colors.clay, marginTop: 5 },
   pills: { flexDirection: 'row', flexWrap: 'wrap', gap: 7 },

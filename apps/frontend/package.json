@@ -23,6 +23,7 @@
     "axios": "^1.7.2",
     "expo": "~54.0.0",
     "expo-constants": "~18.0.14",
+    "expo-file-system": "~19.0.24",
     "expo-font": "~13.0.0",
     "expo-keep-awake": "~15.0.8",
     "expo-linear-gradient": "~15.0.8",

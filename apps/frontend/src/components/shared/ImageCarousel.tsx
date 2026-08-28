@@ -4,12 +4,15 @@ import { type Colors } from '../../theme/tokens';
 import { useThemedStyles } from '../../theme/ThemeContext';
 import { scaledSheet, sc } from '../../theme/scale';
 import type { RecipeImage } from '../../api/recipes';
+import { localImageUri } from '../../offline/images';
 
 // Horizontal paged photo strip with dot indicators (RN core Image only).
 // Renders nothing when images is empty — the caller keeps its SVG fallback,
 // so a recipe without photos never shows a broken image.
-export function ImageCarousel({ images, height, radius = 0, placeholderColor }: {
+export function ImageCarousel({ images, slug, height, radius = 0, placeholderColor }: {
   images: RecipeImage[];
+  /** recipe slug — enables the offline local file for the header image (index 0) */
+  slug?: string;
   /** already-scaled (sc'd) height in pt */
   height: number;
   /** already-scaled corner radius, matches the host container */
@@ -43,14 +46,19 @@ export function ImageCarousel({ images, height, radius = 0, placeholderColor }: 
           onScroll={onScroll}
           scrollEventThrottle={16}
           getItemLayout={(_, i) => ({ length: width, offset: width * i, index: i })}
-          renderItem={({ item }) => (
-            <Image
-              source={{ uri: item.url }}
-              accessibilityLabel={item.alt}
-              style={{ width, height }}
-              resizeMode="cover"
-            />
-          )}
+          renderItem={({ item, index }) => {
+            // Header (index 0) uses the downloaded local file when present; step
+            // images (if any) stay remote — only headers are cached offline.
+            const local = slug && index === 0 ? localImageUri(slug) : undefined;
+            return (
+              <Image
+                source={{ uri: local ?? item.url }}
+                accessibilityLabel={item.alt}
+                style={{ width, height }}
+                resizeMode="cover"
+              />
+            );
+          }}
         />
       )}
       {images.length > 1 && (
