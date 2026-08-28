@@ -2,8 +2,15 @@
   "expo": {
     "name": "Vajeeva",
     "slug": "vajeeva",
+    "owner": "vcrohithuta",
     "version": "1.0.0",
     "orientation": "portrait",
+    "owner": "vcrohithuta",
+    "extra": {
+      "eas": {
+        "projectId": "8845e8bd-1f50-45db-a20b-bcaeac84bd58"
+      }
+    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -27,6 +34,11 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "8845e8bd-1f50-45db-a20b-bcaeac84bd58"
+      }
+    }
   }
 }
