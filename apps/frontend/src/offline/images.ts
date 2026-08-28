@@ -33,6 +33,11 @@ export function localImageUri(slug: string): string | undefined {
   return manifest[slug]?.localUri;
 }
 
+/** How many header photos are downloaded (for the offline storage panel). */
+export function cachedImageCount(): number {
+  return Object.keys(manifest).length;
+}
+
 /** Load the persisted manifest into memory. Offline-safe; call once at boot. */
 export async function hydrateImages(): Promise<void> {
   manifest = (await get<Manifest>(MANIFEST_KEY)) ?? {};
