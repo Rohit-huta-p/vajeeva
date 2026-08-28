@@ -20,7 +20,6 @@ export const StepSchema = z.object({
   text: z.string().min(1),
   phase: z.string(),
   heat: z.string().nullable(),
-  timerStr: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
   stepIngredients: z.array(z.string()),
   illColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   images: z.array(ImageSchema).optional().default([]),

@@ -14,7 +14,7 @@ const FIXTURE = {
   ingredients: [{ nameEn: 'Coconut', quantityG: '50g', quantityCup: '¼ cup' }],
   steps: [{
     order: 1, text: 'Cook coconut in milk.', phase: 'Milk phase',
-    heat: 'Low heat', timerStr: null, stepIngredients: ['Coconut'], illColor: '#2A3828',
+    heat: 'Low heat', stepIngredients: ['Coconut'], illColor: '#2A3828',
   }],
   healthFlags: [{ condition: 'diabetes', severity: 'avoid', note: 'High sugar' }],
   sources: [{ text: 'Ksemakutulhalam', citation: '10/54' }],

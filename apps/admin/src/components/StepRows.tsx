@@ -8,7 +8,6 @@ export const EMPTY_STEP: Step = {
   text: '',
   phase: '',
   heat: null,
-  timerStr: null,
   stepIngredients: [],
   illColor: '#2A3828',
   images: [],
@@ -61,7 +60,7 @@ export function StepRows({ value, onChange }: {
             className={`w-full ${INP} mb-3 resize-y`}
           />
 
-          {/* Phase / Heat / Timer / Color */}
+          {/* Phase / Heat / Color */}
           <div className="grid grid-cols-2 gap-2 mb-3">
             <input
               aria-label={`Step ${i + 1} phase`}
@@ -77,14 +76,7 @@ export function StepRows({ value, onChange }: {
               onChange={e => set(i, { heat: e.target.value || null })}
               className={INP}
             />
-            <input
-              aria-label={`Step ${i + 1} timer`}
-              placeholder="Timer MM:SS (blank = none)"
-              value={row.timerStr ?? ''}
-              onChange={e => set(i, { timerStr: e.target.value || null })}
-              className={INP}
-            />
-            <label className="flex items-center gap-2 text-[12px] text-ink/55 px-1">
+            <label className="flex items-center gap-2 text-[12px] text-ink/55 px-1 col-span-2">
               Illustration color
               <input
                 aria-label={`Step ${i + 1} illustration color`}

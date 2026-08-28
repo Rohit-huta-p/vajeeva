@@ -10,14 +10,14 @@
  * What gets populated automatically:
  *   slug · nameEn · nameTa · category · sources · yieldStr
  *   ingredients (nameEn, quantityG, quantityMl, quantityCup, note)
- *   steps (order, text — phase/heat/timerStr filled in admin later)
+ *   steps (order, text — phase/heat filled in by enrich-recipes.ts)
  *   healthFlags (DM / OW / LI / SD — from inline 🔴 lines)
  *   status: 'draft'
  *
  * What is left empty for admin enrichment:
  *   description · shelfLife · type · meals · mainIngredients
  *   methods · dietTags · makeAhead · prepAheadNote · images
- *   steps.phase · steps.heat · steps.timerStr · steps.stepIngredients
+ *   steps.phase · steps.heat · steps.stepIngredients
  */
 
 import fs from 'fs';
@@ -38,7 +38,6 @@ interface Step {
   text:            string;
   phase:           string;
   heat:            string | null;
-  timerStr:        string | null;
   stepIngredients: string[];
   illColor:        string;
 }
@@ -271,7 +270,7 @@ function parseRecipes(content: string, indexMap: Map<string, string>): RecipePar
         const sentences = proseSentences(proseLines.join(' '));
         cur.steps = sentences.map((text, i) => ({
           order: i + 1, text,
-          phase: '', heat: null, timerStr: null,
+          phase: '', heat: null,
           stepIngredients: [],
           illColor: DEFAULT_ILL_COLOR[cur!.category] ?? '#F5F0E8',
         }));
@@ -363,7 +362,6 @@ function parseRecipes(content: string, indexMap: Map<string, string>): RecipePar
           text:            stepM[2].trim(),
           phase:           '',
           heat:            null,
-          timerStr:        null,
           stepIngredients: [],
           illColor:        DEFAULT_ILL_COLOR[cur.category] ?? '#F5F0E8',
         });
@@ -379,7 +377,7 @@ function parseRecipes(content: string, indexMap: Map<string, string>): RecipePar
     const sentences = proseSentences(proseLines.join(' '));
     cur.steps = sentences.map((text, i) => ({
       order: i + 1, text,
-      phase: '', heat: null, timerStr: null, stepIngredients: [],
+      phase: '', heat: null, stepIngredients: [],
       illColor: DEFAULT_ILL_COLOR[cur!.category] ?? '#F5F0E8',
     }));
   }

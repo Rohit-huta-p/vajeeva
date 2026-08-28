@@ -9,7 +9,7 @@ const app = createApp();
 const RECIPE_INPUT = {
   slug: 'admin-test-recipe', nameEn: 'Admin Recipe', nameTa: '', category: 'solid',
   description: 'Test', ingredients: [{ nameEn: 'A', quantityG: '1g', quantityCup: '1 tsp' }],
-  steps: [{ order: 1, text: 'Do it', phase: 'P', heat: null, timerStr: null, stepIngredients: [], illColor: '#111111' }],
+  steps: [{ order: 1, text: 'Do it', phase: 'P', heat: null, stepIngredients: [], illColor: '#111111' }],
   healthFlags: [], sources: [], yieldStr: '1', shelfLife: '1 day', status: 'draft',
 };
 
