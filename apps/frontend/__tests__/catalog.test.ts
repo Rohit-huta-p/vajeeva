@@ -22,6 +22,7 @@ import * as storage from '../src/offline/storage';
 import {
   hydrateCatalog, syncCatalog, getAllRecipes, getRecipe, searchCatalog, getMeta, __resetCatalog,
 } from '../src/offline/catalog';
+import bundledSeed from '../assets/catalog-seed.json';
 
 const store = (storage as any).__store as Map<string, any>;
 const mockGet = api.get as jest.Mock;
@@ -78,6 +79,15 @@ test('hydrateCatalog skips index entries whose payload is missing/corrupt', asyn
   // 'recipe:gone' intentionally absent
   await hydrateCatalog();
   expect(getAllRecipes().map(r => r.slug)).toEqual(['x']);
+});
+
+test('hydrateCatalog falls back to the bundled seed on a fresh install (empty cache)', async () => {
+  // store is empty (beforeEach) → nothing synced yet → bundled seed loads, so a
+  // brand-new install shows the catalog offline before its first sync.
+  await hydrateCatalog();
+  expect(bundledSeed.length).toBeGreaterThan(0);
+  expect(getAllRecipes()).toHaveLength(bundledSeed.length);
+  expect(getRecipe(bundledSeed[0].slug)?.slug).toBe(bundledSeed[0].slug);
 });
 
 test('searchCatalog matches name, ingredient and description; folds diacritics; ANDs terms', async () => {

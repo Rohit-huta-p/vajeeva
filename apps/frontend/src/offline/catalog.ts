@@ -9,6 +9,12 @@
 import { get, getMany, set, del } from './storage';
 import { api } from '../api';
 import type { RecipeDoc } from '../api/recipes';
+import seedJson from '../../assets/catalog-seed.json';
+
+// Bundled first-launch seed (built by scripts/build-catalog-seed.mjs). Used only
+// when nothing has been synced yet, so a brand-new install shows the catalog
+// offline before its first sync; the first successful sync full-replaces it.
+const BUNDLED_SEED = seedJson as unknown as RecipeDoc[];
 
 const INDEX_KEY = 'catalog:index';
 const META_KEY = 'catalog:meta';
@@ -29,9 +35,19 @@ export function getRecipe(slug: string): RecipeDoc | undefined {
   return bySlug.get(slug);
 }
 
-/** Load the persisted catalog into memory. Offline-safe; call once at boot. */
+function loadIntoMemory(recipes: RecipeDoc[]): void {
+  order = recipes.map(r => r.slug).filter(Boolean);
+  bySlug = new Map(recipes.filter(r => r.slug).map(r => [r.slug, r]));
+}
+
+/**
+ * Load the persisted catalog into memory. Offline-safe; call once at boot. When
+ * nothing has been synced yet (fresh install), fall back to the bundled seed so
+ * the app shows the catalog offline from the very first launch.
+ */
 export async function hydrateCatalog(): Promise<void> {
   const index = (await get<string[]>(INDEX_KEY)) ?? [];
+  if (index.length === 0) { loadIntoMemory(BUNDLED_SEED); return; }
   const payloads = await getMany<RecipeDoc>(index.map(recipeKey));
   order = index.filter(s => payloads[recipeKey(s)]);
   bySlug = new Map(order.map(s => [s, payloads[recipeKey(s)]]));
