@@ -12,11 +12,10 @@ import { PickUpRail } from '../components/shared/PickUpRail';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { SkeletonRail } from '../components/shared/SkeletonRail';
-import { FilterChip } from '../components/shared/FilterChip';
 import { WelcomeCard } from '../components/shared/WelcomeCard';
 import { SaveNudge } from '../components/shared/SaveNudge';
 import {
-  MkSprout, IconUser, IconLeaf, IconChev, IconClock, IconDrop, IconMoon, IconSpoon,
+  MkSprout, IconUser, IconLeaf, IconChev,
 } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
@@ -26,7 +25,6 @@ import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
 import { OfflineBadge } from '../components/shared/OfflineBadge';
-import { FACETS } from '../config/facets';
 import { scaledSheet, sc } from '../theme/scale';
 
 const PILLARS = [
@@ -64,15 +62,6 @@ export function HomeScreen() {
   // Saved preview fills exactly one responsive row (2 / 3 / 4 cards by width).
   const { width } = useWindowDimensions();
   const savedCols = columnsFor(width);
-
-  // Mood-chip leading icon, resolved from the facet's icon id (facets.ts stays JSX-free).
-  const facetIcon = (icon: string) => {
-    if (icon === 'clock') return <IconClock size={sc(12)} color={colors.amber2} />;
-    if (icon === 'drop')  return <IconDrop size={sc(12)} color={colors.green} />;
-    if (icon === 'moon')  return <IconMoon size={sc(12)} color={colors.amber2} />;
-    if (icon === 'spoon') return <IconSpoon size={sc(12)} color={colors.clay} />;
-    return <IconLeaf size={sc(12)} color={colors.green} />; // 'leaf' → No-cook
-  };
 
   // Texture-pulse cue: "Choose a texture" scrolls the doors into view and pulses
   // each one (staggered green ring) so a new patient's eye lands on the choice.
@@ -141,7 +130,14 @@ export function HomeScreen() {
             <Text style={s.greetingSub}>Vajeeva</Text>
           </View>
           {!isOnline ? <OfflineBadge /> : null}
-          <View style={s.avatar}><IconUser size={sc(15)} color={colors.green} /></View>
+          <TouchableOpacity
+            style={s.avatar}
+            onPress={() => router.push('/more' as any)}
+            accessibilityRole="button"
+            accessibilityLabel="Profile"
+          >
+            <IconUser size={sc(15)} color={colors.green} />
+          </TouchableOpacity>
         </View>
         <SearchBar
           placeholder="Try coconut · a quick sweet · buttermilk"
@@ -180,26 +176,7 @@ export function HomeScreen() {
             <WelcomeCard onChooseTexture={pulseTextures} />
           )}
 
-          {/* Zone 2 · Find something to cook — derived mood facets */}
-          <Text style={s.zone}>Find something to cook</Text>
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={s.chipsRow}
-            contentContainerStyle={s.chipsContent}
-          >
-            {FACETS.map(f => (
-              <FilterChip
-                key={f.key}
-                label={f.label}
-                active={false}
-                icon={facetIcon(f.icon)}
-                onPress={() => router.push(`/recipe-list?facet=${f.key}` as any)}
-              />
-            ))}
-          </ScrollView>
-
-          {/* Zone 3 · Browse by texture — the kept spine (pulse target) */}
+          {/* Zone 2 · Browse by texture — the kept spine (pulse target) */}
           <Text
             style={s.zone}
             onLayout={e => { texY.current = e.nativeEvent.layout.y; }}
@@ -310,9 +287,6 @@ const makeStyles = (colors: Colors) => scaledSheet({
   zoneRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   seeAll: { flexDirection: 'row', alignItems: 'center', gap: 2 },
   seeAllText: { fontSize: 10, fontFamily: fonts.sans, fontWeight: '800', color: colors.green },
-  // Full-bleed chip row (negative margin cancels the 14pt gutter).
-  chipsRow: { flexGrow: 0, marginHorizontal: -14 },
-  chipsContent: { gap: 7, paddingHorizontal: 14 },
   // Pillar + its pulse ring overlay.
   pillarWrap: { position: 'relative' },
   ring: {
