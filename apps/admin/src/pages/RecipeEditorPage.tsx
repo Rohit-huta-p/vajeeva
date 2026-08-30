@@ -34,7 +34,7 @@ const NEXT_LABELS = [
 const EMPTY_RECIPE: RecipeInput = {
   slug: '', nameEn: '', nameTa: '',
   category: 'solid', description: '',
-  ingredients: [{ nameEn: '', quantityG: '', quantityMl: '', quantityCup: '' }],
+  ingredients: [{ nameEn: '', quantityG: '', quantityMl: '', quantityCup: '', note: '' }],
   steps: [EMPTY_STEP],
   healthFlags: [],
   sources: [],

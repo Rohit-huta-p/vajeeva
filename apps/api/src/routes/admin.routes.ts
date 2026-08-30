@@ -13,10 +13,20 @@ adminRouter.get('/recipes', async (req, res, next) => {
   } catch (err) { next(err); }
 });
 
+/** Flatten a Zod error into a single human-readable string for API consumers. */
+function zodMsg(err: import('zod').ZodError): string {
+  const f = err.flatten();
+  const parts = [
+    ...f.formErrors,
+    ...Object.entries(f.fieldErrors).flatMap(([k, vs]) => (vs ?? []).map(v => `${k}: ${v}`)),
+  ];
+  return parts.join('; ') || 'Validation failed';
+}
+
 adminRouter.post('/recipes', async (req, res, next) => {
   try {
     const parsed = RecipeInputSchema.safeParse(req.body);
-    if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+    if (!parsed.success) { res.status(400).json({ error: zodMsg(parsed.error) }); return; }
     const existing = await Recipe.findOne({ slug: parsed.data.slug });
     if (existing) { res.status(409).json({ error: 'Slug already exists' }); return; }
     const recipe = await Recipe.create(parsed.data);
@@ -27,7 +37,7 @@ adminRouter.post('/recipes', async (req, res, next) => {
 adminRouter.put('/recipes/:id', async (req, res, next) => {
   try {
     const parsed = RecipeInputSchema.safeParse(req.body);
-    if (!parsed.success) { res.status(400).json({ error: parsed.error.flatten() }); return; }
+    if (!parsed.success) { res.status(400).json({ error: zodMsg(parsed.error) }); return; }
     const recipe = await Recipe.findByIdAndUpdate(
       req.params.id,
       { ...parsed.data, updatedAt: new Date() },
