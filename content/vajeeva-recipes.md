@@ -1237,7 +1237,8 @@ Take a batter in an idly maker or steamer and subject to steaming until it is pr
 | Citron fruit juice (rough lemon) | — | 10 | 2 tsp | — |
 
 **Method**
-Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Filter through a sieve and serve.
+Take a one glass of coconut water in vessel and add mishri / rock Sugar powder of desired quantity and stir well then add rough lemon juice up to 2 tablespoon or desired quantity and mix well.
+filter it with sieve and your panaka is ready.
 
 ---
 
@@ -1257,8 +1258,11 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 *Same blend as S-27.
 
 **Method**
-1. Boil raw mango in a pressure cooker or pot until soft. Cool; remove skin and squeeze to a smooth liquid paste.
-2. Add rock sugar, cold water (not refrigerated), aromatic powder, and rock salt; stir. Serve immediately.
+Take a raw mango wash it thoroughly and boil it properly in a pressure cooker or a vessel until it becomes soft and well cooked.
+Allow it to cool completely then remove the outer layer of mango and squeeze it well by hand until it forms a smooth liquid paste consistency.
+Add desired quantity of rock sugar to it and cold water (not refrigerated water) as needed until the mixture reaches the desired panaka consistency.
+Add aromatic powder to it and stir it well
+Now you can have it.
 
 ---
 
@@ -1275,8 +1279,8 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 | Water | — | 200 | — | — |
 
 **Method**
-1. Wash coriander seeds; soak 20–30 min. Macerate thoroughly with mortar and pestle or grinding slab.
-2. Filter through a cloth with sufficient water. Add rock sugar powder and fine camphor; mix well.
+Take coriander seeds wash them thoroughly and soak for 20-30min. in water
+Macerate thoroughly by using mortar and pestle or grinding slab, filter it through a cloth by adding sufficient quantity of water then add desired quantity of rock sugar powder to it and also add fine powder of edible camphor mix it well then have it.
 
 ---
 
@@ -1296,8 +1300,10 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 | Water | — | 200 | — | — |
 
 **Method**
-1. Steam amla until soft; cool, remove seeds, grind to smooth paste.
-2. Add 1 glass water to paste; mix. Add dry ginger, cardamom, rock sugar/jaggery, rock salt, and honey; stir well. Serve fresh.
+Take an amla and wash thoroughly cook on the steam, cut and remove the seeds and allow the amla to cool, then grind it to make smooth paste,
+Take the smooth paste in a vessel and add 1 glass of water, mix it well.
+Add dry ginger powder, cardamom powder, Rock sugar / Jaggery as per taste, a pinch of salt and also add required quantity of honey and stir it well
+Have it as fresh.
 
 ---
 
@@ -1316,7 +1322,7 @@ Combine coconut water and rock sugar; stir to dissolve. Add lemon juice; mix. Fi
 *Same blend as S-27.
 
 **Method**
-Dissolve rock sugar in cold water (not refrigerated). Add aromatic powder and rock salt; stir well. Serve as needed.
+Take a glass of cold water (not refrigerated water) in a vessel add desired quantity of rock sugar and stir well until the sugar dissolves completely. After that add aromatic powder to it and mix well. Have it as per requirement
 
 ---
 
@@ -1334,7 +1340,7 @@ Dissolve rock sugar in cold water (not refrigerated). Add aromatic powder and ro
 | Water | — | 150 | — | — |
 
 **Method**
-Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed paddy, and jaggery until smooth. Serve fresh.
+Take a bowl and soak seedless grapes and soft dates with required quantity of water up to 1hr. after that take a mixer grinder and add the soaked seedless grapes and soft dates along with water. And also roasted puffed paddy and required quantity of jaggery and required quantity of water and blended smoothly then have it as fresh.
 
 ---
 
@@ -1354,9 +1360,10 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 | Water | — | 150–170 | — | — |
 
 **Method**
-1. Boil amla until soft; cool, remove seeds, grind to smooth paste.
-2. Make a one-strand sugar syrup (double the paste quantity) in a separate pan.
-3. Combine pulp and syrup; mix. Add water if needed. Add rock salt, cumin powder, pepper, and black salt; stir well. Serve fresh.
+Take 2 amla and wash thoroughly, boil them properly, cut and remove the seeds and allow the amla to cool, then grind it to make smooth paste,
+Take a vessel add required quantity of sugar and water to make a proper sugar syrup (one strand) on medium flame. As the double quantity of the paste.
+Take the pulp in a vessel and slowly add sugar syrup and mix it well. When the pulp and syrup are properly mixed, water is added if required, then add  required quantity of rock salt, ½ tsp. of roasted cumin seed powder, ¼ tsp. of pepper powder and a pinch of black salt,
+Stir it well then have it as fresh.
 
 ---
 
@@ -1383,9 +1390,10 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 | Curry leaves | — | — | 5–6 | — |
 
 **Method**
-1. Add pepper, jaggery/sugar, and salt to curd; blend or churn until smooth.
-2. Heat ghee; splutter mustard seeds, add fenugreek, cumin, red chilli, and curry leaves. Use as seasoning over curd mixture.
-3. Serve with roti or rice.
+Pepper powder, Jaggery / Sugar and Salt are added to fresh curd and blended well using a blender or traditional churning.
+Heat butter / ghee in a pan, splutter mustard seeds, add fenugreek seeds, red chillies and curry leaves and use it for seasoning.
+Salt can be used in place of jaggery / sugar as per the taste and requirement.
+Rasala is ready to serve with roti, rice etc.
 
 ---
 
@@ -1410,8 +1418,9 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 | Half lemon juice | — | 5–10 | — | — |
 
 **Method**
-1. Blend curd, water, pepper, jaggery/sugar, and salt until smooth buttermilk consistency.
-2. Heat ghee; splutter mustard, add fenugreek, cumin, red chilli, and curry leaves. Add seasoning to buttermilk; add lemon juice; mix well. Serve fresh.
+Pepper powder, Jaggery / Sugar and Salt are added to fresh curd and add required quantity of water blended well using a blender or traditional churning.
+Heat butter / ghee in a pan, splutter mustard seeds, add fenugreek seeds, red chillies and curry leaves and use it for seasoning and add lemon juice and mix it well then have it as fresh.
+Salt can be used in place of jaggery / sugar as per the taste and requirement.
 
 ---
 
@@ -1430,7 +1439,7 @@ Soak grapes and dates in water 1 hr. Blend with soaked fruit, water, puffed padd
 | Pepper powder | 1–2 | — | ¼ tsp | — |
 
 **Method**
-Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, pepper, hingu, and rock salt; mix well. Turn off flame. Serve hot.
+Take vessel and heat buttermilk on medium flame add fresh ginger paste to boiling buttermilk and further boil it for a min. and add turmeric powder, pepper powder, hingu and rock salt as per the taste mix it well then turn off the flame. And have it.
 
 ---
 
@@ -1456,10 +1465,12 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Lemon juice | — | — | — | to taste |
 
 **Method**
-1. Soak green gram 4–5 hr. Pressure cook with water until soft.
-2. Mash lightly or partially blend to a smooth soup consistency.
-3. Heat ghee; splutter mustard, add fenugreek and curry leaves; pour into soup.
-4. Add rock salt, pepper, and lemon juice; mix. Serve.
+Wash the green gram thoroughly and soak it in water for 4-5 hrs.
+Add the soaked green gram to a pressure cooker or vessel with sufficient quantity of water.
+Cook until the green gram becomes soft and well cooked.
+Then mash lightly or blend partially to obtain a smooth soup like consistency.
+Heat ghee in a small pan add mustard seeds and allow them to splutter then add fenugreek seeds and 3-4 curry leaves then pour this into the smooth soup
+Then add rock salt as per the taste add roasted black pepper powder as per the taste and add lemon juice then mix it well then have it.
 
 ---
 
@@ -1481,10 +1492,11 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Lemon juice | — | — | — | to taste |
 
 **Method**
-1. Soak black gram 4–5 hr. Cook until soft and well done.
-2. Mash lightly or partially blend to a smooth soup consistency.
-3. Heat ghee; splutter mustard, add fenugreek and curry leaves; pour into soup.
-4. Add rock salt, pepper, and lemon juice; mix. Serve.
+Wash the Black gram thoroughly and soak it in water for 4-5 hrs.
+Add the soaked black gram to a pressure cooker or vessel with sufficient quantity of water, cook until the black gram becomes soft and well cooked.
+Then mash lightly or blend partially to obtain a smooth soup like consistency.
+Heat ghee in a small pan add mustard seeds and allow them to splutter then add fenugreek seeds and 3-4 curry leaves then pour this into the smooth soup then add rock salt as per the taste
+Add roasted black pepper powder as per the taste and add lemon juice then mix it well, then have it.
 
 ---
 
@@ -1505,10 +1517,10 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Pepper powder | 1–2 | — | ¼ tsp | — |
 
 **Method**
-1. Heat oil; fry onion and garlic paste. Add tomato; cook 2–3 min. Add greens; cook until soft.
-2. Add dal water and salt; simmer 15 min.
-3. Take half the soup, cool, and blend smooth; return to pot. Simmer 5 min more.
-4. Add pepper; mix. Serve.
+Take a pan heat oil on medium flame then add chopped onion and garlic paste fry onion well, add chopped tomato and cook for a few minutes.
+Now add cleaned and chopped green leaves and fry until they soften, then add diluted dal water, add salt as per the taste and leave it for 15 minutes to cook properly.
+Take half quantity of this soup and leave it to cool, once it cools down blend it perfectly and add this to the rest of the soup and simmer for another 5 minutes.
+Add pepper powder to this as per the taste and mix it well then have it.
 
 ---
 
@@ -1528,9 +1540,10 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Spices | — | — | — | as desired |
 
 **Method**
-1. Boil sweet potato with ginger until soft.
-2. Blend boiled sweet potato (peeled), ginger, hot milk, salt, optional sugar, spices, and pepper until smooth.
-3. Add more milk or water to reach a creamy consistency. Serve fresh and hot.
+Boil the sweet potato along with fresh ginger up to the sweet potato becomes soft.
+Take a grinder add boiled and peeled sweet potato, chopped and boiled ginger, hot milk, pinch of rock salt, sugar as per the taste it is optional and add any spices you like with proper quantity along with pepper powder.
+Add some water grind till the mixture turns in to smooth paste.
+Add more milk or water as desired to reach a creamy consistency then have it as fresh and hot.
 
 ---
 
@@ -1548,10 +1561,12 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Black pepper powder | — | — | — | to taste |
 
 **Method**
-1. Peel and slice beetroot and ginger.
-2. Boil in water until beetroot is soft.
-3. Blend boiled beetroot and ginger with water, olive oil, salt, and black pepper until smooth.
-4. Add more water for desired consistency. Serve fresh.
+Wash well and peel the outer layer of beetroot and fresh ginger.
+Sliced both of them in medium size
+Take a vessel with water and bring it to boil then add sliced beetroot and ginger boil till the beetroot becomes soft.
+Take grinder add boiled beetroot and ginger along with require quantity of water add 1 tsp. of olive oil, salt and black pepper as per taste.
+Blend all together till the mixture turns into smooth texture.
+Add more water as desired to reach a creamy consistency then have it as fresh.
 
 ---
 
@@ -1571,9 +1586,11 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Olive oil | — | 10 | 1–2 tsp | — |
 
 **Method**
-1. Boil mung dal with water, chopped ginger, and hingu until soft and fully cooked.
-2. Blend with ginger, coriander, cumin, salt, and olive oil until smooth.
-3. Add water to reach creamy consistency. Serve fresh and hot.
+Take half cup of washed mung dal into a vessel with required quantity of water and bring it to boil.
+Also add fresh chopped ginger and hingu to the boiled vessel.
+Boil till the dal becomes soft and perfectly boiled.
+Take grinder add boiled content along with ginger and coriander leaves, cumin, rock salt as per the taste and olive oil.
+Blend it all together smoothly, add more water as desired to reach a creamy consistency then have it as fresh and hot.
 
 ---
 
@@ -1599,8 +1616,8 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 *Same blend as S-27.
 
 **Method**
-1. Fry grated coconut in ghee until slightly golden. Add boiled milk; stir continuously until thickened.
-2. Add sugar; stir until dissolved. Add aromatic powder and ghee-roasted dry fruits; mix well.
+Take grated tender coconut and fry in ghee until it obtain a slight golden brown colour then to this add boiled milk and stir continuously until it becomes thicken consistency
+Then add desired quantity of sugar and stir continuously until it dissolved then add Aromatic powder and add chopped dry fruits roasted in ghee of your choice in the desired quantity and mix them well.
 
 ---
 
@@ -1619,8 +1636,9 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 *Cardamom 4 · clove 2 · pepper 2 · cinnamon 2 inch · dry ginger 2 inch · edible camphor 2 crystals — finely powdered.
 
 **Method**
-1. Gently boil milk; add rock sugar and stir until dissolved.
-2. Boil until mildly thick. Add aromatic powder; cook 2–3 min more. Serve hot or warm.
+Take a vessel add 2cups of cow’s milk bring it to a gentle boil then add Rock sugar as per the required taste stir it well until completely dissolved.
+Boil the milk until it reaches a mildly thick consistency.
+Then add 1/4tsp. of aromatic powder mix well cook for another 2-3min. and switch off the flame. Serve hot / warm.
 
 ---
 
@@ -1638,7 +1656,7 @@ Heat buttermilk on medium flame; add ginger paste and boil 1 min. Add turmeric, 
 | Rock sugar powder | 10 | — | — | — |
 
 **Method**
-Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boil. Add rock sugar; stir until dissolved. Boil 2–3 min. Serve hot or warm.
+Take a ghee in pan and heat it on medium flame then add black gram powder and roast it till the powder turns into golden colour then add a glass of milk bring it to a gentle boil then add Rock sugar powder as per the required taste stir it well until completely dissolved. Boil the milk for 2-3min. and switch off the flame. Serve hot / warm.
 
 ---
 
@@ -1655,8 +1673,8 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Honey (optional) | 5 | — | — | — |
 
 **Method**
-1. Combine milk and water; bring to heat. Add ginger paste; boil 3–5 min until reduced to ~1 cup.
-2. Strain and serve with honey to taste.
+Take a vessel add milk and water heat it on flame then add ginger paste and boil it for 3-5 min. and reduces it to 1 cup of the quantity
+After that remove from heat, strain and serve with honey as per the taste and honey is optional.
 
 ---
 
@@ -1676,8 +1694,8 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Honey | — | — | — | to taste |
 
 **Method**
-1. Soak almonds overnight; remove skins.
-2. Blend with milk, water, cardamom, saffron, rose petals, and honey until smooth. Serve.
+Soak the almond overnight with water, and rub the skins off the almonds.
+Take a blender add milk and water, soaked almonds, Cardamom powder, Saffron, rose Petels and honey blend until it turns to smooth structure then drink it.
 
 ---
 
@@ -1692,9 +1710,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Water | — | 240 | — | — |
 
 **Method**
-1. Soak almonds overnight; remove skins.
-2. Blend with water until smooth. Strain for a smoother consistency.
-3. Serve with optional honey as sweetener.
+Soak the almond overnight with water, and rub the skins off the almonds.
+Take a blender add soaked almond and required quantity of water and blend until it turns to smooth.
+Then strain it through the strainer for smoother consistency.
+Then have it with honey. Honey is optional for the sweetener.
 
 ---
 
@@ -1712,9 +1731,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Turmeric powder | — | — | — | a pinch |
 
 **Method**
-1. Combine milk and water; bring to a boil.
-2. Add crushed cardamom, ginger paste, and turmeric. Boil until reduced by half (~1 cup).
-3. Strain cardamom pods and ginger. Serve hot.
+Take a vessel add a cup of milk and a cup of water bring to boil
+After it starts to boiling then add Crushed cardamom, ginger paste and a pinch of turmeric powder
+Boil up to it reduces half the quantity that is 1 cup.
+Strain the cardamom pods and ginger and have it as hot.
 
 ---
 
@@ -1738,9 +1758,9 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Cow's ghee | 5 | — | 1 tsp | — |
 
 **Method**
-1. Mix barley flour (or ground barley) with a little milk to form a smooth paste.
-2. Add remaining milk; cook over low flame with continuous stirring until barley is fully cooked.
-3. Add ghee, mix well, and serve warm.
+Mix barley flour with a little milk to form a smooth paste.
+Add the remaining milk and cook over a low flame with continuous stirring until the barley is fully cooked.
+Add cow’s ghee, mix well and serve warm
 
 ---
 
@@ -1756,9 +1776,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Ghee | — | 10–15 | 2–3 tsp | — |
 
 **Method**
-1. Wash split black gram thoroughly.
-2. Bring milk to a boil in a vessel; add black gram and boil on medium flame until fully soft and semi-solid consistency is reached (add more milk if needed).
-3. Add ghee; mix well. Serve.
+Take one part of split black gram wash thoroughly.
+Take vessel with 6 parts of milk, heat it on medium flame add 1 part of split black gram in to the boiling milk.
+Boil it properly if it needs more milk for proper boil then add it accordingly.
+After it is fully boiled and attains the semisolid consistency then add 2 -3tsp. of ghee to it, mix it well then have it.
 
 ---
 
@@ -1781,9 +1802,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Saffron (optional) | — | — | 2 strands | — |
 
 **Method**
-1. Hang fresh curd in muslin cloth 4–6 hr or overnight to drain all water.
-2. Transfer thick hung curd to a bowl. Add sugar, cardamom, cinnamon, ginger, and saffron (soaked in a little milk first).
-3. Mix well. Garnish with chopped almonds and pistachios if desired. Serve.
+Take fresh curd and tie it in a muslin cloth. Hang it for 4-6hrs or overnight to remove all the water.
+Then transfer the thick hung curd to a mixing bowl. Add rock sugar powder to taste, cardamom powder, cinnamon powder, ginger powder and if you want to use saffron then soak it in little quantity of milk then add it to the mixture.
+Now mix all together properly. If you want to add dry fruits then garnish with chopped almonds and pistachios
+Now you can have it.
 
 ---
 
@@ -1802,10 +1824,10 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Yoghurt | 100 | — | ½ cup | — |
 
 **Method**
-1. Steam brinjal 10–15 min until soft and well cooked; cool.
-2. Remove stalk; mash thoroughly until smooth.
-3. Heat ghee; splutter mustard and cumin. Add mashed brinjal; mix well. Turn off flame and cool.
-4. Fold in yoghurt and rock salt; mix well. Cover 3–5 min before serving.
+Wash the brinjal thoroughly, place them in a steamer and steam for 10-15min. until the brinjal becomes soft and well-cooked  then allow them to cool
+Remove the stalk, pound the mixture thoroughly until it becomes smooth or mash thoroughly using a masher until a smooth consistency is obtained.
+Take a pan add ghee and wait until the ghee becomes hot, add mustard seeds and jeera allow them to crackle, now add mashed brinjal, mix it well switch off the flame, allow it to cool.
+Add Yoghurt and rock salt as per the taste mix it well, duly covered up to 3-5min. and served.
 
 ---
 
@@ -1827,9 +1849,11 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Hingu | 0.1 | — | — | a pinch |
 
 **Method**
-1. Steam amla 10–15 min until soft; cool, remove seeds, crush well.
-2. Heat ghee; add cumin — let crackle. Add hingu.
-3. Add crushed amla; fry until cooked properly. Add rock salt; mix well.
+Wash the Amla fruits thoroughly, place them in a steamer and steam for 10-15min until the amla fruits become soft and allow them to cool
+Remove the seeds and crush it properly by hand.
+Take a pan add 3-4tsp.of ghee, wait till the ghee becomes hot
+Then add 1/4tsp. jeera allow them to crackle and add hingu to it after that add cooked and crushed amla paste to it fry it properly until it cooked properly
+Lastly add Saindhava lavana / rock salt to it as quantity required and mix it well.
 
 ---
 
@@ -1852,9 +1876,12 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Water | — | 20–30 | — | — |
 
 **Method**
-1. Dry roast peanuts until lightly golden; cool. Dry roast sesame on low flame — do not burn.
-2. Grind all ingredients (roasted peanuts, sesame, garlic, pepper, cumin, coriander, rock sugar, rock salt) with water to a smooth chutney consistency.
-3. Add lemon juice; mix well. Serve with any dish.
+Take a pan dry roast the groundnuts until it turns to lightly golden colour on medium flame.
+Once roasted, set it aside and allow it to cool.
+Dry roast the sesame seeds on low flame, do not over heat or burn it.
+All the above mentioned ingredients are taken in mixer grinder along with roasted ground nut and sesame seeds, 6 garlic cloves, pepper powder, cumin seeds coriander leaves, rock sugar, rock salt as per the taste
+Grind it into smooth paste by adding required amount of water to it to obtain the desired chutney consistency.
+Once the smooth paste is obtain then add lemon juice to it and mix it well then have it with any of the dishes of your choice.
 
 ---
 
@@ -1882,10 +1909,11 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Water | — | 10–15 | — | — |
 
 **Method**
-1. Dry roast legumes and fenugreek seeds; set aside. Dry roast cumin, coriander seeds, and cloves; cool.
-2. Grind roasted ingredients with coconut and water/curd to a smooth paste.
-3. Add green leaves, tomato, pepper, rock salt, jaggery, and tamarind; blend until smooth.
-4. Optional: season with oil, mustard seeds, curry leaves, and red chillies.
+Take a pan heat it on medium flame, add Peanut/Bengal gram/Black gram and fenugreek seeds dry roast it well and set it aside. Then add cumin seeds, coriander seeds, cloves dry roast it and leave it cool down.
+Take a mixer jar, add roasted ingredients and grated coconut grind along with required quantity of water / curd blend up to a smooth paste.
+After that add remaining ingredients to jar i.e. 1 cup of green leaves as your choice and add chopped tomato, black pepper, rock salt, jaggery, tamarind as per taste.
+And blend it all together up to it becomes smooth paste.
+Seasoning may be done for enhancing the taste with oil, mustard seeds, curry leaves and dry red chillies.
 
 ---
 
@@ -1903,7 +1931,8 @@ Heat ghee; roast black gram powder until golden. Add milk; bring to a gentle boi
 | Rock salt | — | — | — | to taste |
 
 **Method**
-Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve with plain rice.
+Take a pan add tamarind paste, pitted dates, Brown sugar, cumin powder and rock salt as per the taste mix it all together and cook well.
+Serve with plain rice.
 
 ---
 
@@ -1930,10 +1959,11 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 *Same blend as S-27.
 
 **Method**
-1. Toast dry fruits and chironji in ghee until golden; set aside.
-2. Heat remaining ghee; roast wheat flour on medium flame until done.
-3. Add sugar, roasted dry fruits, and chironji. Add milk gradually, stirring continuously to prevent lumps.
-4. Add more ghee if needed. Cook, stirring until the mixture leaves the sides of the pan and reaches a smooth halwa consistency. Add aromatic powder; mix well.
+Take ghee in a pan once the ghee becomes hot roast a coarse powder of dry fruits and chironji until they turn golden colour.
+Take ghee in a pan and once the ghee become hot add wheat flour and roast it well in a medium flame
+Add sugar powder as required quantity along with roasted dry fruits and chironji cook further by adding milk, stir continuously to prevent lumps from forming.
+Also add ghee in adequate amount if required.
+Continue cooking and stirring until the mixture avoids sticking with laddle and reaches a smooth halwa like consistency, then add aromatic powder and mix it well.
 
 ---
 
@@ -1955,10 +1985,14 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 *Same blend as S-27.
 
 **Method**
-1. Steam ash gourd 15–20 min until soft.
-2. Cook steamed pieces in milk on medium flame, stirring, until milk is absorbed. Mash to a smooth consistency (add more milk as needed).
-3. Heat ghee in a pan; sauté mashed ash gourd 8–10 min until raw smell disappears.
-4. Add sugar; mix well and cook to a halwa consistency. Add ghee-roasted dry fruits and aromatic powder; cook 2–3 min. Serve hot or warm.
+Take chopped ash gourd, place them in a steamer and steam for 15-20min. until the ash gourd pieces become soft.
+Take another pan with milk add steamed ash gourd pieces and cook on medium flame and stirring occasionally until the pieces become soft and the milk is absorbed
+Mash these boiled pumpkin pieces thoroughly using a masher until a smooth consistency is obtained.
+Add more milk as needed during cooking to facilitate proper boiling and obtain the desired consistency.
+Take another pan with ghee heat it properly and add smashed pumpkin to it saute it properly for 8-10min. until the raw smell disappears.
+Add sugar as per required taste, mix it properly
+Continue cooking until the mixture becomes halwa like consistency.
+After that add chopped, ghee roasted dry fruits and aromatic powder to it and mix well. Cook for another 2-3min. and switch off the flame. Serve hot / warm.
 
 ---
 
@@ -1979,9 +2013,10 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 *Same blend as S-27.
 
 **Method**
-1. Grind coconut without much water — keep slightly coarse.
-2. Boil milk; add coarse coconut and cook on medium flame, stirring continuously 5–8 min until mildly thick.
-3. Add rock sugar; stir to dissolve. Add ghee and aromatic powder (optional); mix 1 min. Switch off flame. Garnish with dry fruits. Serve hot or warm.
+Take a fresh grated coconut in a mixture without adding much water. The mixture should remain slightly coarse and should not become too smooth.
+Take a vessel add cow’s milk bring it to a gentle boil then add mixture coarse coconut to it and cook on medium flame and stir it continuously.
+Cook for 5-8min. until it reaches a mildly thick consistency.  After that add rock sugar as per the required taste stir it well until completely dissolved.
+Then add cow’s ghee to it and aromatic powder (optional) mix it well for 1min. switch off the flame and garnish with dry fruits. Serve hot / warm.
 
 ---
 
@@ -2002,9 +2037,9 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 *Same blend as S-27.
 
 **Method**
-1. Heat ghee on low flame; add wheat flour and roast well on medium flame.
-2. Add milk and sugar; stir continuously until mixture solidifies.
-3. Add aromatic powder; mix well. Serve.
+Take a ghee in a pan and heat it on low flame and add refined wheat flour to it and roast it well on medium flame.
+Add cup of milk and sugar as per the desired quantity and stir continuously until this mixture solidifies.
+Add aromatic powder to it and mix well. Then have it.
 
 ---
 
@@ -2026,9 +2061,11 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 | Ghee | 5–10 | — | 2 tsp | — |
 
 **Method**
-1. Heat milk on medium flame; bring to a boil.
-2. Add soft cooked rice, coriander powder, cardamom powder, and ghee; simmer 5 min.
-3. Serve as is, or blend smooth for a creamier texture. Add optional honey if desired.
+Take a pan add milk and heat it on medium flame
+Once the milk starts to boil then add softly cooked rice, coriander powder, cardamom powder and ghee to it
+And simmer it for 5 min.
+Now you can have it.
+If you want to have it as a smoother texture then add this to the blender and blend it smoothly and also add honey if you want as required quantity.
 
 ---
 
@@ -2046,10 +2083,13 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 | Rock sugar | 15–20 | — | — | — |
 
 **Method**
-1. Soak almonds overnight; grind to a fine powder or paste.
-2. Grind rice to a fine powder.
-3. Boil 3 cups water with a pinch of rock salt. Reduce to medium flame; add ground rice and almond powders, stirring continuously to prevent lumps.
-4. Cook ~5 min until done. Add ghee and rock sugar; mix well. Serve.
+Soak Almonds overnight
+Take overnight soaked Almonds into the grinder and make it as fine powder / fine paste.
+Clean grinder add uncooked rice and grind it until it turns into fine powder.
+Take 3 cups of water in the pan and bring it to boil then add a pinch of rock salt to it.
+Then reduce the heat to medium flame, After that add grinded powder of rice and almond to it with continue stirring to prevent lump forming.
+Continue cooking about 5 min. or until it properly done.
+Then add 2tsp. of ghee and Rock sugar powder to it as per the taste and mix it well. Then have it.
 
 ---
 
@@ -2068,7 +2108,8 @@ Combine all ingredients in a pan; cook well together, mixing thoroughly. Serve w
 | Milk | — | 120–150 | — | — |
 
 **Method**
-Cook all ingredients together with the appropriate quantity of water in a vessel or cooker. Add more milk/water for a creamier texture. Serve warm.
+Take a vessel or cooker cook all the ingredients together with proper quantity of water.
+If you want more creamier then add required quantity of milk / water. And have it.
 
 ---
 
@@ -2084,9 +2125,9 @@ Cook all ingredients together with the appropriate quantity of water in a vessel
 | Dates, chopped | — | — | 10 | — |
 
 **Method**
-1. Boil milk; add chopped dates and stir until milk turns a brown colour.
-2. Add cooked rice; simmer until mixture thickens (add more milk if needed).
-3. Once creamy, switch off flame. Serve.
+Boil milk in a pan, add chopped dates and stir the mixture until milk turns into brown colour
+Add cooked rice to it and simmer until the mixture thickens, for that if it needs more milk then add it accordingly
+Once it reaches to the creamy thickness then switch off the flame and have it.
 
 ---
 
