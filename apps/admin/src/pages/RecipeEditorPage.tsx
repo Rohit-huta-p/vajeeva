@@ -8,7 +8,7 @@ import { HealthFlagRows } from '../components/HealthFlagRows';
 import { SourceRows } from '../components/SourceRows';
 import { AppPreviewCard } from '../components/AppPreviewCard';
 import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
-import { TagRows, emptyVocab, type Vocab } from '../components/TagRows';
+import { TagRows, emptyVocab, mergeTagDefaults, type Vocab } from '../components/TagRows';
 
 // ── Stepper config ────────────────────────────────────────────────────────
 const STEPS = [
@@ -69,7 +69,9 @@ export function RecipeEditorPage() {
   }, [id]);
 
   useEffect(() => {
-    api<Vocab>('/api/admin/tags').then(setVocab).catch(() => { /* keep empty */ });
+    api<Vocab>('/api/admin/tags')
+      .then(saved => setVocab(mergeTagDefaults(saved)))
+      .catch(() => setVocab(mergeTagDefaults(null)));  // fallback to defaults if API is unreachable
   }, []);
 
   async function save(status: RecipeInput['status']) {
