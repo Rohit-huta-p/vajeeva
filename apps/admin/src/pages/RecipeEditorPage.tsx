@@ -135,8 +135,13 @@ export function RecipeEditorPage() {
 
       {error && <p role="alert" className="mb-4 text-[13px] text-clay">{error}</p>}
 
-      {/* ── Three-column layout: stepper | form | preview ── */}
-      <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] xl:grid-cols-[160px_1fr_220px] gap-4 items-start">
+      {/* ── App preview — full width, above stepper+form on all breakpoints ── */}
+      <div className="mb-4">
+        <AppPreviewCard recipe={form} />
+      </div>
+
+      {/* ── Two-column layout: stepper | form ── */}
+      <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
 
         {/* ── Stepper ────────────────────────────── */}
         {/* Mobile: horizontal scrolling strip; md+: vertical list */}
@@ -422,10 +427,6 @@ export function RecipeEditorPage() {
           </div>
         </div>
 
-        {/* ── App preview (xl+ only) ─────────────── */}
-        <div className="hidden xl:block sticky top-4">
-          <AppPreviewCard recipe={form} />
-        </div>
       </div>
     </main>
   );
