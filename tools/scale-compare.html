@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Vajeeva — scale-normalized fidelity compare</title>
+<style>
+  :root { --dev-w: 390px; --dev-h: 844px; --stage-w: 272px; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:#14120f; color:#F0EAD8; font:13px/1.5 ui-sans-serif,system-ui,sans-serif; padding:20px 24px 40px; }
+  h1 { font-size:15px; margin:0 0 4px; letter-spacing:-.01em; }
+  .note { font-size:11.5px; color:rgba(240,234,216,.55); max-width:900px; margin:0 0 16px; }
+  .note b { color:#E8B44A; font-weight:700; }
+  .bar { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  select, button, label { font:11px ui-monospace,SF Mono,Menlo,monospace; }
+  select, button { background:#26221C; color:#F0EAD8; border:1px solid rgba(240,234,216,.18);
+    border-radius:7px; padding:6px 10px; cursor:pointer; }
+  button.on { background:#5CAD78; color:#0c1a10; border-color:#5CAD78; font-weight:700; }
+  label { display:inline-flex; align-items:center; gap:5px; color:rgba(240,234,216,.7); cursor:pointer; }
+  .panes { display:flex; gap:28px; align-items:flex-start; }
+  .pane { flex:none; }
+  .cap { font:10px ui-monospace,monospace; letter-spacing:.1em; text-transform:uppercase;
+    color:rgba(240,234,216,.5); margin-bottom:7px; display:flex; justify-content:space-between; }
+  .cap .w { color:#5CAD78; }
+  .frame { position:relative; width:var(--dev-w); height:var(--dev-h);
+    border:1px solid rgba(240,234,216,.16); border-radius:14px; overflow:hidden; background:#F2EDE1; }
+  .frame iframe { border:0; display:block; }
+  /* App renders natively at device width */
+  #appFrame { width:var(--dev-w); height:var(--dev-h); }
+  /* Prototype's 272px stage is scaled UP to device width so both panes share
+     one physical scale. Any remaining size difference is a real discrepancy. */
+  #protoWrap { position:absolute; top:0; left:0; transform-origin:0 0; }
+  #protoFrame { width:520px; height:1180px; }
+  .grid { position:absolute; inset:0; pointer-events:none; display:none;
+    background-image:linear-gradient(to right,rgba(198,144,47,.32) 0 1px,transparent 1px 100%),
+                     linear-gradient(to bottom,rgba(198,144,47,.32) 0 1px,transparent 1px 100%);
+    background-size:10px 10px; }
+  .grid.on { display:block; }
+</style>
+</head>
+<body>
+
+<h1>Vajeeva — scale-normalized fidelity compare</h1>
+<p class="note">
+  The prototype's phone stage is <b>272px</b> wide; a real device is <b>390pt</b>. This harness scales the
+  prototype up by <b>1.434×</b> so both panes sit at the same physical scale. Text that looks smaller on the
+  left than the right is <b>genuinely smaller than the design intends</b> — not a viewport artifact.
+  (The older harness compared both at 390px, which hid this.)
+</p>
+
+<div class="bar">
+  <select id="screen">
+    <option value="s-home">home</option>
+    <option value="s-texture">list / texture</option>
+    <option value="s-detail">detail</option>
+    <option value="s-cook">cook</option>
+    <option value="s-finish">finish</option>
+    <option value="s-saved">saved</option>
+    <option value="s-glossary">glossary</option>
+  </select>
+  <button id="gridBtn">10px grid</button>
+  <label><input type="checkbox" id="normalize" checked> normalize prototype to 390pt</label>
+  <span style="font:10px ui-monospace,monospace;color:rgba(240,234,216,.4)">
+    app :8081 &nbsp;·&nbsp; prototype :8090
+  </span>
+</div>
+
+<div class="panes">
+  <div class="pane">
+    <div class="cap"><span>App — Expo web</span><span class="w">390pt native</span></div>
+    <div class="frame">
+      <iframe id="appFrame" src="http://localhost:8081/"></iframe>
+      <div class="grid" id="g1"></div>
+    </div>
+  </div>
+  <div class="pane">
+    <div class="cap"><span>Prototype — source of truth</span><span class="w" id="pw">272px × 1.434</span></div>
+    <div class="frame">
+      <div id="protoWrap">
+        <iframe id="protoFrame" src="http://localhost:8090/prototypes/vajeeva-prototype.html"></iframe>
+      </div>
+      <div class="grid" id="g2"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const DEV_W = 390, STAGE_W = 272;
+const protoWrap = document.getElementById('protoWrap');
+const protoFrame = document.getElementById('protoFrame');
+const normalize = document.getElementById('normalize');
+const pw = document.getElementById('pw');
+
+// The prototype page centers its .phone in a padded body. Scale the whole page so
+// the 272px stage measures DEV_W, then offset so the stage's top-left is at 0,0.
+function layoutProto() {
+  const k = normalize.checked ? DEV_W / STAGE_W : 1;
+  pw.textContent = normalize.checked ? '272px × ' + k.toFixed(3) : '272px raw';
+  try {
+    const doc = protoFrame.contentDocument;
+    const stage = doc && doc.querySelector('.stage');
+    if (stage) {
+      const r = stage.getBoundingClientRect();
+      protoWrap.style.transform = `scale(${k}) translate(${-r.left}px, ${-r.top}px)`;
+      return;
+    }
+  } catch (e) { /* cross-origin or not ready */ }
+  protoWrap.style.transform = `scale(${k})`;
+}
+
+function showScreen(id) {
+  try {
+    const w = protoFrame.contentWindow;
+    if (w && typeof w.reset === 'function') {
+      w.reset();
+      if (id !== 's-home' && typeof w.go === 'function') w.go(id);
+    }
+  } catch (e) {}
+  const routes = { 's-home':'/', 's-texture':'/recipe-list', 's-detail':'/recipe/coconut-laddu',
+    's-cook':'/cook/coconut-laddu', 's-finish':'/finish/coconut-laddu',
+    's-saved':'/saved', 's-glossary':'/source/ksemakutuhalam' };
+  document.getElementById('appFrame').src = 'http://localhost:8081' + (routes[id] || '/');
+  setTimeout(layoutProto, 350);
+}
+
+protoFrame.addEventListener('load', layoutProto);
+normalize.addEventListener('change', layoutProto);
+document.getElementById('screen').addEventListener('change', e => showScreen(e.target.value));
+document.getElementById('gridBtn').addEventListener('click', e => {
+  e.target.classList.toggle('on');
+  const on = e.target.classList.contains('on');
+  document.getElementById('g1').classList.toggle('on', on);
+  document.getElementById('g2').classList.toggle('on', on);
+});
+setTimeout(layoutProto, 600);
+</script>
+</body>
+</html>

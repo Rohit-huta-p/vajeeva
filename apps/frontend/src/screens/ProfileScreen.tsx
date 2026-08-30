@@ -9,8 +9,12 @@ import { scaledSheet, sc } from '../theme/scale';
 import { useTheme, useThemedStyles, type ThemeMode } from '../theme/ThemeContext';
 import {
   IconUser, IconEdit, IconLeaf, IconShield, IconInfo, IconChat, IconStar, IconLogout,
-  IconRuler, IconSun, IconDoc, IconTrash, IconTheme,
+  IconRuler, IconSun, IconDoc, IconTrash, IconTheme, IconClock, IconCheck,
 } from '../components/shared/icons';
+import { useOffline } from '../offline/OfflineProvider';
+import { getAllRecipes } from '../offline/catalog';
+import { cachedImageCount } from '../offline/images';
+import { syncedAgo } from '../offline/format';
 import { SettingsGroup, SettingsRow, SettingsToggle } from '../components/shared/Settings';
 import { HealthProfileSheet } from '../components/shared/HealthProfileSheet';
 import { ProfileEditSheet } from '../components/shared/ProfileEditSheet';
@@ -36,6 +40,7 @@ export default function ProfileScreen() {
   const { codes, save } = useHealthProfile();
   const flags = useHealthFlags();
   const { prefs, setPref } = usePreferences();
+  const { syncPhase, lastSyncedAt, resync } = useOffline();
   const { colors, mode, setMode } = useTheme();
   const s = useThemedStyles(makeStyles);
   const router = useRouter();
@@ -45,6 +50,9 @@ export default function ProfileScreen() {
   const [appearanceOpen, setAppearanceOpen] = useState(false);
 
   const signedIn = !!user && !isGuest;
+  const offlineCount = getAllRecipes().length;
+  const photoCount = cachedImageCount();
+  const syncing = syncPhase === 'syncing' || syncPhase === 'images';
   const name = user?.name?.trim();
   const initial = name ? name[0].toUpperCase() : null;
   const idMeta = [user?.age ? `${user.age}` : null, genderLabel(user?.gender)].filter(Boolean).join(' · ');
@@ -164,6 +172,22 @@ export default function ProfileScreen() {
             icon={<IconSun size={sc(15)} color={colors.ink} />}
             label="Keep screen awake cooking"
             right={<SettingsToggle value={prefs.keepAwake} onValueChange={v => setPref('keepAwake', v)} />}
+          />
+        </SettingsGroup>
+
+        {/* Offline library */}
+        <Text style={s.dslabel}>Offline</Text>
+        <SettingsGroup>
+          <SettingsRow
+            icon={<IconCheck size={sc(15)} color={colors.ink} />}
+            label="Available offline"
+            value={`${offlineCount} recipes · ${photoCount} photos`}
+          />
+          <SettingsRow
+            icon={<IconClock size={sc(15)} color={colors.ink} />}
+            label="Update now"
+            value={syncing ? 'Updating…' : syncedAgo(lastSyncedAt)}
+            onPress={resync}
           />
         </SettingsGroup>
 

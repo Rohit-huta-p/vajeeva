@@ -198,55 +198,72 @@ function RecipeCard({
 }) {
   const isDraft = r.status === 'draft';
 
+  const thumbUrl = (r.images as any[])?.[0]?.url as string | undefined;
+
   return (
     <div className="bg-bone border border-ink/[0.11] rounded-[10px] overflow-hidden shadow-[0_1px_3px_rgba(42,37,30,.07)] hover:shadow-[0_4px_14px_rgba(42,37,30,.10)] transition-shadow">
       {/* Category stripe */}
       <div className="h-[3px]" style={{ backgroundColor: CAT_STRIPE[r.category] ?? '#8A8278' }} />
 
-      <div className="p-3 pb-2.5">
-        {/* Name */}
-        <div className="font-serif text-[13.5px] font-semibold text-ink leading-tight">{r.nameEn}</div>
-        {r.nameTa && (
-          <div className="text-[12px] text-ink/55 italic mt-0.5">{r.nameTa}</div>
+      <div className="flex items-stretch gap-0">
+        {/* Thumbnail — left side */}
+        {thumbUrl && (
+          <div className="w-[72px] shrink-0 self-stretch overflow-hidden border-r border-ink/[0.08]">
+            <img
+              src={thumbUrl}
+              alt={r.nameEn}
+              className="w-full h-full object-cover"
+            />
+          </div>
         )}
 
-        {/* Category badge */}
-        <div className="mt-2">
-          <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${CAT_BADGE[r.category] ?? 'bg-sand text-ink/55'}`}>
-            {CAT_LABEL[r.category] ?? r.category}
-          </span>
-        </div>
+        {/* Text content */}
+        <div className="flex-1 p-3 pb-2.5 min-w-0">
+          {/* Name */}
+          <div className="font-serif text-[13.5px] font-semibold text-ink leading-tight truncate">{r.nameEn}</div>
+          {r.nameTa && (
+            <div className="text-[12px] text-ink/55 italic mt-0.5 truncate">{r.nameTa}</div>
+          )}
 
-        {/* Actions */}
-        <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-ink/[0.08]">
-          <div className="flex gap-3">
-            <Link
-              to={`/recipes/${r._id}/edit`}
-              className="text-[11.5px] font-semibold text-brand hover:underline"
-            >
-              Edit
-            </Link>
+          {/* Category badge */}
+          <div className="mt-2">
+            <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${CAT_BADGE[r.category] ?? 'bg-sand text-ink/55'}`}>
+              {CAT_LABEL[r.category] ?? r.category}
+            </span>
+          </div>
+
+          {/* Actions */}
+          <div className="flex items-center justify-between mt-2.5 pt-2.5 border-t border-ink/[0.08]">
+            <div className="flex gap-3">
+              <Link
+                to={`/recipes/${r._id}/edit`}
+                className="text-[11.5px] font-semibold text-brand hover:underline"
+              >
+                Edit
+              </Link>
+              <button
+                type="button"
+                onClick={() => onDelete(r)}
+                className="text-[11.5px] font-semibold text-clay hover:underline"
+              >
+                Delete
+              </button>
+            </div>
             <button
               type="button"
-              onClick={() => onDelete(r)}
-              className="text-[11.5px] font-semibold text-clay hover:underline"
+              onClick={() => onToggle(r)}
+              className={[
+                'text-[11.5px] font-bold px-3 py-1 rounded-full transition-colors',
+                isDraft
+                  ? 'bg-brand/10 text-brand hover:bg-brand/20'
+                  : 'bg-amber/10 text-amber hover:bg-amber/20',
+              ].join(' ')}
             >
-              Delete
+              {isDraft ? 'Publish →' : '← Draft'}
             </button>
           </div>
-          <button
-            type="button"
-            onClick={() => onToggle(r)}
-            className={[
-              'text-[11.5px] font-bold px-3 py-1 rounded-full transition-colors',
-              isDraft
-                ? 'bg-brand/10 text-brand hover:bg-brand/20'
-                : 'bg-amber/10 text-amber hover:bg-amber/20',
-            ].join(' ')}
-          >
-            {isDraft ? 'Publish →' : '← Draft'}
-          </button>
         </div>
+
       </div>
     </div>
   );

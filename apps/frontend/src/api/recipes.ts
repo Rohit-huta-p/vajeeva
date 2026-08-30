@@ -62,9 +62,9 @@ export interface RecipeDoc {
   nameTa?: string;
   category: 'solid' | 'liquid' | 'semi-solid';
   description?: string;
-  ingredients: { nameEn: string; quantityG?: string; quantityCup?: string }[];
+  ingredients: { nameEn: string; quantityG?: string; quantityMl?: string; quantityCup?: string; note?: string }[];
   steps: {
-    order: number; text: string; phase?: string; heat?: string | null; timerStr?: string | null;
+    order: number; text: string; phase?: string; heat?: string | null;
     images?: RecipeImage[] | null;
   }[];
   healthFlags: { condition: string; severity: 'safe' | 'caution' | 'avoid'; note?: string }[];
@@ -98,19 +98,13 @@ export function cloudThumb(url: string, w: number, h: number): string {
   return `${url.slice(0, i + marker.length)}c_fill,w_${Math.round(w)},h_${Math.round(h)},q_auto,f_auto/${url.slice(i + marker.length)}`;
 }
 
-/** First integer in a timer string like "20 min", or 0. */
-export function parseTimerMin(timerStr?: string | null): number {
-  const m = timerStr?.match(/\d+/);
-  return m ? parseInt(m[0], 10) : 0;
-}
-
 export function toListItem(doc: RecipeDoc): RecipeListItem {
   return {
     slug: doc.slug,
     nameEn: doc.nameEn,
     nameTa: doc.nameTa,
     category: doc.category,
-    cookTimeMin: (doc.steps ?? []).reduce((sum, s) => sum + parseTimerMin(s.timerStr), 0),
+    cookTimeMin: (doc as any).totalTimeMin ?? 0,
     contraCount: (doc.healthFlags ?? []).filter(f => f.severity !== 'safe').length,
     fit: deriveFit(doc.healthFlags),
     stepCount: (doc.steps ?? []).length,

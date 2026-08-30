@@ -4,7 +4,7 @@ import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { FitBadge } from './FitBadge';
 import { CategoryIll, categoryTint, IconClock, IconHeart, IconHeartFilled, IconList, IconJar } from './icons';
-import { cloudThumb } from '../../api/recipes';
+import { imageSource } from '../../offline/images';
 import type { RecipeListItem } from '../../api/recipes';
 import { FEATURES } from '../../config/features';
 import { scaledSheet, sc } from '../../theme/scale';
@@ -37,7 +37,7 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
       >
         {recipe.imageUrl ? (
           <Image
-            source={{ uri: cloudThumb(recipe.imageUrl, 500, 400) }}
+            source={imageSource(recipe.slug, recipe.imageUrl, 500, 400)}
             accessibilityLabel={recipe.nameEn}
             style={s.tileImg}
             resizeMode="cover"

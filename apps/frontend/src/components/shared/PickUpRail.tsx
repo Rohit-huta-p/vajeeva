@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useThemedStyles } from '../../theme/ThemeContext';
 import { CategoryIll, categoryTint } from './icons';
-import { cloudThumb } from '../../api/recipes';
+import { imageSource } from '../../offline/images';
 import type { RecipeListItem } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
 
@@ -43,7 +43,7 @@ export function PickUpRail({ cook, recent, onResume, onOpenRecent }: {
           <View style={s.cookTile}>
             <View style={s.cookBadge}><Text style={s.cookBadgeText}>Cooking</Text></View>
             {cook.recipe.imageUrl ? (
-              <Image source={{ uri: cloudThumb(cook.recipe.imageUrl, 200, 120) }} style={s.fill} resizeMode="cover" />
+              <Image source={imageSource(cook.recipe.slug, cook.recipe.imageUrl, 200, 120)} style={s.fill} resizeMode="cover" />
             ) : (
               <CategoryIll category={cook.recipe.category} size={sc(36)} />
             )}
@@ -58,7 +58,7 @@ export function PickUpRail({ cook, recent, onResume, onOpenRecent }: {
         <TouchableOpacity key={r.slug} style={s.rv} onPress={() => onOpenRecent(r.slug)} activeOpacity={0.9}>
           <View style={[s.rvTile, { backgroundColor: categoryTint(r.category) }]}>
             {r.imageUrl ? (
-              <Image source={{ uri: cloudThumb(r.imageUrl, 260, 240) }} style={s.fill} resizeMode="cover" />
+              <Image source={imageSource(r.slug, r.imageUrl, 260, 240)} style={s.fill} resizeMode="cover" />
             ) : (
               <CategoryIll category={r.category} size={sc(50)} />
             )}

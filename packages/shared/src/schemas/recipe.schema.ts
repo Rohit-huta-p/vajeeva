@@ -3,9 +3,10 @@ import { z } from 'zod';
 export const IngredientSchema = z.object({
   nameEn:      z.string().min(1),
   quantityG:   z.string(),
-  quantityMl:  z.string().optional(),
+  // nullish: handles both absent (undefined) and explicitly-null values from older DB docs
+  quantityMl:  z.string().nullish().transform(v => v ?? ''),
   quantityCup: z.string(),
-  note:        z.string().optional(),
+  note:        z.string().nullish().transform(v => v ?? ''),
 });
 
 /** Image attachment for recipe hero gallery or per-step gallery. */
@@ -19,8 +20,8 @@ export const StepSchema = z.object({
   order: z.number().int().min(1),
   text: z.string().min(1),
   phase: z.string(),
-  heat: z.string().nullable(),
-  timerStr: z.string().regex(/^\d{2}:\d{2}$/).nullable(),
+  // nullish: older step docs may lack the 'heat' key entirely (undefined), not just null
+  heat: z.string().nullish().transform(v => v ?? null),
   stepIngredients: z.array(z.string()),
   illColor: z.string().regex(/^#[0-9a-fA-F]{6}$/),
   images: z.array(ImageSchema).optional().default([]),
@@ -29,7 +30,8 @@ export const StepSchema = z.object({
 export const HealthFlagSchema = z.object({
   condition: z.string().min(1),
   severity: z.enum(['safe', 'caution', 'avoid']),
-  note: z.string(),
+  // default: older health-flag docs may not have stored 'note' at all
+  note: z.string().default(''),
 });
 
 export const SourceSchema = z.object({

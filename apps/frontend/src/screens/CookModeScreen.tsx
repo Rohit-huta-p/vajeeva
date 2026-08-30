@@ -5,18 +5,16 @@ import {
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, fonts } from '../theme/tokens';
-import { TimerPill } from '../components/shared/TimerPill';
 import { CookDots } from '../components/shared/CookDots';
-import { IconBack, IconChev, IconCheck, IconClose, IconFlame, CategoryIll } from '../components/shared/icons';
+import { IconBack, IconChev, IconCheck, IconClose, IconFlame } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
-import { ImageCarousel } from '../components/shared/ImageCarousel';
-import { recipesApi, parseTimerMin, sortImages, cloudThumb } from '../api/recipes';
-import type { RecipeDoc, RecipeImage } from '../api/recipes';
+import { recipesApi } from '../api/recipes';
+import type { RecipeDoc } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 import { usePreferences } from '../hooks/usePreferences';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
-interface CookStep { phase: string; text: string; timerSec: number; heat: string | null; images: RecipeImage[] }
+interface CookStep { phase: string; text: string; heat: string | null }
 
 const NEXT_TEXT = '#0c1a10'; // prototype .cm-nav.next text color
 const PREV_TEXT = 'rgba(240,234,216,0.65)';
@@ -26,9 +24,6 @@ export function CookModeScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState<CookStep[]>([]);
-  const [category, setCategory] = useState('solid');
-  const [timerRunning, setTimerRunning] = useState(false);
-  const [timerDone, setTimerDone] = useState(false);
   const current = steps[step];
   const { startSession, updateStep } = useCookSession();
 
@@ -44,13 +39,9 @@ export function CookModeScreen() {
         .map(st => ({
           phase: (st.phase ?? '').toUpperCase(),
           text: st.text,
-          timerSec: parseTimerMin(st.timerStr) * 60,
           heat: st.heat ?? null,
-          // illus-box-sized Cloudinary transform (full-width box, h94 @3x)
-          images: sortImages(st.images).map(im => ({ ...im, url: cloudThumb(im.url, 1100, 290) })),
         }));
       setSteps(cookSteps);
-      setCategory(doc.category);
       startSession({
         slug,
         title: doc.nameEn,
@@ -79,19 +70,15 @@ export function CookModeScreen() {
       router.replace(`/finish/${slug}`);
     } else {
       setStep(s => s + 1);
-      setTimerRunning(false);
-      setTimerDone(false);
     }
   }, [step, steps.length, slug, router]);
 
   const goPrev = useCallback(() => {
-    if (step > 0) { setStep(s => s - 1); setTimerRunning(false); setTimerDone(false); }
+    if (step > 0) { setStep(s => s - 1); }
   }, [step]);
 
   const jumpTo = useCallback((i: number) => {
     setStep(i);
-    setTimerRunning(false);
-    setTimerDone(false);
   }, []);
 
   const panResponder = PanResponder.create({
@@ -142,33 +129,15 @@ export function CookModeScreen() {
         {/* Content */}
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <Text style={s.stepText}>{current.text}</Text>
-          {current.images.length ? (
-            <ImageCarousel images={current.images} height={sc(94)} radius={sc(14)} placeholderColor={colors.cmSurf} />
-          ) : (
-            <View style={s.illus}>
-              <CategoryIll category={category} size={sc(76)} />
+          {current.heat ? (
+            <View style={s.heat}>
+              <IconFlame size={sc(11)} color={colors.cmMuted} />
+              <Text style={s.heatText}>
+                {current.heat.charAt(0).toUpperCase() + current.heat.slice(1)}
+                {/heat/i.test(current.heat) ? '' : ' heat'}
+              </Text>
             </View>
-          )}
-          <View style={s.infoRow}>
-            {current.heat ? (
-              <View style={s.heat}>
-                <IconFlame size={sc(11)} color={colors.cmMuted} />
-                <Text style={s.heatText}>
-                  {/* prototype copy: "Low heat" / "Medium heat" */}
-                  {current.heat.charAt(0).toUpperCase() + current.heat.slice(1)}
-                  {/heat/i.test(current.heat) ? '' : ' heat'}
-                </Text>
-              </View>
-            ) : <View />}
-            {current.timerSec > 0 ? (
-              <TimerPill
-                seconds={current.timerSec}
-                running={timerRunning}
-                onToggle={() => setTimerRunning(r => !r)}
-                done={timerDone}
-              />
-            ) : null}
-          </View>
+          ) : null}
         </ScrollView>
 
         {/* Footer nav */}
@@ -225,11 +194,6 @@ const s = scaledSheet({
     fontSize: 20, fontFamily: fonts.serif, fontWeight: '700',
     color: colors.cmText, lineHeight: 27.6, letterSpacing: -0.2,
   },
-  illus: {
-    height: 94, borderRadius: 14, backgroundColor: colors.cmSurf,
-    alignItems: 'center', justifyContent: 'center',
-  },
-  infoRow: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
   heat: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   heatText: {
     fontSize: 9.5, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmMuted,
