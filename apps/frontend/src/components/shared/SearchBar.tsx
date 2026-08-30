@@ -15,7 +15,6 @@ export function SearchBar({ placeholder = 'Search a recipe or ingredient…', va
   const [focused, setFocused] = useState(false);
   return (
     <View style={[s.bar, focused && s.barFocused]}>
-      <IconSearch size={sc(15)} color={colors.muted} />
       <TextInput
         style={s.input}
         placeholder={placeholder}
@@ -27,6 +26,7 @@ export function SearchBar({ placeholder = 'Search a recipe or ingredient…', va
         returnKeyType="search"
         onSubmitEditing={onSubmit}
       />
+      <IconSearch size={sc(15)} color={colors.muted} />
     </View>
   );
 }

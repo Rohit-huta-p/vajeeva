@@ -9,6 +9,7 @@ import { fonts, shadows, type Colors } from '../theme/tokens';
 import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { SkeletonCard } from '../components/shared/SkeletonCard';
+import { SearchBar } from '../components/shared/SearchBar';
 import { FilterChip } from '../components/shared/FilterChip';
 import { IconBack, IconFilter } from '../components/shared/icons';
 import { recipesApi, toListItem } from '../api/recipes';
@@ -82,6 +83,10 @@ export function RecipeListScreen() {
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  // In-screen search — same SearchBar as Home; submit drives the `q` param
+  // (full-catalog search via load()). Kept in sync when arriving with ?q=.
+  const [searchText, setSearchText] = useState(q ?? '');
+  useEffect(() => { setSearchText(q ?? ''); }, [q]);
 
   // Round icon button per prototype .icobtn.
   const IcoBtn = ({ children, onPress }: { children: React.ReactNode; onPress?: () => void }) => (
@@ -153,7 +158,7 @@ export function RecipeListScreen() {
       <View style={s.page}>
         {/* Header — stays on the bone ground */}
         <View style={s.header}>
-          <IcoBtn onPress={() => router.back()}>
+          <IcoBtn onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}>
             <IconBack size={sc(15)} color={colors.ink} />
           </IcoBtn>
           <View style={s.grow}>
@@ -171,6 +176,15 @@ export function RecipeListScreen() {
           <IcoBtn>
             <IconFilter size={sc(15)} color={colors.ink} />
           </IcoBtn>
+        </View>
+        {/* Search — same bar as Home; submit runs a full-catalog search (q param) */}
+        <View style={s.searchWrap}>
+          <SearchBar
+            placeholder="Search recipes…"
+            value={searchText}
+            onChangeText={setSearchText}
+            onSubmit={() => router.setParams({ q: searchText.trim() })}
+          />
         </View>
         {/* Filter chips — also on bone, part of the header zone. Hidden for a
             free-text search: chips filter the browse list this screen also
@@ -244,6 +258,7 @@ const makeStyles = (colors: Colors) => scaledSheet({
   // full width. Column gap 10 sets the header→chips→tray rhythm.
   page: { flex: 1, paddingTop: 14, gap: 10 },
   header: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 14 },
+  searchWrap: { paddingHorizontal: 14 },
   grow: { flex: 1, minWidth: 0 },
   // Explicit lineHeights (prototype .screen line-height 1.4) so the two-line
   // header block is the same height on every platform; left at `normal` the
