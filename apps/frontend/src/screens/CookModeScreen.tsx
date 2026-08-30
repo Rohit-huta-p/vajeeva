@@ -6,16 +6,15 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors, fonts } from '../theme/tokens';
 import { CookDots } from '../components/shared/CookDots';
-import { IconBack, IconChev, IconCheck, IconClose, IconFlame, CategoryIll } from '../components/shared/icons';
+import { IconBack, IconChev, IconCheck, IconClose, IconFlame } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
-import { ImageCarousel } from '../components/shared/ImageCarousel';
-import { recipesApi, sortImages, cloudThumb } from '../api/recipes';
-import type { RecipeDoc, RecipeImage } from '../api/recipes';
+import { recipesApi } from '../api/recipes';
+import type { RecipeDoc } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 import { usePreferences } from '../hooks/usePreferences';
 import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
-interface CookStep { phase: string; text: string; heat: string | null; images: RecipeImage[] }
+interface CookStep { phase: string; text: string; heat: string | null }
 
 const NEXT_TEXT = '#0c1a10'; // prototype .cm-nav.next text color
 const PREV_TEXT = 'rgba(240,234,216,0.65)';
@@ -25,7 +24,6 @@ export function CookModeScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState<CookStep[]>([]);
-  const [category, setCategory] = useState('solid');
   const current = steps[step];
   const { startSession, updateStep } = useCookSession();
 
@@ -42,11 +40,8 @@ export function CookModeScreen() {
           phase: (st.phase ?? '').toUpperCase(),
           text: st.text,
           heat: st.heat ?? null,
-          // illus-box-sized Cloudinary transform (full-width box, h94 @3x)
-          images: sortImages(st.images).map(im => ({ ...im, url: cloudThumb(im.url, 1100, 290) })),
         }));
       setSteps(cookSteps);
-      setCategory(doc.category);
       startSession({
         slug,
         title: doc.nameEn,
@@ -134,13 +129,6 @@ export function CookModeScreen() {
         {/* Content */}
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
           <Text style={s.stepText}>{current.text}</Text>
-          {current.images.length ? (
-            <ImageCarousel images={current.images} height={sc(94)} radius={sc(14)} placeholderColor={colors.cmSurf} />
-          ) : (
-            <View style={s.illus}>
-              <CategoryIll category={category} size={sc(76)} />
-            </View>
-          )}
           {current.heat ? (
             <View style={s.heat}>
               <IconFlame size={sc(11)} color={colors.cmMuted} />
@@ -205,10 +193,6 @@ const s = scaledSheet({
   stepText: {
     fontSize: 20, fontFamily: fonts.serif, fontWeight: '700',
     color: colors.cmText, lineHeight: 27.6, letterSpacing: -0.2,
-  },
-  illus: {
-    height: 94, borderRadius: 14, backgroundColor: colors.cmSurf,
-    alignItems: 'center', justifyContent: 'center',
   },
   heat: { flexDirection: 'row', alignItems: 'center', gap: 5 },
   heatText: {

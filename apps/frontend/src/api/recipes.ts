@@ -62,7 +62,7 @@ export interface RecipeDoc {
   nameTa?: string;
   category: 'solid' | 'liquid' | 'semi-solid';
   description?: string;
-  ingredients: { nameEn: string; quantityG?: string; quantityCup?: string }[];
+  ingredients: { nameEn: string; quantityG?: string; quantityMl?: string; quantityCup?: string; note?: string }[];
   steps: {
     order: number; text: string; phase?: string; heat?: string | null;
     images?: RecipeImage[] | null;

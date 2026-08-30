@@ -30,6 +30,11 @@ function toSourceSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+// Display labels for the ingredient unit toggle — internal 'g'/'cup' values
+// stay as-is (persisted via usePreferences' Units type); only the shown text
+// changes, since gram-mode rows may actually be ml (see IngredientTable).
+const UNIT_LABELS: Record<'g' | 'cup', string> = { g: 'gm/ml', cup: 'cup' };
+
 // Public web origin for shareable recipe links (the Expo web export — see the
 // `build` script — once it's deployed there). EXPO_PUBLIC_WEB_URL overrides
 // per environment (e.g. a staging domain); same override pattern as
@@ -45,7 +50,7 @@ interface DetailView {
   yield: string;
   shelfLife: string;
   contraConditions: string[];
-  ingredients: { name: string; amountG: number; amountCup?: string }[];
+  ingredients: { name: string; quantityG?: string; quantityMl?: string; quantityCup?: string; note?: string }[];
   steps: { phase?: string; text: string }[];
 }
 
@@ -61,10 +66,15 @@ function toDetailView(doc: RecipeDoc): DetailView {
     contraConditions: (doc.healthFlags ?? [])
       .filter(f => f.severity !== 'safe')
       .map(f => `${f.condition.charAt(0).toUpperCase() + f.condition.slice(1)}${f.note ? ` — ${f.note}` : ''}`),
+    // Display-ready strings, not numbers — some carry qualitative text like
+    // "a pinch" or "to taste" (see docs/specs/2026-08-30-ingredient-fields.md).
+    // Do not parseInt() these; a lossy 0 fallback would silently mislead.
     ingredients: (doc.ingredients ?? []).map(ing => ({
       name: ing.nameEn,
-      amountG: parseInt(ing.quantityG ?? '', 10) || 0,
-      amountCup: ing.quantityCup,
+      quantityG: ing.quantityG,
+      quantityMl: ing.quantityMl,
+      quantityCup: ing.quantityCup,
+      note: ing.note,
     })),
     steps: [...(doc.steps ?? [])]
       .sort((a, b) => a.order - b.order)
@@ -190,18 +200,16 @@ export function RecipeDetailScreen() {
                     style={[s.toggleBtn, unit === u && s.toggleActive]}
                     onPress={() => setUnit(u)}
                   >
-                    <Text style={[s.toggleLabel, unit === u && s.toggleLabelActive]}>{u}</Text>
+                    <Text style={[s.toggleLabel, unit === u && s.toggleLabelActive]}>{UNIT_LABELS[u]}</Text>
                   </TouchableOpacity>
                 ))}
               </View>
             </View>
-            <IngredientTable ingredients={recipe.ingredients} unit={unit} />
-            <View style={s.fnRow}>
-              <Text style={s.fnLabel}>* Some recipes reference</Text>
-              <TouchableOpacity style={s.fnPill} onPress={() => setAromaOpen(true)}>
-                <Text style={s.fnPillText}>Aromatic Powder Blend <Text style={s.fnExt}>↗</Text></Text>
-              </TouchableOpacity>
-            </View>
+            <IngredientTable
+              ingredients={recipe.ingredients}
+              unit={unit}
+              onAromaticPowderPress={() => setAromaOpen(true)}
+            />
           </View>
 
           {/* Method */}
@@ -243,17 +251,6 @@ const makeStyles = (colors: Colors) => scaledSheet({
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
   badge: { backgroundColor: colors.sand, borderRadius: 4, paddingHorizontal: 9, paddingVertical: 4 },
   badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
-  fnRow: {
-    flexDirection: 'row', alignItems: 'center', gap: 6,
-    paddingTop: 8, paddingBottom: 11,
-  },
-  fnLabel: { fontSize: 9, fontFamily: fonts.sans, color: colors.labelFaint },
-  fnPill: {
-    borderWidth: 1, borderStyle: 'dashed', borderColor: 'rgba(198,144,47,0.45)',
-    borderRadius: 4, paddingHorizontal: 8, paddingVertical: 2,
-  },
-  fnPillText: { fontSize: 9, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber },
-  fnExt: { fontSize: 8, opacity: 0.7, fontStyle: 'normal', fontFamily: fonts.sans },
   ingHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 },
   sectionTitle: { fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
   methodTitle: { marginBottom: 2 },
