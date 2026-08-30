@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
-import type { Vocab, VocabValue } from '../components/TagRows';
+import { TAG_DEFAULTS, mergeTagDefaults, type Vocab, type VocabValue } from '../components/TagRows';
 
 const FACETS = [
   { facet: 'type',       label: 'Type' },
@@ -11,37 +11,15 @@ const FACETS = [
 ] as const;
 
 const slug = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-const mk = (labels: string[]): VocabValue[] =>
-  labels.map((label, i) => ({ code: slug(label), label, order: i + 1, enabled: true }));
-
-// Curated starter vocabulary (docs/specs/2026-08-24-discovery-tags.md §1) — shown
-// on a fresh DB; the admin edits + Save all to persist, same pattern as Health Flags.
-const DEFAULTS: Vocab = {
-  type: mk(['Roti', 'Paratha', 'Laddu', 'Halwa', 'Vada', 'Panaka', 'Buttermilk', 'Soup', 'Payasa', 'Porridge', 'Shrikhand', 'Chutney', 'Preserve', 'Rice']),
-  meal: mk(['Breakfast', 'Snack', 'Side', 'Drink', 'Dessert']),
-  ingredient: mk(['Coconut', 'Barley', 'Amla', 'Black gram', 'Milk', 'Ghee', 'Jaggery', 'Sesame']),
-  method: mk(['Steamed', 'Fried', 'Baked', 'Roasted', 'Boiled', 'No-cook', 'Fermented', 'Soaked']),
-  diet: mk(['Sweet', 'Savoury', 'No added sugar', 'Dairy', 'High protein']),
-};
-
-// Keep any facet the DB has values for; fall back to the curated default per facet.
-function mergeDefaults(saved: Partial<Vocab> | null | undefined): Vocab {
-  const next: Vocab = { type: [...DEFAULTS.type], meal: [...DEFAULTS.meal], ingredient: [...DEFAULTS.ingredient], method: [...DEFAULTS.method], diet: [...DEFAULTS.diet] };
-  for (const { facet } of FACETS) {
-    const list = saved?.[facet];
-    if (Array.isArray(list) && list.length > 0) next[facet] = list as VocabValue[];
-  }
-  return next;
-}
 
 export function TagsPage() {
-  const [vocab, setVocab] = useState<Vocab>(DEFAULTS);
+  const [vocab, setVocab] = useState<Vocab>(TAG_DEFAULTS);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<{ ok: boolean; text: string } | null>(null);
 
   useEffect(() => {
     api<Partial<Vocab>>('/api/admin/tags')
-      .then(saved => setVocab(mergeDefaults(saved)))
+      .then(saved => setVocab(mergeTagDefaults(saved)))
       .catch(() => { /* endpoint unreachable — defaults stay */ });
   }, []);
 
@@ -60,7 +38,7 @@ export function TagsPage() {
           .filter(t => t.label && t.code);
       }
       const saved = await api<Partial<Vocab>>('/api/admin/tags', { method: 'PUT', body: JSON.stringify(body) });
-      setVocab(mergeDefaults(saved));
+      setVocab(mergeTagDefaults(saved));
       setMsg({ ok: true, text: 'Saved.' });
     } catch (e) {
       setMsg({ ok: false, text: (e as Error).message });

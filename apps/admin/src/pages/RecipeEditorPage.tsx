@@ -8,26 +8,22 @@ import { HealthFlagRows } from '../components/HealthFlagRows';
 import { SourceRows } from '../components/SourceRows';
 import { AppPreviewCard } from '../components/AppPreviewCard';
 import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
-import { TagRows, emptyVocab, type Vocab } from '../components/TagRows';
+import { TagRows, emptyVocab, mergeTagDefaults, type Vocab } from '../components/TagRows';
 
 // ── Stepper config ────────────────────────────────────────────────────────
 const STEPS = [
-  { label: 'Basic Info',    desc: 'Name, category, yield' },
-  { label: 'Ingredients',   desc: 'Grams, ml & cups'      },
-  { label: 'Cook Steps',    desc: 'Phase, heat, timer'     },
-  { label: 'Health Flags',  desc: 'Condition severity'     },
-  { label: 'Sources',       desc: 'Citations'              },
-  { label: 'Tags',          desc: 'Discovery & filters'    },
-  { label: 'Gallery',       desc: 'Photos'                 },
+  { label: 'Basic Info',    desc: 'Name, category, sources & gallery' },
+  { label: 'Ingredients',   desc: 'Grams, ml & cups'                   },
+  { label: 'Cook Steps',    desc: 'Phase, heat, timer'                  },
+  { label: 'Health Flags',  desc: 'Condition severity'                  },
+  { label: 'Tags',          desc: 'Discovery & filters'                 },
 ] as const;
 
 const NEXT_LABELS = [
   'Next: Ingredients →',
   'Next: Cook Steps →',
   'Next: Health Flags →',
-  'Next: Sources →',
   'Next: Tags →',
-  'Next: Gallery →',
   'Publish Recipe',
 ];
 
@@ -69,7 +65,9 @@ export function RecipeEditorPage() {
   }, [id]);
 
   useEffect(() => {
-    api<Vocab>('/api/admin/tags').then(setVocab).catch(() => { /* keep empty */ });
+    api<Vocab>('/api/admin/tags')
+      .then(saved => setVocab(mergeTagDefaults(saved)))
+      .catch(() => setVocab(mergeTagDefaults(null)));  // fallback to defaults if API is unreachable
   }, []);
 
   async function save(status: RecipeInput['status']) {
@@ -133,8 +131,13 @@ export function RecipeEditorPage() {
 
       {error && <p role="alert" className="mb-4 text-[13px] text-clay">{error}</p>}
 
-      {/* ── Three-column layout: stepper | form | preview ── */}
-      <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] xl:grid-cols-[160px_1fr_220px] gap-4 items-start">
+      {/* ── App preview — full width, above stepper+form on all breakpoints ── */}
+      <div className="mb-4">
+        <AppPreviewCard recipe={form} />
+      </div>
+
+      {/* ── Two-column layout: stepper | form ── */}
+      <div className="grid grid-cols-1 md:grid-cols-[160px_1fr] gap-4 items-start">
 
         {/* ── Stepper ────────────────────────────── */}
         {/* Mobile: horizontal scrolling strip; md+: vertical list */}
@@ -229,7 +232,7 @@ export function RecipeEditorPage() {
         {/* ── Active form step ───────────────────── */}
         <div className="bg-bone border border-ink/[0.11] rounded-[14px] p-5 shadow-[0_1px_3px_rgba(42,37,30,.07)]">
 
-          {/* Step 1: Basic Info */}
+          {/* Step 1: Basic Info — includes Sources and Gallery */}
           {step === 1 && (
             <>
               <h2 className="font-serif text-[16px] font-light text-ink mb-1 tracking-tight">Basic Info</h2>
@@ -292,6 +295,27 @@ export function RecipeEditorPage() {
                     className={`${INP} mt-1.5 resize-y`} />
                 </label>
               </div>
+
+              {/* ── Gallery ── */}
+              <div className="mt-6 pt-5 border-t border-ink/[0.08]">
+                <h3 className="font-serif text-[14px] font-light text-ink mb-0.5 tracking-tight">Gallery</h3>
+                <p className="text-[12.5px] text-ink/45 mb-4">
+                  Upload photos for this recipe. First image becomes the card thumbnail.
+                </p>
+                <ImageGalleryEditor
+                  context="hero"
+                  value={(form.images ?? []) as GalleryImage[]}
+                  onChange={images => patch({ images })}
+                  hint="1200 × 800 px · 3:2 ratio · JPEG or WebP"
+                />
+              </div>
+
+              {/* ── Sources ── */}
+              <div className="mt-6 pt-5 border-t border-ink/[0.08]">
+                <h3 className="font-serif text-[14px] font-light text-ink mb-0.5 tracking-tight">Sources</h3>
+                <p className="text-[12.5px] text-ink/45 mb-4">Cite the texts or research papers this recipe draws from.</p>
+                <SourceRows value={form.sources} onChange={sources => patch({ sources })} />
+              </div>
             </>
           )}
 
@@ -333,17 +357,8 @@ export function RecipeEditorPage() {
             </>
           )}
 
-          {/* Step 5: Sources */}
+          {/* Step 5: Tags */}
           {step === 5 && (
-            <>
-              <h2 className="font-serif text-[16px] font-light text-ink mb-1 tracking-tight">Sources</h2>
-              <p className="text-[12.5px] text-ink/45 mb-5">Cite the texts or research papers this recipe draws from.</p>
-              <SourceRows value={form.sources} onChange={sources => patch({ sources })} />
-            </>
-          )}
-
-          {/* Step 6: Tags */}
-          {step === 6 && (
             <>
               <h2 className="font-serif text-[16px] font-light text-ink mb-1 tracking-tight">Tags</h2>
               <p className="text-[12.5px] text-ink/45 mb-5">Help users discover this recipe through filters and search.</p>
@@ -360,22 +375,6 @@ export function RecipeEditorPage() {
                 }}
                 vocab={vocab}
                 onChange={p => patch(p)}
-              />
-            </>
-          )}
-
-          {/* Step 7: Gallery */}
-          {step === 7 && (
-            <>
-              <h2 className="font-serif text-[16px] font-light text-ink mb-1 tracking-tight">Gallery</h2>
-              <p className="text-[12.5px] text-ink/45 mb-5">
-                Upload photos for this recipe. First image becomes the card thumbnail.
-              </p>
-              <ImageGalleryEditor
-                context="hero"
-                value={(form.images ?? []) as GalleryImage[]}
-                onChange={images => patch({ images })}
-                hint="1200 × 800 px · 3:2 ratio · JPEG or WebP"
               />
             </>
           )}
@@ -420,10 +419,6 @@ export function RecipeEditorPage() {
           </div>
         </div>
 
-        {/* ── App preview (xl+ only) ─────────────── */}
-        <div className="hidden xl:block sticky top-4">
-          <AppPreviewCard recipe={form} />
-        </div>
       </div>
     </main>
   );

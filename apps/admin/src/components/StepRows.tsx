@@ -1,5 +1,7 @@
 import type { RecipeInput } from '@vajeeva/shared';
-import { ImageGalleryEditor, type GalleryImage } from './ImageGalleryEditor';
+// ImageGalleryEditor intentionally not rendered — step images not used in the
+// frontend yet; keep the import commented so the data field is preserved in DB.
+// import { ImageGalleryEditor, type GalleryImage } from './ImageGalleryEditor';
 
 type Step = RecipeInput['steps'][number];
 
@@ -60,7 +62,7 @@ export function StepRows({ value, onChange }: {
             className={`w-full ${INP} mb-3 resize-y`}
           />
 
-          {/* Phase / Heat / Color */}
+          {/* Phase / Heat */}
           <div className="grid grid-cols-2 gap-2 mb-3">
             <input
               aria-label={`Step ${i + 1} phase`}
@@ -76,6 +78,7 @@ export function StepRows({ value, onChange }: {
               onChange={e => set(i, { heat: e.target.value || null })}
               className={INP}
             />
+            {/* Illustration color — not used in the frontend yet; keeping data field, hiding UI
             <label className="flex items-center gap-2 text-[12px] text-ink/55 px-1 col-span-2">
               Illustration color
               <input
@@ -86,6 +89,7 @@ export function StepRows({ value, onChange }: {
                 className="w-8 h-8 rounded cursor-pointer border-0 bg-transparent"
               />
             </label>
+            */}
           </div>
 
           {/* Step ingredients */}
@@ -97,12 +101,14 @@ export function StepRows({ value, onChange }: {
             className={`w-full ${INP} mb-3`}
           />
 
+          {/* Step image gallery — not used in frontend yet; keeping data field, hiding UI
           <ImageGalleryEditor
             context={`step ${i + 1}`}
             value={(row.images ?? []) as GalleryImage[]}
             onChange={images => set(i, { images })}
             hint="800 × 600 px · 4:3 ratio · JPEG or WebP"
           />
+          */}
         </div>
       ))}
 

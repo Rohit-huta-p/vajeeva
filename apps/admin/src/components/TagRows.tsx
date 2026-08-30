@@ -1,9 +1,33 @@
-import { Link } from 'react-router-dom';
-
 // Vocabulary shape from GET /api/admin/tags (grouped by facet).
 export type VocabValue = { code: string; label: string; order?: number; enabled?: boolean };
 export type Vocab = Record<'type' | 'meal' | 'ingredient' | 'method' | 'diet', VocabValue[]>;
 export const emptyVocab = (): Vocab => ({ type: [], meal: [], ingredient: [], method: [], diet: [] });
+
+// ── Curated starter vocabulary (mirrors TagsPage defaults) ───────────────────
+// Used as a fallback when the DB has no saved tags yet, so the recipe editor
+// always shows options without requiring a separate trip to /tags first.
+const slug = (s: string) =>
+  s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+const mk = (labels: string[]): VocabValue[] =>
+  labels.map((label, i) => ({ code: slug(label), label, order: i + 1, enabled: true }));
+
+export const TAG_DEFAULTS: Vocab = {
+  type:       mk(['Roti','Paratha','Laddu','Halwa','Vada','Panaka','Buttermilk','Soup','Payasa','Porridge','Shrikhand','Chutney','Preserve','Rice']),
+  meal:       mk(['Breakfast','Snack','Side','Drink','Dessert']),
+  ingredient: mk(['Coconut','Barley','Amla','Black gram','Milk','Ghee','Jaggery','Sesame']),
+  method:     mk(['Steamed','Fried','Baked','Roasted','Boiled','No-cook','Fermented','Soaked']),
+  diet:       mk(['Sweet','Savoury','No added sugar','Dairy','High protein']),
+};
+
+/** Merge DB vocab with defaults: any facet that has saved values wins; otherwise fall back. */
+export function mergeTagDefaults(saved: Partial<Vocab> | null | undefined): Vocab {
+  const out = { ...TAG_DEFAULTS };
+  for (const facet of Object.keys(TAG_DEFAULTS) as (keyof Vocab)[]) {
+    const list = saved?.[facet];
+    if (Array.isArray(list) && list.length > 0) out[facet] = list as VocabValue[];
+  }
+  return out;
+}
 
 // The recipe's tag selections (a slice of RecipeInput).
 export type TagValue = {
@@ -56,9 +80,7 @@ export function TagRows({ value, vocab, onChange }: {
               {label}{single && <span className="normal-case font-normal text-ink/35"> · pick one</span>}
             </p>
             {opts.length === 0 ? (
-              <p className="text-xs text-ink/40">
-                No values yet — add them in <Link to="/tags" className="text-brand underline">Tags</Link>.
-              </p>
+              <p className="text-xs text-ink/40 italic">No options enabled for this facet.</p>
             ) : (
               <div className="flex flex-wrap gap-2">
                 {opts.map(o => {
