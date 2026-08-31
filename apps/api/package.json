@@ -10,6 +10,8 @@
     "enrich:recipes": "ts-node src/scripts/enrich-recipes.ts",
     "seed:recipes": "ts-node -r dotenv/config src/scripts/seed-recipes.ts",
     "seed:images:solid": "ts-node -r dotenv/config src/scripts/seed-images-solid.ts",
+    "seed:images:semisolid": "ts-node -r dotenv/config src/scripts/seed-images-semisolid.ts",
+    "seed:images:liquid": "ts-node -r dotenv/config src/scripts/seed-images-liquid.ts",
     "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts",
     "seed:tags": "ts-node src/scripts/seed-tags.ts",
     "search:create-index": "ts-node src/scripts/create-search-index.ts"

@@ -24,7 +24,6 @@ import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
-import { OfflineBadge } from '../components/shared/OfflineBadge';
 import { scaledSheet, sc } from '../theme/scale';
 
 const PILLARS = [
@@ -80,7 +79,7 @@ export function HomeScreen() {
 
   // Texture counts come from the offline catalog (no network) — recompute when
   // the cache hydrates at boot and after each background sync.
-  const { ready, lastSyncedAt, isOnline } = useOffline();
+  const { ready, lastSyncedAt } = useOffline();
   useEffect(() => {
     const next: Record<string, number> = {};
     getAllRecipes().forEach(d => { next[d.category] = (next[d.category] ?? 0) + 1; });
@@ -129,7 +128,6 @@ export function HomeScreen() {
             <Text style={s.greeting}>Good morning</Text>
             <Text style={s.greetingSub}>Vajeeva</Text>
           </View>
-          {!isOnline ? <OfflineBadge /> : null}
           <TouchableOpacity
             style={s.avatar}
             onPress={() => router.push('/more' as any)}
