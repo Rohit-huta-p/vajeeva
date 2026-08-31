@@ -2,7 +2,8 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet } from '../../theme/scale';
-import { useThemedStyles } from '../../theme/ThemeContext';
+import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
+import { LinkedStepText } from './LinkedStepText';
 
 export interface Step {
   phase?: string;
@@ -10,6 +11,7 @@ export interface Step {
 }
 
 export function StepList({ steps }: { steps: Step[] }) {
+  const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   return (
     <View>
@@ -20,7 +22,7 @@ export function StepList({ steps }: { steps: Step[] }) {
           </View>
           <View style={s.body}>
             {step.phase ? <Text style={s.phase}>{step.phase.toUpperCase()}</Text> : null}
-            <Text style={s.text}>{step.text}</Text>
+            <LinkedStepText text={step.text} style={s.text} linkColor={colors.amber} />
           </View>
         </View>
       ))}

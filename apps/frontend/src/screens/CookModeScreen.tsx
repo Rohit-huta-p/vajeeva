@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import {
-  View, Text, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator, Linking,
+  View, Text, TouchableOpacity, ScrollView, StyleSheet, SafeAreaView, PanResponder, ActivityIndicator,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -9,6 +9,7 @@ import { CookDots } from '../components/shared/CookDots';
 import { IconBack, IconChev, IconCheck, IconClose, IconFlame } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi } from '../api/recipes';
+import { LinkedStepText } from '../components/shared/LinkedStepText';
 import type { RecipeDoc } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 import { usePreferences } from '../hooks/usePreferences';
@@ -16,34 +17,6 @@ import { activateKeepAwakeAsync, deactivateKeepAwake } from 'expo-keep-awake';
 
 interface CookStep { phase: string; text: string; heat: string | null }
 
-// ── Inline Google-link renderer ───────────────────────────────────────────────
-// Admin wraps searchable terms in [[double brackets]].
-// We split on that pattern and render tappable underlined spans that open Google.
-function StepText({ text, style }: { text: string; style: object }) {
-  const parts = text.split(/\[\[(.+?)\]\]/g);
-  // split on [[...]] gives: [plain, term, plain, term, ...]
-  return (
-    <Text style={style}>
-      {parts.map((part, i) =>
-        i % 2 === 1 ? (
-          <Text
-            key={i}
-            style={[style, { textDecorationLine: 'underline', color: '#E8B44A' }]}
-            onPress={() =>
-              Linking.openURL(
-                `https://www.google.com/search?q=${encodeURIComponent(part)}`,
-              )
-            }
-          >
-            {part}
-          </Text>
-        ) : (
-          part
-        ),
-      )}
-    </Text>
-  );
-}
 
 const NEXT_TEXT = '#0c1a10'; // prototype .cm-nav.next text color
 const PREV_TEXT = 'rgba(240,234,216,0.65)';
@@ -157,7 +130,7 @@ export function CookModeScreen() {
 
         {/* Content */}
         <ScrollView style={s.body} contentContainerStyle={s.bodyContent} showsVerticalScrollIndicator={false}>
-          <StepText text={current.text} style={s.stepText} />
+          <LinkedStepText text={current.text} style={s.stepText} />
           {current.heat ? (
             <View style={s.heat}>
               <IconFlame size={sc(11)} color={colors.cmMuted} />
