@@ -151,7 +151,10 @@ export function RecipeDetailScreen() {
             </LinearGradient>
           )}
           <View style={s.heroBar}>
-            <IconButton icon={<IconBack size={sc(15)} color={colors.ink} />} onPress={() => router.back()} />
+            <IconButton
+              icon={<IconBack size={sc(15)} color={colors.ink} />}
+              onPress={() => (router.canGoBack() ? router.back() : router.replace('/'))}
+            />
             <View style={s.heroActs}>
               <IconButton
                 icon={saved
