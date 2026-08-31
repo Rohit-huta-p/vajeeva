@@ -10813,5 +10813,1972 @@
     "status": "draft",
     "images": [],
     "totalTimeMin": 20
+  },
+  {
+    "slug": "n-01",
+    "nameEn": "Meat Rice Bowl",
+    "nameTa": "Harisa",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Chopped meat",
+        "quantityG": "100–120",
+        "quantityMl": "",
+        "quantityCup": "½ cup",
+        "note": "bones removed"
+      },
+      {
+        "nameEn": "Rice",
+        "quantityG": "100–120",
+        "quantityMl": "",
+        "quantityCup": "½ cup",
+        "note": "soaked"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Wet ginger paste",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Jiraka (cumin seeds)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Turmeric powder",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "1–2",
+        "quantityMl": "",
+        "quantityCup": "¼ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Black pepper powder",
+        "quantityG": "2",
+        "quantityMl": "",
+        "quantityCup": "¼ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Lemon juice",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Meat is chopped into small pieces by eliminating the bones and washed with water mixed with coriander powder and hingu.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a vessel or cooker add required quantity of ghee and heat on medium flame then add hingu, Jeera, turmeric powder, wet ginger paste, pepper powder mix it properly",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Then add chopped and washed meat fry it properly for 15min. In soaked rice add rock salt as per the taste then add sufficient quantity of water to cook soft and perfectly. Then add lemon juice and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "If required any aromatics or spices can be added to make the preparation more delicious and enjoy it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/60",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-02",
+    "nameEn": "Betel Leaf Meat Stew",
+    "nameTa": "—",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Chopped meat",
+        "quantityG": "100–120",
+        "quantityMl": "",
+        "quantityCup": "½ cup",
+        "note": "bones removed"
+      },
+      {
+        "nameEn": "Ghee / Taila (oil)",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed"
+      },
+      {
+        "nameEn": "Betel leaves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Cloves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "4",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "4–5",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Buttermilk / Pomegranate juice",
+        "quantityG": "",
+        "quantityMl": "300–400",
+        "quantityCup": "",
+        "note": "as needed"
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Meat is chopped into small pieces by eliminating the bones and washed with water mixed with coriander powder and hingu.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a ghee / Taila as needed in pan and heat it on medium flame then add betel leaves, Cloves and black pepper fry it properly then add chopped and cleaned meat to the pan and fry it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Then the pan is covered with lid till the meat becomes semi cooked and then add sufficient quantity of Buttermilk / Pomegranate juice to cook further after the meat becomes soft and cooked well then sprinkle aromatics or spices of your choice and add rock salt to taste and mix it well and cook further for 2 -3 min. then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/71",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-03",
+    "nameEn": "Steam-Roasted Meat Delight",
+    "nameTa": "Susvinna Mamsa",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Chopped meat",
+        "quantityG": "100–120",
+        "quantityMl": "",
+        "quantityCup": "½ cup",
+        "note": "bones removed"
+      },
+      {
+        "nameEn": "Coriander powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2 pinches",
+        "note": ""
+      },
+      {
+        "nameEn": "Betel leaves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2",
+        "note": ""
+      },
+      {
+        "nameEn": "Cloves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4",
+        "note": ""
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "4–5",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Ghee / Oil",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for final fry"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Meat is chopped into small pieces by eliminating the bones and washed with water mixed with coriander powder and hingu.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a steamer add sufficient quantity of water then add hingu, coriander powder, betel leaves, Cloves and black pepper leave it to boil then put washed and chopped meat on a steamer plate and leave it to cook.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Then take a pan add ghee / oil heat it on medium flame then add properly cooked meat into the pan and fry it properly then add aromatics or spices of your choice and add rock salt as per the taste then fry it properly then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/77",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-04",
+    "nameEn": "Meat Fry",
+    "nameTa": "Barkara Mamsa",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Chopped meat",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "½ cup",
+        "note": "bones removed"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "15–20",
+        "quantityCup": "3–4 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cardamom powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Lavanga (clove) powder",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Meat is chopped into small pieces by eliminating the bones and washed with water mixed with coriander powder and hingu.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan add ghee and heat it on medium flame then add hingu, cardamom powder, lavanga powder and black pepper then add chopped and cleaned meat.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "fry it properly then add rock salt to taste and cook properly and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/81–82",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-05",
+    "nameEn": "Heritage Meat Fry",
+    "nameTa": "Mesa Mamsa",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Chopped meat",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "1 cup",
+        "note": "bones removed"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "15–20",
+        "quantityCup": "3–4 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cardamom powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Clove powder",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Meat is chopped into small pieces by eliminating the bones and washed with water mixed with coriander powder and hingu.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan add ghee and heat it on medium flame then add hingu, cardamom powder, clove powder and black pepper then add chopped and cleaned meat fry it properly then add rock salt to taste and cook properly and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/90",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-06",
+    "nameEn": "Ghee Roasted Fish",
+    "nameTa": "—",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Pathi fish meat",
+        "quantityG": "100–120",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "cleaned"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed"
+      },
+      {
+        "nameEn": "Wet ginger paste",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Wash Pathi Fish meat properly with clean water",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan add sufficient quantity of ghee and heat it on medium flame and fry the pathi fish meat properly.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Take another pan with 2tsp. of ghee and heat it on medium flame then wet ginger paste, black pepper, hingu then add fried fish meat and sufficient quantity of water to meat becomes half cooked / semi boiled.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Then add rock salt to taste and mix it well then cook further up to 2 min. and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/101",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-07",
+    "nameEn": "Meat Samosa",
+    "nameTa": "Mamsa Samosa",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Meat",
+        "quantityG": "40–50",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": "for filling"
+      },
+      {
+        "nameEn": "Wheat flour",
+        "quantityG": "50",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": "for dough"
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Coriander powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cumin powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for dough & deep-frying"
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Lemon juice",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Stuff preparation :",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Wash the meat properly with water then boiled in water.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Take a boiled meat in mixing bowl and hingu, coriander powder mix it properly and crushed the meat finely.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Then take a pan add 2-3 tsp. of ghee heat it on medium flame then add hingu and mashed meat fry it well",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 5,
+        "text": "Then add spices and flavours as per your taste and priority and add jeera powder, rock salt to taste then fried",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 6,
+        "text": "well then add lemon juice to taste and mix it well.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 7,
+        "text": "Dough Preparation :",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 8,
+        "text": "Take a cup of wheat flour in a mixing bowl add rock salt to taste mix it well. then add 1-2tsp. of ghee mix well then gradually add water and knead well to make soft and smooth dough. Rest it for 15min.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 9,
+        "text": "Make equal sized ball from the dough. By Appling little quantity of ghee / oil to the ball makes a ball into thin and medium sized round roti.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 10,
+        "text": "After that prepared mamsa purana is filled in the prepared round roti and by closing the joints make into samosa shaped and then fried in ghee properly up to the samosa becomes golden colour and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/128–132",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "2 medium samosa",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-08",
+    "nameEn": "Royal Liver Fry",
+    "nameTa": "Yakrdbhrstam",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Animal liver",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "boiled"
+      },
+      {
+        "nameEn": "Yoghurt",
+        "quantityG": "50–80",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": "for marinade"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4 tsp",
+        "note": "for roasting"
+      },
+      {
+        "nameEn": "Wet ginger paste",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cardamom powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Pepper powder",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a liver part of animal wash it thoroughly and boiled it properly.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Then take this boiled mamsa in mixing bowl add curd, rock salt to taste, hingu, cardamom powder, black pepper, wet ginger paste and any other spices of your choice with properly quantity and mix all together and rest it for 15-20min.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Take a pan with 3-4 tsp. of ghee heat it on medium flame then roast the mamsa properly by all the sides upto the meat devoid of liquid content and properly cooked then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/148–150",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-09",
+    "nameEn": "Meat Kofta",
+    "nameTa": "Mamsa Mudga Pralehaka",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Smashed meat",
+        "quantityG": "50",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": ""
+      },
+      {
+        "nameEn": "Green gram flour",
+        "quantityG": "50",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": "equal quantity to meat"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4 tsp",
+        "note": "for frying"
+      },
+      {
+        "nameEn": "Buttermilk",
+        "quantityG": "",
+        "quantityMl": "150–200",
+        "quantityCup": "",
+        "note": "for gravy"
+      },
+      {
+        "nameEn": "Betel leaves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Cloves",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4",
+        "note": "vesavara component"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Wash the meat thoroughly then smashed it properly.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a mixing bowl add equal quantity of gram flour and smashed meat then add species and aromatics of your choice with proper quantity mix it properly and make a dough out of it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Make equal sized ball or different shapes from the dough.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Take a steamer add sufficient quantity of water then leave it to boil then put a meat ball on a steamer plate and leave it for properly cooked.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 5,
+        "text": "After that take a pan add 3 -4tsp. of ghee heat it on medium flame then fried the steamed meat ball in this ghee properly by all the sides.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 6,
+        "text": "Take a vessel with the sufficient quantity of buttermilk with 2 betel leaves, cloves and black pepper then add species and aromatics of your choice with proper quantity mix it properly and heat it on medium flame.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 7,
+        "text": "Then add ghee fried meat balls to it and stirred up continuously then switch off the flame after cooking is done properly then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/159–162",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-10",
+    "nameEn": "Meat Momo",
+    "nameTa": "Mamsendari",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Meat",
+        "quantityG": "70–80",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for filling"
+      },
+      {
+        "nameEn": "Lentil flour",
+        "quantityG": "50–60",
+        "quantityMl": "",
+        "quantityCup": "¼ cup",
+        "note": "for dough"
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for filling"
+      },
+      {
+        "nameEn": "Coriander powder",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for filling"
+      },
+      {
+        "nameEn": "Black pepper",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Ghee / Oil",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed"
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a meat wash it properly with water then boiled in water properly,",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Then take a boiled meat in mixing bowl and add hingu, coriander powder mixes it properly and crushed the meat finely.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Then take a pan add 2-3 tsp. of ghee heat it on medium flame then add hingu and mashed meat mix it properly then add spices and flavours as per your taste and choice and add jeera, rock salt to taste then fried well.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Take a mixing bowl add lentil powder and rock salt to taste and mix it properly then gradually add water and knead well to make soft and smooth dough. Rest it for 15min.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 5,
+        "text": "Make equal sized ball from the dough. By Appling little quantity of ghee / oil to the ball makes a ball into thin and medium sized round roti.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 6,
+        "text": "After that prepared mamsa purana is filled in the prepared round roti and by closing the joints make into momo shaped and then take a steamer add sufficient quantity of water then leave it to boil then put a meat balls on a steamer plate and leave it for properly cooked, then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/164–165",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "6 medium momo",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-11",
+    "nameEn": "Creamy Ghee Meat",
+    "nameTa": "Ksiramrtam",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Meat",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "cut into small pieces"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "15–20",
+        "quantityCup": "3–4 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Dry ginger powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Milk",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed (add gradually)"
+      },
+      {
+        "nameEn": "Sugar",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a meat wash it properly with water then cut a meat into small pieces and then take a steamer add sufficient quantity of water then leave it to boil then apply ghee to the meat put this meat on a steamer plate and leave it for properly cooked.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan add 2-3tsp. of ghee heat it on medium flame then add steamed meat, dry ginger powder and aromatics as your choice with proper quantity then mix it well.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "After proper frying of the meat then add cup of milk and stirred well and add sugar to taste.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Stirred continuously up to it properly cooked if it needs more milk while cooking adds little by little milk and make it semisolid consistency then add aromatics of your choice with proper quantity mix it well, then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/168–169",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-12",
+    "nameEn": "Flesh Stuffed Brinjal",
+    "nameTa": "Mamsapurita Vartakam",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Brinjal",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "2 medium",
+        "note": "hollowed out"
+      },
+      {
+        "nameEn": "Meat",
+        "quantityG": "80–100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "finely chopped / crushed"
+      },
+      {
+        "nameEn": "Ghee",
+        "quantityG": "",
+        "quantityMl": "15–20",
+        "quantityCup": "3–4 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cumin powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Ginger powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Cardamom powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Lemon juice",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a medium-size brinjal wash thoroughly and cut vertically make into 2 equal halves then take out the all the pulp of brinjal and make it hallow.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a meat wash it thoroughly and chopped finely or crushed well.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Take a pan with 3-4 tsp. of ghee heat it on medium flame then add crushed meat fried it properly then add hingu. Cumin powder, ginger powder, Cardamom powder and if you want any spices as your wish add it with proper quantity and also add rock salt to taste then mix it all together and fried it properly. After that switch off the flame and add lemon juice to taste and mix it well.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "After this meat stuff should be filled into the slit brinjals fully then fried them in ghee until they are cooked properly and it turns into golden brown colour, then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 6/179–180",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "2 medium stuffed brinjal",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-13",
+    "nameEn": "Ginger-Amla Fish Fry",
+    "nameTa": "Palasi Matsya",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Fish (Hilsa / Palasi)",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "cleaned & chopped"
+      },
+      {
+        "nameEn": "Sesame oil",
+        "quantityG": "",
+        "quantityMl": "20–25",
+        "quantityCup": "4–5 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Ginger paste",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Amla (gooseberry) powder",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a fish and clean it thoroughly as you would normally do then chopped into pieces.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan with 4-5 tsp. of sesame oil heat it on medium flame then fried the chopped fish flesh, after that add hingu, ginger paste, amla powder and other spices and aromatics as per your choice with proper quantity mix them all after the proper cooking of the fish flesh then switch off the flame and have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 7/20",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-14",
+    "nameEn": "Fish Curry",
+    "nameTa": "Pathina Matsya",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Fish (Wallago attu)",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "cleaned & chopped"
+      },
+      {
+        "nameEn": "Mustard oil",
+        "quantityG": "",
+        "quantityMl": "20–25",
+        "quantityCup": "4–5 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Buttermilk",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed (for gravy)"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a fish and clean it thoroughly as you would normally do then chopped into pieces.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan with 4-5 tsp. of mustard oil heat it on medium flame then fried the chopped fish flesh properly,",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "After that add hingu and then spices and aromatics as per your choice with proper quantity mix them all and properly fried.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 4,
+        "text": "Take a vessel with required quantity of buttermilk heat it on medium flame then add fried fish flesh and cook well then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 7/22",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "1 medium bowl",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-15",
+    "nameEn": "Tawa Fish Fry",
+    "nameTa": "Mangurika Matsya",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Fish meat (Magur / walking catfish)",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "head discarded"
+      },
+      {
+        "nameEn": "Mustard oil",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "3–4 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Turmeric powder",
+        "quantityG": "3",
+        "quantityMl": "",
+        "quantityCup": "½ tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a fish, remove and discard the head, then cut the remaining portion into pieces, wash the fish thoroughly and use the chopped pieces for cooking purpose and before cooking clean it thoroughly as you would normally do.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a pan add 3-4 tsp. of mustard oil and heat it on medium flame then add cleaned and chopped fish flesh and fried it properly then add hingu, turmeric powder and rock salt to taste and cooked perfectly, then have it.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 7/24–25",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "100–120 g",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
+  },
+  {
+    "slug": "n-16",
+    "nameEn": "Light Fish Sauté",
+    "nameTa": "Gundi Matsya",
+    "category": "solid",
+    "description": "",
+    "ingredients": [
+      {
+        "nameEn": "Fish (Bangana dero)",
+        "quantityG": "100",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "head & tail removed"
+      },
+      {
+        "nameEn": "Gram flour",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as needed (for batter)"
+      },
+      {
+        "nameEn": "Hingu (asafoetida)",
+        "quantityG": "5",
+        "quantityMl": "",
+        "quantityCup": "1 tsp",
+        "note": ""
+      },
+      {
+        "nameEn": "Rock salt",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "to taste"
+      },
+      {
+        "nameEn": "Oil",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "for frying"
+      },
+      {
+        "nameEn": "Aromatics / spices",
+        "quantityG": "",
+        "quantityMl": "",
+        "quantityCup": "",
+        "note": "as preferred"
+      }
+    ],
+    "steps": [
+      {
+        "order": 1,
+        "text": "Take a fish, remove and discard the head and tail, then cut the remaining portion in to medium size pieces, wash the fish thoroughly and use the chopped pieces for cooking purpose and before cooking clean it thoroughly as you would normally do.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 2,
+        "text": "Take a mixing bowl add required quantity of gram flour along with spices as per your choice with proper quantity, add hingu, rock salt to taste and add required quantity of water to make a thick paste.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      },
+      {
+        "order": 3,
+        "text": "Apply this paste to the chopped fish pieces evenly and properly and fried it in the oil on medium flame, then have it after the proper cooking.",
+        "phase": "",
+        "heat": null,
+        "timerStr": null,
+        "stepIngredients": [],
+        "illColor": "#F5F0E8"
+      }
+    ],
+    "healthFlags": [],
+    "sources": [
+      {
+        "citation": "KK — Ksemakutūhalam 7/26–27",
+        "text": "Ksemakutūhalam (Ksema Sarmakrut) — Pandey ed."
+      },
+      {
+        "citation": "ICMR-NIN 2024",
+        "text": "Dietary Guidelines for Indians, ICMR-NIN (2024)"
+      }
+    ],
+    "yieldStr": "120–140 g",
+    "shelfLife": "",
+    "type": "non-vegetarian",
+    "meals": [],
+    "mainIngredients": [],
+    "methods": [],
+    "dietTags": [],
+    "makeAhead": false,
+    "prepAheadNote": "",
+    "status": "draft",
+    "images": [],
+    "totalTimeMin": null
   }
 ]
