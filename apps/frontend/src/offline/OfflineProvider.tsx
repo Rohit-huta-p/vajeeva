@@ -77,7 +77,10 @@ export function OfflineProvider({ children }: { children: React.ReactNode }) {
   // Track connectivity; re-sync on every offline→online transition.
   useEffect(() => {
     const unsub = NetInfo.addEventListener(state => {
-      const online = state.isConnected !== false; // unknown/null → treat as online
+      // Prefer actual internet reachability (Wi-Fi with no internet → offline);
+      // fall back to the connection state while reachability is still unknown
+      // (null). Only an explicit `false` flips the app into offline mode.
+      const online = (state.isInternetReachable ?? state.isConnected) !== false;
       setIsOnline(online);
       if (!prevOnline.current && online) doSync();
       prevOnline.current = online;
