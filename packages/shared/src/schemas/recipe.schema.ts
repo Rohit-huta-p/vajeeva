@@ -61,7 +61,7 @@ export const RecipeSchema = z.object({
   dietTags: z.array(z.string()).default([]),
   makeAhead: z.boolean().default(false),
   prepAheadNote: z.string().default(''),
-  totalTimeMin: z.number().int().min(0).optional(),
+  totalTimeMin: z.number().int().min(0).nullish().transform(v => v ?? undefined),
   status: z.enum(['published', 'draft']).default('draft'),
   images: z.array(ImageSchema).optional().default([]),
   updatedAt: z.date().default(() => new Date()),
