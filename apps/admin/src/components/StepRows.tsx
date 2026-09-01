@@ -56,7 +56,12 @@ function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
 
   const wrapLink   = (e: React.MouseEvent) => wrap(e, (b, sel, a) => `${b}[[${sel}]]${a}`);
   const wrapBold   = (e: React.MouseEvent) => wrap(e, (b, sel, a) => `${b}**${sel}**${a}`);
-  const wrapBullet = (e: React.MouseEvent) => wrap(e, (b, sel, a) => `${b}• ${sel}${a}`);
+  // Bullet always lives on its own line — add \n before/after if needed.
+  const wrapBullet = (e: React.MouseEvent) => wrap(e, (b, sel, a) => {
+    const pre  = b.length  > 0 && !b.endsWith('\n')  ? '\n' : '';
+    const post = a.length  > 0 && !a.startsWith('\n') ? '\n' : '';
+    return `${b}${pre}• ${sel}${post}${a}`;
+  });
 
   return (
     <div className="bg-sand border border-ink/[0.11] rounded-[12px] p-4">

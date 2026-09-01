@@ -78,23 +78,35 @@ export function LinkedStepText({ text, style, linkColor = '#E8B44A' }: Props) {
   return (
     <View>
       {lines.map((line, i) => {
+        const prev = lines[i - 1];
+        // Add a small gap when transitioning from plain text into a bullet block
+        const topGap = line.startsWith('• ') && prev && !prev.startsWith('• ') ? 4 : 0;
+
         if (line.startsWith('• ')) {
           return (
             <View
               key={i}
-              style={{ flexDirection: 'row', alignItems: 'flex-start', marginBottom: 2 }}
+              style={{
+                flexDirection: 'row',
+                alignItems: 'flex-start',
+                marginTop: topGap,
+                marginBottom: 3,
+                paddingLeft: 4,   // indent the whole bullet row
+              }}
             >
-              {/* Bullet dot — inherits base style's font/color */}
-              <Text style={[style, { marginRight: 5, lineHeight: undefined }]}>•</Text>
+              {/* Bullet dot */}
+              <Text style={[style, { marginRight: 6, lineHeight: undefined }]}>•</Text>
               <Text style={[style, { flex: 1 }]}>
                 {parseInline(line.slice(2), linkColor)}
               </Text>
             </View>
           );
         }
-        // Non-bullet line
+
+        // Non-bullet line — small gap after a bullet block
+        const bottomGap = prev?.startsWith('• ') ? 4 : 0;
         return (
-          <Text key={i} style={style}>
+          <Text key={i} style={[style, { marginTop: bottomGap }]}>
             {parseInline(line, linkColor)}
           </Text>
         );
