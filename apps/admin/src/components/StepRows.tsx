@@ -18,7 +18,12 @@ export const EMPTY_STEP: Step = {
 
 const INP = 'border border-ink/[0.11] rounded-[8px] px-3 py-2 bg-cream text-[13px] text-ink placeholder:text-ink/35';
 
-// ── Single step row — extracted to own component so each has its own selection state ──
+// ── Rich text helpers ─────────────────────────────────────────────────────────
+/** Returns true if the text contains any rich markup we render in the app. */
+const hasMarkup = (t: string) =>
+  /\[\[.+?\]\]/.test(t) || /\*\*[^*]+\*\*/.test(t) || /(?:^|[\n])• /.test(t);
+
+// ── Single step row — extracted so each has its own selection + toolbar state ─
 function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
   row: Step;
   idx: number;
@@ -29,28 +34,34 @@ function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
   canDown: boolean;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const [showLink, setShowLink] = useState(false);
+  const [showToolbar, setShowToolbar] = useState(false);
 
   function checkSelection() {
     const el = textareaRef.current;
     if (!el) return;
-    setShowLink(el.selectionStart !== el.selectionEnd);
+    setShowToolbar(el.selectionStart !== el.selectionEnd);
   }
 
-  // Called via onMouseDown on the 🔗 button — e.preventDefault() keeps textarea
-  // focused so selectionStart/End are still valid when we read them.
-  function wrapSelection(e: React.MouseEvent) {
+  // e.preventDefault() keeps focus on the textarea so selectionStart/End stay valid.
+  function wrap(e: React.MouseEvent, transform: (before: string, sel: string, after: string) => string) {
     e.preventDefault();
     const el = textareaRef.current;
     if (!el) return;
-    const { selectionStart: s, selectionEnd: e_ } = el;
-    if (s === e_) return;
-    const before   = row.text.slice(0, s);
-    const selected = row.text.slice(s, e_);
-    const after    = row.text.slice(e_);
-    onSet({ text: `${before}[[${selected}]]${after}` });
-    setShowLink(false);
+    const s = el.selectionStart, end = el.selectionEnd;
+    if (s === end) return;
+    const text = row.text;
+    onSet({ text: transform(text.slice(0, s), text.slice(s, end), text.slice(end)) });
+    setShowToolbar(false);
   }
+
+  const wrapLink   = (e: React.MouseEvent) => wrap(e, (b, sel, a) => `${b}[[${sel}]]${a}`);
+  const wrapBold   = (e: React.MouseEvent) => wrap(e, (b, sel, a) => `${b}**${sel}**${a}`);
+  // Bullet always lives on its own line — add \n before/after if needed.
+  const wrapBullet = (e: React.MouseEvent) => wrap(e, (b, sel, a) => {
+    const pre  = b.length  > 0 && !b.endsWith('\n')  ? '\n' : '';
+    const post = a.length  > 0 && !a.startsWith('\n') ? '\n' : '';
+    return `${b}${pre}• ${sel}${post}${a}`;
+  });
 
   return (
     <div className="bg-sand border border-ink/[0.11] rounded-[12px] p-4">
@@ -71,20 +82,26 @@ function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
           className="text-clay/70 hover:text-clay px-2 text-[18px] leading-none transition-colors">×</button>
       </div>
 
-      {/* Instruction + 🔗 link button */}
+      {/* Instruction + floating rich-text toolbar */}
       <div className="relative mb-3">
-        {/* Floating link button — appears above the textarea when text is selected */}
-        {showLink && (
-          <div className="absolute -top-8 left-0 z-10 animate-in fade-in duration-100">
-            <button
-              type="button"
-              onMouseDown={wrapSelection}
-              className="flex items-center gap-1.5 bg-ink text-cream text-[11px] font-semibold px-2.5 py-1.5 rounded-[7px] shadow-lg hover:bg-ink/80 transition-colors whitespace-nowrap"
-            >
-              🔗 <span>Link to Google</span>
+        {/* Toolbar — floats above textarea on text selection */}
+        {showToolbar && (
+          <div className="absolute -top-9 left-0 z-10 flex items-center gap-1">
+            <button type="button" onMouseDown={wrapLink}
+              className="flex items-center gap-1 bg-ink text-cream text-[11px] font-semibold px-2.5 py-1.5 rounded-[7px] shadow-lg hover:bg-ink/80 transition-colors whitespace-nowrap">
+              🔗 Link
+            </button>
+            <button type="button" onMouseDown={wrapBold}
+              className="flex items-center bg-ink text-cream text-[12px] font-extrabold px-2.5 py-1.5 rounded-[7px] shadow-lg hover:bg-ink/80 transition-colors">
+              B
+            </button>
+            <button type="button" onMouseDown={wrapBullet}
+              className="flex items-center gap-1 bg-ink text-cream text-[11px] font-semibold px-2.5 py-1.5 rounded-[7px] shadow-lg hover:bg-ink/80 transition-colors whitespace-nowrap">
+              • Bullet
             </button>
           </div>
         )}
+
         <textarea
           ref={textareaRef}
           aria-label={`Step ${idx + 1} text`}
@@ -95,13 +112,19 @@ function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
           onSelect={checkSelection}
           onMouseUp={checkSelection}
           onKeyUp={checkSelection}
-          onBlur={() => setShowLink(false)}
+          onBlur={() => setShowToolbar(false)}
           className={`w-full ${INP} resize-y`}
         />
-        {/* Inline hint when [[links]] exist in the text */}
-        {/\[\[.+?\]\]/.test(row.text) && (
-          <p className="mt-1 text-[10.5px] text-ink/35 italic">
-            Highlighted terms [[like this]] open a Google search when users tap them.
+
+        {/* Hint shown when any rich markup is present */}
+        {hasMarkup(row.text) && (
+          <p className="mt-1 text-[10.5px] text-ink/35 italic leading-snug">
+            <strong className="font-bold not-italic">**bold**</strong>
+            {' · '}
+            <span className="underline">[[search link]]</span>
+            {' · '}
+            <span>• bullet</span>
+            {' — rendered in the app.'}
           </p>
         )}
       </div>
@@ -157,7 +180,7 @@ function StepRow({ row, idx, onSet, onMove, onRemove, canUp, canDown }: {
   );
 }
 
-// ── StepRows — the public-facing component ────────────────────────────────────
+// ── StepRows — public-facing component ───────────────────────────────────────
 export function StepRows({ value, onChange }: {
   value: Step[];
   onChange: (next: Step[]) => void;
