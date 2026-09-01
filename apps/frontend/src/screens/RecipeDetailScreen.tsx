@@ -15,11 +15,11 @@ import { usePreferences } from '../hooks/usePreferences';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
-import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero } from '../components/shared/icons';
+import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { recipesApi, sortImages, cloudThumb, toListItem } from '../api/recipes';
+import { recipesApi, sortImages, cloudThumb, toListItem, isNonVeg } from '../api/recipes';
 import type { RecipeDoc, RecipeImage, RecipeListItem } from '../api/recipes';
 import { getRecipe } from '../offline/catalog';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
@@ -45,6 +45,7 @@ const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://vajeeva.app';
 interface DetailView {
   nameEn: string;
   nameTa?: string;
+  nonVeg: boolean;
   images: RecipeImage[];
   sources: string[];
   yield: string;
@@ -58,6 +59,7 @@ function toDetailView(doc: RecipeDoc): DetailView {
   return {
     nameEn: doc.nameEn,
     nameTa: doc.nameTa,
+    nonVeg: isNonVeg(doc),
     // hero-sized Cloudinary transform (390pt-wide hero @3x)
     images: sortImages(doc.images).map(im => ({ ...im, url: cloudThumb(im.url, 1200, 530) })),
     sources: (doc.sources ?? []).map(src => src.text),
@@ -167,10 +169,13 @@ export function RecipeDetailScreen() {
           </View>
         </View>
         <View style={s.body}>
-          {/* Title */}
-          <View>
-            <Text style={s.title}>{recipe.nameEn}</Text>
-            {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
+          {/* Title — veg / non-veg mark to the left */}
+          <View style={s.titleRow}>
+            <View style={s.titleMark}><VegMark nonVeg={recipe.nonVeg} size={sc(18)} /></View>
+            <View style={s.titleCol}>
+              <Text style={s.title}>{recipe.nameEn}</Text>
+              {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
+            </View>
           </View>
 
           {/* Sources */}
@@ -248,6 +253,9 @@ const makeStyles = (colors: Colors) => scaledSheet({
   },
   heroActs: { flexDirection: 'row', gap: 6 },
   body: { paddingHorizontal: 14, paddingTop: 13, paddingBottom: 14, gap: 13 },
+  titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  titleMark: { marginTop: 4 },   // nudge the mark onto the title's first line
+  titleCol: { flex: 1, minWidth: 0 },
   title: { fontSize: 22, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, letterSpacing: -0.22, lineHeight: 25 },
   tamil: { fontSize: 13, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 3 },
   sourceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },

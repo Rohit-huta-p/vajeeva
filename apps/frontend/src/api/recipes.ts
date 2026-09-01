@@ -55,6 +55,13 @@ export function deriveFit(flags: RecipeDoc['healthFlags'] | undefined): FitLevel
   return 'safe';
 }
 
+/**
+ * Non-vegetarian recipes carry `type: "non-vegetarian"` (the n-01..n-16 set);
+ * everything else — including veg dishes whose `type` is a dish kind or empty —
+ * is vegetarian. Used for the card / detail veg mark and the Veg/Non-veg filter.
+ */
+export const isNonVeg = (r: { type?: string }): boolean => r.type === 'non-vegetarian';
+
 // Shape of a recipe document as served by GET /api/recipes[/:slug].
 export interface RecipeDoc {
   slug: string;

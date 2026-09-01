@@ -1,5 +1,5 @@
 import React from 'react';
-import Svg, { Path, Circle, Ellipse } from 'react-native-svg';
+import Svg, { Path, Circle, Ellipse, Rect } from 'react-native-svg';
 import { colors } from '../../theme/tokens';
 
 // Vector icons + food illustrations mirrored from prototypes/vajeeva-prototype.html
@@ -248,6 +248,19 @@ export function IconShare({ size = 15, color = colors.ink }: IconProps) {
       <Circle {...ln(color)} cx={17} cy={6} r={2.4} />
       <Circle {...ln(color)} cx={17} cy={18} r={2.4} />
       <Path {...ln(color)} d="M8.1 11l6.8-3.8M8.1 13l6.8 3.8" />
+    </Svg>
+  );
+}
+
+// FSSAI-style veg / non-veg mark: a rounded square outline with a filled dot —
+// green for veg, clay (red-brown) for non-veg. The white square fill keeps it
+// legible on any tile (photo or tint) in either theme.
+export function VegMark({ nonVeg = false, size = 14 }: { nonVeg?: boolean; size?: number }) {
+  const c = nonVeg ? colors.clay : colors.green;
+  return (
+    <Svg width={size} height={size} viewBox="0 0 22 22">
+      <Rect x={1.4} y={1.4} width={19.2} height={19.2} rx={4} fill="#FFFFFF" stroke={c} strokeWidth={2} />
+      <Circle cx={11} cy={11} r={5} fill={c} />
     </Svg>
   );
 }
