@@ -1,7 +1,7 @@
 // Vocabulary shape from GET /api/admin/tags (grouped by facet).
-export type VocabValue = { code: string; label: string; order?: number; enabled?: boolean };
-export type Vocab = Record<'type' | 'meal' | 'ingredient' | 'method' | 'diet', VocabValue[]>;
-export const emptyVocab = (): Vocab => ({ type: [], meal: [], ingredient: [], method: [], diet: [] });
+export type VocabValue = { code: string; label: string; order?: number; enabled?: boolean; group?: string };
+export type Vocab = Record<'type' | 'meal' | 'ingredient' | 'method' | 'diet' | 'filter', VocabValue[]>;
+export const emptyVocab = (): Vocab => ({ type: [], meal: [], ingredient: [], method: [], diet: [], filter: [] });
 
 // ── Curated starter vocabulary (mirrors TagsPage defaults) ───────────────────
 // Used as a fallback when the DB has no saved tags yet, so the recipe editor
@@ -17,6 +17,19 @@ export const TAG_DEFAULTS: Vocab = {
   ingredient: mk(['Coconut','Barley','Amla','Black gram','Milk','Ghee','Jaggery','Sesame']),
   method:     mk(['Steamed','Fried','Baked','Roasted','Boiled','No-cook','Fermented','Soaked']),
   diet:       mk(['Sweet','Savoury','No added sugar','Dairy','High protein']),
+  // Home filter pills — each carries a `group` that drives the Home layout.
+  filter: [
+    { code: 'quick',      label: 'Quick',      group: 'effort',   order: 1,  enabled: true },
+    { code: 'no-cook',    label: 'No-cook',    group: 'effort',   order: 2,  enabled: true },
+    { code: 'make-ahead', label: 'Make-ahead', group: 'effort',   order: 3,  enabled: true },
+    { code: 'sweet',      label: 'Sweet',      group: 'taste',    order: 4,  enabled: true },
+    { code: 'savoury',    label: 'Savoury',    group: 'taste',    order: 5,  enabled: true },
+    { code: 'spicy',      label: 'Spicy',      group: 'taste',    order: 6,  enabled: true },
+    { code: 'refreshing', label: 'Refreshing', group: 'taste',    order: 7,  enabled: true },
+    { code: 'breakfast',  label: 'Breakfast',  group: 'occasion', order: 8,  enabled: true },
+    { code: 'snack',      label: 'Snack',      group: 'occasion', order: 9,  enabled: true },
+    { code: 'side',       label: 'Side',       group: 'occasion', order: 10, enabled: true },
+  ],
 };
 
 /** Merge DB vocab with defaults: any facet that has saved values wins; otherwise fall back. */
@@ -39,6 +52,7 @@ export type TagValue = {
   makeAhead: boolean;
   prepAheadNote: string;
   totalTimeMin?: number;
+  filters: string[];
 };
 
 // facet (vocab key) → recipe field, and whether it's single-select.
@@ -48,6 +62,7 @@ const FACETS = [
   { facet: 'ingredient', field: 'mainIngredients', label: 'Main ingredients', single: false },
   { facet: 'method',     field: 'methods',         label: 'Method',           single: false },
   { facet: 'diet',       field: 'dietTags',        label: 'Diet',             single: false },
+  { facet: 'filter',     field: 'filters',         label: 'Home filters',     single: false },
 ] as const;
 
 /**

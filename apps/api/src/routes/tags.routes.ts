@@ -18,9 +18,9 @@ export const tagsPublicRouter = Router();
 tagsPublicRouter.get('/', async (_req, res, next) => {
   try {
     const items = await TagConfig.find({ enabled: true }).sort({ order: 1, label: 1 }).lean();
-    const out = emptyGrouped<{ code: string; label: string }>();
+    const out = emptyGrouped<{ code: string; label: string; group?: string }>();
     for (const it of items) {
-      if (isFacet(it.facet)) out[it.facet].push({ code: it.code, label: it.label });
+      if (isFacet(it.facet)) out[it.facet].push({ code: it.code, label: it.label, ...(it.group ? { group: it.group } : {}) });
     }
     res.json(out);
   } catch (err) { next(err); }
@@ -30,7 +30,7 @@ tagsPublicRouter.get('/', async (_req, res, next) => {
 export const tagsAdminRouter = Router();
 tagsAdminRouter.use(requireAuth, requireAdmin);
 
-interface TagState { code: string; label: string; order: number; enabled: boolean }
+interface TagState { code: string; label: string; order: number; enabled: boolean; group?: string }
 
 tagsAdminRouter.get('/', async (_req, res, next) => {
   try {
@@ -38,7 +38,7 @@ tagsAdminRouter.get('/', async (_req, res, next) => {
     const out = emptyGrouped<TagState>();
     for (const it of items) {
       if (isFacet(it.facet)) {
-        out[it.facet].push({ code: it.code, label: it.label, order: it.order ?? 0, enabled: it.enabled });
+        out[it.facet].push({ code: it.code, label: it.label, order: it.order ?? 0, enabled: it.enabled, ...(it.group ? { group: it.group } : {}) });
       }
     }
     res.json(out);
@@ -52,7 +52,7 @@ tagsAdminRouter.put('/', async (req, res, next) => {
     if (!body || typeof body !== 'object' || Array.isArray(body)) {
       res.status(400).json({ error: 'Body must be a facet-keyed object' }); return;
     }
-    const docs: Array<{ facet: string; code: string; label: string; order: number; enabled: boolean }> = [];
+    const docs: Array<{ facet: string; code: string; label: string; order: number; enabled: boolean; group: string }> = [];
     for (const facet of TAG_FACETS) {
       const list = body[facet];
       if (list === undefined) continue;
@@ -64,7 +64,7 @@ tagsAdminRouter.put('/', async (req, res, next) => {
         if (!code || !label) { res.status(400).json({ error: `Invalid tag in '${facet}': code and label are required` }); return; }
         if (seen.has(code)) { res.status(400).json({ error: `Duplicate code '${code}' in facet '${facet}'` }); return; }
         seen.add(code);
-        docs.push({ facet, code, label, order: Number(t.order) || 0, enabled: t.enabled !== false });
+        docs.push({ facet, code, label, order: Number(t.order) || 0, enabled: t.enabled !== false, group: typeof t.group === 'string' ? t.group : '' });
       }
     }
     await TagConfig.deleteMany({});
@@ -74,7 +74,7 @@ tagsAdminRouter.put('/', async (req, res, next) => {
     const out = emptyGrouped<TagState>();
     for (const it of saved) {
       if (isFacet(it.facet)) {
-        out[it.facet].push({ code: it.code, label: it.label, order: it.order ?? 0, enabled: it.enabled });
+        out[it.facet].push({ code: it.code, label: it.label, order: it.order ?? 0, enabled: it.enabled, ...(it.group ? { group: it.group } : {}) });
       }
     }
     res.json(out);

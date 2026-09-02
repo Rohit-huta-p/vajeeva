@@ -8,6 +8,7 @@ const FACETS = [
   { facet: 'ingredient', label: 'Main ingredient' },
   { facet: 'method',     label: 'Method' },
   { facet: 'diet',       label: 'Diet' },
+  { facet: 'filter',     label: 'Home filters' },
 ] as const;
 
 const slug = (s: string) => s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -34,7 +35,7 @@ export function TagsPage() {
       const body: Vocab = { ...vocab };
       for (const { facet } of FACETS) {
         body[facet] = vocab[facet]
-          .map((t, i) => ({ code: (t.code || slug(t.label)).trim(), label: t.label.trim(), order: t.order ?? i + 1, enabled: t.enabled !== false }))
+          .map((t, i) => ({ code: (t.code || slug(t.label)).trim(), label: t.label.trim(), order: t.order ?? i + 1, enabled: t.enabled !== false, ...(t.group ? { group: t.group } : {}) }))
           .filter(t => t.label && t.code);
       }
       const saved = await api<Partial<Vocab>>('/api/admin/tags', { method: 'PUT', body: JSON.stringify(body) });
@@ -88,6 +89,19 @@ export function TagsPage() {
                     onChange={e => patchRow(facet, i, { code: e.target.value })}
                     className="w-32 border border-ink/20 rounded-lg px-2 py-1.5 bg-bone text-xs font-mono"
                   />
+                  {facet === 'filter' && (
+                    <select
+                      aria-label={`${label} ${i + 1} group`}
+                      value={t.group ?? ''}
+                      onChange={e => patchRow(facet, i, { group: e.target.value })}
+                      className="w-24 border border-ink/20 rounded-lg px-2 py-1.5 bg-bone text-xs shrink-0"
+                    >
+                      <option value="">group…</option>
+                      <option value="effort">effort</option>
+                      <option value="taste">taste</option>
+                      <option value="occasion">occasion</option>
+                    </select>
+                  )}
                   <label className="flex items-center gap-1 text-xs text-ink/55 shrink-0">
                     <input
                       type="checkbox"

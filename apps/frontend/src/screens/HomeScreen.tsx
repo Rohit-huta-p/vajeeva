@@ -14,12 +14,14 @@ import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { SkeletonRail } from '../components/shared/SkeletonRail';
 import { WelcomeCard } from '../components/shared/WelcomeCard';
 import { SaveNudge } from '../components/shared/SaveNudge';
+import { FilterPillRow } from '../components/shared/FilterPillRow';
 import {
   MkSprout, IconUser, IconLeaf, IconChev,
 } from '../components/shared/icons';
 import { useCookSession } from '../hooks/useCookSession';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
+import { useFilterPills } from '../hooks/useFilterPills';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes } from '../offline/catalog';
@@ -61,6 +63,8 @@ export function HomeScreen() {
   // Saved preview fills exactly one responsive row (2 / 3 / 4 cards by width).
   const { width } = useWindowDimensions();
   const savedCols = columnsFor(width);
+  // Admin-owned Home filter pills (effort flat + taste/occasion dropdowns).
+  const filterPills = useFilterPills();
 
   // Texture-pulse cue: "Choose a texture" scrolls the doors into view and pulses
   // each one (staggered green ring) so a new patient's eye lands on the choice.
@@ -151,6 +155,9 @@ export function HomeScreen() {
       {/* Content well — sand tray with a rounded lip (mirrors RecipeListScreen) */}
       <View style={s.well}>
         <ScrollView ref={scrollRef} contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
+          {/* Quick filters — admin-owned pills; a tap deep-links the recipe list */}
+          <FilterPillRow pills={filterPills} onSelect={code => router.push(`/recipe-list?filter=${code}` as any)} />
+
           {/* Zone 1 · Jump back in — skeleton while on-device history loads,
               then the rail, or a welcome for a brand-new patient */}
           {historyLoading ? (

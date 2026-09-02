@@ -15,6 +15,7 @@
     "seed:images:nonveg": "ts-node -r dotenv/config src/scripts/seed-images-nonveg.ts",
     "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts",
     "seed:tags": "ts-node src/scripts/seed-tags.ts",
+    "backfill:filters": "ts-node src/scripts/backfill-filters.ts",
     "search:create-index": "ts-node src/scripts/create-search-index.ts"
   },
   "dependencies": {

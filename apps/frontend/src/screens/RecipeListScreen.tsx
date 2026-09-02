@@ -11,6 +11,7 @@ import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { SearchBar } from '../components/shared/SearchBar';
 import { FilterChip } from '../components/shared/FilterChip';
+import { FilterSheet } from '../components/shared/FilterSheet';
 import { IconBack, IconFilter, VegMark } from '../components/shared/icons';
 import { recipesApi, toListItem, isNonVeg } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
@@ -18,6 +19,7 @@ import { getAllRecipes, searchCatalog } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
 import { isFacet, facetLabel, matchFacet, matchTag, type TagAxis } from '../config/facets';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { useFilterPills } from '../hooks/useFilterPills';
 import { scaledSheet, sc } from '../theme/scale';
 
 const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
@@ -72,8 +74,8 @@ export function RecipeListScreen() {
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
   const { ready, lastSyncedAt, resync } = useOffline();
-  const { texture, facet, type, meal, ingredient, method, q } = useLocalSearchParams<{
-    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string;
+  const { texture, facet, type, meal, ingredient, method, q, filter: filterTag } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string; filter?: string;
   }>();
   // A free-text search (Home SearchBar submit) replaces the texture/facet/tag
   // browse flow entirely for this load — see load() below — rather than
@@ -83,6 +85,10 @@ export function RecipeListScreen() {
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  // FILTER button → bottom sheet of the admin-owned pills (single-select over
+  // the ?filter axis). The dot on the button marks an active filter.
+  const [showFilter, setShowFilter] = useState(false);
+  const filterPills = useFilterPills();
   // Veg / Non-veg diet filter (mutually exclusive; 'all' = both).
   const [diet, setDiet] = useState<'all' | 'veg' | 'nonveg'>('all');
   // In-screen search — same SearchBar as Home; submit drives the `q` param
@@ -117,13 +123,13 @@ export function RecipeListScreen() {
       if (LABEL_TO_CATEGORY[filter]) items = items.filter(r => r.category === LABEL_TO_CATEGORY[filter]);
       if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
       // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
-      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method]];
+      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method], ['filter', filterTag]];
       for (const [axis, value] of axes) {
         if (value) items = items.filter(r => matchTag(r, axis, value));
       }
       setRecipes(items);
     } catch { } finally { setLoading(false); }
-  }, [filter, facet, type, meal, ingredient, method, isSearch, q]);
+  }, [filter, facet, type, meal, ingredient, method, filterTag, isSearch, q]);
 
   // Show skeletons for the initial load and on every filter/facet change (a new
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
@@ -189,12 +195,14 @@ export function RecipeListScreen() {
                 : type ? prettyTag(type)
                 : meal ? prettyTag(meal)
                 : method ? prettyTag(method)
+                : filterTag ? prettyTag(filterTag)
                 : (filter === 'All' ? 'All Recipes' : filter)
             }</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
-          <IcoBtn>
-            <IconFilter size={sc(15)} color={colors.ink} />
+          <IcoBtn onPress={() => setShowFilter(true)}>
+            <IconFilter size={sc(15)} color={filterTag ? colors.green : colors.ink} />
+            {filterTag ? <View style={s.filterDot} /> : null}
           </IcoBtn>
         </View>
         {/* Search — same bar as Home; submit runs a full-catalog search (q param) */}
@@ -286,6 +294,14 @@ export function RecipeListScreen() {
           />
         </View>
       </View>
+
+      <FilterSheet
+        visible={showFilter}
+        pills={filterPills}
+        selected={filterTag}
+        onClose={() => setShowFilter(false)}
+        onSelect={code => { router.setParams({ filter: code ?? '' }); setShowFilter(false); }}
+      />
     </View>
   );
 }
@@ -313,6 +329,8 @@ const makeStyles = (colors: Colors) => scaledSheet({
     alignItems: 'center', justifyContent: 'center',
     ...shadows.card,
   },
+  // Active-filter marker on the FILTER button.
+  filterDot: { position: 'absolute', top: 5, right: 5, width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.green },
   // Full-bleed chip row: chips align with the header at 14pt and scroll under
   // the screen edge, with a matching 14pt gutter at the end of the scroll.
   chips: { flexGrow: 0 },

@@ -62,6 +62,9 @@ export const RecipeSchema = z.object({
   makeAhead: z.boolean().default(false),
   prepAheadNote: z.string().default(''),
   totalTimeMin: z.number().int().min(0).nullish().transform(v => v ?? undefined),
+  // Home filter pills — admin-owned `filter` facet codes (effort/taste/occasion).
+  // See docs/specs/2026-09-02-home-filter-pills.md.
+  filters: z.array(z.string()).default([]),
   status: z.enum(['published', 'draft']).default('draft'),
   images: z.array(ImageSchema).optional().default([]),
   updatedAt: z.date().default(() => new Date()),
