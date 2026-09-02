@@ -11,6 +11,7 @@ import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { SearchBar } from '../components/shared/SearchBar';
 import { FilterChip } from '../components/shared/FilterChip';
+import { FilterSheet } from '../components/shared/FilterSheet';
 import { IconBack, IconFilter, VegMark } from '../components/shared/icons';
 import { recipesApi, toListItem, isNonVeg } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
@@ -18,6 +19,7 @@ import { getAllRecipes, searchCatalog } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
 import { isFacet, facetLabel, matchFacet, matchTag, type TagAxis } from '../config/facets';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { useFilterPills } from '../hooks/useFilterPills';
 import { scaledSheet, sc } from '../theme/scale';
 
 const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
@@ -83,6 +85,10 @@ export function RecipeListScreen() {
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  // FILTER button → bottom sheet of the admin-owned pills (single-select over
+  // the ?filter axis). The dot on the button marks an active filter.
+  const [showFilter, setShowFilter] = useState(false);
+  const filterPills = useFilterPills();
   // Veg / Non-veg diet filter (mutually exclusive; 'all' = both).
   const [diet, setDiet] = useState<'all' | 'veg' | 'nonveg'>('all');
   // In-screen search — same SearchBar as Home; submit drives the `q` param
@@ -194,8 +200,9 @@ export function RecipeListScreen() {
             }</Text>
             <Text style={s.subtitle}>{sub}</Text>
           </View>
-          <IcoBtn>
-            <IconFilter size={sc(15)} color={colors.ink} />
+          <IcoBtn onPress={() => setShowFilter(true)}>
+            <IconFilter size={sc(15)} color={filterTag ? colors.green : colors.ink} />
+            {filterTag ? <View style={s.filterDot} /> : null}
           </IcoBtn>
         </View>
         {/* Search — same bar as Home; submit runs a full-catalog search (q param) */}
@@ -287,6 +294,14 @@ export function RecipeListScreen() {
           />
         </View>
       </View>
+
+      <FilterSheet
+        visible={showFilter}
+        pills={filterPills}
+        selected={filterTag}
+        onClose={() => setShowFilter(false)}
+        onSelect={code => { router.setParams({ filter: code ?? '' }); setShowFilter(false); }}
+      />
     </View>
   );
 }
@@ -314,6 +329,8 @@ const makeStyles = (colors: Colors) => scaledSheet({
     alignItems: 'center', justifyContent: 'center',
     ...shadows.card,
   },
+  // Active-filter marker on the FILTER button.
+  filterDot: { position: 'absolute', top: 5, right: 5, width: 7, height: 7, borderRadius: 3.5, backgroundColor: colors.green },
   // Full-bleed chip row: chips align with the header at 14pt and scroll under
   // the screen edge, with a matching 14pt gutter at the end of the scroll.
   chips: { flexGrow: 0 },

@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { View, Text, ScrollView, TouchableOpacity, Modal, Pressable } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import React, { useRef, useState } from 'react';
+import { View, Text, ScrollView, TouchableOpacity, Modal, Pressable, useWindowDimensions } from 'react-native';
 import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconChev } from './icons';
@@ -10,8 +9,8 @@ import { FILTER_GROUPS, groupLabel, type FilterGroup, type FilterPill } from '..
 /**
  * The Home quick-filter row. `effort` pills render flat (one-tap → filtered
  * list); the other groups (taste, occasion) collapse into labelled pills that
- * open a bottom sheet of options. A pick navigates via onSelect(code).
- * See docs/specs/2026-09-02-home-filter-pills.md.
+ * open a dropdown menu anchored under the pill. A pick navigates via
+ * onSelect(code). See docs/specs/2026-09-02-home-filter-pills.md.
  */
 export function FilterPillRow({ pills, onSelect }: {
   pills: FilterPill[];
@@ -19,14 +18,27 @@ export function FilterPillRow({ pills, onSelect }: {
 }) {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
-  const insets = useSafeAreaInsets();
-  const [openGroup, setOpenGroup] = useState<FilterGroup | null>(null);
+  const { width: screenW } = useWindowDimensions();
+  const menuW = sc(170);
+  // measureInWindow node handles for the dropdown-pill anchors.
+  const anchors = useRef<Record<string, any>>({});
+  const [menu, setMenu] = useState<{ group: FilterGroup; left: number; top: number } | null>(null);
 
   const effort = pills.filter(p => p.group === 'effort');
   const menuGroups = FILTER_GROUPS.filter(g => g !== 'effort' && pills.some(p => p.group === g));
-  const openPills = openGroup ? pills.filter(p => p.group === openGroup) : [];
+  const openPills = menu ? pills.filter(p => p.group === menu.group) : [];
 
-  const pick = (code: string) => { setOpenGroup(null); onSelect(code); };
+  const open = (g: FilterGroup) => {
+    const place = (x: number, y: number, h: number) => {
+      // Clamp within the screen so the menu never bleeds off the right edge.
+      const left = Math.max(sc(12), Math.min(x, screenW - menuW - sc(12)));
+      setMenu({ group: g, left, top: y + h + sc(6) });
+    };
+    const node = anchors.current[g];
+    if (node?.measureInWindow) node.measureInWindow((x: number, y: number, _w: number, h: number) => place(x, y, h));
+    else place(sc(14), sc(150), 0);
+  };
+  const pick = (code: string) => { setMenu(null); onSelect(code); };
 
   if (effort.length === 0 && menuGroups.length === 0) return null;
 
@@ -43,37 +55,42 @@ export function FilterPillRow({ pills, onSelect }: {
             <Text style={s.pillLabel}>{p.label}</Text>
           </TouchableOpacity>
         ))}
-        {menuGroups.map(g => (
-          <TouchableOpacity
-            key={g}
-            style={[s.pill, openGroup === g && s.pillOpen]}
-            onPress={() => setOpenGroup(g)}
-            activeOpacity={0.7}
-          >
-            <Text style={[s.pillLabel, openGroup === g && s.pillLabelOpen]}>{groupLabel(g)}</Text>
-            <View style={s.chev}><IconChev size={sc(9)} color={openGroup === g ? colors.green : colors.ink2} /></View>
-          </TouchableOpacity>
-        ))}
+        {menuGroups.map(g => {
+          const isOpen = menu?.group === g;
+          return (
+            <TouchableOpacity
+              key={g}
+              ref={node => { anchors.current[g] = node; }}
+              style={[s.pill, isOpen && s.pillOpen]}
+              onPress={() => open(g)}
+              activeOpacity={0.7}
+            >
+              <Text style={[s.pillLabel, isOpen && s.pillLabelOpen]}>{groupLabel(g)}</Text>
+              <View style={[s.chev, isOpen && s.chevOpen]}>
+                <IconChev size={sc(9)} color={isOpen ? colors.green : colors.ink2} />
+              </View>
+            </TouchableOpacity>
+          );
+        })}
       </ScrollView>
 
-      <Modal
-        visible={openGroup !== null}
-        transparent
-        animationType="fade"
-        onRequestClose={() => setOpenGroup(null)}
-      >
-        <Pressable style={s.backdrop} onPress={() => setOpenGroup(null)}>
-          {/* Stop propagation so taps inside the sheet don't dismiss it. */}
-          <Pressable style={[s.sheet, { paddingBottom: sc(10) + insets.bottom }]} onPress={() => {}}>
-            <View style={s.grip} />
-            <Text style={s.sheetTitle}>{openGroup ? groupLabel(openGroup) : ''}</Text>
-            {openPills.map(p => (
-              <TouchableOpacity key={p.code} style={s.optRow} onPress={() => pick(p.code)} activeOpacity={0.6}>
-                <Text style={s.optLabel}>{p.label}</Text>
-                <IconChev size={sc(12)} color={colors.muted} />
-              </TouchableOpacity>
-            ))}
-          </Pressable>
+      <Modal visible={menu !== null} transparent animationType="fade" onRequestClose={() => setMenu(null)}>
+        {/* Transparent backdrop: captures the outside tap to dismiss, dropdown-style. */}
+        <Pressable style={s.backdrop} onPress={() => setMenu(null)}>
+          {menu && (
+            <Pressable style={[s.menu, { left: menu.left, top: menu.top, width: menuW }]} onPress={() => {}}>
+              {openPills.map((p, i) => (
+                <TouchableOpacity
+                  key={p.code}
+                  style={[s.menuRow, i > 0 && s.menuDiv]}
+                  onPress={() => pick(p.code)}
+                  activeOpacity={0.6}
+                >
+                  <Text style={s.menuLabel}>{p.label}</Text>
+                </TouchableOpacity>
+              ))}
+            </Pressable>
+          )}
         </Pressable>
       </Modal>
     </>
@@ -91,24 +108,19 @@ const makeStyles = (colors: Colors) => scaledSheet({
   pillOpen: { backgroundColor: colors.greenSoft, borderColor: colors.green },
   pillLabel: { fontSize: 10.5, fontFamily: fonts.sans, fontWeight: '700', color: colors.ink2 },
   pillLabelOpen: { color: colors.green },
-  // Right-chevron rotated to a down-caret to read as a dropdown affordance.
+  // Right-chevron rotated to a down-caret; flips up while the menu is open.
   chev: { transform: [{ rotate: '90deg' }] },
+  chevOpen: { transform: [{ rotate: '-90deg' }] },
 
-  backdrop: { flex: 1, backgroundColor: 'rgba(23,20,16,0.38)', justifyContent: 'flex-end' },
-  sheet: {
+  backdrop: { flex: 1, backgroundColor: 'transparent' },
+  menu: {
+    position: 'absolute',
     backgroundColor: colors.cream,
-    borderTopLeftRadius: 20, borderTopRightRadius: 20,
-    paddingHorizontal: 16, paddingTop: 9,
+    borderWidth: 1, borderColor: colors.line2, borderRadius: 12,
+    paddingVertical: 3, overflow: 'hidden',
     ...shadows.card,
   },
-  grip: { width: 40, height: 4, borderRadius: 2, backgroundColor: colors.line2, alignSelf: 'center', marginBottom: 10 },
-  sheetTitle: {
-    fontSize: 15, lineHeight: 20, fontFamily: fonts.serif, fontWeight: '700',
-    color: colors.ink, marginBottom: 2, marginLeft: 2,
-  },
-  optRow: {
-    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-    paddingVertical: 13, borderTopWidth: 1, borderTopColor: colors.line,
-  },
-  optLabel: { fontSize: 14, fontFamily: fonts.sans, fontWeight: '600', color: colors.ink },
+  menuRow: { paddingVertical: 10, paddingHorizontal: 13 },
+  menuDiv: { borderTopWidth: 1, borderTopColor: colors.line },
+  menuLabel: { fontSize: 13, fontFamily: fonts.sans, fontWeight: '600', color: colors.ink },
 });
