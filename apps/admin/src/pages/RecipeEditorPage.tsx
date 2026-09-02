@@ -37,7 +37,7 @@ const EMPTY_RECIPE: RecipeInput = {
   yieldStr: '', shelfLife: '',
   status: 'draft',
   type: '', meals: [], mainIngredients: [], methods: [], dietTags: [],
-  makeAhead: false, prepAheadNote: '', images: [],
+  makeAhead: false, prepAheadNote: '', filters: [], images: [],
 };
 
 // ── Shared input style ────────────────────────────────────────────────────
@@ -372,6 +372,7 @@ export function RecipeEditorPage() {
                   makeAhead:        form.makeAhead ?? false,
                   prepAheadNote:    form.prepAheadNote ?? '',
                   totalTimeMin:     form.totalTimeMin,
+                  filters:          form.filters ?? [],
                 }}
                 vocab={vocab}
                 onChange={p => patch(p)}
