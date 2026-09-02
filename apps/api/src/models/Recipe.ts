@@ -48,6 +48,7 @@ const RecipeSchema = new mongoose.Schema({
   makeAhead:       { type: Boolean, default: false },
   prepAheadNote:   { type: String, default: '' },
   totalTimeMin:    { type: Number },
+  filters:         { type: [String], default: [] }, // Home filter-pill codes (facet 'filter')
   status:      { type: String, enum: ['published', 'draft'], default: 'draft' },
   images:      { type: [ImageSchema], default: [] },
 }, { timestamps: true });

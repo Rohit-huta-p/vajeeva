@@ -28,7 +28,7 @@ describe('Discovery tags — admin CRUD', () => {
       .get('/api/admin/tags')
       .set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
-    expect(res.body).toEqual({ type: [], meal: [], ingredient: [], method: [], diet: [] });
+    expect(res.body).toEqual({ type: [], meal: [], ingredient: [], method: [], diet: [], filter: [] });
   });
 
   it('PUT bulk-saves grouped tags and GET returns them', async () => {
@@ -52,6 +52,29 @@ describe('Discovery tags — admin CRUD', () => {
       .set('Authorization', `Bearer ${adminToken}`);
     expect(get.body.ingredient.map((t: any) => t.code)).toEqual(['coconut', 'jaggery']);
     expect(get.body.diet[0]).toMatchObject({ code: 'sweet', label: 'Sweet' });
+  });
+
+  it('round-trips the filter facet with its group', async () => {
+    await request(app)
+      .put('/api/admin/tags')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({
+        filter: [
+          { code: 'quick', label: 'Quick', order: 1, enabled: true, group: 'effort' },
+          { code: 'sweet', label: 'Sweet', order: 2, enabled: true, group: 'taste' },
+        ],
+      });
+    const admin = await request(app).get('/api/admin/tags').set('Authorization', `Bearer ${adminToken}`);
+    expect(admin.body.filter).toEqual([
+      { code: 'quick', label: 'Quick', order: 1, enabled: true, group: 'effort' },
+      { code: 'sweet', label: 'Sweet', order: 2, enabled: true, group: 'taste' },
+    ]);
+    // Public feed carries {code,label,group} for filter items.
+    const pub = await request(app).get('/api/tags');
+    expect(pub.body.filter).toEqual([
+      { code: 'quick', label: 'Quick', group: 'effort' },
+      { code: 'sweet', label: 'Sweet', group: 'taste' },
+    ]);
   });
 
   it('PUT replaces the whole vocabulary', async () => {

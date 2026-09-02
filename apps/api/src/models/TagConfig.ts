@@ -4,7 +4,10 @@ import mongoose from 'mongoose';
 // ingredient / method / diet). One row per allowed value, keyed by facet — the
 // same pattern as HealthFlagConfig. Recipes store the `code`s; this is the
 // source of truth for which values exist and how they're labelled/ordered.
-export const TAG_FACETS = ['type', 'meal', 'ingredient', 'method', 'diet'] as const;
+// 'filter' is the Home filter-pill vocabulary; its items also carry a `group`
+// (effort/taste/occasion) that drives the Home layout. See
+// docs/specs/2026-09-02-home-filter-pills.md.
+export const TAG_FACETS = ['type', 'meal', 'ingredient', 'method', 'diet', 'filter'] as const;
 export type TagFacet = (typeof TAG_FACETS)[number];
 
 const TagConfigSchema = new mongoose.Schema({
@@ -13,6 +16,7 @@ const TagConfigSchema = new mongoose.Schema({
   label:   { type: String, required: true }, // display, e.g. 'Black gram'
   order:   { type: Number, default: 0 },     // sort within a facet
   enabled: { type: Boolean, default: true }, // hide a value without deleting it
+  group:   { type: String, default: '' },    // filter facet only: effort | taste | occasion
 }, { timestamps: true });
 
 // A code is unique within its facet (the same code may appear under two facets).
