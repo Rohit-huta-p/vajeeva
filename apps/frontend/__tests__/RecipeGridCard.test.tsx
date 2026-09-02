@@ -5,6 +5,7 @@ jest.mock('@react-native-async-storage/async-storage', () =>
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 import { RecipeGridCard } from '../src/components/shared/RecipeGridCard';
+import { isNonVeg } from '../src/api/recipes';
 import type { RecipeListItem } from '../src/api/recipes';
 
 const MOCK_RECIPE: RecipeListItem = {
@@ -52,4 +53,10 @@ test('save toggle fires without triggering the card press', () => {
   fireEvent.press(getByLabelText('Save Coconut Burfi'));
   expect(onToggleSave).toHaveBeenCalledTimes(1);
   expect(onPress).not.toHaveBeenCalled();
+});
+
+test('isNonVeg derives veg/non-veg from the type field', () => {
+  expect(isNonVeg({ type: 'non-vegetarian' })).toBe(true);
+  expect(isNonVeg({ type: 'laddu' })).toBe(false);   // veg dish type
+  expect(isNonVeg({ type: undefined })).toBe(false); // untyped → veg
 });

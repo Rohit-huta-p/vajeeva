@@ -19,11 +19,16 @@ import { scaledSheet, sc } from '../../theme/scale';
 export function FitBadge({ level, compact = false }: { level: FitLevel; compact?: boolean }) {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
-  // Colour/label/icon per severity, built from the active palette.
+  // Colour/label/icon per severity. Solid, saturated fills (green/amber/clay)
+  // so the pill stays visible on any tile in either theme — the soft tints read
+  // fine on a light tile but vanish on a dark one. `colors.cream` as the fg
+  // flips with the theme (near-white in light, near-black in dark), which is the
+  // right contrast on the dark-green/clay pills; amber is light enough to need a
+  // fixed dark ink in both themes.
   const CONF: Record<FitLevel, { label: string; bg: string; fg: string; Icon: typeof IconCheck }> = {
-    safe:    { label: 'Safe',    bg: colors.green,     fg: colors.cream,  Icon: IconCheck },
-    caution: { label: 'Caution', bg: colors.amberSoft, fg: colors.amber2, Icon: IconWarn },
-    avoid:   { label: 'Avoid',   bg: colors.clay,      fg: colors.cream,  Icon: IconNo },
+    safe:    { label: 'Safe',    bg: colors.green, fg: colors.cream, Icon: IconCheck },
+    caution: { label: 'Caution', bg: colors.amber, fg: '#2A251E',    Icon: IconWarn },
+    avoid:   { label: 'Avoid',   bg: colors.clay,  fg: colors.cream, Icon: IconNo },
   };
   const c = CONF[level];
   return (

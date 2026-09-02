@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import {
-  View, FlatList, ScrollView, Text, TouchableOpacity, RefreshControl, useWindowDimensions,
+  View, FlatList, ScrollView, Text, TouchableOpacity, RefreshControl, useWindowDimensions, Platform,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -11,8 +11,8 @@ import { RecipeGridCard } from '../components/shared/RecipeGridCard';
 import { SkeletonCard } from '../components/shared/SkeletonCard';
 import { SearchBar } from '../components/shared/SearchBar';
 import { FilterChip } from '../components/shared/FilterChip';
-import { IconBack, IconFilter } from '../components/shared/icons';
-import { recipesApi, toListItem } from '../api/recipes';
+import { IconBack, IconFilter, VegMark } from '../components/shared/icons';
+import { recipesApi, toListItem, isNonVeg } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes, searchCatalog } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
@@ -68,7 +68,7 @@ export function RecipeListScreen() {
   const s = useThemedStyles(makeStyles);
   const router = useRouter();
   const insets = useSafeAreaInsets();
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
   const { ready, lastSyncedAt, resync } = useOffline();
@@ -83,6 +83,8 @@ export function RecipeListScreen() {
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
+  // Veg / Non-veg diet filter (mutually exclusive; 'all' = both).
+  const [diet, setDiet] = useState<'all' | 'veg' | 'nonveg'>('all');
   // In-screen search — same SearchBar as Home; submit drives the `q` param
   // (full-catalog search via load()). Kept in sync when arriving with ?q=.
   const [searchText, setSearchText] = useState(q ?? '');
@@ -127,6 +129,10 @@ export function RecipeListScreen() {
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
   useEffect(() => { setLoading(true); load(); }, [load, ready, lastSyncedAt]);
 
+  // The Veg / Non-veg pills are Solid-only; drop the diet filter whenever we
+  // leave Solid so a lingering selection can't silently filter another texture.
+  useEffect(() => { if (filter !== 'Solid') setDiet('all'); }, [filter]);
+
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     resync();       // best-effort catalog re-pull; the effect reloads on completion
@@ -134,11 +140,19 @@ export function RecipeListScreen() {
     setRefreshing(false);
   }, [load, resync]);
 
+  // Veg / non-veg filter — client-side, ANDs with the texture/facet filters.
+  // Browse-only: the pills are hidden during a free-text search, so the filter
+  // is skipped there too (no invisible filtering of search results).
+  const dietFiltered = useMemo(
+    () => (diet === 'all' || isSearch ? recipes : recipes.filter(r => (diet === 'nonveg') === isNonVeg(r))),
+    [recipes, diet, isSearch],
+  );
+
   const sub = isSearch
-    ? `${recipes.length} result${recipes.length === 1 ? '' : 's'}`
+    ? `${dietFiltered.length} result${dietFiltered.length === 1 ? '' : 's'}`
     : LABEL_SUB[filter]
-      ? `${recipes.length} recipes · ${LABEL_SUB[filter]}`
-      : `${recipes.length} recipes`;
+      ? `${dietFiltered.length} recipes · ${LABEL_SUB[filter]}`
+      : `${dietFiltered.length} recipes`;
 
   // Pad the last row with invisible spacers so every row has `cols` cells. Without
   // this a lone last-row card skips the column gap and renders wider (→ a taller
@@ -147,14 +161,20 @@ export function RecipeListScreen() {
     if (loading) {
       return Array.from({ length: cols * SKELETON_ROWS }, (_, i) => ({ skeleton: true as const, slug: `__skel-${i}` }));
     }
-    const rem = recipes.length % cols;
-    if (rem === 0) return recipes;
+    const rem = dietFiltered.length % cols;
+    if (rem === 0) return dietFiltered;
     const fillers: GridItem[] = Array.from({ length: cols - rem }, (_, i) => ({ filler: true, slug: `__filler-${i}` }));
-    return [...recipes, ...fillers];
-  }, [loading, recipes, cols]);
+    return [...dietFiltered, ...fillers];
+  }, [loading, dietFiltered, cols]);
 
   return (
-    <View style={s.root}>
+    // Web: bound the root to the viewport height so the flex chain bounds the
+    // FlatList — the grid scrolls inside the well and the header/pills stay
+    // fixed, instead of the whole document scrolling. flexGrow:0 + flexBasis
+    // auto are required so the explicit height wins over `flex:1`'s basis:0%
+    // (otherwise the flex algorithm ignores height and grows to content).
+    // Native pins via flex and ignores this override.
+    <View style={[s.root, Platform.OS === 'web' ? { height, flexGrow: 0, flexBasis: 'auto' } : null]}>
       <View style={s.page}>
         {/* Header — stays on the bone ground */}
         <View style={s.header}>
@@ -196,6 +216,25 @@ export function RecipeListScreen() {
             ))}
             <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
           </ScrollView>
+        )}
+        {/* Veg / Non-veg — Solid-only (non-veg recipes are all solids);
+            mutually-exclusive, right above the grid. Keeps the mark visible even
+            when active (the mark is the meaning). */}
+        {!isSearch && filter === 'Solid' && (
+          <View style={s.dietRow}>
+            {([['veg', 'Veg', false], ['nonveg', 'Non-veg', true]] as const).map(([key, label, nv]) => (
+              <TouchableOpacity
+                key={key}
+                style={[s.dietPill, diet === key && s.dietPillOn]}
+                onPress={() => setDiet(diet === key ? 'all' : key)}
+                accessibilityRole="button"
+                accessibilityState={{ selected: diet === key }}
+              >
+                <VegMark nonVeg={nv} size={sc(12)} />
+                <Text style={[s.dietPillText, diet === key && s.dietPillTextOn]}>{label}</Text>
+              </TouchableOpacity>
+            ))}
+          </View>
         )}
         {/* Recessed well — the grid drops into a sand tray with a rounded lip,
             so the recipes read as content held BELOW the header instead of on
@@ -278,6 +317,16 @@ const makeStyles = (colors: Colors) => scaledSheet({
   // the screen edge, with a matching 14pt gutter at the end of the scroll.
   chips: { flexGrow: 0 },
   chipsContent: { gap: 6, paddingHorizontal: 14 },
+  // Veg / Non-veg pills — mirror FilterChip styling but keep the veg mark shown.
+  dietRow: { flexDirection: 'row', gap: 6, paddingHorizontal: 14 },
+  dietPill: {
+    flexDirection: 'row', alignItems: 'center', gap: 6,
+    paddingHorizontal: 11, paddingVertical: 6, borderRadius: 999,
+    borderWidth: 1.5, borderColor: colors.line2, backgroundColor: colors.cream,
+  },
+  dietPillOn: { backgroundColor: colors.greenSoft, borderColor: colors.green },
+  dietPillText: { fontSize: 10.5, fontFamily: fonts.sans, fontWeight: '700', color: colors.ink2 },
+  dietPillTextOn: { color: colors.green },
   // The sand tray. Rounded top lip + a darker fill than bone create the
   // recess; overflow:hidden clips the scrolling cards to the rounded corners.
   well: {

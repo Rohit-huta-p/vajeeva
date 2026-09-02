@@ -15,11 +15,12 @@ import { usePreferences } from '../hooks/usePreferences';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
-import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero } from '../components/shared/icons';
+import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
+import { MeasurementSheet } from '../components/shared/MeasurementSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
 import { LinearGradient } from 'expo-linear-gradient';
-import { recipesApi, sortImages, cloudThumb, toListItem } from '../api/recipes';
+import { recipesApi, sortImages, cloudThumb, toListItem, isNonVeg } from '../api/recipes';
 import type { RecipeDoc, RecipeImage, RecipeListItem } from '../api/recipes';
 import { getRecipe } from '../offline/catalog';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
@@ -45,6 +46,7 @@ const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://vajeeva.app';
 interface DetailView {
   nameEn: string;
   nameTa?: string;
+  nonVeg: boolean;
   images: RecipeImage[];
   sources: string[];
   yield: string;
@@ -58,6 +60,7 @@ function toDetailView(doc: RecipeDoc): DetailView {
   return {
     nameEn: doc.nameEn,
     nameTa: doc.nameTa,
+    nonVeg: isNonVeg(doc),
     // hero-sized Cloudinary transform (390pt-wide hero @3x)
     images: sortImages(doc.images).map(im => ({ ...im, url: cloudThumb(im.url, 1200, 530) })),
     sources: (doc.sources ?? []).map(src => src.text),
@@ -89,6 +92,7 @@ export function RecipeDetailScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [unit, setUnit] = useState<'g' | 'cup'>('g');
   const [aromaOpen, setAromaOpen] = useState(false);
+  const [measureOpen, setMeasureOpen] = useState(false);
   const [recipe, setRecipe] = useState<DetailView | null>(null);
   const [listItem, setListItem] = useState<RecipeListItem | null>(null);
   const { prefs, loading: prefsLoading } = usePreferences();
@@ -167,10 +171,13 @@ export function RecipeDetailScreen() {
           </View>
         </View>
         <View style={s.body}>
-          {/* Title */}
-          <View>
-            <Text style={s.title}>{recipe.nameEn}</Text>
-            {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
+          {/* Title — veg / non-veg mark to the left */}
+          <View style={s.titleRow}>
+            <View style={s.titleMark}><VegMark nonVeg={recipe.nonVeg} size={sc(18)} /></View>
+            <View style={s.titleCol}>
+              <Text style={s.title}>{recipe.nameEn}</Text>
+              {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
+            </View>
           </View>
 
           {/* Sources */}
@@ -196,16 +203,21 @@ export function RecipeDetailScreen() {
           <View>
             <View style={s.ingHeader}>
               <Text style={s.sectionTitle}>Ingredients</Text>
-              <View style={s.toggle}>
-                {(['g', 'cup'] as const).map(u => (
-                  <TouchableOpacity
-                    key={u}
-                    style={[s.toggleBtn, unit === u && s.toggleActive]}
-                    onPress={() => setUnit(u)}
-                  >
-                    <Text style={[s.toggleLabel, unit === u && s.toggleLabelActive]}>{UNIT_LABELS[u]}</Text>
-                  </TouchableOpacity>
-                ))}
+              <View style={s.toggleCol}>
+                <View style={s.toggle}>
+                  {(['g', 'cup'] as const).map(u => (
+                    <TouchableOpacity
+                      key={u}
+                      style={[s.toggleBtn, unit === u && s.toggleActive]}
+                      onPress={() => setUnit(u)}
+                    >
+                      <Text style={[s.toggleLabel, unit === u && s.toggleLabelActive]}>{UNIT_LABELS[u]}</Text>
+                    </TouchableOpacity>
+                  ))}
+                </View>
+                <TouchableOpacity onPress={() => setMeasureOpen(true)} hitSlop={6}>
+                  <Text style={s.measureLink}>View measurements</Text>
+                </TouchableOpacity>
               </View>
             </View>
             <IngredientTable
@@ -228,6 +240,7 @@ export function RecipeDetailScreen() {
         </View>
       </ScrollView>
       <AromaticPowderSheet visible={aromaOpen} onClose={() => setAromaOpen(false)} />
+      <MeasurementSheet visible={measureOpen} onClose={() => setMeasureOpen(false)} />
     </SafeAreaView>
   );
 }
@@ -248,6 +261,9 @@ const makeStyles = (colors: Colors) => scaledSheet({
   },
   heroActs: { flexDirection: 'row', gap: 6 },
   body: { paddingHorizontal: 14, paddingTop: 13, paddingBottom: 14, gap: 13 },
+  titleRow: { flexDirection: 'row', alignItems: 'flex-start', gap: 8 },
+  titleMark: { marginTop: 4 },   // nudge the mark onto the title's first line
+  titleCol: { flex: 1, minWidth: 0 },
   title: { fontSize: 22, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink, letterSpacing: -0.22, lineHeight: 25 },
   tamil: { fontSize: 13, fontFamily: fonts.serifItalic, fontStyle: 'italic', color: colors.amber, marginTop: 3 },
   sourceRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
@@ -257,6 +273,9 @@ const makeStyles = (colors: Colors) => scaledSheet({
   ingHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 },
   sectionTitle: { fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
   methodTitle: { marginBottom: 2 },
+  // Wraps the toggle and its "View measurements" link so the link sits right
+  // under the toggle specifically (not the whole Ingredients header).
+  toggleCol: { alignItems: 'flex-end', gap: 5 },
   toggle: {
     flexDirection: 'row', backgroundColor: colors.sand, borderRadius: 6, padding: 2, gap: 2,
   },
@@ -264,4 +283,7 @@ const makeStyles = (colors: Colors) => scaledSheet({
   toggleActive: { backgroundColor: colors.green },
   toggleLabel: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '700', letterSpacing: 0.36, color: colors.muted },
   toggleLabelActive: { color: '#fff' },
+  measureLink: {
+    fontSize: 9.5, fontFamily: fonts.sans, color: colors.ink2, textDecorationLine: 'underline',
+  },
 });
