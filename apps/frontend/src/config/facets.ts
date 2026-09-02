@@ -44,8 +44,8 @@ export function matchFacet(r: RecipeListItem, key: string): boolean {
 }
 
 // Value-axis filters (one tag code within a single axis) — for RecipeList deep
-// links (?ingredient=coconut, ?type=laddu, …) and the Home "Cook with…" tiles.
-export type TagAxis = 'type' | 'meal' | 'ingredient' | 'method';
+// links (?ingredient=coconut, ?type=laddu, ?filter=sweet, …) and the Home pills.
+export type TagAxis = 'type' | 'meal' | 'ingredient' | 'method' | 'filter';
 
 export function matchTag(r: RecipeListItem, axis: TagAxis, value: string): boolean {
   switch (axis) {
@@ -53,6 +53,33 @@ export function matchTag(r: RecipeListItem, axis: TagAxis, value: string): boole
     case 'meal':       return (r.meals ?? []).includes(value);
     case 'ingredient': return (r.mainIngredients ?? []).includes(value);
     case 'method':     return (r.methods ?? []).includes(value);
+    case 'filter':     return (r.filters ?? []).includes(value);
     default:           return true;
   }
 }
+
+// ── Home filter pills — the admin-owned `filter` facet from GET /api/tags ──────
+// Each pill's `group` drives the Home layout: effort renders as flat one-tap
+// pills; taste/occasion render as tap-to-open dropdowns. A tap deep-links the
+// recipe list as ?filter=<code>. See docs/specs/2026-09-02-home-filter-pills.md.
+export type FilterGroup = 'effort' | 'taste' | 'occasion';
+export const FILTER_GROUPS: FilterGroup[] = ['effort', 'taste', 'occasion'];
+export interface FilterPill { code: string; label: string; group: FilterGroup }
+
+// Fallback pills when /api/tags hasn't loaded yet (mirrors the api seed vocab),
+// so the row renders offline / on first paint. Admin edits win once loaded.
+export const FILTER_PILLS_FALLBACK: FilterPill[] = [
+  { code: 'quick',      label: 'Quick',      group: 'effort' },
+  { code: 'no-cook',    label: 'No-cook',    group: 'effort' },
+  { code: 'make-ahead', label: 'Make-ahead', group: 'effort' },
+  { code: 'sweet',      label: 'Sweet',      group: 'taste' },
+  { code: 'savoury',    label: 'Savoury',    group: 'taste' },
+  { code: 'spicy',      label: 'Spicy',      group: 'taste' },
+  { code: 'refreshing', label: 'Refreshing', group: 'taste' },
+  { code: 'breakfast',  label: 'Breakfast',  group: 'occasion' },
+  { code: 'snack',      label: 'Snack',      group: 'occasion' },
+  { code: 'side',       label: 'Side',       group: 'occasion' },
+];
+
+// Title-case group label for a dropdown pill ('taste' → 'Taste').
+export const groupLabel = (g: FilterGroup): string => g.charAt(0).toUpperCase() + g.slice(1);

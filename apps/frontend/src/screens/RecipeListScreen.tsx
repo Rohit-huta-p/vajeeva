@@ -72,8 +72,8 @@ export function RecipeListScreen() {
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
   const { ready, lastSyncedAt, resync } = useOffline();
-  const { texture, facet, type, meal, ingredient, method, q } = useLocalSearchParams<{
-    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string;
+  const { texture, facet, type, meal, ingredient, method, q, filter: filterTag } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string; filter?: string;
   }>();
   // A free-text search (Home SearchBar submit) replaces the texture/facet/tag
   // browse flow entirely for this load — see load() below — rather than
@@ -117,13 +117,13 @@ export function RecipeListScreen() {
       if (LABEL_TO_CATEGORY[filter]) items = items.filter(r => r.category === LABEL_TO_CATEGORY[filter]);
       if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
       // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
-      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method]];
+      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method], ['filter', filterTag]];
       for (const [axis, value] of axes) {
         if (value) items = items.filter(r => matchTag(r, axis, value));
       }
       setRecipes(items);
     } catch { } finally { setLoading(false); }
-  }, [filter, facet, type, meal, ingredient, method, isSearch, q]);
+  }, [filter, facet, type, meal, ingredient, method, filterTag, isSearch, q]);
 
   // Show skeletons for the initial load and on every filter/facet change (a new
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
@@ -189,6 +189,7 @@ export function RecipeListScreen() {
                 : type ? prettyTag(type)
                 : meal ? prettyTag(meal)
                 : method ? prettyTag(method)
+                : filterTag ? prettyTag(filterTag)
                 : (filter === 'All' ? 'All Recipes' : filter)
             }</Text>
             <Text style={s.subtitle}>{sub}</Text>

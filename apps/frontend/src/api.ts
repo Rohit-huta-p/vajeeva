@@ -69,6 +69,13 @@ export const recipesApi = {
   search: (q: string) => api.get<any[]>('/api/recipes/search', { params: { q } }).then(r => r.data),
 };
 
+export const tagsApi = {
+  // Public discovery vocab, grouped by facet. Home reads the `filter` group for
+  // its pills. See docs/specs/2026-09-02-home-filter-pills.md.
+  list: () =>
+    api.get<Record<string, { code: string; label: string; group?: string }[]>>('/api/tags').then(r => r.data),
+};
+
 export const subrecipesApi = {
   list: () => api.get<any[]>('/api/subrecipes').then(r => r.data),
   detail: (slug: string) => api.get<any>(`/api/subrecipes/${slug}`).then(r => r.data),

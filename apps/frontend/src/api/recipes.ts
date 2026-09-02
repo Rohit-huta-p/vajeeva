@@ -39,6 +39,8 @@ export interface RecipeListItem {
   methods?: string[];
   dietTags?: string[];
   makeAhead?: boolean;
+  /** Home filter-pill codes (admin-owned `filter` facet). See docs/specs/2026-09-02-home-filter-pills.md. */
+  filters?: string[];
 }
 
 /**
@@ -85,6 +87,7 @@ export interface RecipeDoc {
   methods?: string[];
   dietTags?: string[];
   makeAhead?: boolean;
+  filters?: string[];
 }
 
 /** Valid images sorted by their order field (absent/null-safe). */
@@ -123,5 +126,6 @@ export function toListItem(doc: RecipeDoc): RecipeListItem {
     methods: doc.methods,
     dietTags: doc.dietTags,
     makeAhead: doc.makeAhead,
+    filters: doc.filters,
   };
 }
