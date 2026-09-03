@@ -3,6 +3,7 @@ import request from 'supertest';
 import { createApp } from '../app';
 import { User } from '../models/User';
 import { Recipe } from '../models/Recipe';
+import { HealthFlagConfig } from '../models/HealthFlagConfig';
 
 const app = createApp();
 
@@ -90,5 +91,29 @@ describe('DELETE /api/admin/recipes/:id', () => {
       .set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(200);
     expect(await Recipe.findById(recipe.id)).toBeNull();
+  });
+});
+
+describe('health-condition write guard', () => {
+  beforeAll(async () => {
+    await HealthFlagConfig.create({ code: 'diabetes', label: 'Diabetes', description: 'd', enabled: true });
+  });
+  afterAll(async () => { await HealthFlagConfig.deleteMany({}); });
+
+  it('rejects a recipe flagged with a condition not in the vocabulary (400)', async () => {
+    const res = await request(app)
+      .post('/api/admin/recipes')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ ...RECIPE_INPUT, slug: 'guard-bad', healthFlags: [{ condition: 'pitta', severity: 'avoid', note: '' }] });
+    expect(res.status).toBe(400);
+    expect(res.body.error).toMatch(/pitta/);
+  });
+
+  it('accepts a recipe flagged with a known condition code (201)', async () => {
+    const res = await request(app)
+      .post('/api/admin/recipes')
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ ...RECIPE_INPUT, slug: 'guard-good', healthFlags: [{ condition: 'diabetes', severity: 'caution', note: '' }] });
+    expect(res.status).toBe(201);
   });
 });

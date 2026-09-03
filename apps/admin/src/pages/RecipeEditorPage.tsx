@@ -4,7 +4,7 @@ import { RecipeInputSchema, type RecipeInput } from '@vajeeva/shared';
 import { api, type RecipeDoc } from '../api/client';
 import { IngredientRows } from '../components/IngredientRows';
 import { StepRows, EMPTY_STEP } from '../components/StepRows';
-import { HealthFlagRows } from '../components/HealthFlagRows';
+import { HealthFlagRows, type ConditionOption } from '../components/HealthFlagRows';
 import { SourceRows } from '../components/SourceRows';
 import { AppPreviewCard } from '../components/AppPreviewCard';
 import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
@@ -50,6 +50,7 @@ export function RecipeEditorPage() {
   const [error,  setError]  = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
   const [vocab,  setVocab]  = useState<Vocab>(emptyVocab);
+  const [conditions, setConditions] = useState<ConditionOption[]>([]);
   const [step,   setStep]   = useState(1); // 1-indexed
 
   useEffect(() => {
@@ -68,6 +69,17 @@ export function RecipeEditorPage() {
     api<Vocab>('/api/admin/tags')
       .then(saved => setVocab(mergeTagDefaults(saved)))
       .catch(() => setVocab(mergeTagDefaults(null)));  // fallback to defaults if API is unreachable
+  }, []);
+
+  // Condition vocabulary for the Health Flags select (ordered).
+  useEffect(() => {
+    api<Record<string, { label: string; order?: number }>>('/api/admin/health-flags')
+      .then(m => setConditions(
+        Object.entries(m)
+          .sort((a, b) => (a[1].order ?? 0) - (b[1].order ?? 0))
+          .map(([code, s]) => ({ code, label: s.label })),
+      ))
+      .catch(() => { /* offline — HealthFlagRows falls back to free text */ });
   }, []);
 
   async function save(status: RecipeInput['status']) {
@@ -353,7 +365,7 @@ export function RecipeEditorPage() {
               <p className="text-[12.5px] text-ink/45 mb-5">
                 Set per-condition severity for this recipe. Users see a personalised Safe / Caution / Avoid label.
               </p>
-              <HealthFlagRows value={form.healthFlags} onChange={healthFlags => patch({ healthFlags })} />
+              <HealthFlagRows value={form.healthFlags} onChange={healthFlags => patch({ healthFlags })} conditions={conditions} />
             </>
           )}
 

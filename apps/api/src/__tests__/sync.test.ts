@@ -65,3 +65,48 @@ describe('POST + GET /api/sync/saved', () => {
     expect(res.body).toContain(recipe.id);
   });
 });
+
+describe('POST + GET /api/sync/cooked', () => {
+  it('records a make (by slug, with rating) and returns it', async () => {
+    await Recipe.create(RECIPE);
+    const post = await request(app)
+      .post('/api/sync/cooked')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ makes: [{ recipe: 'sync-recipe', rating: 5 }] });
+    expect(post.status).toBe(200);
+    expect(post.body).toMatchObject({ ok: true, count: 1 });
+
+    const res = await request(app)
+      .get('/api/sync/cooked')
+      .set('Authorization', `Bearer ${token}`);
+    expect(res.status).toBe(200);
+    expect(res.body).toHaveLength(1);
+    expect(res.body[0]).toMatchObject({ slug: 'sync-recipe', rating: 5 });
+  });
+
+  it('is append-only — repeat makes accumulate', async () => {
+    await Recipe.create(RECIPE);
+    await request(app).post('/api/sync/cooked').set('Authorization', `Bearer ${token}`)
+      .send({ makes: [{ recipe: 'sync-recipe' }] });
+    await request(app).post('/api/sync/cooked').set('Authorization', `Bearer ${token}`)
+      .send({ makes: [{ recipe: 'sync-recipe' }] });
+    const res = await request(app).get('/api/sync/cooked').set('Authorization', `Bearer ${token}`);
+    expect(res.body).toHaveLength(2);
+  });
+
+  it('skips unknown recipes and clamps rating', async () => {
+    await Recipe.create(RECIPE);
+    const post = await request(app)
+      .post('/api/sync/cooked')
+      .set('Authorization', `Bearer ${token}`)
+      .send({ makes: [{ recipe: 'sync-recipe', rating: 99 }, { recipe: 'does-not-exist' }] });
+    expect(post.body.count).toBe(1);
+    const res = await request(app).get('/api/sync/cooked').set('Authorization', `Bearer ${token}`);
+    expect(res.body[0].rating).toBe(5); // clamped from 99
+  });
+
+  it('returns 401 without token', async () => {
+    const res = await request(app).get('/api/sync/cooked');
+    expect(res.status).toBe(401);
+  });
+});

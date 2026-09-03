@@ -9,16 +9,24 @@ healthFlagsAdminRouter.use(requireAuth, requireAdmin);
 interface FlagState {
   label: string;
   description: string;
+  emoji: string;
+  order: number;
   enabled: boolean;
 }
 
 // GET /api/admin/health-flags → Record<code, FlagState>
 healthFlagsAdminRouter.get('/', async (_req, res, next) => {
   try {
-    const items = await HealthFlagConfig.find({}).lean();
+    const items = await HealthFlagConfig.find({}).sort({ order: 1 }).lean();
     const result: Record<string, FlagState> = {};
     for (const item of items) {
-      result[item.code] = { label: item.label, description: item.description, enabled: item.enabled };
+      result[item.code] = {
+        label: item.label,
+        description: item.description,
+        emoji: item.emoji ?? '',
+        order: item.order ?? 0,
+        enabled: item.enabled,
+      };
     }
     res.json(result);
   } catch (err) { next(err); }
@@ -34,10 +42,12 @@ healthFlagsAdminRouter.put('/', async (req, res, next) => {
 
     // Full replace: delete existing, insert new
     await HealthFlagConfig.deleteMany({});
-    const docs = Object.entries(incoming).map(([code, state]) => ({
+    const docs = Object.entries(incoming).map(([code, state], i) => ({
       code,
       label: state.label,
       description: state.description,
+      emoji: state.emoji ?? '',
+      order: typeof state.order === 'number' ? state.order : i,
       enabled: !!state.enabled,
     }));
     if (docs.length > 0) {
@@ -45,10 +55,16 @@ healthFlagsAdminRouter.put('/', async (req, res, next) => {
     }
 
     // Return the saved state
-    const saved = await HealthFlagConfig.find({}).lean();
+    const saved = await HealthFlagConfig.find({}).sort({ order: 1 }).lean();
     const result: Record<string, FlagState> = {};
     for (const item of saved) {
-      result[item.code] = { label: item.label, description: item.description, enabled: item.enabled };
+      result[item.code] = {
+        label: item.label,
+        description: item.description,
+        emoji: item.emoji ?? '',
+        order: item.order ?? 0,
+        enabled: item.enabled,
+      };
     }
     res.json(result);
   } catch (err) { next(err); }

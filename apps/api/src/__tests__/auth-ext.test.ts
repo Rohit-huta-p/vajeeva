@@ -105,9 +105,14 @@ describe('GET /api/healthflags — public, enabled only', () => {
     expect(codes).toContain('DM');
     expect(codes).toContain('LI');
     expect(codes).not.toContain('OW');
-    // Shape check
-    expect(res.body[0]).toMatchObject({ code: expect.any(String), label: expect.any(String) });
-    // Does not leak description or enabled internals
+    // Shape check — now carries description + emoji so the patient grid renders
+    // any admin-added condition fully from data.
+    expect(res.body[0]).toMatchObject({
+      code: expect.any(String),
+      label: expect.any(String),
+      description: expect.any(String),
+    });
+    // enabled stays server-side — not leaked to the public grid.
     expect(res.body[0].enabled).toBeUndefined();
   });
 

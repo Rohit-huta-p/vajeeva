@@ -41,8 +41,17 @@ function toSlug(name: string): string {
   return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
 }
 
+// Admin DTO — full shape so the editor can display and save all fields.
 function toDTO(doc: any) {
-  return { id: doc._id.toString(), name: doc.name, slug: doc.slug, usedIn: doc.usedIn };
+  return {
+    id:          doc._id.toString(),
+    name:        doc.name,
+    slug:        doc.slug,
+    usedIn:      doc.usedIn ?? 0,
+    ingredients: (doc.ingredients ?? []).map((i: any) => ({ name: i.name, qty: i.qty })),
+    note:        doc.note ?? '',
+    method:      doc.method ?? '',
+  };
 }
 
 subrecipesAdminRouter.get('/', async (_req, res, next) => {
@@ -64,12 +73,18 @@ subrecipesAdminRouter.post('/', async (req, res, next) => {
 
 subrecipesAdminRouter.put('/:id', async (req, res, next) => {
   try {
-    const { name } = req.body as { name: string };
-    const item = await SubRecipe.findByIdAndUpdate(
-      req.params.id,
-      { name, ...(name ? { slug: toSlug(name) } : {}) },
-      { new: true }
-    ).lean();
+    const { name, ingredients, note, method } = req.body as {
+      name?: string;
+      ingredients?: { name: string; qty: string }[];
+      note?: string;
+      method?: string;
+    };
+    const update: Record<string, unknown> = {};
+    if (name        !== undefined) { update.name = name; update.slug = toSlug(name); }
+    if (ingredients !== undefined) update.ingredients = ingredients;
+    if (note        !== undefined) update.note = note;
+    if (method      !== undefined) update.method = method;
+    const item = await SubRecipe.findByIdAndUpdate(req.params.id, update, { new: true }).lean();
     if (!item) { res.status(404).json({ error: 'Not found' }); return; }
     res.json(toDTO(item));
   } catch (err) { next(err); }

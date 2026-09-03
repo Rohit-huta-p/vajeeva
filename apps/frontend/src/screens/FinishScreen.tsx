@@ -4,6 +4,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts } from '../theme/tokens';
 import { IconClose, IconCheck, IconHeart } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
+import { useCookLog } from '../hooks/useCookLog';
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
@@ -28,10 +29,18 @@ export function FinishScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { save, isSaved } = useSavedRecipes();
+  const { recordMake, madeCount } = useCookLog();
   const { clearSession } = useCookSession();
   const [recipe, setRecipe] = useState<RecipeListItem>(() => slugFallback(slug ?? ''));
   const [stepsCount, setStepsCount] = useState<number | null>(null);
+  const [logged, setLogged] = useState(false);
   const saved = isSaved(slug ?? '');
+
+  const onLog = (rating?: number) => {
+    if (logged || !slug) return;
+    recordMake(slug, rating ? { rating } : undefined);
+    setLogged(true);
+  };
 
   useEffect(() => {
     let alive = true;
@@ -73,6 +82,30 @@ export function FinishScreen() {
             {stepsCount ? ` · ${stepsCount} steps` : ''}
             {recipe.cookTimeMin > 0 ? `\n~${recipe.cookTimeMin} min` : ''}
           </Text>
+        </View>
+
+        {/* Made-this + rating anchor (engagement + satisfaction) */}
+        <View style={s.madeCard}>
+          {!logged ? (
+            <>
+              <Text style={s.madeHeader}>How did it go?</Text>
+              <View style={s.faces}>
+                {[{ e: '🙁', r: 1 }, { e: '🙂', r: 3 }, { e: '😍', r: 5 }].map(f => (
+                  <TouchableOpacity key={f.r} style={s.face} onPress={() => onLog(f.r)} activeOpacity={0.8}>
+                    <Text style={s.faceEmoji}>{f.e}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+              <TouchableOpacity onPress={() => onLog()}>
+                <Text style={s.logPlain}>Just log it, no rating →</Text>
+              </TouchableOpacity>
+            </>
+          ) : (
+            <Text style={s.loggedMsg}>
+              ✓ Added to your cooked list
+              {madeCount(slug ?? '') > 1 ? ` · made ${madeCount(slug ?? '')} times` : ''}
+            </Text>
+          )}
         </View>
 
         {/* Save card */}
@@ -137,6 +170,22 @@ const s = scaledSheet({
     fontSize: 11, fontFamily: fonts.sans, color: colors.cmMuted,
     lineHeight: 17, textAlign: 'center', marginTop: 2,
   },
+  madeCard: {
+    alignSelf: 'stretch',
+    backgroundColor: 'rgba(240,234,216,0.04)',
+    borderWidth: 1, borderColor: 'rgba(240,234,216,0.1)',
+    borderRadius: 14, paddingVertical: 12, paddingHorizontal: 14, gap: 10,
+    alignItems: 'center',
+  },
+  madeHeader: { fontSize: 12, fontFamily: fonts.sans, fontWeight: '800', color: colors.cmText },
+  faces: { flexDirection: 'row', gap: 14 },
+  face: {
+    width: 46, height: 46, borderRadius: 23, alignItems: 'center', justifyContent: 'center',
+    backgroundColor: colors.cmSurf, borderWidth: 1, borderColor: colors.cmLine,
+  },
+  faceEmoji: { fontSize: 22 },
+  logPlain: { fontSize: 11, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmMuted },
+  loggedMsg: { fontSize: 13, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmGreen, textAlign: 'center' },
   saveCard: {
     alignSelf: 'stretch',
     backgroundColor: 'rgba(240,234,216,0.04)',
