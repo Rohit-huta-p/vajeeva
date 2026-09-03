@@ -7,7 +7,7 @@ afterEach(cleanup);
 
 it('renders a card for each condition code', () => {
   render(<MemoryRouter><HealthFlagsPage /></MemoryRouter>);
-  for (const code of ['DIABETES', 'PREGNANT', 'NUT_ALLERGY', 'INFANT_8M']) {
+  for (const code of ['diabetes', 'pregnancy', 'nut-allergy', 'infant-8m']) {
     expect(screen.getByText(code)).toBeInTheDocument();
   }
 });
@@ -22,4 +22,12 @@ it('lets the admin edit a display label', () => {
   const input = screen.getByDisplayValue('Diabetes');
   fireEvent.change(input, { target: { value: 'Diabetes (Type 2)' } });
   expect(screen.getByDisplayValue('Diabetes (Type 2)')).toBeInTheDocument();
+});
+
+it('lets the admin toggle a condition off (enabled → false)', () => {
+  render(<MemoryRouter><HealthFlagsPage /></MemoryRouter>);
+  const toggle = screen.getByLabelText('diabetes shown to users') as HTMLInputElement;
+  expect(toggle.checked).toBe(true);
+  fireEvent.click(toggle);
+  expect((screen.getByLabelText('diabetes shown to users') as HTMLInputElement).checked).toBe(false);
 });

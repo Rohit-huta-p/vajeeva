@@ -1,15 +1,28 @@
-import { afterEach, expect, it } from 'vitest';
+import { afterEach, expect, it, vi } from 'vitest';
 import { cleanup, render, screen } from '@testing-library/react';
-import { MemoryRouter } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
+import { MemoryRouter, Routes, Route } from 'react-router-dom';
 import { UsersPage } from './UsersPage';
+import { setToken } from '../api/client';
 
-afterEach(cleanup);
+afterEach(() => { cleanup(); vi.unstubAllGlobals(); setToken(null); });
 
-it('renders the users table with header columns and rows', () => {
-  render(<MemoryRouter><UsersPage /></MemoryRouter>);
+// No fetch stub → the /api/admin/users call rejects and the placeholder users stay.
+function renderUsers() {
+  render(
+    <MemoryRouter initialEntries={['/users']}>
+      <Routes>
+        <Route path="/users" element={<UsersPage />} />
+        <Route path="/users/:id" element={<p>detail page</p>} />
+      </Routes>
+    </MemoryRouter>,
+  );
+}
+
+it('renders the users table with headers and rows', () => {
+  renderUsers();
   expect(screen.getByRole('heading', { name: 'Users' })).toBeInTheDocument();
-  // 'Email' also appears as an auth-provider chip, so allow multiple matches
-  for (const col of ['Name', 'Email', 'Auth', 'Health Profile', 'Joined']) {
+  for (const col of ['User', 'Auth', 'Health Profile', 'Joined']) {
     expect(screen.getAllByText(col).length).toBeGreaterThanOrEqual(1);
   }
   expect(screen.getByText('Priya Venkatesh')).toBeInTheDocument();
@@ -17,14 +30,19 @@ it('renders the users table with header columns and rows', () => {
 });
 
 it('is read-only: no edit, delete, or new buttons', () => {
-  render(<MemoryRouter><UsersPage /></MemoryRouter>);
-  expect(screen.queryByRole('button', { name: /edit/i })).not.toBeInTheDocument();
-  expect(screen.queryByRole('button', { name: /delete/i })).not.toBeInTheDocument();
-  expect(screen.queryByRole('button', { name: /new/i })).not.toBeInTheDocument();
+  renderUsers();
+  expect(screen.queryByRole('button', { name: /edit|delete|new/i })).not.toBeInTheDocument();
 });
 
-it('shows a dash for users without health tags', () => {
-  render(<MemoryRouter><UsersPage /></MemoryRouter>);
-  expect(screen.getByText('Diabetes')).toBeInTheDocument();
-  expect(screen.getByText('—')).toBeInTheDocument();
+it('shows a dash for a user without health tags', () => {
+  renderUsers();
+  // 'Diabetes' appears on more than one placeholder user.
+  expect(screen.getAllByText('Diabetes').length).toBeGreaterThanOrEqual(1);
+  expect(screen.getAllByText('—').length).toBeGreaterThanOrEqual(1);
+});
+
+it('navigates to the per-patient detail when a row is clicked', async () => {
+  renderUsers();
+  await userEvent.click(screen.getByText('Priya Venkatesh'));
+  expect(await screen.findByText('detail page')).toBeInTheDocument();
 });

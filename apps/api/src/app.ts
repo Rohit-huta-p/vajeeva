@@ -13,6 +13,7 @@ import { tagsAdminRouter, tagsPublicRouter } from './routes/tags.routes';
 import { usersAdminRouter } from './routes/usersadmin.routes';
 import { usersRouter, publicHealthFlagsRouter } from './routes/users.routes';
 import { uploadsRouter } from './routes/uploads.routes';
+import { statsAdminRouter } from './routes/stats.routes';
 
 export function createApp() {
   const app = express();
@@ -46,6 +47,7 @@ export function createApp() {
   app.use('/api/admin/health-flags', healthFlagsAdminRouter);
   app.use('/api/admin/tags', tagsAdminRouter);
   app.use('/api/admin/users', usersAdminRouter);
+  app.use('/api/admin/stats', statsAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
   app.use('/api/subrecipes', subrecipesPublicRouter);
   app.use('/api/healthflags', publicHealthFlagsRouter);

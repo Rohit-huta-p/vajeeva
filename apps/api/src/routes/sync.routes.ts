@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import { requireAuth } from '../middleware/requireAuth';
 import { Recipe } from '../models/Recipe';
 import { SavedRecipe } from '../models/SavedRecipe';
+import { CookLog } from '../models/CookLog';
 
 export const syncRouter = Router();
 syncRouter.use(requireAuth);
@@ -62,5 +63,57 @@ syncRouter.post('/saved', async (req, res, next) => {
     const removeOp = SavedRecipe.deleteMany({ userId, recipeId: { $in: resolvedRemoved } });
     await Promise.all([...addOps, removeOp]);
     res.json({ ok: true });
+  } catch (err) { next(err); }
+});
+
+// ── Cook log ("I made this") ─────────────────────────────────────────────────
+// Append-only: each confirmed make is one row. The client batches makes (offline
+// makes flush together on reconnect) and stays the source of truth for display.
+// See docs/specs/2026-09-03-admin-outcomes.md.
+
+interface MakeInput { recipe: string; madeAt?: string; rating?: number; note?: string }
+
+syncRouter.post('/cooked', async (req, res, next) => {
+  try {
+    const userId = (req as any).user.userId;
+    const makes = Array.isArray((req.body as { makes?: MakeInput[] }).makes)
+      ? (req.body as { makes: MakeInput[] }).makes
+      : [];
+
+    const docs = (await Promise.all(makes.map(async m => {
+      const recipeId = await resolveRecipeId(String(m.recipe ?? ''));
+      if (!recipeId) return null; // skip unknown recipe
+      const rating = typeof m.rating === 'number' ? Math.min(5, Math.max(1, Math.round(m.rating))) : undefined;
+      return {
+        userId,
+        recipeId,
+        madeAt: m.madeAt ? new Date(m.madeAt) : new Date(),
+        ...(rating ? { rating } : {}),
+        note: typeof m.note === 'string' ? m.note.slice(0, 500) : '',
+      };
+    }))).filter(Boolean) as Record<string, unknown>[];
+
+    if (docs.length) await CookLog.insertMany(docs);
+    res.json({ ok: true, count: docs.length });
+  } catch (err) { next(err); }
+});
+
+syncRouter.get('/cooked', async (req, res, next) => {
+  try {
+    const userId = (req as any).user.userId;
+    const logs = await CookLog.find({ userId })
+      .sort({ madeAt: -1 })
+      .populate<{ recipeId: { slug: string } | null }>('recipeId', 'slug')
+      .lean();
+    res.json(
+      logs
+        .filter(l => l.recipeId) // drop makes whose recipe was deleted
+        .map(l => ({
+          slug: (l.recipeId as unknown as { slug: string }).slug,
+          madeAt: l.madeAt,
+          rating: l.rating ?? null,
+          note: l.note ?? '',
+        })),
+    );
   } catch (err) { next(err); }
 });

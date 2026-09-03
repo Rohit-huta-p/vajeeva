@@ -3,6 +3,7 @@ import { requireAuth } from '../middleware/requireAuth';
 import { User } from '../models/User';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
 import { SavedRecipe } from '../models/SavedRecipe';
+import { CookLog } from '../models/CookLog';
 
 export const usersRouter = Router();
 export const publicHealthFlagsRouter = Router();
@@ -53,6 +54,7 @@ usersRouter.delete('/me', requireAuth, async (req, res, next) => {
   try {
     const userId = (req as any).user.userId;
     await SavedRecipe.deleteMany({ userId });
+    await CookLog.deleteMany({ userId });
     const user = await User.findByIdAndDelete(userId).lean();
     if (!user) { res.status(404).json({ error: 'User not found' }); return; }
     res.status(204).end();
@@ -63,7 +65,15 @@ usersRouter.delete('/me', requireAuth, async (req, res, next) => {
 
 publicHealthFlagsRouter.get('/', async (_req, res, next) => {
   try {
-    const flags = await HealthFlagConfig.find({ enabled: true }).lean();
-    res.json(flags.map(f => ({ code: f.code, label: f.label })));
+    const flags = await HealthFlagConfig.find({ enabled: true }).sort({ order: 1 }).lean();
+    // code + label + description + emoji so the patient grid renders any admin-added
+    // condition fully from data; enabled stays server-side. See
+    // docs/specs/2026-09-03-condition-vocabulary.md.
+    res.json(flags.map(f => ({
+      code: f.code,
+      label: f.label,
+      description: f.description ?? '',
+      emoji: f.emoji ?? '',
+    })));
   } catch (err) { next(err); }
 });

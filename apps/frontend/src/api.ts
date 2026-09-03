@@ -93,6 +93,16 @@ export const savedApi = {
     api.post('/api/sync/saved', { added, removed }),
 };
 
+export interface CookMake { recipe: string; madeAt?: string; rating?: number; note?: string }
+export interface CookLogEntry { slug: string; madeAt: string; rating: number | null; note: string }
+
+export const cookLogApi = {
+  // Append-only "I made this" log. Client batches makes (offline makes flush
+  // together). See docs/specs/2026-09-03-admin-outcomes.md.
+  list: () => api.get<CookLogEntry[]>('/api/sync/cooked').then(r => r.data ?? []),
+  record: (makes: CookMake[]) => api.post('/api/sync/cooked', { makes }),
+};
+
 export const usersApi = {
   // Permanently delete the signed-in account + its saved recipes (204).
   deleteMe: () => api.delete('/api/users/me'),

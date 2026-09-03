@@ -1,20 +1,28 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 
+// Built-in defaults mirror the seed (apps/api/src/scripts/seed-healthflags.ts).
+// Codes are lowercase slugs — the single condition vocabulary shared by the patient
+// health-profile grid and recipe health-flags. See
+// docs/specs/2026-09-03-condition-vocabulary.md.
 const CONDITIONS = [
-  { code: 'CARDIAC',            emoji: '❤️',  label: 'Cardiac',          defaultDesc: 'Heart conditions — avoid high-sodium, high-fat preparations.' },
-  { code: 'DIABETES',           emoji: '🩸',  label: 'Diabetes',         defaultDesc: 'High blood sugar — avoid recipes high in simple carbohydrates.' },
-  { code: 'OBESITY',            emoji: '⚖️',  label: 'Obesity',          defaultDesc: 'Weight management — prefer low-calorie, high-fibre preparations.' },
-  { code: 'LACTOSE_INTOLERANT', emoji: '🥛',  label: 'Lactose Intolerant', defaultDesc: 'Dairy intolerance — exclude milk-based ingredients.' },
-  { code: 'SEDENTARY',          emoji: '🪑',  label: 'Sedentary Lifestyle', defaultDesc: 'Low activity — prefer easily digestible, light recipes.' },
-  { code: 'PREGNANT',           emoji: '🤱',  label: 'Pregnancy',        defaultDesc: 'Pregnancy — avoid bitter, pungent, or uterine-stimulating foods.' },
-  { code: 'LACTATING',          emoji: '🍼',  label: 'Lactating',        defaultDesc: 'Lactation — favour galactagogues; avoid strong spices.' },
-  { code: 'NUT_ALLERGY',        emoji: '🥜',  label: 'Nut Allergy',      defaultDesc: 'Tree nut or peanut allergy — exclude all nut-derived ingredients.' },
-  { code: 'INFANT_8M',          emoji: '👶',  label: 'Infant (8m+)',     defaultDesc: 'Complementary feeding — soft textures, no added salt or sugar.' },
-  { code: 'ELDERLY',            emoji: '🧓',  label: 'Elderly / Frail',  defaultDesc: 'Older adults — easy-to-chew, low-spice, easy to digest.' },
+  { code: 'diabetes',            emoji: '🩸', label: 'Diabetes',            defaultDesc: 'High blood sugar — avoid recipes high in simple carbohydrates.' },
+  { code: 'obesity',             emoji: '⚖️', label: 'Obesity',             defaultDesc: 'Weight management — prefer low-calorie, high-fibre preparations.' },
+  { code: 'lactose-intolerance', emoji: '🥛', label: 'Lactose intolerance', defaultDesc: 'Dairy intolerance — exclude milk-based ingredients.' },
+  { code: 'sedentary',           emoji: '🪑', label: 'Sedentary lifestyle', defaultDesc: 'Low activity — prefer easily digestible, light recipes.' },
+  { code: 'cardiac',             emoji: '❤️', label: 'Cardiac',             defaultDesc: 'Heart conditions — avoid high-sodium, high-fat preparations.' },
+  { code: 'pregnancy',           emoji: '🤱', label: 'Pregnancy',           defaultDesc: 'Pregnancy — avoid bitter, pungent, or uterine-stimulating foods.' },
+  { code: 'lactating',           emoji: '🍼', label: 'Lactating',           defaultDesc: 'Lactation — favour galactagogues; avoid strong spices.' },
+  { code: 'nut-allergy',         emoji: '🥜', label: 'Nut allergy',         defaultDesc: 'Tree nut or peanut allergy — exclude all nut-derived ingredients.' },
+  { code: 'infant-8m',           emoji: '👶', label: 'Infant (8m+)',        defaultDesc: 'Complementary feeding — soft textures, no added salt or sugar.' },
+  { code: 'elderly',             emoji: '🧓', label: 'Elderly / frail',     defaultDesc: 'Older adults — easy-to-chew, low-spice, easy to digest.' },
+  { code: 'gluten',              emoji: '🌾', label: 'Gluten',              defaultDesc: 'Gluten sensitivity — exclude wheat, barley, and rye.' },
+  { code: 'anemia',              emoji: '🍃', label: 'Anemia',              defaultDesc: 'Low iron — favour iron-rich foods; watch iron-blockers.' },
+  { code: 'acidity',             emoji: '🔥', label: 'Acidity',             defaultDesc: 'Acid reflux — avoid very sour, spicy, or fried preparations.' },
+  { code: 'indigestion',         emoji: '🌀', label: 'Indigestion',         defaultDesc: 'Weak digestion — prefer light, easily digestible foods.' },
 ];
 
-type FlagState = { label: string; description: string };
+type FlagState = { label: string; description: string; emoji: string; order: number; enabled: boolean };
 type FlagsMap  = Record<string, FlagState>;
 
 interface NewFlag {
@@ -24,8 +32,15 @@ interface NewFlag {
   description: string;
 }
 
+const builtInCodes = new Set(CONDITIONS.map(c => c.code));
+
 function defaultFlags(): FlagsMap {
-  return Object.fromEntries(CONDITIONS.map(c => [c.code, { label: c.label, description: c.defaultDesc }]));
+  return Object.fromEntries(
+    CONDITIONS.map((c, i) => [
+      c.code,
+      { label: c.label, description: c.defaultDesc, emoji: c.emoji, order: i + 1, enabled: true },
+    ]),
+  );
 }
 
 export function HealthFlagsPage() {
@@ -39,10 +54,10 @@ export function HealthFlagsPage() {
     api<Record<string, Partial<FlagState>>>('/api/admin/health-flags')
       .then(saved => {
         if (!saved || typeof saved !== 'object') return;
-        setFlags(f => {
-          const next = { ...defaultFlags(), ...f };
+        setFlags(() => {
+          const next = defaultFlags();
           for (const [code, patch] of Object.entries(saved)) {
-            next[code] = { ...next[code], ...patch } as FlagState;
+            next[code] = { ...(next[code] ?? blankState()), ...patch } as FlagState;
           }
           return next;
         });
@@ -52,6 +67,18 @@ export function HealthFlagsPage() {
 
   const update = (code: string, patch: Partial<FlagState>) =>
     setFlags(f => ({ ...f, [code]: { ...f[code], ...patch } }));
+
+  // Swap this flag's `order` with its neighbour in the sorted list.
+  const move = (code: string, dir: -1 | 1) =>
+    setFlags(f => {
+      const sorted = sortedEntries(f);
+      const idx = sorted.findIndex(([c]) => c === code);
+      const swap = idx + dir;
+      if (swap < 0 || swap >= sorted.length) return f;
+      const [ca, sa] = sorted[idx];
+      const [cb, sb] = sorted[swap];
+      return { ...f, [ca]: { ...sa, order: sb.order }, [cb]: { ...sb, order: sa.order } };
+    });
 
   async function handleSaveAll() {
     setSaving(true);
@@ -68,16 +95,22 @@ export function HealthFlagsPage() {
 
   function commitNewFlag() {
     if (!newFlag.code.trim() || !newFlag.label.trim()) return;
-    const code = newFlag.code.toUpperCase().replace(/\s+/g, '_');
-    setFlags(f => ({ ...f, [code]: { label: newFlag.label, description: newFlag.description } }));
+    const code = newFlag.code.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    setFlags(f => ({
+      ...f,
+      [code]: {
+        label: newFlag.label,
+        description: newFlag.description,
+        emoji: newFlag.emoji,
+        order: maxOrder(f) + 1,
+        enabled: true,
+      },
+    }));
     setAdding(false);
     setNewFlag({ code: '', emoji: '🏳️', label: '', description: '' });
   }
 
-  // All rendered conditions = built-in + any custom ones added to flags not in CONDITIONS
-  const builtInCodes = new Set(CONDITIONS.map(c => c.code));
-  const customCodes  = Object.keys(flags).filter(k => !builtInCodes.has(k));
-
+  const sorted = sortedEntries(flags);
   const inp = 'w-full border border-ink/[0.11] rounded-[8px] px-2.5 py-[6.5px] bg-cream text-[12.5px] text-ink placeholder:text-ink/35';
 
   return (
@@ -86,7 +119,7 @@ export function HealthFlagsPage() {
       <div className="bg-sky-bg border border-sky/20 border-l-[3px] border-l-sky rounded-[10px] px-4 py-3 mb-5 text-[13px] text-ink/70 leading-relaxed">
         <strong className="font-semibold text-sky">What are health flags?</strong>
         {' '}Each flag maps a medical or dietary condition to a per-recipe safety signal.
-        App users who set a condition on their health profile will see{' '}
+        App users pick these on their health profile and see{' '}
         <em>Safe</em>, <em>Caution</em>, or <em>Avoid</em> labels on recipes automatically —
         the severity for each recipe is set in the Recipe Editor (Step 4).
       </div>
@@ -94,7 +127,7 @@ export function HealthFlagsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
         <p className="text-[13px] text-ink/55">
-          Customise the labels and descriptions shown to users.
+          Add, enable, reorder, and customise the conditions shown to users.
         </p>
         <div className="flex items-center gap-3">
           {saveMsg && (
@@ -115,36 +148,23 @@ export function HealthFlagsPage() {
 
       {/* Flags grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-
-        {/* Built-in conditions */}
-        {CONDITIONS.map(c => (
-          <FlagCard
-            key={c.code}
-            emoji={c.emoji}
-            code={c.code}
-            label={flags[c.code]?.label ?? c.label}
-            description={flags[c.code]?.description ?? c.defaultDesc}
-            onLabelChange={v => update(c.code, { label: v })}
-            onDescChange={v  => update(c.code, { description: v })}
-            inp={inp}
-          />
-        ))}
-
-        {/* Custom flags added by admin */}
-        {customCodes.map(code => (
+        {sorted.map(([code, state], i) => (
           <FlagCard
             key={code}
-            emoji="🏷️"
             code={code}
-            label={flags[code].label}
-            description={flags[code].description}
+            state={state}
+            inp={inp}
+            isFirst={i === 0}
+            isLast={i === sorted.length - 1}
             onLabelChange={v => update(code, { label: v })}
             onDescChange={v  => update(code, { description: v })}
-            inp={inp}
-            onRemove={() => setFlags(f => {
-              const next = { ...f };
-              delete next[code];
-              return next;
+            onToggle={()     => update(code, { enabled: !state.enabled })}
+            onUp={()         => move(code, -1)}
+            onDown={()       => move(code, 1)}
+            onRemove={builtInCodes.has(code) ? undefined : () => setFlags(f => {
+              const nextMap = { ...f };
+              delete nextMap[code];
+              return nextMap;
             })}
           />
         ))}
@@ -162,8 +182,8 @@ export function HealthFlagsPage() {
               <input
                 value={newFlag.code}
                 onChange={e => setNewFlag(f => ({ ...f, code: e.target.value }))}
-                placeholder="CONDITION_CODE"
-                className="flex-1 font-mono text-[10.5px] uppercase border border-ink/[0.11] rounded-[6px] px-2 py-[6px] bg-cream tracking-wide text-ink placeholder:text-ink/30"
+                placeholder="condition-code"
+                className="flex-1 font-mono text-[10.5px] lowercase border border-ink/[0.11] rounded-[6px] px-2 py-[6px] bg-cream tracking-wide text-ink placeholder:text-ink/30"
               />
             </div>
             <label className="block text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-1.5">Display label</label>
@@ -207,21 +227,44 @@ export function HealthFlagsPage() {
   );
 }
 
-function FlagCard({ emoji, code, label, description, onLabelChange, onDescChange, inp, onRemove }: {
-  emoji: string; code: string; label: string; description: string;
+// ── helpers ──────────────────────────────────────────────────────────────────
+function blankState(): FlagState {
+  return { label: '', description: '', emoji: '🏷️', order: 0, enabled: true };
+}
+function sortedEntries(f: FlagsMap): [string, FlagState][] {
+  return Object.entries(f).sort((a, b) => (a[1].order - b[1].order) || a[0].localeCompare(b[0]));
+}
+function maxOrder(f: FlagsMap): number {
+  return Object.values(f).reduce((m, s) => Math.max(m, s.order), 0);
+}
+
+function FlagCard({ code, state, inp, isFirst, isLast, onLabelChange, onDescChange, onToggle, onUp, onDown, onRemove }: {
+  code: string;
+  state: FlagState;
+  inp: string;
+  isFirst: boolean;
+  isLast: boolean;
   onLabelChange: (v: string) => void;
   onDescChange:  (v: string) => void;
-  inp: string;
+  onToggle: () => void;
+  onUp: () => void;
+  onDown: () => void;
   onRemove?: () => void;
 }) {
   return (
-    <div className="bg-bone border border-ink/[0.11] rounded-[14px] p-4 shadow-[0_1px_3px_rgba(42,37,30,.07)]">
+    <div className={`bg-bone border rounded-[14px] p-4 shadow-[0_1px_3px_rgba(42,37,30,.07)] transition-opacity ${state.enabled ? 'border-ink/[0.11]' : 'border-ink/[0.08] opacity-60'}`}>
       <div className="flex items-start justify-between mb-1">
-        <span className="text-[22px] leading-none">{emoji}</span>
-        {onRemove && (
-          <button type="button" onClick={onRemove}
-            className="text-[11px] text-clay hover:underline">Remove</button>
-        )}
+        <span className="text-[22px] leading-none">{state.emoji}</span>
+        <div className="flex items-center gap-1">
+          <button type="button" aria-label={`Move ${code} up`} disabled={isFirst}
+            onClick={onUp} className="px-1 text-ink/45 disabled:opacity-25 hover:text-ink">↑</button>
+          <button type="button" aria-label={`Move ${code} down`} disabled={isLast}
+            onClick={onDown} className="px-1 text-ink/45 disabled:opacity-25 hover:text-ink">↓</button>
+          {onRemove && (
+            <button type="button" onClick={onRemove}
+              className="text-[11px] text-clay hover:underline ml-1">Remove</button>
+          )}
+        </div>
       </div>
       <span className="block text-[9px] font-[800] tracking-[0.08em] uppercase text-ink/35 font-mono mb-3">{code}</span>
 
@@ -229,7 +272,7 @@ function FlagCard({ emoji, code, label, description, onLabelChange, onDescChange
         Display label
       </label>
       <input
-        value={label}
+        value={state.label}
         onChange={e => onLabelChange(e.target.value)}
         className={`${inp} mb-3`}
       />
@@ -238,10 +281,20 @@ function FlagCard({ emoji, code, label, description, onLabelChange, onDescChange
       </label>
       <textarea
         rows={2}
-        value={description}
+        value={state.description}
         onChange={e => onDescChange(e.target.value)}
-        className={`${inp} resize-none text-[12px]`}
+        className={`${inp} resize-none text-[12px] mb-3`}
       />
+      <label className="flex items-center gap-2 text-[12px] text-ink/70 cursor-pointer select-none">
+        <input
+          type="checkbox"
+          checked={state.enabled}
+          onChange={onToggle}
+          aria-label={`${code} shown to users`}
+          className="accent-brand w-[15px] h-[15px]"
+        />
+        Shown to users
+      </label>
     </div>
   );
 }

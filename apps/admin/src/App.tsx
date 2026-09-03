@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { SourcesPage } from './pages/SourcesPage';
 import { SubRecipesPage } from './pages/SubRecipesPage';
 import { UsersPage } from './pages/UsersPage';
+import { UserDetailPage } from './pages/UserDetailPage';
 import { HealthFlagsPage } from './pages/HealthFlagsPage';
 import { TagsPage } from './pages/TagsPage';
 
@@ -25,6 +26,7 @@ export function App() {
             <Route path="/sources" element={<SourcesPage />} />
             <Route path="/subrecipes" element={<SubRecipesPage />} />
             <Route path="/users" element={<UsersPage />} />
+            <Route path="/users/:id" element={<UserDetailPage />} />
             <Route path="/health-flags" element={<HealthFlagsPage />} />
             <Route path="/tags" element={<TagsPage />} />
           </Route>

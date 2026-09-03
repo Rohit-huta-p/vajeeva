@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { api } from '../api/client';
 
 interface User {
@@ -85,6 +86,7 @@ function initials(name: string) {
 
 export function UsersPage() {
   const [users, setUsers] = useState<User[]>(PLACEHOLDER_USERS);
+  const navigate = useNavigate();
 
   useEffect(() => {
     api<Partial<User>[]>('/api/admin/users')
@@ -126,7 +128,11 @@ export function UsersPage() {
           </thead>
           <tbody>
             {users.map((user, i) => (
-              <tr key={user.id} className="border-b border-ink/[0.08] last:border-0 hover:bg-bone/50 transition-colors">
+              <tr
+                key={user.id}
+                onClick={() => navigate(`/users/${user.id}`)}
+                className="border-b border-ink/[0.08] last:border-0 hover:bg-bone/50 transition-colors cursor-pointer"
+              >
                 {/* User */}
                 <td className="px-4 py-3">
                   <div className="flex items-center gap-2.5">
