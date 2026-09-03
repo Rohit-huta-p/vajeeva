@@ -2,14 +2,13 @@
   "expo": {
     "name": "Vajeeva",
     "slug": "vajeeva",
-    "owner": "vchutagonnas-team",
     "version": "1.0.0",
     "orientation": "portrait",
+    "owner": "vchutagonnas-team",
     "extra": {
       "eas": {
         "projectId": "4465885f-e8b6-40f0-a195-3379edca76c4"
-      },
-      "router": {}
+      }
     },
     "icon": "./assets/icon.png",
     "splash": {
