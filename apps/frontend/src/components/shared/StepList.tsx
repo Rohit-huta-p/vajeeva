@@ -2,16 +2,27 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { fonts, type Colors } from '../../theme/tokens';
 import { scaledSheet } from '../../theme/scale';
-import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
-import { LinkedStepText } from './LinkedStepText';
+import { useThemedStyles } from '../../theme/ThemeContext';
 
 export interface Step {
   phase?: string;
   text: string;
 }
 
+// Detail-page overview only shows one plain line per step (full text, links
+// and bullets are Cook Mode's job — see LinkedStepText there). Strip step
+// markup down to something readable rather than showing raw "[[term]]" /
+// "**bold**" / bullet syntax truncated mid-token.
+function plainPreview(text: string): string {
+  return text
+    .replace(/\[\[(.+?)\]\]/g, '$1')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/•\s*/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
 export function StepList({ steps }: { steps: Step[] }) {
-  const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   return (
     <View>
@@ -22,7 +33,7 @@ export function StepList({ steps }: { steps: Step[] }) {
           </View>
           <View style={s.body}>
             {step.phase ? <Text style={s.phase}>{step.phase.toUpperCase()}</Text> : null}
-            <LinkedStepText text={step.text} style={s.text} linkColor={colors.amber} />
+            <Text style={s.text} numberOfLines={1} ellipsizeMode="tail">{plainPreview(step.text)}</Text>
           </View>
         </View>
       ))}

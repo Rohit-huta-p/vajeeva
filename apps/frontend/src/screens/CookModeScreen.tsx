@@ -10,6 +10,7 @@ import { IconBack, IconChev, IconCheck, IconClose, IconFlame } from '../componen
 import { useCookSession } from '../hooks/useCookSession';
 import { recipesApi } from '../api/recipes';
 import { LinkedStepText } from '../components/shared/LinkedStepText';
+import { IngredientsPopover } from '../components/shared/IngredientsPopover';
 import type { RecipeDoc } from '../api/recipes';
 import { scaledSheet, sc } from '../theme/scale';
 import { usePreferences } from '../hooks/usePreferences';
@@ -26,6 +27,8 @@ export function CookModeScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const [step, setStep] = useState(0);
   const [steps, setSteps] = useState<CookStep[]>([]);
+  const [ingredients, setIngredients] = useState<RecipeDoc['ingredients']>([]);
+  const [ingOpen, setIngOpen] = useState(false);
   const current = steps[step];
   const { startSession, updateStep } = useCookSession();
 
@@ -44,6 +47,7 @@ export function CookModeScreen() {
           heat: st.heat ?? null,
         }));
       setSteps(cookSteps);
+      setIngredients(doc.ingredients ?? []);
       startSession({
         slug,
         title: doc.nameEn,
@@ -123,9 +127,13 @@ export function CookModeScreen() {
           <Text style={s.counter}>{step + 1} / {steps.length}</Text>
         </View>
 
-        {/* Phase strip */}
+        {/* Phase strip — same on every step, so "View ingredients" is always
+            reachable without leaving Cook Mode. */}
         <View style={s.phaseStrip}>
           <Text style={s.phase}>Phase · {current.phase}</Text>
+          <TouchableOpacity onPress={() => setIngOpen(true)} hitSlop={6}>
+            <Text style={s.ingLink}>View ingredients</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Content */}
@@ -159,6 +167,7 @@ export function CookModeScreen() {
         </View>
         <Text style={s.caption}>screen stays awake · swipe to navigate · works offline</Text>
       </SafeAreaView>
+      <IngredientsPopover visible={ingOpen} onClose={() => setIngOpen(false)} ingredients={ingredients} />
     </View>
   );
 }
@@ -185,10 +194,17 @@ const s = scaledSheet({
     fontSize: 10, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmMuted,
     minWidth: 32, textAlign: 'right',
   },
-  phaseStrip: { paddingTop: 2, paddingHorizontal: 18, paddingBottom: 10 },
+  phaseStrip: {
+    flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
+    paddingTop: 2, paddingHorizontal: 18, paddingBottom: 10,
+  },
   phase: {
     fontSize: 9, fontFamily: fonts.mono, fontWeight: '700', color: colors.cmAmber,
     letterSpacing: 1.62, textTransform: 'uppercase',
+  },
+  ingLink: {
+    fontSize: 9.5, fontFamily: fonts.sans, fontWeight: '700', color: PREV_TEXT,
+    textDecorationLine: 'underline',
   },
   body: { flex: 1 },
   bodyContent: { paddingHorizontal: 18, gap: 13, paddingBottom: 17 },
