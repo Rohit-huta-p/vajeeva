@@ -89,6 +89,20 @@ const NAV_GROUPS = [
         ),
       },
       {
+        to: '/diet-rules',
+        label: 'Diet Rules',
+        icon: (
+          <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 15 15" className="w-[15px] h-[15px] shrink-0">
+            <circle cx="4" cy="4" r="1.4" />
+            <path d="M7 4H13" strokeLinecap="round" />
+            <circle cx="4" cy="7.5" r="1.4" />
+            <path d="M7 7.5H13" strokeLinecap="round" />
+            <circle cx="4" cy="11" r="1.4" />
+            <path d="M7 11H13" strokeLinecap="round" />
+          </svg>
+        ),
+      },
+      {
         to: '/tags',
         label: 'Discovery Tags',
         icon: (
@@ -126,6 +140,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/subrecipes':    'Sub-recipes',
   '/users':         'Users',
   '/health-flags':  'Health Flags',
+  '/diet-rules':    'Diet Rules',
   '/tags':          'Discovery Tags',
   '/recipes/new':   'New Recipe',
 };

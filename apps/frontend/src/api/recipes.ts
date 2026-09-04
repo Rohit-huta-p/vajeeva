@@ -77,7 +77,7 @@ export interface RecipeDoc {
     order: number; text: string; phase?: string; heat?: string | null;
     images?: RecipeImage[] | null;
   }[];
-  healthFlags: { condition: string; severity: 'safe' | 'caution' | 'avoid'; note?: string }[];
+  healthFlags: { condition: string; severity: 'safe' | 'caution' | 'avoid' | 'indication'; note?: string }[];
   sources: { text: string; citation?: string }[];
   yieldStr?: string;
   shelfLife?: string;
@@ -116,7 +116,7 @@ export function toListItem(doc: RecipeDoc): RecipeListItem {
     nameTa: doc.nameTa,
     category: doc.category,
     cookTimeMin: (doc as any).totalTimeMin ?? 0,
-    contraCount: (doc.healthFlags ?? []).filter(f => f.severity !== 'safe').length,
+    contraCount: (doc.healthFlags ?? []).filter(f => f.severity === 'avoid' || f.severity === 'caution').length,
     fit: deriveFit(doc.healthFlags),
     stepCount: (doc.steps ?? []).length,
     yieldStr: doc.yieldStr,
