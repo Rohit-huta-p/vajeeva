@@ -3,10 +3,23 @@ import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 import { Recipe } from '../models/Recipe';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
+import { IngredientRule } from '../models/IngredientRule';
+import { deriveFlags, mergeFlags, type Rule, type Flag } from '../lib/deriveHealthFlags';
 import { RecipeInputSchema } from '@vajeeva/shared';
 
 export const adminRouter = Router();
 adminRouter.use(requireAuth, requireAdmin);
+
+/**
+ * Apply ingredient rules to a recipe payload at save time, so new/edited recipes
+ * self-classify. Manual flags (source !== 'rule') are preserved. See the Diet
+ * Rules engine (docs/specs/2026-09-03-admin-outcomes.md).
+ */
+async function withDerivedFlags(data: { ingredients?: { nameEn?: string }[]; healthFlags?: Flag[] }): Promise<Flag[]> {
+  const rules = await IngredientRule.find({ enabled: true }).lean() as unknown as Rule[];
+  const derived = deriveFlags(data.ingredients ?? [], rules);
+  return mergeFlags((data.healthFlags ?? []) as Flag[], derived).next;
+}
 
 /**
  * Reject health-flag conditions not present in the condition vocabulary
@@ -48,7 +61,7 @@ adminRouter.post('/recipes', async (req, res, next) => {
     if (condErr) { res.status(400).json({ error: condErr }); return; }
     const existing = await Recipe.findOne({ slug: parsed.data.slug });
     if (existing) { res.status(409).json({ error: 'Slug already exists' }); return; }
-    const recipe = await Recipe.create(parsed.data);
+    const recipe = await Recipe.create({ ...parsed.data, healthFlags: await withDerivedFlags(parsed.data) });
     res.status(201).json(recipe);
   } catch (err) { next(err); }
 });
@@ -61,7 +74,7 @@ adminRouter.put('/recipes/:id', async (req, res, next) => {
     if (condErr) { res.status(400).json({ error: condErr }); return; }
     const recipe = await Recipe.findByIdAndUpdate(
       req.params.id,
-      { ...parsed.data, updatedAt: new Date() },
+      { ...parsed.data, healthFlags: await withDerivedFlags(parsed.data), updatedAt: new Date() },
       { new: true, runValidators: true }
     );
     if (!recipe) { res.status(404).json({ error: 'Not found' }); return; }

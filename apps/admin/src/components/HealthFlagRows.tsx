@@ -56,6 +56,7 @@ export function HealthFlagRows({ value, onChange, conditions = [] }: {
             <option value="safe">Safe</option>
             <option value="caution">Caution</option>
             <option value="avoid">Avoid</option>
+            <option value="indication">Indication</option>
           </select>
           <input
             aria-label={`Flag ${i + 1} note`}
@@ -76,7 +77,7 @@ export function HealthFlagRows({ value, onChange, conditions = [] }: {
       ))}
       <button
         type="button"
-        onClick={() => onChange([...value, { condition: '', severity: 'caution', note: '' }])}
+        onClick={() => onChange([...value, { condition: '', severity: 'caution', note: '', source: 'manual' }])}
         className="border border-dashed border-ink/20 rounded-lg w-full py-2 text-sm text-ink/55"
       >
         + Add health flag

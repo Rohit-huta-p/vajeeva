@@ -96,6 +96,7 @@ describe('DELETE /api/admin/recipes/:id', () => {
 
 describe('health-condition write guard', () => {
   beforeAll(async () => {
+    await HealthFlagConfig.deleteMany({}); // robust to leftovers from other suites (shared in-memory DB)
     await HealthFlagConfig.create({ code: 'diabetes', label: 'Diabetes', description: 'd', enabled: true });
   });
   afterAll(async () => { await HealthFlagConfig.deleteMany({}); });
