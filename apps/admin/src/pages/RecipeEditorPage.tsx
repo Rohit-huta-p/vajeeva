@@ -365,7 +365,19 @@ export function RecipeEditorPage() {
               <p className="text-[12.5px] text-ink/45 mb-5">
                 Set per-condition severity for this recipe. Users see a personalised Safe / Caution / Avoid label.
               </p>
-              <HealthFlagRows value={form.healthFlags} onChange={healthFlags => patch({ healthFlags })} conditions={conditions} />
+              <HealthFlagRows
+                value={form.healthFlags}
+                onChange={healthFlags => patch({ healthFlags })}
+                conditions={conditions}
+                onAutoSave={id
+                  ? async (healthFlags) => {
+                      await api(`/api/admin/recipes/${id}`, {
+                        method: 'PATCH',
+                        body: JSON.stringify({ healthFlags }),
+                      });
+                    }
+                  : undefined}
+              />
             </>
           )}
 
