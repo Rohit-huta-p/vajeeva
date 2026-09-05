@@ -19,11 +19,15 @@ function cleanRule(body: any) {
         .filter((e: any) => e && e.condition && ['caution', 'avoid', 'indication'].includes(e.severity))
         .map((e: any) => ({ condition: String(e.condition), severity: e.severity }))
     : [];
+  const excludedSlugs = Array.isArray(body.excludedSlugs)
+    ? [...new Set(body.excludedSlugs.map((s: string) => String(s).trim()).filter(Boolean))]
+    : [];
   return {
     ingredient: String(body.ingredient ?? '').trim(),
     match,
     effects,
     enabled: body.enabled !== false,
+    excludedSlugs,
   };
 }
 
@@ -98,7 +102,7 @@ dietRulesAdminRouter.delete('/:id', async (req, res, next) => {
 dietRulesAdminRouter.post('/apply', async (req, res, next) => {
   try {
     const commit = (req.body as { commit?: boolean }).commit === true;
-    const rules = await IngredientRule.find({ enabled: true }).lean() as unknown as Rule[];
+    const ruleDocs = await IngredientRule.find({ enabled: true }).lean();
     const recipes = await Recipe.find({}, 'slug nameEn ingredients healthFlags').lean();
 
     let added = 0, changed = 0, removed = 0, recipesAffected = 0, recipesWithOverrides = 0;
@@ -106,7 +110,11 @@ dietRulesAdminRouter.post('/apply', async (req, res, next) => {
     const writes: { id: unknown; next: Flag[] }[] = [];
 
     for (const r of recipes) {
-      const derived = deriveFlags((r.ingredients ?? []) as { nameEn?: string }[], rules);
+      // Skip rules that have explicitly excluded this recipe's slug
+      const applicable = ruleDocs.filter(
+        rule => !(rule.excludedSlugs ?? []).includes(r.slug),
+      ) as unknown as Rule[];
+      const derived = deriveFlags((r.ingredients ?? []) as { nameEn?: string }[], applicable);
       const m = mergeFlags((r.healthFlags ?? []) as Flag[], derived);
       if (m.overrides > 0) recipesWithOverrides++;
       if (m.dirty) {

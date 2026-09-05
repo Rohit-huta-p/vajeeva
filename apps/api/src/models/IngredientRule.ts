@@ -11,9 +11,10 @@ const EffectSchema = new mongoose.Schema({
 
 const IngredientRuleSchema = new mongoose.Schema({
   ingredient: { type: String, required: true },      // display name, e.g. "Jaggery"
-  match:      { type: [String], default: [] },        // lowercase keywords matched in ingredients[].nameEn
-  effects:    { type: [EffectSchema], default: [] },
-  enabled:    { type: Boolean, default: true },
+  match:         { type: [String], default: [] },       // lowercase keywords matched in ingredients[].nameEn
+  effects:       { type: [EffectSchema], default: [] },
+  enabled:       { type: Boolean, default: true },
+  excludedSlugs: { type: [String], default: [] },       // recipe slugs exempt from this rule
 }, { timestamps: true });
 
 IngredientRuleSchema.index({ ingredient: 1 }, { unique: true });

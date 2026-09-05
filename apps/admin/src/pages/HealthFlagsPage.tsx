@@ -1,10 +1,6 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client';
 
-// Built-in defaults mirror the seed (apps/api/src/scripts/seed-healthflags.ts).
-// Codes are lowercase slugs — the single condition vocabulary shared by the patient
-// health-profile grid and recipe health-flags. See
-// docs/specs/2026-09-03-condition-vocabulary.md.
 const CONDITIONS = [
   { code: 'diabetes',            emoji: '🩸', label: 'Diabetes',            defaultDesc: 'High blood sugar — avoid recipes high in simple carbohydrates.' },
   { code: 'obesity',             emoji: '⚖️', label: 'Obesity',             defaultDesc: 'Weight management — prefer low-calorie, high-fibre preparations.' },
@@ -25,14 +21,7 @@ const CONDITIONS = [
 type FlagState = { label: string; description: string; emoji: string; order: number; enabled: boolean };
 type FlagsMap  = Record<string, FlagState>;
 
-interface NewFlag {
-  code: string;
-  emoji: string;
-  label: string;
-  description: string;
-}
-
-const builtInCodes = new Set(CONDITIONS.map(c => c.code));
+const BUILTIN = new Set(CONDITIONS.map(c => c.code));
 
 function defaultFlags(): FlagsMap {
   return Object.fromEntries(
@@ -42,13 +31,32 @@ function defaultFlags(): FlagsMap {
     ]),
   );
 }
+function blankState(): FlagState {
+  return { label: '', description: '', emoji: '🏷️', order: 0, enabled: true };
+}
+function sorted(f: FlagsMap): [string, FlagState][] {
+  return Object.entries(f).sort((a, b) => (a[1].order - b[1].order) || a[0].localeCompare(b[0]));
+}
+function maxOrder(f: FlagsMap) {
+  return Object.values(f).reduce((m, s) => Math.max(m, s.order), 0);
+}
+function toSlug(s: string) {
+  return s.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+const INP = 'w-full border border-ink/[0.11] rounded-[7px] px-2.5 py-1.5 bg-cream text-[12.5px] text-ink placeholder:text-ink/30 focus:outline-none focus:ring-1 focus:ring-brand/30';
 
 export function HealthFlagsPage() {
   const [flags,   setFlags]   = useState<FlagsMap>(defaultFlags);
   const [saving,  setSaving]  = useState(false);
   const [saveMsg, setSaveMsg] = useState<{ ok: boolean; text: string } | null>(null);
-  const [adding,  setAdding]  = useState(false);
-  const [newFlag, setNewFlag] = useState<NewFlag>({ code: '', emoji: '🏳️', label: '', description: '' });
+
+  // New-flag inline row state
+  const [newCode,  setNewCode]  = useState('');
+  const [newEmoji, setNewEmoji] = useState('🏷️');
+  const [newLabel, setNewLabel] = useState('');
+  const [newDesc,  setNewDesc]  = useState('');
+  const [addErr,   setAddErr]   = useState<string | null>(null);
 
   useEffect(() => {
     api<Record<string, Partial<FlagState>>>('/api/admin/health-flags')
@@ -62,77 +70,71 @@ export function HealthFlagsPage() {
           return next;
         });
       })
-      .catch(() => { /* endpoint unreachable — defaults stay */ });
+      .catch(() => {});
   }, []);
 
   const update = (code: string, patch: Partial<FlagState>) =>
     setFlags(f => ({ ...f, [code]: { ...f[code], ...patch } }));
 
-  // Swap this flag's `order` with its neighbour in the sorted list.
   const move = (code: string, dir: -1 | 1) =>
     setFlags(f => {
-      const sorted = sortedEntries(f);
-      const idx = sorted.findIndex(([c]) => c === code);
+      const rows = sorted(f);
+      const idx  = rows.findIndex(([c]) => c === code);
       const swap = idx + dir;
-      if (swap < 0 || swap >= sorted.length) return f;
-      const [ca, sa] = sorted[idx];
-      const [cb, sb] = sorted[swap];
+      if (swap < 0 || swap >= rows.length) return f;
+      const [ca, sa] = rows[idx];
+      const [cb, sb] = rows[swap];
       return { ...f, [ca]: { ...sa, order: sb.order }, [cb]: { ...sb, order: sa.order } };
     });
 
   async function handleSaveAll() {
-    setSaving(true);
-    setSaveMsg(null);
+    setSaving(true); setSaveMsg(null);
     try {
       await api('/api/admin/health-flags', { method: 'PUT', body: JSON.stringify(flags) });
-      setSaveMsg({ ok: true, text: 'Saved.' });
+      setSaveMsg({ ok: true, text: '✓ Saved.' });
     } catch (e) {
-      setSaveMsg({ ok: false, text: (e as Error).message });
+      setSaveMsg({ ok: false, text: (e as Error).message || 'Save failed' });
     } finally {
       setSaving(false);
     }
   }
 
   function commitNewFlag() {
-    if (!newFlag.code.trim() || !newFlag.label.trim()) return;
-    const code = newFlag.code.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+    setAddErr(null);
+    const code = toSlug(newCode);
+    if (!code)        { setAddErr('Condition code is required.'); return; }
+    if (!newLabel.trim()) { setAddErr('Display label is required.'); return; }
+    if (flags[code])  { setAddErr(`Code "${code}" already exists.`); return; }
     setFlags(f => ({
       ...f,
-      [code]: {
-        label: newFlag.label,
-        description: newFlag.description,
-        emoji: newFlag.emoji,
-        order: maxOrder(f) + 1,
-        enabled: true,
-      },
+      [code]: { label: newLabel.trim(), description: newDesc.trim(), emoji: newEmoji, order: maxOrder(f) + 1, enabled: true },
     }));
-    setAdding(false);
-    setNewFlag({ code: '', emoji: '🏳️', label: '', description: '' });
+    setNewCode(''); setNewEmoji('🏷️'); setNewLabel(''); setNewDesc(''); setAddErr(null);
   }
 
-  const sorted = sortedEntries(flags);
-  const inp = 'w-full border border-ink/[0.11] rounded-[8px] px-2.5 py-[6.5px] bg-cream text-[12.5px] text-ink placeholder:text-ink/35';
+  const rows = sorted(flags);
 
   return (
     <div className="p-5 md:p-7">
       {/* Info callout */}
       <div className="bg-sky-bg border border-sky/20 border-l-[3px] border-l-sky rounded-[10px] px-4 py-3 mb-5 text-[13px] text-ink/70 leading-relaxed">
         <strong className="font-semibold text-sky">What are health flags?</strong>
-        {' '}Each flag maps a medical or dietary condition to a per-recipe safety signal.
-        App users pick these on their health profile and see{' '}
-        <em>Safe</em>, <em>Caution</em>, or <em>Avoid</em> labels on recipes automatically —
-        the severity for each recipe is set in the Recipe Editor (Step 4).
+        {' '}Each flag maps a condition to a per-recipe safety signal.
+        App users pick conditions on their health profile and see{' '}
+        <em>Safe</em>, <em>Caution</em>, or <em>Avoid</em> labels automatically —
+        severity per recipe is set in the Recipe Editor (Step 4).
       </div>
 
       {/* Header */}
-      <div className="flex flex-wrap items-center justify-between gap-3 mb-5">
+      <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
         <p className="text-[13px] text-ink/55">
           Add, enable, reorder, and customise the conditions shown to users.
+          Changes only take effect after <strong>Save all</strong>.
         </p>
         <div className="flex items-center gap-3">
           {saveMsg && (
             <span className={`text-[12px] font-medium ${saveMsg.ok ? 'text-brand' : 'text-clay'}`}>
-              {saveMsg.text}
+              {saveMsg.ok ? saveMsg.text : `⚠ ${saveMsg.text}`}
             </span>
           )}
           <button
@@ -146,155 +148,175 @@ export function HealthFlagsPage() {
         </div>
       </div>
 
-      {/* Flags grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        {sorted.map(([code, state], i) => (
-          <FlagCard
-            key={code}
-            code={code}
-            state={state}
-            inp={inp}
-            isFirst={i === 0}
-            isLast={i === sorted.length - 1}
-            onLabelChange={v => update(code, { label: v })}
-            onDescChange={v  => update(code, { description: v })}
-            onToggle={()     => update(code, { enabled: !state.enabled })}
-            onUp={()         => move(code, -1)}
-            onDown={()       => move(code, 1)}
-            onRemove={builtInCodes.has(code) ? undefined : () => setFlags(f => {
-              const nextMap = { ...f };
-              delete nextMap[code];
-              return nextMap;
-            })}
-          />
-        ))}
+      {/* ── Table ── */}
+      <div className="overflow-x-auto rounded-[14px] border border-ink/[0.11]">
+        <table className="w-full border-collapse text-[12.5px]">
+          <thead>
+            <tr className="bg-sand border-b border-ink/[0.11]">
+              <th className="w-14 px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-center">Order</th>
+              <th className="w-10 px-2 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-center">Icon</th>
+              <th className="px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-left w-[140px]">Code</th>
+              <th className="px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-left w-[160px]">Label</th>
+              <th className="px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-left">Description</th>
+              <th className="px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 text-center w-20">Shown</th>
+              <th className="w-9" />
+            </tr>
+          </thead>
 
-        {/* Add new flag card */}
-        {adding ? (
-          <div className="bg-bone border-[2px] border-brand rounded-[14px] p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <input
-                value={newFlag.emoji}
-                onChange={e => setNewFlag(f => ({ ...f, emoji: e.target.value }))}
-                className="w-[48px] text-center text-[20px] border border-ink/[0.11] rounded-[6px] py-1 bg-cream"
-                maxLength={2}
-              />
-              <input
-                value={newFlag.code}
-                onChange={e => setNewFlag(f => ({ ...f, code: e.target.value }))}
-                placeholder="condition-code"
-                className="flex-1 font-mono text-[10.5px] lowercase border border-ink/[0.11] rounded-[6px] px-2 py-[6px] bg-cream tracking-wide text-ink placeholder:text-ink/30"
-              />
-            </div>
-            <label className="block text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-1.5">Display label</label>
-            <input
-              value={newFlag.label}
-              onChange={e => setNewFlag(f => ({ ...f, label: e.target.value }))}
-              placeholder="e.g. Gluten-free"
-              className={`${inp} mb-2`}
-            />
-            <label className="block text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-1.5">Description</label>
-            <textarea
-              rows={2}
-              value={newFlag.description}
-              onChange={e => setNewFlag(f => ({ ...f, description: e.target.value }))}
-              placeholder="Description shown to users…"
-              className={`${inp} resize-none mb-3`}
-            />
-            <div className="flex justify-end gap-2">
-              <button type="button" onClick={() => setAdding(false)}
-                className="px-3 py-1.5 text-[12px] text-ink/55 hover:bg-sand rounded-[8px] transition-colors">
-                Cancel
-              </button>
-              <button type="button" onClick={commitNewFlag}
-                className="px-3 py-1.5 text-[12px] font-semibold bg-brand text-white rounded-[8px] hover:opacity-90 transition-opacity">
-                Add Flag
-              </button>
-            </div>
-          </div>
-        ) : (
-          <button
-            type="button"
-            onClick={() => setAdding(true)}
-            className="flex flex-col items-center justify-center min-h-[182px] border-[2px] border-dashed border-ink/[0.18] rounded-[14px] gap-2 cursor-pointer hover:border-brand hover:bg-brand-bg transition-all group"
-          >
-            <span className="text-[26px] opacity-30 group-hover:opacity-60 transition-opacity">+</span>
-            <span className="text-[12px] font-semibold text-ink/40 group-hover:text-brand transition-colors">Add new flag</span>
-          </button>
-        )}
+          <tbody>
+            {rows.map(([code, state], i) => (
+              <tr
+                key={code}
+                className={[
+                  'border-b border-ink/[0.06] last:border-0 group transition-colors hover:bg-cream/50',
+                  state.enabled ? '' : 'opacity-50',
+                ].join(' ')}
+              >
+                {/* Order */}
+                <td className="px-3 py-2 text-center">
+                  <div className="flex items-center justify-center gap-0.5">
+                    <button type="button" aria-label={`Move ${code} up`} disabled={i === 0}
+                      onClick={() => move(code, -1)}
+                      className="text-ink/40 hover:text-ink disabled:opacity-20 px-1 text-[14px] transition-colors">↑</button>
+                    <button type="button" aria-label={`Move ${code} down`} disabled={i === rows.length - 1}
+                      onClick={() => move(code, 1)}
+                      className="text-ink/40 hover:text-ink disabled:opacity-20 px-1 text-[14px] transition-colors">↓</button>
+                  </div>
+                </td>
+
+                {/* Emoji */}
+                <td className="px-2 py-2 text-center text-[18px] leading-none">
+                  <input
+                    value={state.emoji}
+                    onChange={e => update(code, { emoji: e.target.value })}
+                    maxLength={2}
+                    aria-label={`${code} emoji`}
+                    className="w-9 text-center text-[18px] bg-transparent border-0 focus:outline-none focus:ring-1 focus:ring-brand/30 rounded"
+                  />
+                </td>
+
+                {/* Code */}
+                <td className="px-3 py-2">
+                  <span className="font-mono text-[10.5px] font-bold text-ink/50 bg-sand px-2 py-0.5 rounded-[5px]">
+                    {code}
+                  </span>
+                </td>
+
+                {/* Label */}
+                <td className="px-3 py-2">
+                  <input
+                    value={state.label}
+                    onChange={e => update(code, { label: e.target.value })}
+                    aria-label={`${code} label`}
+                    className={INP}
+                  />
+                </td>
+
+                {/* Description */}
+                <td className="px-3 py-2">
+                  <input
+                    value={state.description}
+                    onChange={e => update(code, { description: e.target.value })}
+                    aria-label={`${code} description`}
+                    className={INP}
+                  />
+                </td>
+
+                {/* Shown toggle */}
+                <td className="px-3 py-2 text-center">
+                  <input
+                    type="checkbox"
+                    checked={state.enabled}
+                    onChange={() => update(code, { enabled: !state.enabled })}
+                    aria-label={`${code} shown to users`}
+                    className="w-4 h-4 accent-brand cursor-pointer"
+                  />
+                </td>
+
+                {/* Remove (custom flags only) */}
+                <td className="px-2 py-2 text-center">
+                  {!BUILTIN.has(code) && (
+                    <button
+                      type="button"
+                      aria-label={`Remove ${code}`}
+                      onClick={() => setFlags(f => { const n = { ...f }; delete n[code]; return n; })}
+                      className="text-clay/50 hover:text-clay text-[18px] leading-none transition-colors opacity-0 group-hover:opacity-100"
+                    >×</button>
+                  )}
+                </td>
+              </tr>
+            ))}
+
+            {/* ── Add new flag inline row ── */}
+            <tr className="border-t-[2px] border-brand/20 bg-brand/[0.03]">
+              <td className="px-3 py-2.5 text-center">
+                <span className="text-[10px] font-bold text-brand/60 uppercase tracking-wider">New</span>
+              </td>
+              <td className="px-2 py-2.5 text-center">
+                <input
+                  value={newEmoji}
+                  onChange={e => setNewEmoji(e.target.value)}
+                  maxLength={2}
+                  aria-label="New flag emoji"
+                  className="w-9 text-center text-[18px] bg-transparent border border-ink/[0.11] rounded focus:outline-none focus:ring-1 focus:ring-brand/30"
+                />
+              </td>
+              <td className="px-3 py-2.5">
+                <input
+                  value={newCode}
+                  onChange={e => setNewCode(e.target.value)}
+                  placeholder="condition-code"
+                  aria-label="New flag code"
+                  className="w-full font-mono text-[11px] lowercase border border-ink/[0.11] rounded-[7px] px-2.5 py-1.5 bg-cream text-ink/70 placeholder:text-ink/25 focus:outline-none focus:ring-1 focus:ring-brand/30"
+                  onKeyDown={e => e.key === 'Enter' && commitNewFlag()}
+                />
+              </td>
+              <td className="px-3 py-2.5">
+                <input
+                  value={newLabel}
+                  onChange={e => setNewLabel(e.target.value)}
+                  placeholder="Display label"
+                  aria-label="New flag label"
+                  className={INP}
+                  onKeyDown={e => e.key === 'Enter' && commitNewFlag()}
+                />
+              </td>
+              <td className="px-3 py-2.5">
+                <input
+                  value={newDesc}
+                  onChange={e => setNewDesc(e.target.value)}
+                  placeholder="Description (optional)"
+                  aria-label="New flag description"
+                  className={INP}
+                  onKeyDown={e => e.key === 'Enter' && commitNewFlag()}
+                />
+              </td>
+              <td className="px-3 py-2.5 text-center">
+                <input type="checkbox" checked disabled className="w-4 h-4 accent-brand opacity-40" />
+              </td>
+              <td className="px-2 py-2.5">
+                <button
+                  type="button"
+                  onClick={commitNewFlag}
+                  className="text-[11px] font-bold text-brand hover:opacity-70 transition-opacity whitespace-nowrap"
+                >
+                  + Add
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    </div>
-  );
-}
 
-// ── helpers ──────────────────────────────────────────────────────────────────
-function blankState(): FlagState {
-  return { label: '', description: '', emoji: '🏷️', order: 0, enabled: true };
-}
-function sortedEntries(f: FlagsMap): [string, FlagState][] {
-  return Object.entries(f).sort((a, b) => (a[1].order - b[1].order) || a[0].localeCompare(b[0]));
-}
-function maxOrder(f: FlagsMap): number {
-  return Object.values(f).reduce((m, s) => Math.max(m, s.order), 0);
-}
+      {/* Add error */}
+      {addErr && (
+        <p className="mt-2 text-[12px] text-clay font-medium">⚠ {addErr}</p>
+      )}
 
-function FlagCard({ code, state, inp, isFirst, isLast, onLabelChange, onDescChange, onToggle, onUp, onDown, onRemove }: {
-  code: string;
-  state: FlagState;
-  inp: string;
-  isFirst: boolean;
-  isLast: boolean;
-  onLabelChange: (v: string) => void;
-  onDescChange:  (v: string) => void;
-  onToggle: () => void;
-  onUp: () => void;
-  onDown: () => void;
-  onRemove?: () => void;
-}) {
-  return (
-    <div className={`bg-bone border rounded-[14px] p-4 shadow-[0_1px_3px_rgba(42,37,30,.07)] transition-opacity ${state.enabled ? 'border-ink/[0.11]' : 'border-ink/[0.08] opacity-60'}`}>
-      <div className="flex items-start justify-between mb-1">
-        <span className="text-[22px] leading-none">{state.emoji}</span>
-        <div className="flex items-center gap-1">
-          <button type="button" aria-label={`Move ${code} up`} disabled={isFirst}
-            onClick={onUp} className="px-1 text-ink/45 disabled:opacity-25 hover:text-ink">↑</button>
-          <button type="button" aria-label={`Move ${code} down`} disabled={isLast}
-            onClick={onDown} className="px-1 text-ink/45 disabled:opacity-25 hover:text-ink">↓</button>
-          {onRemove && (
-            <button type="button" onClick={onRemove}
-              className="text-[11px] text-clay hover:underline ml-1">Remove</button>
-          )}
-        </div>
-      </div>
-      <span className="block text-[9px] font-[800] tracking-[0.08em] uppercase text-ink/35 font-mono mb-3">{code}</span>
-
-      <label className="block text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-1.5">
-        Display label
-      </label>
-      <input
-        value={state.label}
-        onChange={e => onLabelChange(e.target.value)}
-        className={`${inp} mb-3`}
-      />
-      <label className="block text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-1.5">
-        Description
-      </label>
-      <textarea
-        rows={2}
-        value={state.description}
-        onChange={e => onDescChange(e.target.value)}
-        className={`${inp} resize-none text-[12px] mb-3`}
-      />
-      <label className="flex items-center gap-2 text-[12px] text-ink/70 cursor-pointer select-none">
-        <input
-          type="checkbox"
-          checked={state.enabled}
-          onChange={onToggle}
-          aria-label={`${code} shown to users`}
-          className="accent-brand w-[15px] h-[15px]"
-        />
-        Shown to users
-      </label>
+      <p className="mt-3 text-[11.5px] text-ink/35">
+        Built-in flags cannot be removed — disable <em>Shown</em> to hide them from users.
+        Changes only persist after <strong>Save all</strong>.
+      </p>
     </div>
   );
 }
