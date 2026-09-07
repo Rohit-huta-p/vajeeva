@@ -44,8 +44,8 @@ export function matchFacet(r: RecipeListItem, key: string): boolean {
 }
 
 // Value-axis filters (one tag code within a single axis) — for RecipeList deep
-// links (?ingredient=coconut, ?type=laddu, ?filter=sweet, …) and the Home pills.
-export type TagAxis = 'type' | 'meal' | 'ingredient' | 'method' | 'filter';
+// links (?ingredient=coconut, ?type=laddu, ?filter=sweet, ?diet=veg …) and Home pills.
+export type TagAxis = 'type' | 'meal' | 'ingredient' | 'method' | 'filter' | 'diet';
 
 export function matchTag(r: RecipeListItem, axis: TagAxis, value: string): boolean {
   switch (axis) {
@@ -54,6 +54,7 @@ export function matchTag(r: RecipeListItem, axis: TagAxis, value: string): boole
     case 'ingredient': return (r.mainIngredients ?? []).includes(value);
     case 'method':     return (r.methods ?? []).includes(value);
     case 'filter':     return (r.filters ?? []).includes(value);
+    case 'diet':       return (r.dietTags ?? []).includes(value);
     default:           return true;
   }
 }

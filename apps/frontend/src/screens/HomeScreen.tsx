@@ -15,6 +15,7 @@ import { SkeletonRail } from '../components/shared/SkeletonRail';
 import { WelcomeCard } from '../components/shared/WelcomeCard';
 import { SaveNudge } from '../components/shared/SaveNudge';
 import { FilterPillRow } from '../components/shared/FilterPillRow';
+import { DietPillRow } from '../components/shared/DietPillRow';
 import {
   MkSprout, IconUser, IconLeaf, IconChev,
 } from '../components/shared/icons';
@@ -22,6 +23,7 @@ import { useCookSession } from '../hooks/useCookSession';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { useFilterPills } from '../hooks/useFilterPills';
+import { useDietPills } from '../hooks/useDietPills';
 import { recipesApi, toListItem } from '../api/recipes';
 import { api as axiosApi } from '../api';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
@@ -69,6 +71,8 @@ export function HomeScreen() {
   const savedCols = columnsFor(width);
   // Admin-owned Home filter pills (effort flat + taste/occasion dropdowns).
   const filterPills = useFilterPills();
+  // Admin-owned diet-tag pills (flat one-tap, sourced from the diet facet).
+  const dietPills = useDietPills();
 
   // Texture-pulse cue: "Choose a texture" scrolls the doors into view and pulses
   // each one (staggered green ring) so a new patient's eye lands on the choice.
@@ -174,6 +178,8 @@ export function HomeScreen() {
         <ScrollView ref={scrollRef} contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
           {/* Quick filters — admin-owned pills; a tap deep-links the recipe list */}
           <FilterPillRow pills={filterPills} onSelect={code => router.push(`/recipe-list?filter=${code}` as any)} />
+          {/* Diet tags — admin-owned; a tap deep-links to the recipe list filtered by diet */}
+          <DietPillRow pills={dietPills} onSelect={code => router.push(`/recipe-list?diet=${code}` as any)} />
 
           {/* Zone 1 · Jump back in — skeleton while on-device history loads,
               then the rail, or a welcome for a brand-new patient */}

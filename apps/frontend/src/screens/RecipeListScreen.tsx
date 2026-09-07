@@ -68,8 +68,8 @@ export function RecipeListScreen() {
   const cols = columnsFor(width);
   const { isSaved, save, unsave } = useSavedRecipes();
   const { ready, lastSyncedAt, resync } = useOffline();
-  const { texture, facet, type, meal, ingredient, method, q, filter: filterTag } = useLocalSearchParams<{
-    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string; filter?: string;
+  const { texture, facet, type, meal, ingredient, method, q, filter: filterTag, diet: dietTag } = useLocalSearchParams<{
+    texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string; filter?: string; diet?: string;
   }>();
 
   // Texture list — loaded from API; falls back to hardcoded defaults if offline.
@@ -130,13 +130,13 @@ export function RecipeListScreen() {
       if (LABEL_TO_CATEGORY[filter]) items = items.filter(r => r.category === LABEL_TO_CATEGORY[filter]);
       if (isFacet(facet)) items = items.filter(r => matchFacet(r, facet));
       // Value-axis tag filters (Home "Cook with…" tiles, deep links) — AND across axes.
-      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method], ['filter', filterTag]];
+      const axes: [TagAxis, string | undefined][] = [['type', type], ['meal', meal], ['ingredient', ingredient], ['method', method], ['filter', filterTag], ['diet', dietTag]];
       for (const [axis, value] of axes) {
         if (value) items = items.filter(r => matchTag(r, axis, value));
       }
       setRecipes(items);
     } catch { } finally { setLoading(false); }
-  }, [filter, facet, type, meal, ingredient, method, filterTag, isSearch, q, LABEL_TO_CATEGORY]);
+  }, [filter, facet, type, meal, ingredient, method, filterTag, dietTag, isSearch, q, LABEL_TO_CATEGORY]);
 
   // Show skeletons for the initial load and on every filter/facet change (a new
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
@@ -196,13 +196,14 @@ export function RecipeListScreen() {
           </IcoBtn>
           <View style={s.grow}>
             <Text style={s.title} numberOfLines={1}>{
-              isSearch ? `“${q}”`
+              isSearch ? `”${q}”`
                 : isFacet(facet) ? facetLabel(facet)
                 : ingredient ? prettyTag(ingredient)
                 : type ? prettyTag(type)
                 : meal ? prettyTag(meal)
                 : method ? prettyTag(method)
                 : filterTag ? prettyTag(filterTag)
+                : dietTag ? prettyTag(dietTag)
                 : (filter === 'All' ? 'All Recipes' : filter)
             }</Text>
             <Text style={s.subtitle}>{sub}</Text>
