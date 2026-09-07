@@ -26,7 +26,7 @@ const FACETS: { facet: keyof Vocab; label: string; desc: string }[] = [
   { facet: 'ingredient', label: 'Main Ingredient', desc: 'Star ingredient — coconut, jaggery, amla…' },
   { facet: 'method',     label: 'Method',          desc: 'Cooking technique — steamed, fried, no-cook…' },
   { facet: 'diet',       label: 'Diet tags',       desc: 'Dietary properties — sweet, dairy, high protein…' },
-  { facet: 'filter',     label: 'Home filters',    desc: 'Pills on the home page — grouped by effort, taste, occasion.' },
+  { facet: 'filter',     label: 'Home page filters', desc: 'Pills on the home page — grouped by effort, taste, occasion.' },
 ];
 
 function normaliseVocab(v: Vocab): Vocab {
