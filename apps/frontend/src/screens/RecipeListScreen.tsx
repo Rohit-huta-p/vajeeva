@@ -14,6 +14,7 @@ import { FilterChip } from '../components/shared/FilterChip';
 import { FilterSheet } from '../components/shared/FilterSheet';
 import { IconBack, IconFilter, VegMark } from '../components/shared/icons';
 import { recipesApi, toListItem, isNonVeg } from '../api/recipes';
+import { api as axiosApi } from '../api';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes, searchCatalog } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
@@ -22,28 +23,21 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useFilterPills } from '../hooks/useFilterPills';
 import { scaledSheet, sc } from '../theme/scale';
 
-const FILTERS = ['All', 'Solid', 'Liquid', 'Semi-solid'] as const;
-
-// Display label -> API category value; also accepts the texture route param
-// (HomeScreen pillar keys: solid | liquid | semi).
-const LABEL_TO_CATEGORY: Record<string, string> = {
-  Solid: 'solid', Liquid: 'liquid', 'Semi-solid': 'semi-solid',
-};
-// Per-category subtitle copy, mirroring the Home pillar subs (fidelity spec).
-const LABEL_SUB: Record<string, string> = {
-  Solid: 'breads · sweets · snacks',
-  Liquid: 'drinks · soups · buttermilk',
-  'Semi-solid': 'porridge · puddings · chutneys',
-};
+// Texture data fetched from /api/textures; defaults used while loading or if offline.
+interface TextureItem { code: string; label: string; subtitle: string; }
+const DEFAULT_TEXTURES: TextureItem[] = [
+  { code: 'solid',      label: 'Solid',      subtitle: 'breads · sweets · snacks' },
+  { code: 'liquid',     label: 'Liquid',     subtitle: 'drinks · soups · buttermilk' },
+  { code: 'semi-solid', label: 'Semi-solid', subtitle: 'porridge · puddings · chutneys' },
+];
 // Title-case a tag code for the header ('black-gram' → 'Black gram').
 const prettyTag = (v: string) => v.replace(/-/g, ' ').replace(/^\w/, c => c.toUpperCase());
 
-function textureToLabel(texture?: string): string {
+function textureToLabel(texture: string | undefined, textures: TextureItem[]): string {
   if (!texture) return 'All';
   const t = texture.toLowerCase();
-  if (t.startsWith('semi')) return 'Semi-solid';
-  const label = t.charAt(0).toUpperCase() + t.slice(1);
-  return label in LABEL_TO_CATEGORY ? label : 'All';
+  const match = textures.find(x => x.code === t || x.code.startsWith(t));
+  return match ? match.label : 'All';
 }
 
 // Responsive column count: 2 on phones, 3 on md, 4 on lg — the desktop
@@ -77,11 +71,24 @@ export function RecipeListScreen() {
   const { texture, facet, type, meal, ingredient, method, q, filter: filterTag } = useLocalSearchParams<{
     texture?: string; facet?: string; type?: string; meal?: string; ingredient?: string; method?: string; q?: string; filter?: string;
   }>();
+
+  // Texture list — loaded from API; falls back to hardcoded defaults if offline.
+  const [textures, setTextures] = useState<TextureItem[]>(DEFAULT_TEXTURES);
+  useEffect(() => {
+    axiosApi.get<TextureItem[]>('/api/textures')
+      .then(res => { if (res.data.length > 0) setTextures(res.data); })
+      .catch(() => { /* keep defaults */ });
+  }, []);
+  // Derived lookup tables (recomputed when textures load).
+  const FILTERS       = useMemo(() => ['All', ...textures.map(t => t.label)], [textures]);
+  const LABEL_TO_CATEGORY = useMemo(() => Object.fromEntries(textures.map(t => [t.label, t.code])), [textures]);
+  const LABEL_SUB     = useMemo(() => Object.fromEntries(textures.map(t => [t.label, t.subtitle])), [textures]);
+
   // A free-text search (Home SearchBar submit) replaces the texture/facet/tag
   // browse flow entirely for this load — see load() below — rather than
   // composing with it, matching v1 scope (P12 in docs/User-Flows.md).
   const isSearch = !!q?.trim();
-  const [filter, setFilter] = useState(textureToLabel(texture));
+  const [filter, setFilter] = useState(() => textureToLabel(texture, DEFAULT_TEXTURES));
   const [recipes, setRecipes] = useState<RecipeListItem[]>([]);
   const [refreshing, setRefreshing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -129,7 +136,7 @@ export function RecipeListScreen() {
       }
       setRecipes(items);
     } catch { } finally { setLoading(false); }
-  }, [filter, facet, type, meal, ingredient, method, filterTag, isSearch, q]);
+  }, [filter, facet, type, meal, ingredient, method, filterTag, isSearch, q, LABEL_TO_CATEGORY]);
 
   // Show skeletons for the initial load and on every filter/facet change (a new
   // query). Pull-to-refresh keeps the current list and uses the spinner instead.
@@ -220,7 +227,7 @@ export function RecipeListScreen() {
         {!isSearch && (
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={s.chips} contentContainerStyle={s.chipsContent}>
             {FILTERS.map(f => (
-              <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f)} />
+              <FilterChip key={f} label={f} active={filter === f} onPress={() => setFilter(f as string)} />
             ))}
             <FilterChip label="🛡 Safe for me" active={false} onPress={() => { }} safeForMe />
           </ScrollView>

@@ -16,6 +16,7 @@ import { uploadsRouter } from './routes/uploads.routes';
 import { statsAdminRouter } from './routes/stats.routes';
 import { dietRulesAdminRouter } from './routes/dietrules.routes';
 import { filterGroupsAdminRouter, filterGroupsPublicRouter } from './routes/filtergroups.routes';
+import { texturesAdminRouter, texturesPublicRouter } from './routes/textures.routes';
 
 export function createApp() {
   const app = express();
@@ -52,11 +53,13 @@ export function createApp() {
   app.use('/api/admin/stats', statsAdminRouter);
   app.use('/api/admin/diet-rules', dietRulesAdminRouter);
   app.use('/api/admin/filter-groups', filterGroupsAdminRouter);
+  app.use('/api/admin/textures', texturesAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);
   app.use('/api/subrecipes', subrecipesPublicRouter);
   app.use('/api/healthflags', publicHealthFlagsRouter);
   app.use('/api/tags', tagsPublicRouter);
   app.use('/api/filter-groups', filterGroupsPublicRouter);
+  app.use('/api/textures', texturesPublicRouter);
   app.use('/api/users', usersRouter);
   app.use('/api/admin/uploads', uploadsRouter);
 

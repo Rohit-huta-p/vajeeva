@@ -10,6 +10,8 @@ import { AppPreviewCard } from '../components/AppPreviewCard';
 import { ImageGalleryEditor, type GalleryImage } from '../components/ImageGalleryEditor';
 import { TagRows, emptyVocab, mergeTagDefaults, type Vocab } from '../components/TagRows';
 
+interface TextureOption { code: string; label: string; }
+
 // ── Stepper config ────────────────────────────────────────────────────────
 const STEPS = [
   { label: 'Basic Info',    desc: 'Name, category, sources & gallery' },
@@ -51,6 +53,11 @@ export function RecipeEditorPage() {
   const [saving, setSaving] = useState(false);
   const [vocab,  setVocab]  = useState<Vocab>(emptyVocab);
   const [conditions, setConditions] = useState<ConditionOption[]>([]);
+  const [textures,   setTextures]   = useState<TextureOption[]>([
+    { code: 'solid', label: 'Solid' },
+    { code: 'liquid', label: 'Liquid' },
+    { code: 'semi-solid', label: 'Semi-solid' },
+  ]);
   const [step,   setStep]   = useState(1); // 1-indexed
 
   useEffect(() => {
@@ -69,6 +76,13 @@ export function RecipeEditorPage() {
     api<Vocab>('/api/admin/tags')
       .then(saved => setVocab(mergeTagDefaults(saved)))
       .catch(() => setVocab(mergeTagDefaults(null)));  // fallback to defaults if API is unreachable
+  }, []);
+
+  // Texture options from API (falls back to hardcoded defaults if unreachable).
+  useEffect(() => {
+    api<TextureOption[]>('/api/admin/textures')
+      .then(list => { if (list.length > 0) setTextures(list.map(t => ({ code: t.code, label: t.label }))); })
+      .catch(() => { /* use the defaults already set */ });
   }, []);
 
   // Condition vocabulary for the Health Flags select (ordered).
@@ -277,11 +291,11 @@ export function RecipeEditorPage() {
                 <label className="block text-[10.5px] font-bold uppercase tracking-[0.07em] text-ink/45">
                   Category
                   <select value={form.category}
-                    onChange={e => patch({ category: e.target.value as RecipeInput['category'] })}
+                    onChange={e => patch({ category: e.target.value })}
                     className={`${INP} mt-1.5 cursor-pointer`}>
-                    <option value="solid">Solid</option>
-                    <option value="liquid">Liquid</option>
-                    <option value="semi-solid">Semi-solid</option>
+                    {textures.map(t => (
+                      <option key={t.code} value={t.code}>{t.label}</option>
+                    ))}
                   </select>
                 </label>
                 <label className="block text-[10.5px] font-bold uppercase tracking-[0.07em] text-ink/45">

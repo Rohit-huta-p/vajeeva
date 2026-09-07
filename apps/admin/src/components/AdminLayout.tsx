@@ -112,6 +112,17 @@ const NAV_GROUPS = [
           </svg>
         ),
       },
+      {
+        to: '/textures',
+        label: 'Textures',
+        icon: (
+          <svg fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 15 15" className="w-[15px] h-[15px] shrink-0">
+            <circle cx="7.5" cy="7.5" r="5.5" />
+            <path d="M7.5 2C7.5 2 5 4.5 5 7.5C5 10.5 7.5 13 7.5 13" strokeLinecap="round" />
+            <path d="M2 7.5H13" strokeLinecap="round" />
+          </svg>
+        ),
+      },
     ],
   },
   {
@@ -142,6 +153,7 @@ const PAGE_TITLES: Record<string, string> = {
   '/health-flags':  'Health Flags',
   '/diet-rules':    'Diet Rules',
   '/tags':          'Discovery Tags',
+  '/textures':      'Textures',
   '/recipes/new':   'New Recipe',
 };
 

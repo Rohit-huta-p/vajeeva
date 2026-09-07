@@ -23,16 +23,19 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { useFilterPills } from '../hooks/useFilterPills';
 import { recipesApi, toListItem } from '../api/recipes';
+import { api as axiosApi } from '../api';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { getAllRecipes } from '../offline/catalog';
 import { useOffline } from '../offline/OfflineProvider';
 import { scaledSheet, sc } from '../theme/scale';
 
-const PILLARS = [
+// Default pillars shown while the API fetch is in-flight or if it fails.
+const DEFAULT_PILLARS = [
   { key: 'solid',      name: 'Solid',      subtitle: 'Breads · sweets · snacks' },
   { key: 'liquid',     name: 'Liquid',     subtitle: 'Drinks · soups · buttermilk' },
   { key: 'semi-solid', name: 'Semi-solid', subtitle: 'Porridge · puddings · chutneys' },
-] as const;
+];
+type Pillar = { key: string; name: string; subtitle: string };
 
 // Responsive columns for the "Your kitchen" preview row — 2 on phones, 3 at md
 // (≥768), 4 at lg (≥1024). Same breakpoints as RecipeListScreen.columnsFor so a
@@ -54,6 +57,7 @@ export function HomeScreen() {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   const [search, setSearch] = useState('');
+  const [pillars, setPillars] = useState<Pillar[]>(DEFAULT_PILLARS);
   const [counts, setCounts] = useState<Record<string, number>>({});
   const [sessionRecipe, setSessionRecipe] = useState<RecipeListItem | null>(null);
   const router = useRouter();
@@ -70,7 +74,8 @@ export function HomeScreen() {
   // each one (staggered green ring) so a new patient's eye lands on the choice.
   const scrollRef = useRef<ScrollView>(null);
   const texY = useRef(0);
-  const rings = useRef([0, 1, 2].map(() => new Animated.Value(0))).current;
+  // Pulse rings: allocate enough for the maximum expected pillar count (10).
+  const rings = useRef(Array.from({ length: 10 }, () => new Animated.Value(0))).current;
 
   const pulseTextures = useCallback(() => {
     scrollRef.current?.scrollTo({ y: Math.max(0, texY.current - sc(12)), animated: true });
@@ -78,8 +83,20 @@ export function HomeScreen() {
       Animated.timing(v, { toValue: 1, duration: 150, useNativeDriver: true }),
       Animated.timing(v, { toValue: 0, duration: 400, useNativeDriver: true }),
     ]);
-    Animated.stagger(110, rings.map(v => Animated.sequence([onePulse(v), onePulse(v)]))).start();
+    Animated.stagger(110, rings.slice(0, pillars.length).map(v => Animated.sequence([onePulse(v), onePulse(v)]))).start();
   }, [rings]);
+
+  // Load texture pillars from the API; fall back to defaults if offline.
+  useEffect(() => {
+    axiosApi.get<{ code: string; label: string; subtitle: string }[]>('/api/textures')
+      .then(res => {
+        const list = res.data;
+        if (list.length > 0) {
+          setPillars(list.map(t => ({ key: t.code, name: t.label, subtitle: t.subtitle })));
+        }
+      })
+      .catch(() => { /* keep defaults */ });
+  }, []);
 
   // Texture counts come from the offline catalog (no network) — recompute when
   // the cache hydrates at boot and after each background sync.
@@ -188,7 +205,7 @@ export function HomeScreen() {
           >
             Browse by texture
           </Text>
-          {PILLARS.map((p, i) => (
+          {pillars.map((p, i) => (
             <View key={p.key} style={s.pillarWrap}>
               <TexturePillar
                 name={p.name}

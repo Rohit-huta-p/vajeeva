@@ -48,7 +48,7 @@ export const RecipeSchema = z.object({
   slug: z.string().regex(/^[a-z0-9-]+$/),
   nameEn: z.string().min(1),
   nameTa: z.string(),
-  category: z.enum(['solid', 'liquid', 'semi-solid']),
+  category: z.string().optional().default('solid'),
   description: z.string(),
   ingredients: z.array(IngredientSchema).min(1),
   steps: z.array(StepSchema).min(1),

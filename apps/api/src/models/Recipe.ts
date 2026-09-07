@@ -33,7 +33,7 @@ const RecipeSchema = new mongoose.Schema({
   slug:        { type: String, required: true, unique: true },
   nameEn:      { type: String, required: true },
   nameTa:      String,
-  category:    { type: String, enum: ['solid', 'liquid', 'semi-solid'] },
+  category:    { type: String, default: 'solid' }, // validated against TextureConfig at the API level
   description: String,
   ingredients: [IngredientSchema],
   steps:       [StepSchema],
