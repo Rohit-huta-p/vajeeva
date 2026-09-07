@@ -117,6 +117,7 @@ function FacetSection({
   saving:   boolean;
 }) {
   const isFilter = facet === 'filter';
+  const [open,    setOpen]    = useState(false);   // collapsed by default
 
   // new-row state
   const [newLabel, setNewLabel] = useState('');
@@ -156,16 +157,21 @@ function FacetSection({
   return (
     <div className="rounded-[14px] border border-ink/[0.11] overflow-hidden">
 
-      {/* Section header */}
-      <div className="bg-sand px-4 py-2.5 border-b border-ink/[0.11] flex flex-wrap items-center gap-x-3 gap-y-0.5">
+      {/* Section header — accordion toggle */}
+      <button
+        type="button"
+        onClick={() => setOpen(o => !o)}
+        className="w-full bg-sand px-4 py-2.5 flex flex-wrap items-center gap-x-3 gap-y-0.5 text-left hover:bg-sand/80 transition-colors"
+      >
+        <span className={`text-[11px] font-bold uppercase tracking-[0.07em] text-ink/65 transition-transform duration-200 ${open ? 'rotate-90' : ''}`}>▸</span>
         <span className="text-[11px] font-bold uppercase tracking-[0.07em] text-ink/65">{label}</span>
         <span className="text-[12px] text-ink/40">{desc}</span>
         <span className="ml-auto text-[11px] text-ink/35 tabular-nums">
           {activeCount} of {rows.length} active
         </span>
-      </div>
+      </button>
 
-      <table className="w-full border-collapse">
+      {open && <><table className="w-full border-collapse border-t border-ink/[0.11]">
         <thead>
           <tr className="bg-sand/30 border-b border-ink/[0.08] text-[10px] font-bold uppercase tracking-[0.07em] text-ink/40">
             <th className="w-12 px-3 py-2 text-center">Order</th>
@@ -329,6 +335,7 @@ function FacetSection({
           ⚠ {addErr}
         </p>
       )}
+      </>}
     </div>
   );
 }
