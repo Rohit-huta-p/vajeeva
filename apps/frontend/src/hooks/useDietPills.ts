@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { tagsApi } from '../api';
 
 export interface DietPill { code: string; label: string; }
@@ -14,16 +14,17 @@ const DIET_PILLS_FALLBACK: DietPill[] = [
 
 /**
  * Admin-owned diet-tag pills sourced from the `diet` facet of GET /api/tags.
- * Falls back to a hardcoded list so the row renders on first paint / offline.
+ * Returns { pills, reload } — call reload() from useFocusEffect so admin
+ * changes are reflected each time the user returns to the Home tab.
  */
-export function useDietPills(): DietPill[] {
+export function useDietPills(): { pills: DietPill[]; reload: () => void } {
   const [pills, setPills] = useState<DietPill[]>(DIET_PILLS_FALLBACK);
+  const alive = useRef(true);
 
-  useEffect(() => {
-    let alive = true;
+  const reload = useCallback(() => {
     tagsApi.list()
       .then(data => {
-        if (!alive) return;
+        if (!alive.current) return;
         const raw = data?.diet ?? [];
         const mapped = raw
           .filter(p => p && typeof p.code === 'string' && typeof p.label === 'string')
@@ -31,8 +32,13 @@ export function useDietPills(): DietPill[] {
         if (mapped.length) setPills(mapped);
       })
       .catch(() => { /* keep the fallback */ });
-    return () => { alive = false; };
   }, []);
 
-  return pills;
+  useEffect(() => {
+    alive.current = true;
+    reload();
+    return () => { alive.current = false; };
+  }, [reload]);
+
+  return { pills, reload };
 }

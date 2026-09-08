@@ -60,15 +60,17 @@ export function matchTag(r: RecipeListItem, axis: TagAxis, value: string): boole
 }
 
 // ── Home filter pills — the admin-owned `filter` facet from GET /api/tags ──────
-// Each pill's `group` drives the Home layout: effort renders as flat one-tap
-// pills; taste/occasion render as tap-to-open dropdowns. A tap deep-links the
-// recipe list as ?filter=<code>. See docs/specs/2026-09-02-home-filter-pills.md.
-export type FilterGroup = 'effort' | 'taste' | 'occasion';
-export const FILTER_GROUPS: FilterGroup[] = ['effort', 'taste', 'occasion'];
-export interface FilterPill { code: string; label: string; group: FilterGroup }
+// Each pill's `group` is the filter-group code from the DB (not a fixed union).
+// The first group renders flat (one-tap); the rest open as labelled dropdowns.
+// A tap deep-links the recipe list as ?filter=<code>.
+// See docs/specs/2026-09-02-home-filter-pills.md.
+/** Runtime filter group: code from DB + display label from /api/filter-groups. */
+export interface FilterGroup { code: string; label: string; }
+/** A single pill from the `filter` facet vocab. */
+export interface FilterPill { code: string; label: string; group: string; }
 
-// Fallback pills when /api/tags hasn't loaded yet (mirrors the api seed vocab),
-// so the row renders offline / on first paint. Admin edits win once loaded.
+// Fallback pills while /api/tags hasn't loaded (mirrors the seed vocab) so the
+// row renders on first paint / offline. Admin edits win once the API responds.
 export const FILTER_PILLS_FALLBACK: FilterPill[] = [
   { code: 'quick',      label: 'Quick',      group: 'effort' },
   { code: 'no-cook',    label: 'No-cook',    group: 'effort' },
@@ -82,5 +84,5 @@ export const FILTER_PILLS_FALLBACK: FilterPill[] = [
   { code: 'side',       label: 'Side',       group: 'occasion' },
 ];
 
-// Title-case group label for a dropdown pill ('taste' → 'Taste').
-export const groupLabel = (g: FilterGroup): string => g.charAt(0).toUpperCase() + g.slice(1);
+// Group code → display label; used inside FilterPillRow for dropdown pills.
+export const groupLabel = (g: FilterGroup): string => g.label;

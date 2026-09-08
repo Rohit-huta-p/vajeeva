@@ -4,16 +4,23 @@ import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconChev } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
-import { FILTER_GROUPS, groupLabel, type FilterGroup, type FilterPill } from '../../config/facets';
+import type { FilterGroup, FilterPill } from '../../config/facets';
 
 /**
- * The Home quick-filter row. `effort` pills render flat (one-tap → filtered
- * list); the other groups (taste, occasion) collapse into labelled pills that
- * open a dropdown menu anchored under the pill. A pick navigates via
- * onSelect(code). See docs/specs/2026-09-02-home-filter-pills.md.
+ * The Home quick-filter row. The FIRST group renders flat (one-tap → filtered
+ * list); subsequent groups collapse into labelled dropdown pills anchored below.
+ * Groups and their labels are dynamic — sourced from the DB via useFilterPills.
+ * A pick navigates via onSelect(code).
+ * See docs/specs/2026-09-02-home-filter-pills.md.
  */
-export function FilterPillRow({ pills, onSelect }: {
+export function FilterPillRow({
+  pills,
+  groups,
+  onSelect,
+}: {
   pills: FilterPill[];
+  /** Live group list from the DB — drives order and dropdown labels. */
+  groups: FilterGroup[];
   onSelect: (code: string) => void;
 }) {
   const { colors } = useTheme();
@@ -24,23 +31,25 @@ export function FilterPillRow({ pills, onSelect }: {
   const anchors = useRef<Record<string, any>>({});
   const [menu, setMenu] = useState<{ group: FilterGroup; left: number; top: number } | null>(null);
 
-  const effort = pills.filter(p => p.group === 'effort');
-  const menuGroups = FILTER_GROUPS.filter(g => g !== 'effort' && pills.some(p => p.group === g));
-  const openPills = menu ? pills.filter(p => p.group === menu.group) : [];
+  // First group's code is the "flat" group; all others open dropdowns.
+  const firstCode = groups[0]?.code ?? 'effort';
+  const flatPills   = pills.filter(p => p.group === firstCode);
+  // Dropdown groups: ordered by `groups`, skip the first, only if they have pills.
+  const dropGroups  = groups.slice(1).filter(g => pills.some(p => p.group === g.code));
+  const openPills   = menu ? pills.filter(p => p.group === menu.group.code) : [];
 
   const open = (g: FilterGroup) => {
     const place = (x: number, y: number, h: number) => {
-      // Clamp within the screen so the menu never bleeds off the right edge.
       const left = Math.max(sc(12), Math.min(x, screenW - menuW - sc(12)));
       setMenu({ group: g, left, top: y + h + sc(6) });
     };
-    const node = anchors.current[g];
+    const node = anchors.current[g.code];
     if (node?.measureInWindow) node.measureInWindow((x: number, y: number, _w: number, h: number) => place(x, y, h));
     else place(sc(14), sc(150), 0);
   };
   const pick = (code: string) => { setMenu(null); onSelect(code); };
 
-  if (effort.length === 0 && menuGroups.length === 0) return null;
+  if (flatPills.length === 0 && dropGroups.length === 0) return null;
 
   return (
     <>
@@ -50,22 +59,22 @@ export function FilterPillRow({ pills, onSelect }: {
         style={s.row}
         contentContainerStyle={s.rowContent}
       >
-        {effort.map(p => (
+        {flatPills.map(p => (
           <TouchableOpacity key={p.code} style={s.pill} onPress={() => onSelect(p.code)} activeOpacity={0.7}>
             <Text style={s.pillLabel}>{p.label}</Text>
           </TouchableOpacity>
         ))}
-        {menuGroups.map(g => {
-          const isOpen = menu?.group === g;
+        {dropGroups.map(g => {
+          const isOpen = menu?.group.code === g.code;
           return (
             <TouchableOpacity
-              key={g}
-              ref={node => { anchors.current[g] = node; }}
+              key={g.code}
+              ref={node => { anchors.current[g.code] = node; }}
               style={[s.pill, isOpen && s.pillOpen]}
               onPress={() => open(g)}
               activeOpacity={0.7}
             >
-              <Text style={[s.pillLabel, isOpen && s.pillLabelOpen]}>{groupLabel(g)}</Text>
+              <Text style={[s.pillLabel, isOpen && s.pillLabelOpen]}>{g.label}</Text>
               <View style={[s.chev, isOpen && s.chevOpen]}>
                 <IconChev size={sc(9)} color={isOpen ? colors.green : colors.ink2} />
               </View>

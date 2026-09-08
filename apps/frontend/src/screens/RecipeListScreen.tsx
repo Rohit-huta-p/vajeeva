@@ -95,7 +95,7 @@ export function RecipeListScreen() {
   // FILTER button → bottom sheet of the admin-owned pills (single-select over
   // the ?filter axis). The dot on the button marks an active filter.
   const [showFilter, setShowFilter] = useState(false);
-  const filterPills = useFilterPills();
+  const { pills: filterPills, groups: filterGroups } = useFilterPills();
   // Veg / Non-veg diet filter (mutually exclusive; 'all' = both).
   const [diet, setDiet] = useState<'all' | 'veg' | 'nonveg'>('all');
   // In-screen search — same SearchBar as Home; submit drives the `q` param
@@ -306,6 +306,7 @@ export function RecipeListScreen() {
       <FilterSheet
         visible={showFilter}
         pills={filterPills}
+        groups={filterGroups}
         selected={filterTag}
         onClose={() => setShowFilter(false)}
         onSelect={code => { router.setParams({ filter: code ?? '' }); setShowFilter(false); }}

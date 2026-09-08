@@ -5,7 +5,7 @@ import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconCheck } from './icons';
 import { scaledSheet, sc } from '../../theme/scale';
-import { FILTER_GROUPS, groupLabel, type FilterPill } from '../../config/facets';
+import { groupLabel, type FilterGroup, type FilterPill } from '../../config/facets';
 
 /**
  * Bottom-sheet filter panel for the recipe list's FILTER button. Shows the same
@@ -13,9 +13,11 @@ import { FILTER_GROUPS, groupLabel, type FilterPill } from '../../config/facets'
  * over the `filter` axis: tapping a chip reports it (or null to clear) via
  * onSelect. See docs/specs/2026-09-02-home-filter-pills.md.
  */
-export function FilterSheet({ visible, pills, selected, onSelect, onClose }: {
+export function FilterSheet({ visible, pills, groups, selected, onSelect, onClose }: {
   visible: boolean;
   pills: FilterPill[];
+  /** Live group list from the DB — drives section order and labels. */
+  groups: FilterGroup[];
   selected?: string;
   onSelect: (code: string | null) => void;
   onClose: () => void;
@@ -23,7 +25,8 @@ export function FilterSheet({ visible, pills, selected, onSelect, onClose }: {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
-  const groups = FILTER_GROUPS.filter(g => pills.some(p => p.group === g));
+  // Only show groups that have at least one pill.
+  const activeGroups = groups.filter(g => pills.some(p => p.group === g.code));
 
   return (
     <Modal visible={visible} transparent animationType="slide" onRequestClose={onClose}>
@@ -39,11 +42,11 @@ export function FilterSheet({ visible, pills, selected, onSelect, onClose }: {
             ) : null}
           </View>
           <ScrollView showsVerticalScrollIndicator={false} style={s.body} contentContainerStyle={s.bodyContent}>
-            {groups.map(g => (
-              <View key={g} style={s.group}>
+            {activeGroups.map(g => (
+              <View key={g.code} style={s.group}>
                 <Text style={s.groupLabel}>{groupLabel(g)}</Text>
                 <View style={s.chips}>
-                  {pills.filter(p => p.group === g).map(p => {
+                  {pills.filter(p => p.group === g.code).map(p => {
                     const on = selected === p.code;
                     return (
                       <TouchableOpacity

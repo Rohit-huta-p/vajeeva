@@ -70,9 +70,9 @@ export function HomeScreen() {
   const { width } = useWindowDimensions();
   const savedCols = columnsFor(width);
   // Admin-owned Home filter pills (effort flat + taste/occasion dropdowns).
-  const filterPills = useFilterPills();
+  const { pills: filterPills, groups: filterGroups, reload: reloadFilterPills } = useFilterPills();
   // Admin-owned diet-tag pills (flat one-tap, sourced from the diet facet).
-  const dietPills = useDietPills();
+  const { pills: dietPills, reload: reloadDietPills } = useDietPills();
 
   // Texture-pulse cue: "Choose a texture" scrolls the doors into view and pulses
   // each one (staggered green ring) so a new patient's eye lands on the choice.
@@ -135,7 +135,11 @@ export function HomeScreen() {
       reloadSession();
       reloadSaved();
       reloadRecent();
-    }, [reloadSession, reloadSaved, reloadRecent]),
+      // Re-fetch admin-owned pill vocabularies so Home reflects any admin
+      // edits immediately when the user returns to this tab.
+      reloadFilterPills();
+      reloadDietPills();
+    }, [reloadSession, reloadSaved, reloadRecent, reloadFilterPills, reloadDietPills]),
   );
 
   // First-mount loads only — reload() on tab re-focus doesn't reset these, so
@@ -177,7 +181,7 @@ export function HomeScreen() {
       <View style={s.well}>
         <ScrollView ref={scrollRef} contentContainerStyle={s.scroll} showsVerticalScrollIndicator={false}>
           {/* Quick filters — admin-owned pills; a tap deep-links the recipe list */}
-          <FilterPillRow pills={filterPills} onSelect={code => router.push(`/recipe-list?filter=${code}` as any)} />
+          <FilterPillRow pills={filterPills} groups={filterGroups} onSelect={code => router.push(`/recipe-list?filter=${code}` as any)} />
           {/* Diet tags — admin-owned; a tap deep-links to the recipe list filtered by diet */}
           <DietPillRow pills={dietPills} onSelect={code => router.push(`/recipe-list?diet=${code}` as any)} />
 
