@@ -7,8 +7,8 @@ import { scaledSheet, sc } from '../../theme/scale';
 import type { FilterGroup, FilterPill } from '../../config/facets';
 
 /**
- * The Home quick-filter row. The FIRST group renders flat (one-tap → filtered
- * list); subsequent groups collapse into labelled dropdown pills anchored below.
+ * The Home quick-filter row. Every group renders as a labelled dropdown pill
+ * anchored below — no flat pills (DietPillRow handles the flat-pill zone).
  * Groups and their labels are dynamic — sourced from the DB via useFilterPills.
  * A pick navigates via onSelect(code).
  * See docs/specs/2026-09-02-home-filter-pills.md.
@@ -31,12 +31,9 @@ export function FilterPillRow({
   const anchors = useRef<Record<string, any>>({});
   const [menu, setMenu] = useState<{ group: FilterGroup; left: number; top: number } | null>(null);
 
-  // First group's code is the "flat" group; all others open dropdowns.
-  const firstCode = groups[0]?.code ?? 'effort';
-  const flatPills   = pills.filter(p => p.group === firstCode);
-  // Dropdown groups: ordered by `groups`, skip the first, only if they have pills.
-  const dropGroups  = groups.slice(1).filter(g => pills.some(p => p.group === g.code));
-  const openPills   = menu ? pills.filter(p => p.group === menu.group.code) : [];
+  // All groups render as dropdown buttons — no flat pills (DietPillRow handles that).
+  const dropGroups = groups.filter(g => pills.some(p => p.group === g.code));
+  const openPills  = menu ? pills.filter(p => p.group === menu.group.code) : [];
 
   const open = (g: FilterGroup) => {
     const place = (x: number, y: number, h: number) => {
@@ -49,7 +46,7 @@ export function FilterPillRow({
   };
   const pick = (code: string) => { setMenu(null); onSelect(code); };
 
-  if (flatPills.length === 0 && dropGroups.length === 0) return null;
+  if (dropGroups.length === 0) return null;
 
   return (
     <>
@@ -59,11 +56,6 @@ export function FilterPillRow({
         style={s.row}
         contentContainerStyle={s.rowContent}
       >
-        {flatPills.map(p => (
-          <TouchableOpacity key={p.code} style={s.pill} onPress={() => onSelect(p.code)} activeOpacity={0.7}>
-            <Text style={s.pillLabel}>{p.label}</Text>
-          </TouchableOpacity>
-        ))}
         {dropGroups.map(g => {
           const isOpen = menu?.group.code === g.code;
           return (
