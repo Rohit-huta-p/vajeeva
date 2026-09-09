@@ -14,7 +14,6 @@ import { usersAdminRouter } from './routes/usersadmin.routes';
 import { usersRouter, publicHealthFlagsRouter } from './routes/users.routes';
 import { uploadsRouter } from './routes/uploads.routes';
 import { statsAdminRouter } from './routes/stats.routes';
-import { dietRulesAdminRouter } from './routes/dietrules.routes';
 import { filterGroupsAdminRouter, filterGroupsPublicRouter } from './routes/filtergroups.routes';
 import { texturesAdminRouter, texturesPublicRouter } from './routes/textures.routes';
 
@@ -51,7 +50,6 @@ export function createApp() {
   app.use('/api/admin/tags', tagsAdminRouter);
   app.use('/api/admin/users', usersAdminRouter);
   app.use('/api/admin/stats', statsAdminRouter);
-  app.use('/api/admin/diet-rules', dietRulesAdminRouter);
   app.use('/api/admin/filter-groups', filterGroupsAdminRouter);
   app.use('/api/admin/textures', texturesAdminRouter);
   app.use('/api/sources', sourcesPublicRouter);

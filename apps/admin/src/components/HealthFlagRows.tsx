@@ -56,7 +56,7 @@ export function HealthFlagRows({ value, onChange, conditions = [], onAutoSave }:
   }
 
   function addFlag() {
-    const next = [...value, { condition: '', severity: 'caution' as const, note: '', source: 'manual' as const }];
+    const next = [...value, { condition: '', severity: 'caution' as const, note: '' }];
     commit(next);
   }
 

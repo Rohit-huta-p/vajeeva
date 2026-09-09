@@ -10,7 +10,6 @@ import { SubRecipesPage } from './pages/SubRecipesPage';
 import { UsersPage } from './pages/UsersPage';
 import { UserDetailPage } from './pages/UserDetailPage';
 import { HealthFlagsPage } from './pages/HealthFlagsPage';
-import { DietRulesPage } from './pages/DietRulesPage';
 import { TagsPage } from './pages/TagsPage';
 import { TexturesPage } from './pages/TexturesPage';
 
@@ -30,7 +29,6 @@ export function App() {
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/:id" element={<UserDetailPage />} />
             <Route path="/health-flags" element={<HealthFlagsPage />} />
-            <Route path="/diet-rules" element={<DietRulesPage />} />
             <Route path="/tags" element={<TagsPage />} />
             <Route path="/textures" element={<TexturesPage />} />
           </Route>

@@ -33,10 +33,6 @@ export const HealthFlagSchema = z.object({
   severity: z.enum(['safe', 'caution', 'avoid', 'indication']),
   // default: older health-flag docs may not have stored 'note' at all
   note: z.string().default(''),
-  // Provenance: 'rule' = derived from an ingredient rule (safe to re-derive);
-  // 'manual' = set by hand in the editor and preserved across rule re-applies.
-  // See docs/specs/2026-09-03-condition-vocabulary.md and the Diet Rules engine.
-  source: z.enum(['rule', 'manual']).default('manual'),
 });
 
 export const SourceSchema = z.object({

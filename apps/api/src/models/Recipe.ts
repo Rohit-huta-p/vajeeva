@@ -24,9 +24,6 @@ const HealthFlagSchema = new mongoose.Schema({
   condition: String,
   severity: { type: String, enum: ['safe', 'caution', 'avoid', 'indication'] },
   note: String,
-  // 'rule' = derived from an ingredient rule; 'manual' = set by hand (preserved
-  // across rule re-applies). See the Diet Rules engine.
-  source: { type: String, enum: ['rule', 'manual'], default: 'manual' },
 }, { _id: false });
 
 const RecipeSchema = new mongoose.Schema({
