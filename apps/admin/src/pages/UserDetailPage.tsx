@@ -4,7 +4,7 @@ import { api } from '../api/client';
 
 interface Flag {
   slug: string; nameEn: string; condition: string; conditionLabel: string;
-  severity: 'avoid' | 'caution'; note: string; saved: boolean; made: boolean;
+  severity: 'caution'; saved: boolean; made: boolean;
 }
 interface Make { slug: string; nameEn: string; madeAt: string; rating: number | null }
 interface Detail {
@@ -97,14 +97,13 @@ export function UserDetailPage() {
             <div className="flex flex-col gap-2.5">
               {d.adherence.flags.map((f, i) => (
                 <div key={`${f.slug}-${f.condition}-${i}`} className="flex items-start gap-2.5">
-                  <span className={`mt-0.5 text-[9.5px] font-[800] uppercase tracking-[0.06em] px-2 py-0.5 rounded-full shrink-0 ${
-                    f.severity === 'avoid' ? 'bg-clay-bg text-clay' : 'bg-amber-bg text-amber'}`}>
+                  <span className="mt-0.5 text-[9.5px] font-[800] uppercase tracking-[0.06em] px-2 py-0.5 rounded-full shrink-0 bg-amber-bg text-amber">
                     {f.severity}
                   </span>
                   <div className="min-w-0">
                     <p className="text-[13px] font-medium text-ink leading-tight">{f.nameEn}</p>
                     <p className="text-[11.5px] text-ink/55">
-                      {f.conditionLabel}{f.note ? ` — ${f.note}` : ''}
+                      {f.conditionLabel}
                       {' · '}{[f.made && 'made', f.saved && 'saved'].filter(Boolean).join(' & ')}
                     </p>
                   </div>

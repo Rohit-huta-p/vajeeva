@@ -30,9 +30,7 @@ export const StepSchema = z.object({
 export const HealthFlagSchema = z.object({
   condition: z.string().min(1),
   // 'indication' = positively recommended for the condition (not a contraindication).
-  severity: z.enum(['safe', 'caution', 'avoid', 'indication']),
-  // default: older health-flag docs may not have stored 'note' at all
-  note: z.string().default(''),
+  severity: z.enum(['safe', 'caution', 'indication']),
 });
 
 export const SourceSchema = z.object({

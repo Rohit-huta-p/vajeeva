@@ -22,8 +22,7 @@ const StepSchema = new mongoose.Schema({
 
 const HealthFlagSchema = new mongoose.Schema({
   condition: String,
-  severity: { type: String, enum: ['safe', 'caution', 'avoid', 'indication'] },
-  note: String,
+  severity: { type: String, enum: ['safe', 'caution', 'indication'] },
 }, { _id: false });
 
 const RecipeSchema = new mongoose.Schema({

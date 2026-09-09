@@ -16,7 +16,7 @@ const FIXTURE = {
     order: 1, text: 'Cook coconut in milk.', phase: 'Milk phase',
     heat: 'Low heat', stepIngredients: ['Coconut'], illColor: '#2A3828',
   }],
-  healthFlags: [{ condition: 'diabetes', severity: 'avoid', note: 'High sugar' }],
+  healthFlags: [{ condition: 'diabetes', severity: 'caution' }],
   sources: [{ text: 'Ksemakutulhalam', citation: '10/54' }],
   yieldStr: '4 pieces', shelfLife: '5 days',
   status: 'published',

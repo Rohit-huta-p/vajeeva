@@ -105,7 +105,7 @@ describe('health-condition write guard', () => {
     const res = await request(app)
       .post('/api/admin/recipes')
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ ...RECIPE_INPUT, slug: 'guard-bad', healthFlags: [{ condition: 'pitta', severity: 'avoid', note: '' }] });
+      .send({ ...RECIPE_INPUT, slug: 'guard-bad', healthFlags: [{ condition: 'pitta', severity: 'caution' }] });
     expect(res.status).toBe(400);
     expect(res.body.error).toMatch(/pitta/);
   });

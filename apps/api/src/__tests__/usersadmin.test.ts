@@ -76,7 +76,7 @@ describe('GET /api/admin/users/:id — per-patient view', () => {
     );
     const recipe = await Recipe.create({
       slug: 'sweet-thing', nameEn: 'Sweet Thing', category: 'solid', status: 'published',
-      healthFlags: [{ condition: 'diabetes', severity: 'avoid', note: 'High jaggery' }],
+      healthFlags: [{ condition: 'diabetes', severity: 'caution' }],
     });
     await SavedRecipe.create({ userId: patient.id, recipeId: recipe.id });
     await CookLog.create({ userId: patient.id, recipeId: recipe.id, rating: 4 });
@@ -91,7 +91,7 @@ describe('GET /api/admin/users/:id — per-patient view', () => {
     expect(res.body.adherence.flags).toHaveLength(1);
     expect(res.body.adherence.flags[0]).toMatchObject({
       nameEn: 'Sweet Thing', condition: 'diabetes', conditionLabel: 'Diabetes',
-      severity: 'avoid', saved: true, made: true,
+      severity: 'caution', saved: true, made: true,
     });
   });
 

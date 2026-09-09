@@ -43,7 +43,7 @@ usersAdminRouter.get('/', async (_req, res, next) => {
 
 interface Flag {
   slug: string; nameEn: string; condition: string; conditionLabel: string;
-  severity: string; note: string; saved: boolean; made: boolean;
+  severity: 'caution'; saved: boolean; made: boolean;
 }
 
 // GET /api/admin/users/:id — per-patient care view: engagement, adherence
@@ -72,24 +72,23 @@ usersAdminRouter.get('/:id', async (req, res, next) => {
     const conditions = (user.healthProfile ?? []) as string[];
     const conditionSet = new Set(conditions);
 
-    // Adherence — engaged recipes carrying a caution/avoid flag for one of the
-    // patient's own conditions. Avoid before caution.
+    // Adherence — engaged recipes carrying a caution flag for one of the
+    // patient's own conditions.
     const flags: Flag[] = [];
     for (const rid of engagedIds) {
       const r = recipeById.get(rid);
       if (!r) continue;
-      for (const hf of ((r.healthFlags ?? []) as { condition: string; severity: string; note?: string }[])) {
-        if (conditionSet.has(hf.condition) && (hf.severity === 'avoid' || hf.severity === 'caution')) {
+      for (const hf of ((r.healthFlags ?? []) as { condition: string; severity: string }[])) {
+        if (conditionSet.has(hf.condition) && hf.severity === 'caution') {
           flags.push({
             slug: r.slug, nameEn: r.nameEn,
             condition: hf.condition, conditionLabel: labelByCode.get(hf.condition) ?? hf.condition,
-            severity: hf.severity, note: hf.note ?? '',
+            severity: 'caution',
             saved: savedIds.has(rid), made: madeIds.has(rid),
           });
         }
       }
     }
-    flags.sort((a, b) => (a.severity === b.severity ? 0 : a.severity === 'avoid' ? -1 : 1));
 
     // Engagement
     const madeMs = cooks.map(c => new Date(c.madeAt).getTime());

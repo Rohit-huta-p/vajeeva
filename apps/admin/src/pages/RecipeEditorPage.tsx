@@ -377,7 +377,7 @@ export function RecipeEditorPage() {
             <>
               <h2 className="font-serif text-[16px] font-light text-ink mb-1 tracking-tight">Health Flags</h2>
               <p className="text-[12.5px] text-ink/45 mb-5">
-                Set per-condition severity for this recipe. Users see a personalised Safe / Caution / Avoid label.
+                Assign conditions to a severity for this recipe. Users see a Safe / Caution label.
               </p>
               <HealthFlagRows
                 value={form.healthFlags}

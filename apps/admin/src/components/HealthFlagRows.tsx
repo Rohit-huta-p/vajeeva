@@ -2,21 +2,19 @@ import { useState } from 'react';
 import type { RecipeInput } from '@vajeeva/shared';
 
 type HealthFlag = RecipeInput['healthFlags'][number];
+type Severity = HealthFlag['severity']; // 'safe' | 'caution' | 'indication'
 
 export interface ConditionOption { code: string; label: string }
 
-// ── Severity display config ───────────────────────────────────────────────────
-const SEV_STYLE: Record<string, string> = {
-  safe:        'text-brand bg-brand/10 border-brand/20',
-  caution:     'text-amber bg-amber/10 border-amber/20',
-  avoid:       'text-clay  bg-clay/10  border-clay/20',
-  indication:  'text-ink   bg-sand     border-ink/20',
-};
-const SEV_LABELS: Record<string, string> = {
-  safe: 'Safe', caution: 'Caution', avoid: 'Avoid', indication: 'Indication',
-};
-
-const INP = 'w-full border border-ink/[0.11] rounded-[7px] px-2.5 py-1.5 bg-cream text-[12.5px] text-ink placeholder:text-ink/30 focus:outline-none focus:ring-1 focus:ring-brand/30';
+// The three severity pills. Tap one to open a multi-select of the condition
+// vocabulary and check every condition that has that severity for this recipe.
+// A condition lives in exactly one severity (assigning it to one removes it from
+// the others). Colours: Safe = brand/green, Indication = sky/blue, Caution = amber.
+const PILLS: { severity: Severity; label: string; style: string; ring: string; dot: string }[] = [
+  { severity: 'safe',       label: 'Safe',       style: 'bg-brand-bg text-brand border-brand/25', ring: 'ring-2 ring-brand/40', dot: 'bg-brand' },
+  { severity: 'indication', label: 'Indication', style: 'bg-sky-bg text-sky border-sky/25',       ring: 'ring-2 ring-sky/40',   dot: 'bg-sky' },
+  { severity: 'caution',    label: 'Caution',    style: 'bg-amber-bg text-amber border-amber/25', ring: 'ring-2 ring-amber/40', dot: 'bg-amber' },
+];
 
 // ── Component ─────────────────────────────────────────────────────────────────
 export function HealthFlagRows({ value, onChange, conditions = [], onAutoSave }: {
@@ -26,9 +24,13 @@ export function HealthFlagRows({ value, onChange, conditions = [], onAutoSave }:
   /** Called after every mutation. Throws on API error — component shows the message. */
   onAutoSave?: (next: HealthFlag[]) => Promise<void>;
 }) {
+  const [open,   setOpen]   = useState<Severity | null>(null);
   const [status, setStatus] = useState<{ ok: boolean; text: string } | null>(null);
   const [saving, setSaving] = useState(false);
-  const known = new Set(conditions.map(c => c.code));
+
+  const severityOf = (code: string): Severity | undefined => value.find(f => f.condition === code)?.severity;
+  const countFor   = (sev: Severity) => value.filter(f => f.severity === sev).length;
+  const labelFor   = (code: string) => conditions.find(c => c.code === code)?.label ?? code;
 
   async function commit(next: HealthFlag[]) {
     onChange(next);
@@ -39,167 +41,122 @@ export function HealthFlagRows({ value, onChange, conditions = [], onAutoSave }:
       setStatus({ ok: true, text: '✓ Saved' });
       setTimeout(() => setStatus(null), 2500);
     } catch (e) {
-      const msg = (e as Error).message || 'Save failed';
-      setStatus({ ok: false, text: msg });
+      setStatus({ ok: false, text: (e as Error).message || 'Save failed' });
     } finally {
       setSaving(false);
     }
   }
 
-  function set(i: number, patch: Partial<HealthFlag>, autoSave = false) {
-    const next = value.map((row, j) => j === i ? { ...row, ...patch } : row);
-    if (autoSave) {
-      commit(next);
-    } else {
-      onChange(next);
-    }
-  }
-
-  function addFlag() {
-    const next = [...value, { condition: '', severity: 'caution' as const, note: '' }];
+  // Assign a condition to a severity (or unassign if it's already there). A
+  // condition can only be in one severity at a time.
+  function toggle(code: string, sev: Severity) {
+    const without = value.filter(f => f.condition !== code);
+    const next = severityOf(code) === sev ? without : [...without, { condition: code, severity: sev }];
     commit(next);
-  }
-
-  function removeFlag(i: number) {
-    commit(value.filter((_, j) => j !== i));
   }
 
   return (
     <div>
-      {/* ── Table ── */}
-      <div className="overflow-x-auto rounded-[12px] border border-ink/[0.11]">
-        <table className="w-full border-collapse text-[12.5px]">
-          <thead>
-            <tr className="bg-sand border-b border-ink/[0.11]">
-              <th className="text-left px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 w-[200px]">
-                Condition
-              </th>
-              <th className="text-left px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 w-[130px]">
-                Severity
-              </th>
-              <th className="text-left px-3 py-2.5 text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45">
-                Note
-              </th>
-              <th className="w-9" />
-            </tr>
-          </thead>
-          <tbody>
-            {value.length === 0 && (
-              <tr>
-                <td colSpan={4} className="px-3 py-5 text-center text-[12.5px] text-ink/35 italic">
-                  No health flags yet — add one below.
-                </td>
-              </tr>
-            )}
-            {value.map((row, i) => (
-              <tr
-                key={i}
-                className={[
-                  'border-b border-ink/[0.06] last:border-0 group transition-colors',
-                  'hover:bg-cream/60',
-                ].join(' ')}
-              >
-                {/* Condition */}
-                <td className="px-3 py-2">
-                  {conditions.length > 0 ? (
-                    <select
-                      aria-label={`Flag ${i + 1} condition`}
-                      value={row.condition}
-                      onChange={e => set(i, { condition: e.target.value }, true)}
-                      className={`${INP} cursor-pointer`}
-                    >
-                      <option value="">Select condition…</option>
-                      {row.condition && !known.has(row.condition) && (
-                        <option value={row.condition}>{row.condition} (retired)</option>
-                      )}
-                      {conditions.map(c => (
-                        <option key={c.code} value={c.code}>{c.label}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      aria-label={`Flag ${i + 1} condition`}
-                      placeholder="e.g. diabetes"
-                      value={row.condition}
-                      onChange={e => set(i, { condition: e.target.value })}
-                      onBlur={() => commit(value)}
-                      className={INP}
-                    />
-                  )}
-                </td>
-
-                {/* Severity */}
-                <td className="px-3 py-2">
-                  <select
-                    aria-label={`Flag ${i + 1} severity`}
-                    value={row.severity}
-                    onChange={e => set(i, { severity: e.target.value as HealthFlag['severity'] }, true)}
-                    className={[
-                      'border rounded-[7px] px-2.5 py-1.5 text-[12px] font-semibold cursor-pointer focus:outline-none w-full',
-                      SEV_STYLE[row.severity] ?? SEV_STYLE.indication,
-                    ].join(' ')}
-                  >
-                    {Object.entries(SEV_LABELS).map(([val, label]) => (
-                      <option key={val} value={val}>{label}</option>
-                    ))}
-                  </select>
-                </td>
-
-                {/* Note */}
-                <td className="px-3 py-2">
-                  <input
-                    aria-label={`Flag ${i + 1} note`}
-                    placeholder="Optional — e.g. prefer low-GI meals"
-                    value={row.note}
-                    onChange={e => set(i, { note: e.target.value })}
-                    onBlur={() => commit(value)}
-                    className={INP}
-                  />
-                </td>
-
-                {/* Remove */}
-                <td className="px-2 py-2 text-center">
-                  <button
-                    type="button"
-                    aria-label={`Remove flag ${i + 1}`}
-                    onClick={() => removeFlag(i)}
-                    className="text-clay/50 hover:text-clay text-[18px] leading-none transition-colors opacity-0 group-hover:opacity-100"
-                  >×</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      {/* ── Footer: add button + save status ── */}
-      <div className="flex items-center justify-between mt-3">
-        <button
-          type="button"
-          onClick={addFlag}
-          disabled={saving}
-          className="border border-dashed border-ink/[0.20] rounded-[9px] px-4 py-2 text-[12.5px] text-ink/50 hover:border-brand hover:text-brand disabled:opacity-40 transition-colors"
-        >
-          {saving ? 'Saving…' : '+ Add health flag'}
-        </button>
-
+      {/* ── Severity pills ── */}
+      <div className="flex flex-wrap items-center gap-2.5">
+        {PILLS.map(p => {
+          const isOpen = open === p.severity;
+          return (
+            <button
+              key={p.severity}
+              type="button"
+              onClick={() => setOpen(isOpen ? null : p.severity)}
+              aria-expanded={isOpen}
+              className={[
+                'flex items-center gap-2 rounded-full border px-3.5 py-2 text-[13px] font-semibold transition-all',
+                p.style, isOpen ? p.ring : '',
+              ].join(' ')}
+            >
+              <span className={`w-2 h-2 rounded-full ${p.dot}`} />
+              {p.label}
+              <span className="tabular-nums text-[11px] opacity-70">{countFor(p.severity)}</span>
+              <span className="text-[10px]">{isOpen ? '▴' : '▾'}</span>
+            </button>
+          );
+        })}
+        {saving && <span className="self-center text-[11.5px] text-ink/40">Saving…</span>}
         {status && (
-          <p className={[
-            'text-[12px] font-medium transition-all',
-            status.ok ? 'text-brand' : 'text-clay',
-          ].join(' ')}>
+          <span className={`self-center text-[12px] font-medium ${status.ok ? 'text-brand' : 'text-clay'}`}>
             {status.ok ? status.text : `⚠ ${status.text}`}
-          </p>
+          </span>
         )}
       </div>
 
-      {/* Hint when vocab not loaded */}
-      {conditions.length === 0 && (
-        <p className="mt-2 text-[11px] text-ink/35 italic">
-          Condition vocabulary not loaded — type the code directly (e.g. <code>diabetes</code>).
-          It will match once the vocabulary is seeded.
-        </p>
+      {/* ── Multi-select for the open pill ── */}
+      {open && (
+        <div className="mt-3 border border-ink/[0.12] rounded-[12px] bg-bone p-3">
+          {conditions.length === 0 ? (
+            <p className="text-[12px] text-ink/40 italic px-1 py-2">
+              Condition vocabulary not loaded — add conditions under Health Flags first.
+            </p>
+          ) : (
+            <>
+              <p className="text-[10px] font-bold uppercase tracking-[0.07em] text-ink/45 mb-2 px-1">
+                Conditions with <span className="text-ink/70">{PILLS.find(p => p.severity === open)!.label}</span> severity
+              </p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-1.5">
+                {conditions.map(c => {
+                  const sev = severityOf(c.code);
+                  const here = sev === open;
+                  const elsewhere = sev && sev !== open ? sev : null;
+                  return (
+                    <button
+                      key={c.code}
+                      type="button"
+                      aria-label={c.label}
+                      aria-pressed={here}
+                      onClick={() => toggle(c.code, open)}
+                      className={[
+                        'flex items-center gap-2 rounded-[9px] border px-2.5 py-2 text-left text-[12.5px] transition-colors',
+                        here ? 'border-brand bg-brand/[0.06] text-ink font-medium'
+                             : 'border-ink/[0.1] bg-cream text-ink/70 hover:bg-sand',
+                      ].join(' ')}
+                    >
+                      <span className={[
+                        'w-4 h-4 rounded-[5px] border flex items-center justify-center text-[10px] shrink-0',
+                        here ? 'bg-brand border-brand text-white' : 'border-ink/25',
+                      ].join(' ')}>
+                        {here ? '✓' : ''}
+                      </span>
+                      <span className="min-w-0 truncate">
+                        {c.label}
+                        {elsewhere && <span className="text-ink/35 text-[10px] ml-1">· {elsewhere}</span>}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </>
+          )}
+        </div>
       )}
+
+      {/* ── Assigned-condition chips (always visible) ── */}
+      <div className="mt-3 flex flex-col gap-2">
+        {PILLS.map(p => {
+          const codes = value.filter(f => f.severity === p.severity).map(f => f.condition);
+          if (codes.length === 0) return null;
+          return (
+            <div key={p.severity} className="flex flex-wrap items-center gap-1.5">
+              <span className={`text-[10px] font-bold uppercase tracking-[0.06em] px-2 py-0.5 rounded-full border ${p.style}`}>{p.label}</span>
+              {codes.map(code => (
+                <span key={code} className="inline-flex items-center gap-1 text-[12px] bg-cream border border-ink/[0.12] rounded-full pl-2.5 pr-1 py-0.5 text-ink">
+                  {labelFor(code)}
+                  <button type="button" onClick={() => toggle(code, p.severity)} className="text-clay px-1" aria-label={`Remove ${labelFor(code)}`}>×</button>
+                </span>
+              ))}
+            </div>
+          );
+        })}
+        {value.length === 0 && (
+          <p className="text-[11.5px] text-ink/35 italic">No conditions assigned yet — tap a pill above to add some.</p>
+        )}
+      </div>
     </div>
   );
 }

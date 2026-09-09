@@ -68,8 +68,8 @@ function toDetailView(doc: RecipeDoc): DetailView {
     yield: doc.yieldStr ?? '',
     shelfLife: doc.shelfLife ?? '',
     contraConditions: (doc.healthFlags ?? [])
-      .filter(f => f.severity === 'avoid' || f.severity === 'caution')
-      .map(f => `${f.condition.charAt(0).toUpperCase() + f.condition.slice(1)}${f.note ? ` — ${f.note}` : ''}`),
+      .filter(f => f.severity === 'caution')
+      .map(f => f.condition.charAt(0).toUpperCase() + f.condition.slice(1)),
     // Display-ready strings, not numbers — some carry qualitative text like
     // "a pinch" or "to taste" (see docs/specs/2026-08-30-ingredient-fields.md).
     // Do not parseInt() these; a lossy 0 fallback would silently mislead.

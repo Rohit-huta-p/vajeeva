@@ -2,12 +2,12 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { fonts, shadows, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
-import { IconCheck, IconWarn, IconNo } from './icons';
+import { IconCheck, IconWarn } from './icons';
 import type { FitLevel } from '../../api/recipes';
 import { scaledSheet, sc } from '../../theme/scale';
 
 /**
- * Health-fit pill for a recipe card (Safe / Caution / Avoid). Pure presentation
+ * Health-fit pill for a recipe card (Safe / Caution). Pure presentation
  * — gate rendering at the call site with `FEATURES.fitBadge` and a non-null
  * level so unassessed recipes show nothing. `compact` drops the label to an
  * icon-only chip (for very tight tiles).
@@ -28,7 +28,6 @@ export function FitBadge({ level, compact = false }: { level: FitLevel; compact?
   const CONF: Record<FitLevel, { label: string; bg: string; fg: string; Icon: typeof IconCheck }> = {
     safe:    { label: 'Safe',    bg: colors.green, fg: colors.cream, Icon: IconCheck },
     caution: { label: 'Caution', bg: colors.amber, fg: '#2A251E',    Icon: IconWarn },
-    avoid:   { label: 'Avoid',   bg: colors.clay,  fg: colors.cream, Icon: IconNo },
   };
   const c = CONF[level];
   return (

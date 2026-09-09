@@ -19,7 +19,7 @@
       { "order": 4, "text": "Add cardamom, mix, and pour into a greased tray.",  "phase": "Finish",          "heat": null,          "timerStr": null,    "stepIngredients": ["Cardamom"],      "illColor": "#2A3828" }
     ],
     "healthFlags": [
-      { "condition": "diabetes",   "severity": "avoid",   "note": "High jaggery content" },
+      { "condition": "diabetes",   "severity": "caution",   "note": "High jaggery content" },
       { "condition": "lactose",    "severity": "caution", "note": "Contains whole milk" }
     ],
     "sources": [
@@ -51,7 +51,7 @@
       { "order": 4, "text": "Add milk and cardamom, simmer until creamy.", "phase": "Finish", "heat": "Low heat", "timerStr": "07:00", "stepIngredients": ["Milk", "Cardamom"], "illColor": "#2A3828" }
     ],
     "healthFlags": [
-      { "condition": "diabetes", "severity": "avoid", "note": "High jaggery content" },
+      { "condition": "diabetes", "severity": "caution", "note": "High jaggery content" },
       { "condition": "pitta",    "severity": "safe",   "note": "Cooling and nourishing" }
     ],
     "sources": [

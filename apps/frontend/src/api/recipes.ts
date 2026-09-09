@@ -10,7 +10,7 @@ export interface RecipeImage {
   order?: number;
 }
 
-export type FitLevel = 'safe' | 'caution' | 'avoid';
+export type FitLevel = 'safe' | 'caution';
 
 export interface RecipeListItem {
   slug: string;
@@ -47,13 +47,12 @@ export interface RecipeListItem {
 /**
  * Reduce a recipe's healthFlags to a single fit level for the card badge.
  * Returns `null` when there are no flags — an unassessed recipe, which must NOT
- * read as "Safe". Worst severity wins: any 'avoid' → avoid; else any 'caution'
- * → caution; else (flags exist and all are 'safe') → safe.
+ * read as "Safe". Worst severity wins: any 'caution' → caution; else (flags
+ * exist and none are 'caution') → safe.
  */
 export function deriveFit(flags: RecipeDoc['healthFlags'] | undefined): FitLevel | null {
   const list = flags ?? [];
   if (list.length === 0) return null;
-  if (list.some(f => f.severity === 'avoid')) return 'avoid';
   if (list.some(f => f.severity === 'caution')) return 'caution';
   return 'safe';
 }
@@ -77,7 +76,7 @@ export interface RecipeDoc {
     order: number; text: string; phase?: string; heat?: string | null;
     images?: RecipeImage[] | null;
   }[];
-  healthFlags: { condition: string; severity: 'safe' | 'caution' | 'avoid' | 'indication'; note?: string }[];
+  healthFlags: { condition: string; severity: 'safe' | 'caution' | 'indication' }[];
   sources: { text: string; citation?: string }[];
   yieldStr?: string;
   shelfLife?: string;
@@ -116,7 +115,7 @@ export function toListItem(doc: RecipeDoc): RecipeListItem {
     nameTa: doc.nameTa,
     category: doc.category,
     cookTimeMin: (doc as any).totalTimeMin ?? 0,
-    contraCount: (doc.healthFlags ?? []).filter(f => f.severity === 'avoid' || f.severity === 'caution').length,
+    contraCount: (doc.healthFlags ?? []).filter(f => f.severity === 'caution').length,
     fit: deriveFit(doc.healthFlags),
     stepCount: (doc.steps ?? []).length,
     yieldStr: doc.yieldStr,

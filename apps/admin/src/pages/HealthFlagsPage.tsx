@@ -121,7 +121,7 @@ export function HealthFlagsPage() {
         <strong className="font-semibold text-sky">What are health flags?</strong>
         {' '}Each flag maps a condition to a per-recipe safety signal.
         App users pick conditions on their health profile and see{' '}
-        <em>Safe</em>, <em>Caution</em>, or <em>Avoid</em> labels automatically —
+        <em>Safe</em> or <em>Caution</em> labels automatically —
         severity per recipe is set in the Recipe Editor (Step 4).
       </div>
 
