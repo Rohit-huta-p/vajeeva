@@ -16,7 +16,7 @@ import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useCookLog, madeAgo } from '../hooks/useCookLog';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { IconButton } from '../components/shared/IconButton';
-import { IconBack, IconHeart, IconHeartFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
+import { IconBack, IconBookmark, IconBookmarkFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { MeasurementSheet } from '../components/shared/MeasurementSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
@@ -174,8 +174,8 @@ export function RecipeDetailScreen() {
             <View style={s.heroActs}>
               <IconButton
                 icon={saved
-                  ? <IconHeartFilled size={sc(15)} color={colors.clay} />
-                  : <IconHeart size={sc(15)} color={colors.clay} />}
+                  ? <IconBookmarkFilled size={sc(15)} color={colors.ink2} />
+                  : <IconBookmark size={sc(15)} color={colors.ink2} />}
                 onPress={onToggleSave}
               />
               <IconButton icon={<IconShare size={sc(15)} color={colors.ink} />} onPress={onShare} />

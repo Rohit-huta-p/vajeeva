@@ -222,6 +222,14 @@ export function IconHeartFilled({ size = 15, color = colors.clay }: IconProps) {
   return <Svg width={size} height={size} viewBox="0 0 24 24"><Path fill={color} d="M12 20.4S4.6 15.6 4.6 9.8A4.4 4.4 0 0 1 12 7a4.4 4.4 0 0 1 7.4 2.8c0 5.8-7.4 10.6-7.4 10.6z" /></Svg>;
 }
 
+// Bookmark (save) — outline + filled. Replaces the heart as the save control.
+export function IconBookmark({ size = 15, color = colors.ink2 }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path {...ln(color)} d="M6 4.5h12v15l-6-4-6 4z" /></Svg>;
+}
+export function IconBookmarkFilled({ size = 15, color = colors.clay }: IconProps) {
+  return <Svg width={size} height={size} viewBox="0 0 24 24"><Path fill={color} d="M6 4.5h12v15l-6-4-6 4z" /></Svg>;
+}
+
 // Caution triangle + prohibited circle — the fit badge's caution / avoid marks.
 export function IconWarn({ size = 11, color = colors.amber2 }: IconProps) {
   return (

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts } from '../theme/tokens';
-import { IconClose, IconCheck, IconHeart } from '../components/shared/icons';
+import { IconClose, IconCheck, IconBookmark } from '../components/shared/icons';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useCookLog } from '../hooks/useCookLog';
 import { useCookSession } from '../hooks/useCookSession';
@@ -114,7 +114,7 @@ export function FinishScreen() {
           <Text style={s.saveSub}>Saved recipes stay on this device and work completely offline.</Text>
           {!saved ? (
             <TouchableOpacity style={s.saveCta} onPress={() => save(recipe)} activeOpacity={0.85}>
-              <IconHeart size={sc(14)} color={CTA_TEXT} />
+              <IconBookmark size={sc(14)} color={CTA_TEXT} />
               <Text style={s.saveCtaText}>Save recipe</Text>
             </TouchableOpacity>
           ) : (
