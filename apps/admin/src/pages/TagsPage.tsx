@@ -21,12 +21,12 @@ const GROUP_DOTS = ['#3B82F6', '#22C55E', '#F97316', '#8B5CF6', '#EC4899', '#14B
 const dot = (i: number) => GROUP_DOTS[i % GROUP_DOTS.length];
 
 const FACETS: { facet: keyof Vocab; label: string; desc: string }[] = [
-  { facet: 'type',       label: 'Type',            desc: 'Recipe format — laddu, paratha, soup, rice…' },
-  { facet: 'meal',       label: 'Meal',            desc: "When it's served — breakfast, snack, dessert…" },
+  { facet: 'type', label: 'Type', desc: 'Recipe format — laddu, paratha, soup, rice…' },
+  { facet: 'meal', label: 'Meal', desc: "When it's served — breakfast, snack, dessert…" },
   { facet: 'ingredient', label: 'Main Ingredient', desc: 'Star ingredient — coconut, jaggery, amla…' },
-  { facet: 'method',     label: 'Method',          desc: 'Cooking technique — steamed, fried, no-cook…' },
-  { facet: 'diet',       label: 'Diet tags',       desc: 'Dietary properties — sweet, dairy, high protein…' },
-  { facet: 'filter',     label: 'Home page filters', desc: 'Pills on the home page — grouped by effort, taste, occasion.' },
+  { facet: 'method', label: 'Method', desc: 'Cooking technique — steamed, fried, no-cook…' },
+  { facet: 'diet', label: 'Diet tags', desc: 'Dietary properties — sweet, dairy, high protein…' },
+  { facet: 'filter', label: 'Home page filters', desc: 'Pills on the home page — grouped by effort, taste, occasion.' },
 ];
 
 function normaliseVocab(v: Vocab): Vocab {
@@ -35,9 +35,9 @@ function normaliseVocab(v: Vocab): Vocab {
     out[facet] = v[facet]
       .map((t, i) => ({
         ...t,
-        code:    (t.code || slug(t.label)).trim(),
-        label:   t.label.trim(),
-        order:   i + 1,
+        code: (t.code || slug(t.label)).trim(),
+        label: t.label.trim(),
+        order: i + 1,
         enabled: t.enabled !== false,
       }))
       .filter(t => t.code && t.label);
@@ -48,9 +48,9 @@ function normaliseVocab(v: Vocab): Vocab {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export function TagsPage() {
-  const [vocab,      setVocab]      = useState<Vocab>(TAG_DEFAULTS);
-  const [groups,     setGroups]     = useState<FilterGroup[]>([]);
-  const [saving,     setSaving]     = useState(false);
+  const [vocab, setVocab] = useState<Vocab>(TAG_DEFAULTS);
+  const [groups, setGroups] = useState<FilterGroup[]>([]);
+  const [saving, setSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<{ ok: boolean; text: string } | null>(null);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function TagsPage() {
         setVocab(mergeTagDefaults(tags));
         setGroups(grps);
       })
-      .catch(() => {});
+      .catch(() => { });
   }, []);
 
   async function commit(next: Vocab) {
@@ -113,20 +113,45 @@ export function TagsPage() {
       </div>
 
       <div className="flex flex-col gap-3">
-        {FACETS.map(({ facet, label, desc }) => (
-          <FacetSection
-            key={facet}
-            facet={facet}
-            label={label}
-            desc={desc}
-            rows={vocab[facet]}
-            onCommit={rows => commit({ ...vocab, [facet]: rows })}
-            saving={saving}
-            groups={facet === 'filter' ? groups : undefined}
-            onGroupsChange={facet === 'filter' ? setGroups : undefined}
-            onReassignGroup={facet === 'filter' ? reassignGroup : undefined}
-          />
-        ))}
+        {FACETS.map(({ facet, label, desc }) => {
+          if (facet === 'filter') {
+            return (
+              <div>
+                <div className='mb-5'>
+                  <h1 className="text-[22px] font-bold text-ink leading-tight">Home Filter</h1>
+                  <p className="text-[13px] text-ink/45 mt-0.5">
+                    Click any pill to rename · drag to reorder · × to remove
+                  </p>
+                </div>
+                <FacetSection
+                  key={facet}
+                  facet={facet}
+                  label={label}
+                  desc={desc}
+                  rows={vocab[facet]}
+                  onCommit={rows => commit({ ...vocab, [facet]: rows })}
+                  saving={saving}
+                  groups={facet === 'filter' ? groups : undefined}
+                  onGroupsChange={facet === 'filter' ? setGroups : undefined}
+                  onReassignGroup={facet === 'filter' ? reassignGroup : undefined}
+                />
+              </div>
+
+            )
+          }
+          return (
+            <FacetSection
+              key={facet}
+              facet={facet}
+              label={label}
+              desc={desc}
+              rows={vocab[facet]}
+              onCommit={rows => commit({ ...vocab, [facet]: rows })}
+              saving={saving}
+            />
+          )
+        }
+        )}
       </div>
     </div>
   );
@@ -138,19 +163,19 @@ function FacetSection({
   facet, label, desc, rows, onCommit, saving,
   groups, onGroupsChange, onReassignGroup,
 }: {
-  facet:             keyof Vocab;
-  label:             string;
-  desc:              string;
-  rows:              VocabValue[];
-  onCommit:          (rows: VocabValue[]) => void;
-  saving:            boolean;
-  groups?:           FilterGroup[];
-  onGroupsChange?:   (groups: FilterGroup[]) => void;
-  onReassignGroup?:  (deletedCode: string, fallbackCode: string) => void;
+  facet: keyof Vocab;
+  label: string;
+  desc: string;
+  rows: VocabValue[];
+  onCommit: (rows: VocabValue[]) => void;
+  saving: boolean;
+  groups?: FilterGroup[];
+  onGroupsChange?: (groups: FilterGroup[]) => void;
+  onReassignGroup?: (deletedCode: string, fallbackCode: string) => void;
 }) {
-  const isFilter    = facet === 'filter';
+  const isFilter = facet === 'filter';
   const [open, setOpen] = useState(false);
-  const activeCount     = rows.filter(r => r.enabled !== false).length;
+  const activeCount = rows.filter(r => r.enabled !== false).length;
 
   return (
     <div className="rounded-[14px] border border-ink/[0.11] overflow-hidden">
@@ -194,14 +219,14 @@ function FacetSection({
 function GroupManager({
   groups, onChange, onDelete,
 }: {
-  groups:   FilterGroup[];
+  groups: FilterGroup[];
   onChange: (groups: FilterGroup[]) => void;
   onDelete: (deletedCode: string, fallbackCode: string) => void;
 }) {
-  const [saving,  setSaving]  = useState(false);
-  const [adding,  setAdding]  = useState(false);
-  const [newLabel,setNewLabel]= useState('');
-  const [err,     setErr]     = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [newLabel, setNewLabel] = useState('');
+  const [err, setErr] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   async function renameGroup(g: FilterGroup, label: string) {
@@ -360,10 +385,10 @@ function GroupManager({
 function GroupLabelInput({
   group, onSave,
 }: {
-  group:  FilterGroup;
+  group: FilterGroup;
   onSave: (label: string) => void;
 }) {
-  const [val,     setVal]     = useState(group.label);
+  const [val, setVal] = useState(group.label);
   const [focused, setFocused] = useState(false);
 
   useEffect(() => {
@@ -415,9 +440,9 @@ function PillGrid({ rows, onCommit, facetLabel }: {
             dragSrc.current = null; setDragOver(null);
           }}
           onDragEnd={() => { dragSrc.current = null; setDragOver(null); }}
-          onSave={label  => onCommit(rows.map((r, j) => j === i ? { ...r, label } : r))}
-          onToggle={() =>   onCommit(rows.map((r, j) => j === i ? { ...r, enabled: !(r.enabled !== false) } : r))}
-          onRemove={() =>   onCommit(rows.filter((_, j) => j !== i))}
+          onSave={label => onCommit(rows.map((r, j) => j === i ? { ...r, label } : r))}
+          onToggle={() => onCommit(rows.map((r, j) => j === i ? { ...r, enabled: !(r.enabled !== false) } : r))}
+          onRemove={() => onCommit(rows.filter((_, j) => j !== i))}
         />
       ))}
       <AddPill
@@ -436,8 +461,8 @@ function PillGrid({ rows, onCommit, facetLabel }: {
 // ── KanbanBoard ───────────────────────────────────────────────────────────────
 
 function KanbanBoard({ rows, groups, onCommit }: {
-  rows:     VocabValue[];
-  groups:   FilterGroup[];
+  rows: VocabValue[];
+  groups: FilterGroup[];
   onCommit: (rows: VocabValue[]) => void;
 }) {
   const dragSrc = useRef<{ code: string; index: number } | null>(null);
@@ -484,13 +509,12 @@ function KanbanBoard({ rows, groups, onCommit }: {
     <div className="grid gap-3" style={{ gridTemplateColumns: `repeat(${groups.length}, minmax(0, 1fr))` }}>
       {groups.map((group, gi) => {
         const colRows = currentByGroup[group.code] ?? [];
-        const isOver  = dropCol === group.code;
+        const isOver = dropCol === group.code;
         return (
           <div
             key={group._id}
-            className={`rounded-[10px] border p-3 min-h-[80px] transition-colors ${
-              isOver ? 'border-brand/30 bg-brand/[0.03]' : 'border-ink/[0.09] bg-sand/20'
-            }`}
+            className={`rounded-[10px] border p-3 min-h-[80px] transition-colors ${isOver ? 'border-brand/30 bg-brand/[0.03]' : 'border-ink/[0.09] bg-sand/20'
+              }`}
             onDragOver={e => { e.preventDefault(); setDropCol(group.code); }}
             onDrop={e => { e.preventDefault(); handleDrop(group.code); }}
             onDragLeave={e => {
@@ -516,9 +540,9 @@ function KanbanBoard({ rows, groups, onCommit }: {
                   onDragOver={() => setDropCol(group.code)}
                   onDrop={() => handleDrop(group.code, i)}
                   onDragEnd={() => { dragSrc.current = null; setDropCol(null); }}
-                  onSave={label  => apply(g => { g[group.code][i] = { ...g[group.code][i], label }; })}
-                  onToggle={() =>   apply(g => { g[group.code][i] = { ...g[group.code][i], enabled: !(g[group.code][i].enabled !== false) }; })}
-                  onRemove={() =>   apply(g => { g[group.code].splice(i, 1); })}
+                  onSave={label => apply(g => { g[group.code][i] = { ...g[group.code][i], label }; })}
+                  onToggle={() => apply(g => { g[group.code][i] = { ...g[group.code][i], enabled: !(g[group.code][i].enabled !== false) }; })}
+                  onRemove={() => apply(g => { g[group.code].splice(i, 1); })}
                 />
               ))}
             </div>
@@ -550,21 +574,21 @@ function PillItem({
   onDragStart, onDragOver, onDrop, onDragEnd,
   onSave, onToggle, onRemove,
 }: {
-  row:         VocabValue;
-  vertical?:   boolean;
-  isDragOver:  boolean;
+  row: VocabValue;
+  vertical?: boolean;
+  isDragOver: boolean;
   onDragStart: () => void;
-  onDragOver:  () => void;
-  onDrop:      () => void;
-  onDragEnd:   () => void;
-  onSave:      (label: string) => void;
-  onToggle:    () => void;
-  onRemove:    () => void;
+  onDragOver: () => void;
+  onDrop: () => void;
+  onDragEnd: () => void;
+  onSave: (label: string) => void;
+  onToggle: () => void;
+  onRemove: () => void;
 }) {
   const [editing, setEditing] = useState(false);
-  const [val,     setVal]     = useState(row.label);
-  const inputRef              = useRef<HTMLInputElement>(null);
-  const enabled               = row.enabled !== false;
+  const [val, setVal] = useState(row.label);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const enabled = row.enabled !== false;
 
   useEffect(() => {
     if (!editing) setVal(row.label);
@@ -587,8 +611,8 @@ function PillItem({
     <div
       draggable={!editing}
       onDragStart={e => { e.dataTransfer.effectAllowed = 'move'; onDragStart(); }}
-      onDragOver={e  => { e.preventDefault(); onDragOver(); }}
-      onDrop={e      => { e.preventDefault(); onDrop(); }}
+      onDragOver={e => { e.preventDefault(); onDragOver(); }}
+      onDrop={e => { e.preventDefault(); onDrop(); }}
       onDragEnd={onDragEnd}
       className={[
         'group relative flex items-center gap-1.5 rounded-full border transition-all',
@@ -611,7 +635,7 @@ function PillItem({
           onChange={e => setVal(e.target.value)}
           onBlur={save}
           onKeyDown={e => {
-            if (e.key === 'Enter')  { e.preventDefault(); save(); }
+            if (e.key === 'Enter') { e.preventDefault(); save(); }
             if (e.key === 'Escape') { setVal(row.label); setEditing(false); }
           }}
           className="bg-transparent border-none outline-none text-[13px] font-medium flex-1 min-w-[40px]"
@@ -657,15 +681,15 @@ function PillItem({
 function AddPill({
   placeholder, onAdd, existingCodes, compact = false,
 }: {
-  placeholder:   string;
-  onAdd:         (label: string) => void;
+  placeholder: string;
+  onAdd: (label: string) => void;
   existingCodes: string[];
-  compact?:      boolean;
+  compact?: boolean;
 }) {
   const [adding, setAdding] = useState(false);
-  const [val,    setVal]    = useState('');
-  const [err,    setErr]    = useState<string | null>(null);
-  const inputRef            = useRef<HTMLInputElement>(null);
+  const [val, setVal] = useState('');
+  const [err, setErr] = useState<string | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   function start() {
     setAdding(true);
@@ -695,7 +719,7 @@ function AddPill({
             onChange={e => { setVal(e.target.value); setErr(null); }}
             onBlur={tryAdd}
             onKeyDown={e => {
-              if (e.key === 'Enter')  tryAdd();
+              if (e.key === 'Enter') tryAdd();
               if (e.key === 'Escape') { setAdding(false); setVal(''); setErr(null); }
             }}
             placeholder={placeholder}
