@@ -4,6 +4,7 @@ import { User } from '../models/User';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
 import { SavedRecipe } from '../models/SavedRecipe';
 import { CookLog } from '../models/CookLog';
+import { destroyFromCloudinary } from '../lib/cloudinary';
 
 export const usersRouter = Router();
 export const publicHealthFlagsRouter = Router();
@@ -54,6 +55,13 @@ usersRouter.delete('/me', requireAuth, async (req, res, next) => {
   try {
     const userId = (req as any).user.userId;
     await SavedRecipe.deleteMany({ userId });
+    // Destroy the patient's prepared-dish photos in Cloudinary before dropping the
+    // makes — else the images outlive the account (spec §8). Best-effort per asset.
+    const cooks = await CookLog.find({ userId }, 'photos').lean();
+    const publicIds = cooks.flatMap(c =>
+      ((c.photos ?? []) as { publicId?: string }[]).map(p => p.publicId).filter(Boolean) as string[],
+    );
+    await Promise.all(publicIds.map(pid => destroyFromCloudinary(pid).catch(() => {})));
     await CookLog.deleteMany({ userId });
     const user = await User.findByIdAndDelete(userId).lean();
     if (!user) { res.status(404).json({ error: 'User not found' }); return; }

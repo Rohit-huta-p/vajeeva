@@ -1,18 +1,22 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../api/client';
 
+interface Photo { url: string; publicId: string; caption: string }
 interface Flag {
   slug: string; nameEn: string; condition: string; conditionLabel: string;
   severity: 'caution'; saved: boolean; made: boolean;
 }
-interface Make { slug: string; nameEn: string; madeAt: string; rating: number | null }
+interface Make { slug: string; nameEn: string; madeAt: string; rating: number | null; photos: Photo[] }
+interface PhotoMake {
+  slug: string; nameEn: string; madeAt: string; rating: number | null; flagged: boolean; photos: Photo[];
+}
 interface Detail {
   profile: {
     id: string; name?: string; email: string; phone?: string; age?: number; gender?: string;
     joinedAt: string; lastActiveAt: string | null; conditions: { code: string; label: string }[];
   };
-  engagement: { saves: number; makes: number; lastMadeAt: string | null; recentMakes: Make[] };
+  engagement: { saves: number; makes: number; lastMadeAt: string | null; recentMakes: Make[]; photoMakes: PhotoMake[] };
   adherence: { flags: Flag[] };
   satisfaction: { avgRating: number | null; ratingCount: number };
 }
@@ -29,15 +33,33 @@ function ago(iso: string | null): string {
   return `${Math.floor(d / 30)}mo ago`;
 }
 const dateOnly = (iso: string) => new Date(iso).toISOString().slice(0, 10);
+const stars = (r: number) => '★'.repeat(Math.round(r / 1.7) || 1);
+
+/** Sized Cloudinary thumb (fill). Non-Cloudinary URLs pass through. */
+function thumb(url: string, w: number, h: number): string {
+  const m = '/upload/';
+  const i = url.indexOf(m);
+  return i === -1 ? url : `${url.slice(0, i + m.length)}c_fill,w_${w},h_${h},q_auto,f_auto/${url.slice(i + m.length)}`;
+}
 
 export function UserDetailPage() {
   const { id } = useParams();
   const [d, setD] = useState<Detail | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
+  const load = useCallback(() => {
     api<Detail>(`/api/admin/users/${id}`).then(setD).catch(e => setError((e as Error).message));
   }, [id]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const removePhoto = async (publicId: string) => {
+    if (!window.confirm("Remove this photo? It's permanently deleted from the patient's kitchen.")) return;
+    try {
+      await api(`/api/admin/users/${id}/photo`, { method: 'DELETE', body: JSON.stringify({ publicId }) });
+      load();
+    } catch (e) { setError((e as Error).message); }
+  };
 
   if (error) {
     return (
@@ -50,6 +72,7 @@ export function UserDetailPage() {
   if (!d) return <p className="p-8 text-ink/45">Loading…</p>;
 
   const name = d.profile.name || d.profile.email.split('@')[0];
+  const photoMakes = d.engagement.photoMakes ?? [];
 
   return (
     <div className="p-5 md:p-7">
@@ -122,14 +145,50 @@ export function UserDetailPage() {
             <div className="flex flex-col">
               {d.engagement.recentMakes.map((m, i) => (
                 <div key={`${m.slug}-${i}`} className="flex items-center gap-3 py-2 border-b border-ink/[0.08] last:border-0">
+                  {m.photos.length > 0 && (
+                    <img src={thumb(m.photos[0].url, 64, 64)} alt="" className="w-7 h-7 rounded object-cover bg-ink/5 shrink-0" />
+                  )}
                   <span className="text-[13px] font-medium text-ink truncate flex-1">{m.nameEn}</span>
-                  {m.rating != null && <span className="text-[12px] text-amber tabular-nums shrink-0">{'★'.repeat(Math.round(m.rating / 1.7) || 1)}</span>}
+                  {m.photos.length > 1 && <span className="text-[10px] text-ink/40 shrink-0">+{m.photos.length - 1}</span>}
+                  {m.rating != null && <span className="text-[12px] text-amber tabular-nums shrink-0">{stars(m.rating)}</span>}
                   <span className="text-[11.5px] text-ink/45 shrink-0">{ago(m.madeAt)}</span>
                 </div>
               ))}
             </div>
           )}
         </div>
+      </div>
+
+      {/* Their kitchen — prepared-dish photos. See docs/specs/2026-09-09-prepared-photos.md §7. */}
+      <div className="bg-bone border border-ink/[0.11] rounded-[14px] p-5 mt-4">
+        <p className="font-serif text-[15.5px] font-light text-ink tracking-tight mb-1">Their kitchen</p>
+        <p className="text-[11.5px] text-ink/45 mb-4">Photos the patient chose to share with their care team.</p>
+        {photoMakes.length === 0 ? (
+          <p className="text-[12.5px] text-ink/45">No photos yet.</p>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+            {photoMakes.flatMap(mk => mk.photos.map(p => (
+              <figure key={p.publicId} className="group relative">
+                <a href={p.url} target="_blank" rel="noreferrer">
+                  <img src={thumb(p.url, 320, 320)} alt={mk.nameEn} className="w-full aspect-square object-cover rounded-[10px] bg-ink/5" />
+                </a>
+                {mk.flagged && (
+                  <span className="absolute top-1.5 left-1.5 text-[9px] font-[800] uppercase tracking-[0.06em] px-1.5 py-0.5 rounded-full bg-amber-bg text-amber">
+                    flagged
+                  </span>
+                )}
+                <button
+                  onClick={() => removePhoto(p.publicId)}
+                  className="absolute top-1.5 right-1.5 w-5 h-5 rounded-full bg-ink/70 text-white text-[12px] leading-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                  aria-label="Remove photo"
+                >×</button>
+                <figcaption className="text-[11px] text-ink/55 mt-1 truncate">
+                  {mk.nameEn} · {dateOnly(mk.madeAt)}{mk.rating ? ` · ${stars(mk.rating)}` : ''}
+                </figcaption>
+              </figure>
+            )))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -15,6 +15,7 @@ import { usePreferences } from '../hooks/usePreferences';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
 import { useCookLog, madeAgo } from '../hooks/useCookLog';
 import { SectionLabel } from '../components/shared/SectionLabel';
+import { RecipePhotos } from '../components/shared/RecipePhotos';
 import { IconButton } from '../components/shared/IconButton';
 import { IconBack, IconBookmark, IconBookmarkFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
@@ -98,7 +99,8 @@ export function RecipeDetailScreen() {
   const [listItem, setListItem] = useState<RecipeListItem | null>(null);
   const { prefs, loading: prefsLoading } = usePreferences();
   const { isSaved, save, unsave } = useSavedRecipes();
-  const { madeCount, lastMade, recordMake } = useCookLog();
+  const cook = useCookLog();
+  const { madeCount, lastMade, recordMake } = cook;
   const [justMade, setJustMade] = useState(false);
 
   // Seed the g/cup toggle from the saved Units preference once it loads.
@@ -259,6 +261,9 @@ export function RecipeDetailScreen() {
               <Text style={s.madeBtnText}>{justMade ? '✓ Logged — nice work' : 'I made this'}</Text>
             </TouchableOpacity>
           </View>
+
+          {/* Your photos — prepared-dish re-entry (docs/specs/2026-09-09-prepared-photos.md §6) */}
+          <RecipePhotos slug={slug} cook={cook} />
 
           {/* CTA */}
           <CTA label="Start Cook" icon={<IconPlay size={sc(15)} color={colors.onGreen} />} onPress={() => router.push(`/cook/${slug}` as any)} />

@@ -7,6 +7,7 @@ import { Recipe } from '../models/Recipe';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
 import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
+import { destroyFromCloudinary } from '../lib/cloudinary';
 
 export const usersAdminRouter = Router();
 usersAdminRouter.use(requireAuth, requireAdmin);
@@ -93,12 +94,34 @@ usersAdminRouter.get('/:id', async (req, res, next) => {
     // Engagement
     const madeMs = cooks.map(c => new Date(c.madeAt).getTime());
     const lastMadeAt = madeMs.length ? new Date(Math.max(...madeMs)).toISOString() : null;
-    const recentMakes = [...cooks]
-      .sort((a, b) => new Date(b.madeAt).getTime() - new Date(a.madeAt).getTime())
-      .slice(0, 8)
+    // Recipes flagged for the patient's conditions — to badge their dish photos.
+    const flaggedSlugs = new Set(flags.map(f => f.slug));
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const toPhotos = (c: any) =>
+      ((c.photos ?? []) as { url: string; publicId: string; caption?: string }[])
+        .map(p => ({ url: p.url, publicId: p.publicId, caption: p.caption ?? '' }));
+
+    const cooksByRecent = [...cooks].sort((a, b) => new Date(b.madeAt).getTime() - new Date(a.madeAt).getTime());
+    const recentMakes = cooksByRecent.slice(0, 8).map(c => {
+      const r = recipeById.get(String(c.recipeId));
+      return {
+        slug: r?.slug ?? '', nameEn: r?.nameEn ?? '(deleted recipe)',
+        madeAt: c.madeAt, rating: c.rating ?? null, photos: toPhotos(c),
+      };
+    });
+
+    // Every make that carries photos (not just the recent 8) — the "Their kitchen"
+    // gallery, each badged when the dish is contraindicated for the patient.
+    const photoMakes = cooksByRecent
+      .filter(c => (c.photos?.length ?? 0) > 0)
       .map(c => {
         const r = recipeById.get(String(c.recipeId));
-        return { slug: r?.slug ?? '', nameEn: r?.nameEn ?? '(deleted recipe)', madeAt: c.madeAt, rating: c.rating ?? null };
+        return {
+          slug: r?.slug ?? '', nameEn: r?.nameEn ?? '(deleted recipe)',
+          madeAt: c.madeAt, rating: c.rating ?? null,
+          flagged: r ? flaggedSlugs.has(r.slug) : false,
+          photos: toPhotos(c),
+        };
       });
 
     // Satisfaction
@@ -122,9 +145,29 @@ usersAdminRouter.get('/:id', async (req, res, next) => {
         lastActiveAt,
         conditions: conditions.map(code => ({ code, label: labelByCode.get(code) ?? code })),
       },
-      engagement: { saves: saved.length, makes: cooks.length, lastMadeAt, recentMakes },
+      engagement: { saves: saved.length, makes: cooks.length, lastMadeAt, recentMakes, photoMakes },
       adherence: { flags },
       satisfaction: { avgRating, ratingCount: rated.length },
     });
+  } catch (err) { next(err); }
+});
+
+// DELETE /api/admin/users/:id/photo — a practitioner removes one prepared-dish
+// photo from a patient's make (moderation). The patient (:id) owns the make; the
+// Cloudinary asset is destroyed, not just the reference.
+// See docs/specs/2026-09-09-prepared-photos.md §7, §8.
+usersAdminRouter.delete('/:id/photo', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { publicId } = req.body as { publicId?: string };
+    if (!mongoose.Types.ObjectId.isValid(id)) { res.status(404).json({ error: 'User not found' }); return; }
+    if (!publicId) { res.status(400).json({ error: 'publicId required' }); return; }
+
+    const log = await CookLog.findOne({ userId: id, 'photos.publicId': publicId });
+    if (!log) { res.status(404).json({ error: 'Photo not found' }); return; }
+
+    await CookLog.updateOne({ _id: log._id }, { $pull: { photos: { publicId } } });
+    await destroyFromCloudinary(publicId);
+    res.json({ ok: true });
   } catch (err) { next(err); }
 });

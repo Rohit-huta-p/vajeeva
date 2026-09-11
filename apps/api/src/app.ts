@@ -12,7 +12,7 @@ import { healthFlagsAdminRouter } from './routes/healthflags.routes';
 import { tagsAdminRouter, tagsPublicRouter } from './routes/tags.routes';
 import { usersAdminRouter } from './routes/usersadmin.routes';
 import { usersRouter, publicHealthFlagsRouter } from './routes/users.routes';
-import { uploadsRouter } from './routes/uploads.routes';
+import { uploadsRouter, patientUploadsRouter } from './routes/uploads.routes';
 import { statsAdminRouter } from './routes/stats.routes';
 import { filterGroupsAdminRouter, filterGroupsPublicRouter } from './routes/filtergroups.routes';
 import { texturesAdminRouter, texturesPublicRouter } from './routes/textures.routes';
@@ -60,6 +60,7 @@ export function createApp() {
   app.use('/api/textures', texturesPublicRouter);
   app.use('/api/users', usersRouter);
   app.use('/api/admin/uploads', uploadsRouter);
+  app.use('/api/uploads', patientUploadsRouter);
 
   app.get('/health', (_req, res) => {
     res.json({ status: 'ok' });

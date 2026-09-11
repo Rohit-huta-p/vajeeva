@@ -93,14 +93,33 @@ export const savedApi = {
     api.post('/api/sync/saved', { added, removed }),
 };
 
-export interface CookMake { recipe: string; madeAt?: string; rating?: number; note?: string }
-export interface CookLogEntry { slug: string; madeAt: string; rating: number | null; note: string }
+export interface PhotoRef { url: string; publicId: string; caption?: string; order?: number }
+export interface CookMake { recipe: string; madeAt?: string; rating?: number; note?: string; photos?: PhotoRef[] }
+export interface CookLogEntry { slug: string; madeAt: string; rating: number | null; note: string; photos: PhotoRef[] }
 
 export const cookLogApi = {
   // Append-only "I made this" log. Client batches makes (offline makes flush
   // together). See docs/specs/2026-09-03-admin-outcomes.md.
   list: () => api.get<CookLogEntry[]>('/api/sync/cooked').then(r => r.data ?? []),
   record: (makes: CookMake[]) => api.post('/api/sync/cooked', { makes }),
+  // Remove one prepared-dish photo, owner-scoped. See docs/specs/2026-09-09-prepared-photos.md.
+  deletePhoto: (p: { recipe: string; madeAt: string; publicId: string }) =>
+    api.delete('/api/sync/cooked/photo', { data: p }),
+};
+
+// Prepared-dish photo upload (patient). React Native multipart differs from the
+// web File API — the file part is { uri, name, type }. Returns the stored URL + id.
+export const uploadsApi = {
+  uploadPhoto: async (uri: string): Promise<{ url: string; publicId: string }> => {
+    const form = new FormData();
+    const name = uri.split('/').pop() || 'dish.jpg';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    form.append('file', { uri, name, type: 'image/jpeg' } as any);
+    const { data } = await api.post<{ url: string; publicId: string }>('/api/uploads', form, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return data;
+  },
 };
 
 export const usersApi = {

@@ -15,6 +15,7 @@
     "seed:images:nonveg": "ts-node -r dotenv/config src/scripts/seed-images-nonveg.ts",
     "seed:subrecipes": "ts-node src/scripts/seed-subrecipes.ts",
     "seed:tags": "ts-node src/scripts/seed-tags.ts",
+    "sweep:photos": "ts-node src/scripts/sweep-orphan-photos.ts",
     "seed:healthflags": "ts-node src/scripts/seed-healthflags.ts",
     "migrate:conditions": "ts-node src/scripts/migrate-conditions.ts",
     "backfill:filters": "ts-node src/scripts/backfill-filters.ts",

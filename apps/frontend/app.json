@@ -32,7 +32,14 @@
       "bundler": "metro"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Vajeeva uses your photos so you can add pictures of dishes you've cooked.",
+          "cameraPermission": "Vajeeva uses your camera so you can take pictures of dishes you've cooked."
+        }
+      ]
     ]
   }
 }

@@ -7,6 +7,7 @@ import { useThemedStyles } from '../../theme/ThemeContext';
 const NAV = [
   { href: '/', label: 'Home' },
   { href: '/saved', label: 'Saved' },
+  { href: '/cooked', label: 'Cooked' },
   { href: '/more', label: 'Settings' },
 ] as const;
 

@@ -1,8 +1,8 @@
 // Typed recipe surface for screens. The axios client lives in src/api.ts;
 // this module re-exports it under the path the UI plan imports from and adds
 // adapters from raw API documents to the shapes the UI renders.
-export { recipesApi, savedApi, cookLogApi } from '../api';
-export type { CookMake, CookLogEntry } from '../api';
+export { recipesApi, savedApi, cookLogApi, uploadsApi } from '../api';
+export type { CookMake, CookLogEntry, PhotoRef } from '../api';
 
 export interface RecipeImage {
   url: string;

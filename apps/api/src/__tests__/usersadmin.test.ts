@@ -7,6 +7,15 @@ import { SavedRecipe } from '../models/SavedRecipe';
 import { CookLog } from '../models/CookLog';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
 
+jest.mock('cloudinary', () => ({
+  v2: {
+    config: jest.fn(),
+    uploader: { upload_stream: jest.fn(), destroy: jest.fn().mockResolvedValue({ result: 'ok' }) },
+  },
+}));
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const mockDestroy = require('cloudinary').v2.uploader.destroy as jest.Mock;
+
 const app = createApp();
 
 let adminToken: string;
@@ -100,5 +109,71 @@ describe('GET /api/admin/users/:id — per-patient view', () => {
       .get('/api/admin/users/507f1f77bcf86cd799439011')
       .set('Authorization', `Bearer ${adminToken}`);
     expect(res.status).toBe(404);
+  });
+});
+
+describe('per-patient prepared-dish photos', () => {
+  async function makePatientWithPhoto() {
+    const patient = await User.create({
+      email: `pp-${Date.now()}-${Math.random().toString(36).slice(2)}@test.com`,
+      passwordHash: 'x', healthProfile: ['diabetes'],
+    });
+    await HealthFlagConfig.updateOne(
+      { code: 'diabetes' }, { $set: { label: 'Diabetes', enabled: true } }, { upsert: true },
+    );
+    const recipe = await Recipe.create({
+      slug: `flagged-${Math.random().toString(36).slice(2)}`, nameEn: 'Flagged Dish',
+      category: 'solid', status: 'published',
+      healthFlags: [{ condition: 'diabetes', severity: 'caution' }],
+    });
+    const photo = { url: 'https://cdn/x.jpg', publicId: `vajeeva/prepared/${patient.id}/x` };
+    await CookLog.create({ userId: patient.id, recipeId: recipe.id, rating: 5, photos: [photo] });
+    return { patient, photo };
+  }
+
+  it('GET /:id surfaces photos on recentMakes and a flagged photoMakes gallery', async () => {
+    const { patient, photo } = await makePatientWithPhoto();
+    const res = await request(app)
+      .get(`/api/admin/users/${patient.id}`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(res.status).toBe(200);
+    expect(res.body.engagement.recentMakes[0].photos[0]).toMatchObject({ publicId: photo.publicId });
+    expect(res.body.engagement.photoMakes).toHaveLength(1);
+    expect(res.body.engagement.photoMakes[0]).toMatchObject({ flagged: true, nameEn: 'Flagged Dish' });
+    expect(res.body.engagement.photoMakes[0].photos[0].url).toBe(photo.url);
+  });
+
+  it('DELETE /:id/photo removes the photo and destroys the asset', async () => {
+    mockDestroy.mockClear();
+    const { patient, photo } = await makePatientWithPhoto();
+    const del = await request(app)
+      .delete(`/api/admin/users/${patient.id}/photo`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ publicId: photo.publicId });
+    expect(del.status).toBe(200);
+    expect(mockDestroy).toHaveBeenCalledWith(photo.publicId);
+    const res = await request(app)
+      .get(`/api/admin/users/${patient.id}`)
+      .set('Authorization', `Bearer ${adminToken}`);
+    expect(res.body.engagement.photoMakes).toHaveLength(0);
+  });
+
+  it('DELETE /:id/photo 404s for a publicId not on the patient', async () => {
+    const { patient } = await makePatientWithPhoto();
+    const del = await request(app)
+      .delete(`/api/admin/users/${patient.id}/photo`)
+      .set('Authorization', `Bearer ${adminToken}`)
+      .send({ publicId: 'vajeeva/prepared/none/none' });
+    expect(del.status).toBe(404);
+  });
+
+  it('DELETE /:id/photo is admin-only (403 for a regular user)', async () => {
+    const { patient, photo } = await makePatientWithPhoto();
+    const login = await request(app).post('/api/auth/login').send({ email: 'regular@test.com', password: 'password123' });
+    const del = await request(app)
+      .delete(`/api/admin/users/${patient.id}/photo`)
+      .set('Authorization', `Bearer ${login.body.accessToken}`)
+      .send({ publicId: photo.publicId });
+    expect(del.status).toBe(403);
   });
 });

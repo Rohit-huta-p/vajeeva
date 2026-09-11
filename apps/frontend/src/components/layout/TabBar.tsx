@@ -4,12 +4,13 @@ import { usePathname, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { fonts, type Colors } from '../../theme/tokens';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
-import { IconHome, IconBook, IconMore } from '../shared/icons';
+import { IconHome, IconBook, IconSpoon, IconMore } from '../shared/icons';
 import { scaledSheet, sc } from '../../theme/scale';
 
 const TABS = [
   { href: '/', label: 'Home', Icon: IconHome },
   { href: '/saved', label: 'Saved', Icon: IconBook },
+  { href: '/cooked', label: 'Cooked', Icon: IconSpoon },
   { href: '/more', label: 'More', Icon: IconMore },
 ] as const;
 
