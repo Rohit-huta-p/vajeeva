@@ -1,5 +1,6 @@
 import axios from 'axios';
 import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
 // On a physical device 'localhost' is the phone itself, so default to the
 // Metro host the device already connected to (its LAN IP), port 4000.
@@ -110,15 +111,49 @@ export const cookLogApi = {
 // Prepared-dish photo upload (patient). React Native multipart differs from the
 // web File API — the file part is { uri, name, type }. Returns the stored URL + id.
 export const uploadsApi = {
-  uploadPhoto: async (uri: string): Promise<{ url: string; publicId: string }> => {
-    const form = new FormData();
+  // Raw XHR (not axios) on purpose: React Native only fills in the
+  // `multipart/form-data; boundary=…` header when we DON'T set Content-Type
+  // ourselves. axios forcing a boundary-less `multipart/form-data` makes the
+  // server parse no file (400 "No file uploaded"). XHR also gives real upload
+  // progress. Auth token is attached manually since we bypass the axios interceptor.
+  uploadPhoto: async (
+    uri: string,
+    onProgress?: (pct: number) => void,
+  ): Promise<{ url: string; publicId: string }> => {
     const name = uri.split('/').pop() || 'dish.jpg';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    form.append('file', { uri, name, type: 'image/jpeg' } as any);
-    const { data } = await api.post<{ url: string; publicId: string }>('/api/uploads', form, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+    const form = new FormData();
+    if (Platform.OS === 'web') {
+      // Web FormData needs a real Blob — RN's { uri, name, type } shape isn't a file.
+      const blob = await fetch(uri).then(r => r.blob());
+      form.append('file', blob, name);
+    } else {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      form.append('file', { uri, name, type: 'image/jpeg' } as any);
+    }
+
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', `${BASE_URL}/api/uploads`);
+      const token = getAccessToken();
+      if (token) xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      // NB: intentionally no Content-Type header — RN adds it with the boundary.
+
+      if (onProgress) {
+        xhr.upload.onprogress = (e) => {
+          if (e.lengthComputable) onProgress(Math.round((e.loaded / e.total) * 100));
+        };
+      }
+      xhr.onload = () => {
+        if (xhr.status >= 200 && xhr.status < 300) {
+          try { resolve(JSON.parse(xhr.responseText)); }
+          catch { reject(new Error('Bad upload response')); }
+        } else {
+          reject(new Error(`Upload failed (${xhr.status})`));
+        }
+      };
+      xhr.onerror = () => reject(new Error('Upload network error'));
+      xhr.send(form);
     });
-    return data;
   },
 };
 

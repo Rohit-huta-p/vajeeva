@@ -149,6 +149,21 @@ export function useCookLog() {
     void flush();
   }, [patchEntry, flush]);
 
+  /** Attach already-uploaded photos (url+publicId) to a make — used by the upload
+   *  modal, where the upload happens live in the modal rather than on the flush. */
+  const attachUploadedPhotos = useCallback((slug: string, madeAt: string, uploaded: PhotoRef[]) => {
+    if (!uploaded.length) return;
+    patchEntry(slug, madeAt, e => ({
+      ...e,
+      synced: false,
+      photos: [
+        ...(e.photos ?? []),
+        ...uploaded.map((p, i) => ({ ...p, order: (e.photos?.length ?? 0) + i })),
+      ],
+    }));
+    void flush();
+  }, [patchEntry, flush]);
+
   /** Remove a photo — a not-yet-uploaded local one, or an uploaded one (destroys the asset). */
   const removePhoto = useCallback(async (
     slug: string, madeAt: string, target: { publicId?: string; localUri?: string },
@@ -175,7 +190,7 @@ export function useCookLog() {
     return times.length ? times[times.length - 1] : null;
   }, [entries]);
 
-  return { entries, loading, recordMake, rateMake, attachPhotos, removePhoto, madeCount, lastMade };
+  return { entries, loading, recordMake, rateMake, attachPhotos, attachUploadedPhotos, removePhoto, madeCount, lastMade };
 }
 
 /** The shape returned by useCookLog — passed to child capture components so a

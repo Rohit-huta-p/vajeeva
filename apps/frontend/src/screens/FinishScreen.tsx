@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import {
   View, Text, TouchableOpacity, StyleSheet, SafeAreaView,
-  ScrollView, Image, Modal, Pressable, Alert, ActivityIndicator,
+  ScrollView, Image, Modal, Pressable,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { colors, fonts } from '../theme/tokens';
@@ -12,7 +12,8 @@ import { useCookSession } from '../hooks/useCookSession';
 import { AuthContext } from '../auth/AuthContext';
 import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
-import { pickDishPhotos, MAX_PHOTOS, type PhotoSource } from '../media/dishPhotos';
+import { PhotoUploadModal } from '../components/shared/PhotoUploadModal';
+import { MadeCelebration } from '../components/shared/MadeCelebration';
 import { scaledSheet, sc } from '../theme/scale';
 
 const CTA_TEXT = '#0c1a10'; // prototype .fin-cta text color
@@ -34,23 +35,22 @@ export function FinishScreen() {
   const router = useRouter();
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { save, isSaved } = useSavedRecipes();
-  const { recordMake, rateMake, attachPhotos, removePhoto, madeCount, entries } = useCookLog();
+  const cook = useCookLog();
+  const { recordMake, rateMake, madeCount, entries } = cook;
   const { clearSession } = useCookSession();
   const { user } = useContext(AuthContext);
   const [recipe, setRecipe] = useState<RecipeListItem>(() => slugFallback(slug ?? ''));
   const [stepsCount, setStepsCount] = useState<number | null>(null);
   const [logged, setLogged] = useState(false);
   const [makeMadeAt, setMakeMadeAt] = useState<string | null>(null);
-  const [sourceOpen, setSourceOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
+  const [celebrate, setCelebrate] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
-  const [busy, setBusy] = useState(false);
   const saved = isSaved(slug ?? '');
 
   // This finish's make + its photos (once one exists).
   const entry = makeMadeAt ? entries.find(e => e.slug === slug && e.madeAt === makeMadeAt) : undefined;
   const photos = entry?.photos ?? [];
-  const pending = entry?.pendingPhotos ?? [];
-  const photoCount = photos.length + pending.length;
 
   // Create the make on first interaction (rating OR photo); returns its madeAt.
   const ensureMake = (sl: string, rating?: number): string => {
@@ -64,32 +64,14 @@ export function FinishScreen() {
     if (logged || !slug) return;
     ensureMake(slug, rating);
     setLogged(true);
+    setCelebrate(true);
   };
 
   // Photos require an account (they're shared with the care team) — gate in place.
   const onAddPress = () => {
     if (!slug) return;
     if (!user) { setAuthOpen(true); return; }
-    setSourceOpen(true);
-  };
-
-  const pickFrom = async (source: PhotoSource) => {
-    setSourceOpen(false);
-    if (!slug || !user) return;
-    const madeAt = ensureMake(slug);
-    const remaining = MAX_PHOTOS - photoCount;
-    if (remaining <= 0) return;
-    setBusy(true);
-    try {
-      const { uris, denied } = await pickDishPhotos(source, remaining);
-      if (denied) {
-        Alert.alert('Access needed', 'Allow photo or camera access in Settings to add a picture of your dish.');
-        return;
-      }
-      if (uris.length) attachPhotos(slug, madeAt, uris);
-    } finally {
-      setBusy(false);
-    }
+    setModalOpen(true);
   };
 
   useEffect(() => {
@@ -160,50 +142,22 @@ export function FinishScreen() {
 
         {/* Prepared-dish photos (docs/specs/2026-09-09-prepared-photos.md) */}
         <View style={s.photoCard}>
-          <Text style={s.photoHeader}>Add a photo of your dish</Text>
-          <Text style={s.photoSub}>Kept in your kitchen · shared with your care team</Text>
+          <Text style={s.photoHeader}>Proud of how it turned out?</Text>
+          <Text style={s.photoSub}>Snap a photo — it lands in your kitchen and reaches your care team.</Text>
 
-          {photoCount > 0 && (
+          {photos.length > 0 && (
             <View style={s.thumbRow}>
               {photos.map(p => (
-                <View key={p.publicId} style={s.thumbWrap}>
+                <TouchableOpacity key={p.publicId} style={s.thumbWrap} onPress={onAddPress} activeOpacity={0.85}>
                   <Image source={{ uri: p.url }} style={s.thumb} />
-                  <TouchableOpacity
-                    style={s.thumbX}
-                    onPress={() => removePhoto(slug!, makeMadeAt!, { publicId: p.publicId })}
-                    hitSlop={6}
-                  >
-                    <IconClose size={sc(8)} color={colors.cmText} />
-                  </TouchableOpacity>
-                </View>
-              ))}
-              {pending.map((p, i) => (
-                <View key={`${p.localUri}-${i}`} style={[s.thumbWrap, s.thumbPending]}>
-                  <Image source={{ uri: p.localUri }} style={s.thumb} />
-                  <View style={s.thumbBadge}>
-                    {p.status === 'failed'
-                      ? <Text style={s.thumbBadgeTxt}>!</Text>
-                      : <ActivityIndicator size="small" color={colors.cmText} />}
-                  </View>
-                  <TouchableOpacity
-                    style={s.thumbX}
-                    onPress={() => removePhoto(slug!, makeMadeAt!, { localUri: p.localUri })}
-                    hitSlop={6}
-                  >
-                    <IconClose size={sc(8)} color={colors.cmText} />
-                  </TouchableOpacity>
-                </View>
+                </TouchableOpacity>
               ))}
             </View>
           )}
 
-          {photoCount < MAX_PHOTOS && (
-            <TouchableOpacity style={s.photoCta} onPress={onAddPress} disabled={busy} activeOpacity={0.85}>
-              {busy
-                ? <ActivityIndicator color={colors.cmGreen} />
-                : <Text style={s.photoCtaText}>{photoCount > 0 ? 'Add another' : '＋ Add photo'}</Text>}
-            </TouchableOpacity>
-          )}
+          <TouchableOpacity style={s.photoCta} onPress={onAddPress} activeOpacity={0.85}>
+            <Text style={s.photoCtaText}>{photos.length > 0 ? '📸  Add another' : '📸  Show off your dish'}</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Save card */}
@@ -226,23 +180,16 @@ export function FinishScreen() {
 
       <Text style={s.shelf}>store airtight · keeps 5–7 days</Text>
 
-      {/* Photo-source chooser */}
-      <Modal visible={sourceOpen} transparent animationType="slide" onRequestClose={() => setSourceOpen(false)}>
-        <Pressable style={s.mOverlay} onPress={() => setSourceOpen(false)}>
-          <View style={s.mPanel}>
-            <Text style={s.mTitle}>Add a photo</Text>
-            <TouchableOpacity style={s.mBtn} onPress={() => pickFrom('camera')}>
-              <Text style={s.mBtnText}>Take photo</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={s.mBtn} onPress={() => pickFrom('library')}>
-              <Text style={s.mBtnText}>Choose from library</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={s.mCancel} onPress={() => setSourceOpen(false)}>
-              <Text style={s.mCancelText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </Pressable>
-      </Modal>
+      {slug && (
+        <PhotoUploadModal
+          visible={modalOpen}
+          onClose={() => setModalOpen(false)}
+          slug={slug}
+          cook={cook}
+          resolveMakeId={() => ensureMake(slug)}
+          variant="cm"
+        />
+      )}
 
       {/* Sign-in gate — photos need an account */}
       <Modal visible={authOpen} transparent animationType="slide" onRequestClose={() => setAuthOpen(false)}>
@@ -264,6 +211,8 @@ export function FinishScreen() {
           </View>
         </Pressable>
       </Modal>
+
+      <MadeCelebration visible={celebrate} onClose={() => setCelebrate(false)} />
     </SafeAreaView>
   );
 }

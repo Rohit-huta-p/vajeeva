@@ -13,11 +13,12 @@ import { CTA } from '../components/shared/CTA';
 import { Disclaimer } from '../components/shared/Disclaimer';
 import { usePreferences } from '../hooks/usePreferences';
 import { useSavedRecipes } from '../hooks/useSavedRecipes';
-import { useCookLog, madeAgo } from '../hooks/useCookLog';
+import { useCookLog } from '../hooks/useCookLog';
 import { SectionLabel } from '../components/shared/SectionLabel';
 import { RecipePhotos } from '../components/shared/RecipePhotos';
+import { MadeCelebration } from '../components/shared/MadeCelebration';
 import { IconButton } from '../components/shared/IconButton';
-import { IconBack, IconBookmark, IconBookmarkFilled, IconShare, IconPlay, IllHero, VegMark } from '../components/shared/icons';
+import { IconBack, IconBookmark, IconBookmarkFilled, IconShare, IconPlay, IconCheck, IllHero, VegMark } from '../components/shared/icons';
 import { AromaticPowderSheet } from '../components/shared/AromaticPowderSheet';
 import { MeasurementSheet } from '../components/shared/MeasurementSheet';
 import { ImageCarousel } from '../components/shared/ImageCarousel';
@@ -100,8 +101,9 @@ export function RecipeDetailScreen() {
   const { prefs, loading: prefsLoading } = usePreferences();
   const { isSaved, save, unsave } = useSavedRecipes();
   const cook = useCookLog();
-  const { madeCount, lastMade, recordMake } = cook;
+  const { madeCount, recordMake } = cook;
   const [justMade, setJustMade] = useState(false);
+  const [celebrate, setCelebrate] = useState(false);
 
   // Seed the g/cup toggle from the saved Units preference once it loads.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -139,11 +141,14 @@ export function RecipeDetailScreen() {
   };
 
   const madeN = listItem ? madeCount(listItem.slug) : 0;
-  const lastMadeAt = listItem ? lastMade(listItem.slug) : null;
+  // A saved photo already proves they made it — the tap-to-log button is then redundant.
+  const hasPhotos = cook.entries.some(e => e.slug === slug && (e.photos?.length ?? 0) > 0);
+  const madeDone = justMade || hasPhotos;
   const onMade = () => {
     if (!listItem) return;
     recordMake(listItem.slug);
     setJustMade(true);
+    setCelebrate(true);
     setTimeout(() => setJustMade(false), 1800);
   };
 
@@ -192,6 +197,17 @@ export function RecipeDetailScreen() {
               <Text style={s.title}>{recipe.nameEn}</Text>
               {recipe.nameTa ? <Text style={s.tamil}>{recipe.nameTa}</Text> : null}
             </View>
+            {madeDone ? (
+              <View style={s.madeTagDone}>
+                <IconCheck size={sc(8)} color={colors.green} />
+                <Text style={s.madeTagDoneText}>Made{madeN > 1 ? ` ${madeN}×` : ''}</Text>
+              </View>
+            ) : (
+              <TouchableOpacity style={s.madeTag} onPress={onMade} activeOpacity={0.85}>
+                <View style={s.madeTagCheck} />
+                <Text style={s.madeTagText}>I made this</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
           {/* Sources */}
@@ -248,20 +264,6 @@ export function RecipeDetailScreen() {
             <StepList steps={recipe.steps} />
           </View>
 
-          {/* Made-this anchor — engagement + cook history (works for the reader
-              who cooks straight from these steps, never entering Cook Mode) */}
-          <View style={s.madeCard}>
-            {madeN > 0 ? (
-              <Text style={s.madeHistory}>
-                You've made this {madeN === 1 ? 'once' : `${madeN} times`}
-                {lastMadeAt ? ` · last ${madeAgo(lastMadeAt)}` : ''}
-              </Text>
-            ) : null}
-            <TouchableOpacity style={s.madeBtn} onPress={onMade} activeOpacity={0.85}>
-              <Text style={s.madeBtnText}>{justMade ? '✓ Logged — nice work' : 'I made this'}</Text>
-            </TouchableOpacity>
-          </View>
-
           {/* Your photos — prepared-dish re-entry (docs/specs/2026-09-09-prepared-photos.md §6) */}
           <RecipePhotos slug={slug} cook={cook} />
 
@@ -272,6 +274,7 @@ export function RecipeDetailScreen() {
       </ScrollView>
       <AromaticPowderSheet visible={aromaOpen} onClose={() => setAromaOpen(false)} />
       <MeasurementSheet visible={measureOpen} onClose={() => setMeasureOpen(false)} />
+      <MadeCelebration visible={celebrate} onClose={() => setCelebrate(false)} />
     </SafeAreaView>
   );
 }
@@ -301,13 +304,19 @@ const makeStyles = (colors: Colors) => scaledSheet({
   badges: { flexDirection: 'row', flexWrap: 'wrap', gap: 5 },
   badge: { backgroundColor: colors.sand, borderRadius: 4, paddingHorizontal: 9, paddingVertical: 4 },
   badgeText: { fontSize: 10, fontFamily: fonts.sans, color: colors.ink2 },
-  madeCard: { gap: 8, marginTop: 2 },
-  madeHistory: { fontSize: 12, fontFamily: fonts.sans, color: colors.ink2, textAlign: 'center' },
-  madeBtn: {
-    borderWidth: 1.5, borderColor: colors.green, borderRadius: 13,
-    paddingVertical: 12, alignItems: 'center', backgroundColor: colors.greenSoft,
+  madeTag: {
+    flexDirection: 'row', alignItems: 'center', gap: 3.5, marginTop: 4, flexShrink: 0,
+    borderWidth: 1, borderColor: colors.green, borderRadius: 999,
+    paddingVertical: 2.5, paddingHorizontal: 6.5, backgroundColor: 'transparent',
   },
-  madeBtnText: { fontSize: 13, fontFamily: fonts.sans, fontWeight: '800', color: colors.green },
+  madeTagCheck: { width: 8, height: 8, borderRadius: 4, borderWidth: 1.2, borderColor: colors.green },
+  madeTagText: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '800', color: colors.green },
+  madeTagDone: {
+    flexDirection: 'row', alignItems: 'center', gap: 3, marginTop: 4, flexShrink: 0,
+    borderWidth: 1, borderColor: colors.green, borderRadius: 999,
+    paddingVertical: 2.5, paddingHorizontal: 6.5, backgroundColor: 'transparent',
+  },
+  madeTagDoneText: { fontSize: 9, fontFamily: fonts.sans, fontWeight: '800', color: colors.green },
   ingHeader: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 7 },
   sectionTitle: { fontSize: 16, fontFamily: fonts.serif, fontWeight: '700', color: colors.ink },
   methodTitle: { marginBottom: 2 },
