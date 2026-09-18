@@ -14,58 +14,6 @@ interface User {
   joinedAt:      string;
 }
 
-const PLACEHOLDER_USERS: User[] = [
-  {
-    id: '1', name: 'Priya Venkatesh', email: 'priya@example.com',
-    phone: '+91 98400 11234', age: 34, gender: 'Female',
-    authProviders: ['Google'],
-    healthTags: ['Diabetes', 'Lactose intolerant'],
-    joinedAt: '2026-07-12',
-  },
-  {
-    id: '2', name: 'Karthik Rajan', email: 'karthik@example.com',
-    phone: '+91 99401 55678', age: 41, gender: 'Male',
-    authProviders: ['Email', 'Phone'],
-    healthTags: [],
-    joinedAt: '2026-07-28',
-  },
-  {
-    id: '3', name: 'Meena Subramanian', email: 'meena@example.com',
-    phone: '+91 73053 22901', age: 29, gender: 'Female',
-    authProviders: ['Email'],
-    healthTags: ['Pregnant'],
-    joinedAt: '2026-08-05',
-  },
-  {
-    id: '4', name: 'Suresh Kumar', email: 'suresh@example.com',
-    phone: '+91 94440 87321', age: 58, gender: 'Male',
-    authProviders: ['Google'],
-    healthTags: ['Cardiac', 'Sedentary'],
-    joinedAt: '2026-08-10',
-  },
-  {
-    id: '5', name: 'Ananya Krishnan', email: 'ananya@example.com',
-    phone: '+91 81220 44567', age: 25, gender: 'Female',
-    authProviders: ['Phone'],
-    healthTags: ['Lactating'],
-    joinedAt: '2026-08-14',
-  },
-  {
-    id: '6', name: 'Ravi Shankar', email: 'ravi@example.com',
-    phone: '+91 99000 34512', age: 47, gender: 'Male',
-    authProviders: ['Email'],
-    healthTags: ['Obesity'],
-    joinedAt: '2026-08-18',
-  },
-  {
-    id: '7', name: 'Lakshmi Iyer', email: 'lakshmi@example.com',
-    phone: '+91 97890 66789', age: 63, gender: 'Female',
-    authProviders: ['Google', 'Email'],
-    healthTags: ['Elderly / Frail', 'Diabetes'],
-    joinedAt: '2026-08-21',
-  },
-];
-
 const PROVIDER_COLORS: Record<string, string> = {
   Google: 'bg-sky-bg text-sky',
   Email:  'bg-brand-bg text-brand',
@@ -85,7 +33,8 @@ function initials(name: string) {
 }
 
 export function UsersPage() {
-  const [users, setUsers] = useState<User[]>(PLACEHOLDER_USERS);
+  // Real accounts only — populated from the DB via /api/admin/users.
+  const [users, setUsers] = useState<User[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -101,7 +50,7 @@ export function UsersPage() {
         healthTags:    u.healthTags ?? (u as any).healthProfile ?? [],
         joinedAt:      u.joinedAt ? new Date(u.joinedAt).toISOString().slice(0, 10) : '—',
       }))))
-      .catch(() => { /* endpoint unreachable — placeholder stays */ });
+      .catch(() => { /* endpoint unreachable — show empty rather than fake data */ });
   }, []);
 
   const HEADERS = ['User', 'Phone', 'Age · Gender', 'Auth', 'Health Profile', 'Joined'];
@@ -111,7 +60,7 @@ export function UsersPage() {
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="font-serif text-[22px] font-light text-ink tracking-tight">Users</h1>
-          <p className="text-[12.5px] text-ink/45 mt-0.5">{users.length} registered accounts</p>
+          <p className="text-[12.5px] text-ink/45 mt-0.5">{users.length} registered {users.length === 1 ? 'account' : 'accounts'}</p>
         </div>
       </div>
 
@@ -127,7 +76,13 @@ export function UsersPage() {
             </tr>
           </thead>
           <tbody>
-            {users.map((user, i) => (
+            {users.length === 0 ? (
+              <tr>
+                <td colSpan={HEADERS.length} className="px-4 py-12 text-center text-[13px] text-ink/40">
+                  No users yet.
+                </td>
+              </tr>
+            ) : users.map((user, i) => (
               <tr
                 key={user.id}
                 onClick={() => navigate(`/users/${user.id}`)}

@@ -11,7 +11,7 @@
     "preview": {
       "distribution": "internal",
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://vajeepurna-backend.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://vajeeva-backend.onrender.com"
       }
     },
     "preview-simulator": {
@@ -20,7 +20,7 @@
         "simulator": true
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://vajeepurna-backend.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://vajeeva-backend.onrender.com"
       }
     },
     "production": {
@@ -29,7 +29,7 @@
         "buildType": "apk"
       },
       "env": {
-        "EXPO_PUBLIC_API_URL": "https://vajeepurna-backend.onrender.com"
+        "EXPO_PUBLIC_API_URL": "https://vajeeva-backend.onrender.com"
       }
     }
   },
