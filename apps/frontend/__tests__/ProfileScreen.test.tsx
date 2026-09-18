@@ -53,7 +53,7 @@ test('signed-in: shows identity, condition chips, and the section rows', () => {
   expect(getByText('Grams')).toBeTruthy();          // default units preference
   expect(getByText('Our sources & method')).toBeTruthy();
   expect(getByText('Medical disclaimer')).toBeTruthy();
-  expect(getByText('About Vajeeva')).toBeTruthy();
+  expect(getByText('About Vajeepurna')).toBeTruthy();
   expect(getByText('Send feedback')).toBeTruthy();
   expect(getByText('Privacy Policy')).toBeTruthy();
   expect(getByText('Terms of Service')).toBeTruthy();

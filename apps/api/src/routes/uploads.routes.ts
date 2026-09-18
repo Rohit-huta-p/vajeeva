@@ -61,7 +61,7 @@ function uploadHandler(getFolder: (req: Request) => string): RequestHandler {
 // Admin — recipe images. Unchanged surface: mounted at /api/admin/uploads.
 export const uploadsRouter = Router();
 uploadsRouter.use(requireAuth, requireAdmin);
-uploadsRouter.post('/', uploadHandler(() => 'vajeeva'));
+uploadsRouter.post('/', uploadHandler(() => 'vajeepurna'));
 
 // Patient — prepared-dish photos, one folder per user. Mounted at /api/uploads.
 // EXIF/GPS is stripped client-side by the Phase 2 re-encode (expo-image-manipulator)
@@ -71,5 +71,5 @@ patientUploadsRouter.use(requireAuth);
 patientUploadsRouter.post(
   '/',
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  uploadHandler((req) => `vajeeva/prepared/${(req as any).user.userId}`),
+  uploadHandler((req) => `vajeepurna/prepared/${(req as any).user.userId}`),
 );

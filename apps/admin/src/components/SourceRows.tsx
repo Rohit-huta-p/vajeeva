@@ -1,4 +1,4 @@
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type Source = RecipeInput['sources'][number];
 

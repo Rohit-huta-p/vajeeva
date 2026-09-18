@@ -6,8 +6,8 @@
  * on each recipe document in MongoDB.
  *
  * Cloudinary folder layout:
- *   vajeeva/recipes/semi-solid/m-01
- *   vajeeva/recipes/semi-solid/m-02
+ *   vajeepurna/recipes/semi-solid/m-01
+ *   vajeepurna/recipes/semi-solid/m-02
  *   …
  *
  * Run:
@@ -38,7 +38,7 @@ cloudinary.config(); // reads CLOUDINARY_URL from env
 
 const IMAGES_DIR  = path.resolve(__dirname, '../../../../../content/semi-solid-images');
 const CATEGORY    = 'semi-solid';
-const CLD_FOLDER  = `vajeeva/recipes/${CATEGORY}`;
+const CLD_FOLDER  = `vajeepurna/recipes/${CATEGORY}`;
 const ORDER       = 1; // all seed images are hero shots, order=1
 
 // Only process files whose basename matches m-XX (e.g. m-01, m-12)
@@ -128,7 +128,7 @@ async function run() {
   const errors:  { slug: string; error: string }[] = [];
 
   for (const { slug, file } of files) {
-    const publicId = `${CLD_FOLDER}/${slug}`;   // e.g. vajeeva/recipes/semi-solid/m-02
+    const publicId = `${CLD_FOLDER}/${slug}`;   // e.g. vajeepurna/recipes/semi-solid/m-02
 
     if (DRY_RUN) {
       console.log(`  ~ ${slug}  →  ${publicId}  (dry run)`);

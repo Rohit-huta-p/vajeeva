@@ -20,7 +20,7 @@ import { cloudinary } from '../lib/cloudinary';
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) throw new Error('MONGO_URI not set in .env');
 
-const PREFIX = 'vajeeva/prepared/';
+const PREFIX = 'vajeepurna/prepared/';
 const MIN_AGE_MS = 1000 * 60 * 60 * 24 * 2; // 2 days — spare in-flight/queued uploads
 const DRY = process.argv.includes('--dry');
 

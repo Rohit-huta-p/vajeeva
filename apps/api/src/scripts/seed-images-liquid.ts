@@ -6,8 +6,8 @@
  * on each recipe document in MongoDB.
  *
  * Cloudinary folder layout:
- *   vajeeva/recipes/liquid/l-01
- *   vajeeva/recipes/liquid/l-02
+ *   vajeepurna/recipes/liquid/l-01
+ *   vajeepurna/recipes/liquid/l-02
  *   …
  *
  * Run:
@@ -38,7 +38,7 @@ cloudinary.config(); // reads CLOUDINARY_URL from env
 
 const IMAGES_DIR  = path.resolve(__dirname, '../../../../../content/liquid-images');
 const CATEGORY    = 'liquid';
-const CLD_FOLDER  = `vajeeva/recipes/${CATEGORY}`;
+const CLD_FOLDER  = `vajeepurna/recipes/${CATEGORY}`;
 const ORDER       = 1;
 
 // Only process files whose basename matches l-XX

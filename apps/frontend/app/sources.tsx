@@ -29,7 +29,7 @@ export default function SourcesRoute() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>
       <InfoScreen title="Sources & method">
         <InfoParagraph>
-          Vajeeva's recipes are grounded in classical Sanskrit texts and read alongside ICMR-NIN 2024
+          Vajeepurna's recipes are grounded in classical Sanskrit texts and read alongside ICMR-NIN 2024
           nutrition. These are the sources our recipes cite — tap one to read more.
         </InfoParagraph>
         <View style={{ height: 14 }} />

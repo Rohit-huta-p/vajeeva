@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 export function AppPreviewCard({ recipe }: { recipe: RecipeInput }) {
   const [open, setOpen] = useState(false);

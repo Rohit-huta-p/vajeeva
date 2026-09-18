@@ -3,7 +3,7 @@ import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 import { Recipe } from '../models/Recipe';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
-import { RecipeInputSchema } from '@vajeeva/shared';
+import { RecipeInputSchema } from '@vajeepurna/shared';
 
 export const adminRouter = Router();
 adminRouter.use(requireAuth, requireAdmin);

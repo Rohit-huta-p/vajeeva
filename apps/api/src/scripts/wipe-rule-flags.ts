@@ -4,9 +4,9 @@
  * / legacy) flags are kept. Idempotent — safe to re-run.
  *
  *   Dry run (default, writes nothing):
- *     yarn workspace @vajeeva/api exec ts-node src/scripts/wipe-rule-flags.ts
+ *     yarn workspace @vajeepurna/api exec ts-node src/scripts/wipe-rule-flags.ts
  *   Apply:
- *     yarn workspace @vajeeva/api exec ts-node src/scripts/wipe-rule-flags.ts --apply
+ *     yarn workspace @vajeepurna/api exec ts-node src/scripts/wipe-rule-flags.ts --apply
  *   Clear ALL health flags (not just rule-origin), add:  --all
  *   Target a different DB than .env:  prefix with  MONGO_URI='mongodb+srv://…'
  *

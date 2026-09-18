@@ -8,7 +8,7 @@ export default function PrivacyRoute() {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>
       <InfoScreen title="Privacy Policy">
-        <InfoParagraph>A plain-language summary of how Vajeeva handles your data.</InfoParagraph>
+        <InfoParagraph>A plain-language summary of how Vajeepurna handles your data.</InfoParagraph>
         <InfoSection label="What we store">
           <InfoParagraph>
             When you create an account we store your email, your optional name, and any health-profile

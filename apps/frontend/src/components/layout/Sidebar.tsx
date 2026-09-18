@@ -21,7 +21,7 @@ export function Sidebar() {
         <View style={s.logoMark}>
           <Text style={s.logoV}>V</Text>
         </View>
-        <Text style={s.brand}>Vajeeva</Text>
+        <Text style={s.brand}>Vajeepurna</Text>
       </View>
       {NAV.map(item => {
         const active = pathname === item.href;

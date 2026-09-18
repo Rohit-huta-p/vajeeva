@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { RecipeInputSchema, type RecipeInput } from '@vajeeva/shared';
+import { RecipeInputSchema, type RecipeInput } from '@vajeepurna/shared';
 import { api, type RecipeDoc } from '../api/client';
 import { IngredientRows } from '../components/IngredientRows';
 import { StepRows, EMPTY_STEP } from '../components/StepRows';
@@ -281,7 +281,7 @@ export function RecipeEditorPage() {
                 <label className="block text-[10.5px] font-bold uppercase tracking-[0.07em] text-ink/45">
                   Slug
                   <div className="flex items-center gap-1.5 mt-1.5">
-                    <span className="text-[12px] text-ink/35 shrink-0">vajeeva.in/r/</span>
+                    <span className="text-[12px] text-ink/35 shrink-0">vajeepurna.in/r/</span>
                     <input value={form.slug}
                       onChange={e => patch({ slug: e.target.value })}
                       placeholder="pongal"

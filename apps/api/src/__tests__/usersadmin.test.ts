@@ -126,7 +126,7 @@ describe('per-patient prepared-dish photos', () => {
       category: 'solid', status: 'published',
       healthFlags: [{ condition: 'diabetes', severity: 'caution' }],
     });
-    const photo = { url: 'https://cdn/x.jpg', publicId: `vajeeva/prepared/${patient.id}/x` };
+    const photo = { url: 'https://cdn/x.jpg', publicId: `vajeepurna/prepared/${patient.id}/x` };
     await CookLog.create({ userId: patient.id, recipeId: recipe.id, rating: 5, photos: [photo] });
     return { patient, photo };
   }
@@ -163,7 +163,7 @@ describe('per-patient prepared-dish photos', () => {
     const del = await request(app)
       .delete(`/api/admin/users/${patient.id}/photo`)
       .set('Authorization', `Bearer ${adminToken}`)
-      .send({ publicId: 'vajeeva/prepared/none/none' });
+      .send({ publicId: 'vajeepurna/prepared/none/none' });
     expect(del.status).toBe(404);
   });
 

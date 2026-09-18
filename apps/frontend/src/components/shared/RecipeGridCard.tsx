@@ -26,7 +26,10 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
   const { colors } = useTheme();
   const s = useThemedStyles(makeStyles);
   const [tileW, setTileW] = useState(0);
-  const showFit = FEATURES.fitBadge && recipe.fit != null;
+  // Caution specifically is suppressed on cards (still fine to show Safe) —
+  // a warning on every tile in a scrolling grid reads as alarming/cluttered;
+  // FitBadge itself is untouched, so nothing else that might show it changes.
+  const showFit = FEATURES.fitBadge && recipe.fit != null && recipe.fit !== 'caution';
   const time = recipe.cookTimeMin > 0 ? `${recipe.cookTimeMin} min` : 'No-cook';
 
   return (
@@ -50,7 +53,7 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
         ) : null}
 
         {/* Very light dark tint over the photo so the overlaid marks/pills
-            (esp. the amber Caution pill) read against bright images. */}
+            read against bright images. */}
         {recipe.imageUrl ? <View style={s.tint} pointerEvents="none" /> : null}
 
         {/* Veg / non-veg mark — top-left */}

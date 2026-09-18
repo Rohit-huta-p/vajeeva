@@ -1,15 +1,10 @@
 {
   "expo": {
-    "name": "Vajeeva",
-    "slug": "vajeeva",
+    "name": "Vajeepurna",
+    "slug": "vajeepurna",
     "version": "1.0.0",
     "orientation": "portrait",
     "owner": "vchutagonnas-team",
-    "extra": {
-      "eas": {
-        "projectId": "4465885f-e8b6-40f0-a195-3379edca76c4"
-      }
-    },
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
@@ -18,16 +13,19 @@
     },
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.vajeeva.app"
+      "bundleIdentifier": "com.vajeepurna.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#F2EDE1"
       },
-      "package": "com.vajeeva.app"
+      "package": "com.vajeepurna.app",
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
-    "scheme": "vajeeva",
+    "scheme": "vajeepurna",
     "web": {
       "bundler": "metro"
     },
@@ -36,8 +34,8 @@
       [
         "expo-image-picker",
         {
-          "photosPermission": "Vajeeva uses your photos so you can add pictures of dishes you've cooked.",
-          "cameraPermission": "Vajeeva uses your camera so you can take pictures of dishes you've cooked."
+          "photosPermission": "Vajeepurna uses your photos so you can add pictures of dishes you've cooked.",
+          "cameraPermission": "Vajeepurna uses your camera so you can take pictures of dishes you've cooked."
         }
       ]
     ]

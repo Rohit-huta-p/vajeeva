@@ -1,5 +1,5 @@
 {
-  "name": "@vajeeva/api",
+  "name": "@vajeepurna/api",
   "version": "0.0.1",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@types/cors": "^2.8.19",
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^2.10.1",
     "cookie-parser": "^1.4.6",

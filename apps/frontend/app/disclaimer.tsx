@@ -9,7 +9,7 @@ export default function DisclaimerRoute() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>
       <InfoScreen title="Medical disclaimer">
         <InfoParagraph>
-          Vajeeva offers supportive dietary guidance rooted in traditional texts and modern nutrition.
+          Vajeepurna offers supportive dietary guidance rooted in traditional texts and modern nutrition.
           It is not a substitute for professional medical advice, diagnosis, or treatment.
         </InfoParagraph>
         <InfoParagraph>

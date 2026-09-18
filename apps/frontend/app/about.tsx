@@ -9,9 +9,9 @@ export default function AboutRoute() {
   const version = Constants.expoConfig?.version ?? '1.0.0';
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>
-      <InfoScreen title="About Vajeeva">
+      <InfoScreen title="About Vajeepurna">
         <InfoParagraph>
-          Vajeeva is an Ayurvedic recipe companion — traditional Indian recipes grounded in classical
+          Vajeepurna is an Ayurvedic recipe companion — traditional Indian recipes grounded in classical
           Sanskrit texts and modern nutrition, with gentle guidance tuned to your health profile.
         </InfoParagraph>
         <InfoSection label="Grounded in">

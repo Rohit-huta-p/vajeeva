@@ -9,7 +9,7 @@ export { cloudinary };
 /** Stream a Buffer into Cloudinary under `folder` and resolve with the result. */
 export function uploadToCloudinary(
   buffer: Buffer,
-  folder = 'vajeeva',
+  folder = 'vajeepurna',
 ): Promise<{ secure_url: string; public_id: string }> {
   return new Promise((resolve, reject) => {
     const stream = cloudinary.uploader.upload_stream(

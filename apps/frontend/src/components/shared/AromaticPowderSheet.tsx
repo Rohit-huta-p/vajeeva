@@ -8,7 +8,7 @@ import { scaledSheet, sc } from '../../theme/scale';
 
 // Prototype bottom sheet (.bsoverlay/.bspanel) for the shared sub-recipe.
 // Content is fetched from GET /api/subrecipes/:slug; the S-24 sourced copy
-// (content/vajeeva-recipes.md) stays as the offline/error fallback so the
+// (content/vajeepurna-recipes.md) stays as the offline/error fallback so the
 // sheet never renders empty. usedIn always comes from the API — omitted when
 // unknown, never hardcoded.
 const SLUG = 'aromatic-powder-blend';

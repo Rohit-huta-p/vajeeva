@@ -6,8 +6,8 @@
  * document in MongoDB.
  *
  * Cloudinary folder layout:
- *   vajeeva/recipes/solid/s-01
- *   vajeeva/recipes/solid/s-02
+ *   vajeepurna/recipes/solid/s-01
+ *   vajeepurna/recipes/solid/s-02
  *   …
  *
  * Run:
@@ -34,7 +34,7 @@ cloudinary.config(); // reads CLOUDINARY_URL from env
 
 const IMAGES_DIR  = path.resolve(__dirname, '../../../../../content/solid-images');
 const CATEGORY    = 'solid';
-const CLD_FOLDER  = `vajeeva/recipes/${CATEGORY}`;
+const CLD_FOLDER  = `vajeepurna/recipes/${CATEGORY}`;
 const ORDER       = 1; // all seed images are hero shot, order=1
 
 const SKIP_SLUGS  = new Set((process.env.SKIP_SLUGS ?? 's-01').split(',').map(s => s.trim()).filter(Boolean));
@@ -109,7 +109,7 @@ async function run() {
   const errors:  { slug: string; error: string }[] = [];
 
   for (const { slug, file } of files) {
-    const publicId = `${CLD_FOLDER}/${slug}`;   // e.g. vajeeva/recipes/solid/s-02
+    const publicId = `${CLD_FOLDER}/${slug}`;   // e.g. vajeepurna/recipes/solid/s-02
 
     if (DRY_RUN) {
       console.log(`  ~ ${slug}  →  ${publicId}  (dry run)`);

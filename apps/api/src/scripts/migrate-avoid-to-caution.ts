@@ -6,9 +6,9 @@
  * validate against the new schema. Idempotent.
  *
  *   Dry run (default, writes nothing):
- *     yarn workspace @vajeeva/api exec ts-node src/scripts/migrate-avoid-to-caution.ts
+ *     yarn workspace @vajeepurna/api exec ts-node src/scripts/migrate-avoid-to-caution.ts
  *   Apply:
- *     yarn workspace @vajeeva/api exec ts-node src/scripts/migrate-avoid-to-caution.ts --apply
+ *     yarn workspace @vajeepurna/api exec ts-node src/scripts/migrate-avoid-to-caution.ts --apply
  *   Drop the 'avoid' flags entirely instead of converting them, add:  --drop
  */
 

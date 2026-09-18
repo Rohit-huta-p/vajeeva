@@ -127,7 +127,7 @@ it('hero gallery: renders the "Add hero image" file input', async () => {
 
 it('hero gallery: uploading a file calls /api/admin/uploads and shows thumbnail', async () => {
   const uploadMock = vi.fn(() => Promise.resolve(
-    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
+    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeepurna/hero' }), { status: 200 })
   ));
   vi.stubGlobal('fetch', uploadMock);
   setToken('admin-tok');
@@ -163,7 +163,7 @@ it('hero gallery: shows inline error when upload returns 400', async () => {
 
 it('hero gallery: remove button deletes the image from the list', async () => {
   vi.stubGlobal('fetch', vi.fn(() => Promise.resolve(
-    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeeva/hero' }), { status: 200 })
+    new Response(JSON.stringify({ url: 'https://res.cloudinary.com/demo/image/upload/hero.jpg', publicId: 'vajeepurna/hero' }), { status: 200 })
   )));
   setToken('admin-tok');
   renderCreate();

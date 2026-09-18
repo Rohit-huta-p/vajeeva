@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { RegisterInputSchema, LoginInputSchema } from '@vajeeva/shared';
+import { RegisterInputSchema, LoginInputSchema } from '@vajeepurna/shared';
 import { User } from '../models/User';
 
 export const authRouter = Router();

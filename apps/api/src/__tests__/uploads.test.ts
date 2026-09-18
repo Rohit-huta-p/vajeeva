@@ -19,8 +19,8 @@ jest.mock('cloudinary', () => ({
         const stream = {
           end: (buf: Buffer) => {
             cb(null, {
-              secure_url: 'https://res.cloudinary.com/demo/image/upload/vajeeva/mock123.jpg',
-              public_id: 'vajeeva/mock123',
+              secure_url: 'https://res.cloudinary.com/demo/image/upload/vajeepurna/mock123.jpg',
+              public_id: 'vajeepurna/mock123',
             });
             return stream;
           },

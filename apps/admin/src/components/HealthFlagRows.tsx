@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type HealthFlag = RecipeInput['healthFlags'][number];
 type Severity = HealthFlag['severity']; // 'safe' | 'caution' | 'indication'

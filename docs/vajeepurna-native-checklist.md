@@ -1,4 +1,4 @@
-# Vajeeva native device checklist — Expo Go pass (iOS + Android)
+# Vajeepurna native device checklist — Expo Go pass (iOS + Android)
 
 The web build @390px is pixel-verified against the prototype refs
 (`prototypes/screens/*.html`). What's left is behavior only a real device

@@ -82,7 +82,7 @@ export function DashboardPage() {
         <h1 className="font-serif text-[22px] font-light text-ink leading-tight tracking-tight">
           Good morning, <em>Anand.</em>
         </h1>
-        <p className="text-[13px] text-ink/55 mt-1">How patients are engaging with Vajeeva.</p>
+        <p className="text-[13px] text-ink/55 mt-1">How patients are engaging with Vajeepurna.</p>
       </div>
 
       {/* ── Engagement KPIs ─────────────────── */}

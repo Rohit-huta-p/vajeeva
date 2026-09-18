@@ -1,5 +1,5 @@
 {
-  "name": "@vajeeva/admin",
+  "name": "@vajeepurna/admin",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router-dom": "^6.23.0"

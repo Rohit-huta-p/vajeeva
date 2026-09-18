@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
-      '@vajeeva/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
+      '@vajeepurna/shared': path.resolve(__dirname, '../../packages/shared/src/index.ts'),
     },
   },
   server: {

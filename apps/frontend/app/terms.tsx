@@ -9,7 +9,7 @@ export default function TermsRoute() {
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.bone }} edges={['top']}>
       <InfoScreen title="Terms of Service">
         <InfoParagraph>
-          Vajeeva provides traditional recipes and supportive dietary guidance for personal,
+          Vajeepurna provides traditional recipes and supportive dietary guidance for personal,
           non-commercial use.
         </InfoParagraph>
         <InfoSection label="Not medical advice">

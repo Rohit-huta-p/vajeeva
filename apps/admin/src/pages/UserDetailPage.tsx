@@ -36,7 +36,19 @@ const dateOnly = (iso: string) => new Date(iso).toISOString().slice(0, 10);
 const stars = (r: number) => '★'.repeat(Math.round(r / 1.7) || 1);
 const timeOfDay = (iso: string) => new Date(iso).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
 const dayKey = (iso: string) => { const d = new Date(iso); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; };
-const dayLabel = (iso: string) => new Date(iso).toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+const dayLabel = (iso: string) => {
+  const d = new Date(iso);
+  return `${d.toLocaleDateString([], { weekday: 'short' })} · ${d.toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' })}`;
+};
+
+function Clock() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-ink/35 shrink-0" aria-hidden="true">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5V12l3 1.8" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 /** Sized Cloudinary thumb (fill). Non-Cloudinary URLs pass through. */
 function thumb(url: string, w: number, h: number): string {
@@ -182,34 +194,36 @@ export function UserDetailPage() {
           <div className="flex flex-col gap-4">
             {dayGroups.map(group => (
               <div key={group.key}>
-                <p className="text-[10.5px] font-bold uppercase tracking-[0.07em] text-ink/40 mb-2">{group.label}</p>
+                <p className="text-[10px] font-bold uppercase tracking-[0.09em] text-ink/40 pb-1.5 mb-1 border-b border-ink/[0.08]">{group.label}</p>
                 <div className="flex flex-col">
                   {group.makes.map((mk, i) => (
-                    <div key={`${mk.slug}-${mk.madeAt}-${i}`} className="flex items-start gap-3 py-2.5 border-b border-ink/[0.08] last:border-0">
+                    <div key={`${mk.slug}-${mk.madeAt}-${i}`} className="flex items-center gap-3 py-2.5 border-b border-ink/[0.06] last:border-0">
                       <div className="flex gap-1.5 shrink-0">
                         {mk.photos.map(p => (
                           <div key={p.publicId} className="group relative">
                             <a href={p.url} target="_blank" rel="noreferrer">
-                              <img src={thumb(p.url, 160, 160)} alt={mk.nameEn} className="w-14 h-14 rounded-[8px] object-cover bg-ink/5" />
+                              <img src={thumb(p.url, 132, 132)} alt={mk.nameEn} className="w-11 h-11 rounded-[8px] object-cover bg-ink/5" />
                             </a>
                             <button
                               onClick={() => removePhoto(p.publicId)}
-                              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-ink/70 text-white text-[12px] leading-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
+                              className="absolute -top-1.5 -right-1.5 w-[18px] h-[18px] rounded-full bg-ink/70 text-white text-[11px] leading-none flex items-center justify-center opacity-0 group-hover:opacity-100 transition"
                               aria-label="Remove photo"
                             >×</button>
                           </div>
                         ))}
                       </div>
-                      <div className="min-w-0 flex-1 pt-0.5">
+                      <div className="min-w-0 flex-1">
                         <div className="flex items-center gap-2 flex-wrap">
-                          <span className="text-[13.5px] font-medium text-ink">{mk.nameEn}</span>
+                          <span className="text-[13.5px] font-medium text-ink leading-tight">{mk.nameEn}</span>
                           {mk.flagged && (
                             <span className="text-[9px] font-[800] uppercase tracking-[0.06em] px-1.5 py-0.5 rounded-full bg-amber-bg text-amber">flagged</span>
                           )}
                         </div>
-                        <p className="text-[11.5px] text-ink/50 mt-0.5">
-                          {timeOfDay(mk.madeAt)}{mk.rating ? ` · ${stars(mk.rating)}` : ''}
-                        </p>
+                        <div className="flex items-center gap-1.5 mt-1">
+                          <Clock />
+                          <span className="text-[11.5px] text-ink/50">{timeOfDay(mk.madeAt)}</span>
+                          {mk.rating ? <span className="text-[11px] text-amber tracking-[1px]">{stars(mk.rating)}</span> : null}
+                        </div>
                       </div>
                     </div>
                   ))}

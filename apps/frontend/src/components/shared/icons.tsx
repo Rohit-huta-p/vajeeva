@@ -2,7 +2,7 @@ import React from 'react';
 import Svg, { Path, Circle, Ellipse, Rect } from 'react-native-svg';
 import { colors } from '../../theme/tokens';
 
-// Vector icons + food illustrations mirrored from prototypes/vajeeva-prototype.html
+// Vector icons + food illustrations mirrored from prototypes/vajeepurna-prototype.html
 // (.ln = 1.7 stroke line icons; ill-* = flat illustrations in the token palette).
 
 interface IconProps { size?: number; color?: string }

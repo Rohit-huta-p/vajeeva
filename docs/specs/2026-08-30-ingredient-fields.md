@@ -49,7 +49,7 @@ If the docx says a quantity is "to taste", the quantity fields (`quantityG` / `q
 ## Schema locations
 
 ### Shared Zod schema
-`vajeeva/packages/shared/src/schemas/recipe.schema.ts`
+`vajeepurna/packages/shared/src/schemas/recipe.schema.ts`
 
 ```ts
 export const IngredientSchema = z.object({
@@ -62,7 +62,7 @@ export const IngredientSchema = z.object({
 ```
 
 ### API Mongoose model
-`vajeeva/apps/api/src/models/Recipe.ts`
+`vajeepurna/apps/api/src/models/Recipe.ts`
 
 ```ts
 const IngredientSchema = new mongoose.Schema({
@@ -78,7 +78,7 @@ const IngredientSchema = new mongoose.Schema({
 
 ## Admin editor
 
-`vajeeva/apps/admin/src/components/IngredientRows.tsx`
+`vajeepurna/apps/admin/src/components/IngredientRows.tsx`
 
 Six-column grid layout per ingredient row:
 
@@ -92,9 +92,9 @@ The **Notes** input is italic, placeholder `"to taste, soaked…"`, initialised 
 
 ## Frontend (RecipeDetailScreen / IngredientTable)
 
-`vajeeva/apps/frontend/src/screens/RecipeDetailScreen.tsx` maps API docs to `DetailView`. The current `toDetailView()` mapping **does not yet pass `note` or `quantityMl`** to the UI — only `amountG` (parsed with `parseInt`, which is a known lossy step) and `amountCup` are forwarded. This is a tracked gap, not a schema gap.
+`vajeepurna/apps/frontend/src/screens/RecipeDetailScreen.tsx` maps API docs to `DetailView`. The current `toDetailView()` mapping **does not yet pass `note` or `quantityMl`** to the UI — only `amountG` (parsed with `parseInt`, which is a known lossy step) and `amountCup` are forwarded. This is a tracked gap, not a schema gap.
 
-`vajeeva/apps/frontend/src/components/shared/IngredientTable.tsx` renders `${ing.amountG} g` in gram mode. Once `toDetailView` is updated to pass the raw string and `note`, `IngredientTable` will need a corresponding update.
+`vajeepurna/apps/frontend/src/components/shared/IngredientTable.tsx` renders `${ing.amountG} g` in gram mode. Once `toDetailView` is updated to pass the raw string and `note`, `IngredientTable` will need a corresponding update.
 
 ---
 

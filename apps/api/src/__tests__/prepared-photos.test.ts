@@ -19,8 +19,8 @@ jest.mock('cloudinary', () => ({
         const stream = {
           end: (_buf: Buffer) => {
             cb(null, {
-              secure_url: 'https://res.cloudinary.com/demo/image/upload/vajeeva/prepared/u/dish.jpg',
-              public_id: 'vajeeva/prepared/u/dish',
+              secure_url: 'https://res.cloudinary.com/demo/image/upload/vajeepurna/prepared/u/dish.jpg',
+              public_id: 'vajeepurna/prepared/u/dish',
             });
             return stream;
           },
@@ -46,7 +46,7 @@ const RECIPE = {
 };
 
 const MADE_AT = '2026-09-09T10:00:00.000Z';
-const photo = (id: string) => ({ url: `https://cdn/${id}.jpg`, publicId: `vajeeva/prepared/u/${id}` });
+const photo = (id: string) => ({ url: `https://cdn/${id}.jpg`, publicId: `vajeepurna/prepared/u/${id}` });
 
 let token: string;
 
@@ -98,7 +98,7 @@ describe('photos on a make', () => {
     expect(res.body).toHaveLength(1);
     expect(res.body[0]).toMatchObject({ slug: 'photo-recipe', rating: 5 });
     expect(res.body[0].photos).toHaveLength(2);
-    expect(res.body[0].photos[0]).toMatchObject({ url: 'https://cdn/a.jpg', publicId: 'vajeeva/prepared/u/a' });
+    expect(res.body[0].photos[0]).toMatchObject({ url: 'https://cdn/a.jpg', publicId: 'vajeepurna/prepared/u/a' });
   });
 
   it('attaching photos to an existing make updates it, not duplicates it', async () => {
@@ -141,25 +141,25 @@ describe('DELETE /api/sync/cooked/photo', () => {
 
   it('removes the photo from the make and destroys the Cloudinary asset', async () => {
     const del = await request(app).delete('/api/sync/cooked/photo').set('Authorization', `Bearer ${token}`)
-      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeeva/prepared/u/a' });
+      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeepurna/prepared/u/a' });
     expect(del.status).toBe(200);
-    expect(mockDestroy).toHaveBeenCalledWith('vajeeva/prepared/u/a');
+    expect(mockDestroy).toHaveBeenCalledWith('vajeepurna/prepared/u/a');
 
     const res = await request(app).get('/api/sync/cooked').set('Authorization', `Bearer ${token}`);
     expect(res.body[0].photos).toHaveLength(1);
-    expect(res.body[0].photos[0].publicId).toBe('vajeeva/prepared/u/b');
+    expect(res.body[0].photos[0].publicId).toBe('vajeepurna/prepared/u/b');
   });
 
   it('404s (and destroys nothing) for a publicId not on the make', async () => {
     const del = await request(app).delete('/api/sync/cooked/photo').set('Authorization', `Bearer ${token}`)
-      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeeva/prepared/u/nope' });
+      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeepurna/prepared/u/nope' });
     expect(del.status).toBe(404);
     expect(mockDestroy).not.toHaveBeenCalled();
   });
 
   it('returns 401 without a token', async () => {
     const del = await request(app).delete('/api/sync/cooked/photo')
-      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeeva/prepared/u/a' });
+      .send({ recipe: 'photo-recipe', madeAt: MADE_AT, publicId: 'vajeepurna/prepared/u/a' });
     expect(del.status).toBe(401);
   });
 });
@@ -171,7 +171,7 @@ describe('account deletion purges prepared photos', () => {
 
     const del = await request(app).delete('/api/users/me').set('Authorization', `Bearer ${token}`);
     expect(del.status).toBe(204);
-    expect(mockDestroy).toHaveBeenCalledWith('vajeeva/prepared/u/a');
-    expect(mockDestroy).toHaveBeenCalledWith('vajeeva/prepared/u/b');
+    expect(mockDestroy).toHaveBeenCalledWith('vajeepurna/prepared/u/a');
+    expect(mockDestroy).toHaveBeenCalledWith('vajeepurna/prepared/u/b');
   });
 });

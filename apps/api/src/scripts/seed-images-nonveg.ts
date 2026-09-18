@@ -6,8 +6,8 @@
  * on each recipe document in MongoDB.
  *
  * Cloudinary folder layout:
- *   vajeeva/recipes/non-veg/n-01
- *   vajeeva/recipes/non-veg/n-02
+ *   vajeepurna/recipes/non-veg/n-01
+ *   vajeepurna/recipes/non-veg/n-02
  *   …
  *
  * Run:
@@ -34,7 +34,7 @@ cloudinary.config();
 
 const IMAGES_DIR  = path.resolve(__dirname, '../../../../../content/non-veg-images');
 const CATEGORY    = 'non-veg';
-const CLD_FOLDER  = `vajeeva/recipes/${CATEGORY}`;
+const CLD_FOLDER  = `vajeepurna/recipes/${CATEGORY}`;
 const ORDER       = 1;
 
 const SLUG_RE     = /^n-\d+$/;

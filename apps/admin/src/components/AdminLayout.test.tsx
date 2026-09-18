@@ -24,9 +24,9 @@ it('renders all six sidebar nav items', () => {
   }
 });
 
-it('renders the Vajeeva logo and admin sub-label', () => {
+it('renders the Vajeepurna logo and admin sub-label', () => {
   renderAt('/');
-  expect(screen.getByText('Vajeeva')).toBeInTheDocument();
+  expect(screen.getByText('Vajeepurna')).toBeInTheDocument();
 });
 
 it('shows the page title for the current route in the topbar', () => {

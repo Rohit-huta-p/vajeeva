@@ -109,7 +109,7 @@ export function SourceGlossaryScreen() {
           ) : null}
           <GlossBlock label="Cited in">
             <Text style={[s.blockText, s.cited]}>
-              {source.recipeCount} {source.recipeCount === 1 ? 'recipe' : 'recipes'} in the Vajeeva collection
+              {source.recipeCount} {source.recipeCount === 1 ? 'recipe' : 'recipes'} in the Vajeepurna collection
             </Text>
           </GlossBlock>
           <View style={{ height: sc(16) }} />

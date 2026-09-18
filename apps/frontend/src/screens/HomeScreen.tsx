@@ -155,7 +155,7 @@ export function HomeScreen() {
           <View style={s.logoMark}><MkSprout size={sc(18)} /></View>
           <View style={s.grow}>
             <Text style={s.greeting}>Good morning</Text>
-            <Text style={s.greetingSub}>Vajeeva</Text>
+            <Text style={s.greetingSub}>Vajeepurna</Text>
           </View>
           <TouchableOpacity
             style={s.avatar}

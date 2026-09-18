@@ -1,4 +1,4 @@
-import type { Recipe } from '@vajeeva/shared';
+import type { Recipe } from '@vajeepurna/shared';
 
 export type RecipeDoc = Omit<Recipe, 'createdAt' | 'updatedAt'> & {
   _id: string;

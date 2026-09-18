@@ -1,5 +1,5 @@
 {
-  "name": "@vajeeva/frontend",
+  "name": "@vajeepurna/frontend",
   "version": "0.0.1",
   "main": "expo-router/entry",
   "scripts": {
@@ -22,7 +22,7 @@
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "axios": "^1.7.2",
     "expo": "~54.0.0",
     "expo-constants": "~18.0.14",

@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 // ImageGalleryEditor intentionally not rendered — step images not used in the
 // frontend yet; keep the import commented so the data field is preserved in DB.
 // import { ImageGalleryEditor, type GalleryImage } from './ImageGalleryEditor';

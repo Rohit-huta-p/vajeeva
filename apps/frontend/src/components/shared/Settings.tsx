@@ -5,7 +5,7 @@ import { scaledSheet, sc } from '../../theme/scale';
 import { useTheme, useThemedStyles } from '../../theme/ThemeContext';
 import { IconChev } from './icons';
 
-// Grouped-settings primitives (ref: prototypes/explorations/vajeeva-profile-production.html).
+// Grouped-settings primitives (ref: prototypes/explorations/vajeepurna-profile-production.html).
 // One card = one SettingsGroup; each SettingsRow is icon · label · right, where
 // right is a value+chevron, a custom node (e.g. a toggle), or nothing. Rows
 // self-divide — the group injects `first` so the top row skips its divider.

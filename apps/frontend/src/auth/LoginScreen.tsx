@@ -95,7 +95,7 @@ export default function LoginScreen(_props: Props) {
             )}
           </View>
           <FootLink
-            text="New to Vajeeva?"
+            text="New to Vajeepurna?"
             linkText="Create account"
             onPress={() => router.push('/auth/signup' as any)}
           />

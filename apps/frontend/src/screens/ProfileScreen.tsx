@@ -24,11 +24,11 @@ import { genderLabel } from '../config/gender';
 
 // Placeholders until the real endpoints exist — a support inbox and the store
 // listing. Kept as consts so there's one spot to fill in at release.
-const FEEDBACK_MAILTO = 'mailto:hello@vajeeva.app?subject=Vajeeva%20feedback';
-const RATE_URL = 'https://apps.apple.com/app/vajeeva';
+const FEEDBACK_MAILTO = 'mailto:hello@vajeepurna.app?subject=Vajeepurna%20feedback';
+const RATE_URL = 'https://apps.apple.com/app/vajeepurna';
 
 // The "More" tab — a production settings hub (ref: prototypes/explorations/
-// vajeeva-profile-production.html). Identity + health up top, then grouped
+// vajeepurna-profile-production.html). Identity + health up top, then grouped
 // About / Support / Account sections. Guests see a conversion banner instead of
 // identity, and no account controls. Top inset is owned by the tab layout, so
 // the root is a plain View (matches HomeScreen). This surface is the theme
@@ -196,7 +196,7 @@ export default function ProfileScreen() {
           />
           <SettingsRow
             icon={<IconInfo size={sc(15)} color={colors.ink} />}
-            label="About Vajeeva"
+            label="About Vajeepurna"
             onPress={() => router.push('/about' as any)}
           />
           <SettingsRow
@@ -221,7 +221,7 @@ export default function ProfileScreen() {
           />
           <SettingsRow
             icon={<IconStar size={sc(15)} color={colors.ink} />}
-            label="Rate Vajeeva"
+            label="Rate Vajeepurna"
             onPress={() => Linking.openURL(RATE_URL)}
           />
         </SettingsGroup>
@@ -247,7 +247,7 @@ export default function ProfileScreen() {
           </>
         ) : null}
 
-        <Text style={s.version}>Vajeeva v{version}</Text>
+        <Text style={s.version}>Vajeepurna v{version}</Text>
       </ScrollView>
 
       <HealthProfileSheet

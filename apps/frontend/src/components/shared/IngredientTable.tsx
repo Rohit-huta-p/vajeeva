@@ -26,7 +26,7 @@ function formatMetricAmount(ing: Ingredient): string {
 }
 
 // Mirrors the server-side detection in
-// vajeeva/apps/api/src/scripts/seed-subrecipes.ts (computeUsedIn) — keep the
+// vajeepurna/apps/api/src/scripts/seed-subrecipes.ts (computeUsedIn) — keep the
 // two in sync if this ever changes.
 const AROMATIC_POWDER_RE = /aromatic powder/i;
 

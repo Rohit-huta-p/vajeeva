@@ -1,4 +1,4 @@
-# Vajeeva Recipe Compendium
+# Vajeepurna Recipe Compendium
 
 **83 recipes · 3 texture sections · classical Ayurvedic sources + ICMR-NIN 2024**
 
@@ -2012,4 +2012,4 @@ Cook all ingredients together with the appropriate quantity of water in a vessel
 
 ---
 
-*End of Vajeeva Recipe Compendium — 83 recipes · Sources: classical Ayurvedic texts, ICMR-NIN 2024*
+*End of Vajeepurna Recipe Compendium — 83 recipes · Sources: classical Ayurvedic texts, ICMR-NIN 2024*

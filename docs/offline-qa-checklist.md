@@ -1,4 +1,4 @@
-# Offline QA Checklist — Vajeeva
+# Offline QA Checklist — Vajeepurna
 
 Manual test pass for the offline-first feature (spec: `docs/specs/2026-08-27-offline-full-download.md`).
 Run on a real device or simulator. Phase tags map each check to what shipped.

@@ -44,7 +44,7 @@ const UNIT_LABELS: Record<'g' | 'cup', string> = { g: 'gm/ml', cup: 'cup' };
 // per environment (e.g. a staging domain); same override pattern as
 // EXPO_PUBLIC_API_URL in api.ts. Until that export is actually deployed at
 // this domain, shared links will 404.
-const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://vajeeva.app';
+const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://vajeepurna.app';
 
 interface DetailView {
   nameEn: string;
@@ -156,7 +156,7 @@ export function RecipeDetailScreen() {
     const link = `${WEB_URL}/recipe/${slug}`;
     Share.share({
       title: recipe.nameEn,
-      message: Platform.OS === 'ios' ? recipe.nameEn : `${recipe.nameEn} — a Vajeeva recipe\n${link}`,
+      message: Platform.OS === 'ios' ? recipe.nameEn : `${recipe.nameEn} — a Vajeepurna recipe\n${link}`,
       ...(Platform.OS === 'ios' ? { url: link } : {}),
     }).catch(() => {});
   };

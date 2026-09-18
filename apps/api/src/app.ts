@@ -21,7 +21,7 @@ export function createApp() {
   const app = express();
 
   // Extra allowed origins for deployed browser clients (comma-separated),
-  // e.g. ALLOWED_ORIGINS=https://vajeeva-web.onrender.com
+  // e.g. ALLOWED_ORIGINS=https://vajeepurna-web.onrender.com
   const allowedOrigins = (process.env.ALLOWED_ORIGINS ?? '')
     .split(',')
     .map((s) => s.trim())

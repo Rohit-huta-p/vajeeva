@@ -1,4 +1,4 @@
-# Vajeeva — React Native App Design
+# Vajeepurna — React Native App Design
 **Date:** 2026-08-17  
 **Stack:** React Native (Expo) · Express · MongoDB · React (admin web)  
 **Status:** Approved design — pending implementation plan
@@ -7,7 +7,7 @@
 
 ## Context
 
-Vajeeva is an Ayurvedic recipe app with 83 recipes across Solid / Liquid / Semi-solid categories. Recipes include cook mode (step-by-step with timers), health flags / contraindications, classical source citations, and ingredient tables with unit toggling.
+Vajeepurna is an Ayurvedic recipe app with 83 recipes across Solid / Liquid / Semi-solid categories. Recipes include cook mode (step-by-step with timers), health flags / contraindications, classical source citations, and ingredient tables with unit toggling.
 
 **Team:** 2 people — developer + client (admin).  
 **Platforms:** iOS + Android.  
@@ -18,7 +18,7 @@ Vajeeva is an Ayurvedic recipe app with 83 recipes across Solid / Liquid / Semi-
 ## Architecture: Monorepo (Approach A)
 
 ```
-vajeeva/
+vajeepurna/
 ├── apps/
 │   ├── mobile/          ← React Native (Expo managed workflow)
 │   ├── api/             ← Express + TypeScript + Mongoose
@@ -187,7 +187,7 @@ Saved list: additive (add/remove IDs). No destructive conflict possible.
 
 ## Admin Panel
 
-- **URL:** `vajeeva-admin.vercel.app` (React + Vite, separate Vercel deployment)
+- **URL:** `vajeepurna-admin.vercel.app` (React + Vite, separate Vercel deployment)
 - **Auth:** Same JWT, role check on all `/api/admin/*` routes
 - **Features:**
   - Recipe list with published/draft filter

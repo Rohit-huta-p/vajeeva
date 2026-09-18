@@ -14,7 +14,7 @@ import { AuthContext } from './AuthContext';
 // tell the health-flags and offline stories with the same layout grammar).
 const PANELS = [
   {
-    title: 'Welcome to', brand: 'Vajeeva',
+    title: 'Welcome to', brand: 'Vajeepurna',
     sub: 'Recipes rooted in classical texts — flagged for your health, saved for your kitchen, ready offline.',
   },
   {

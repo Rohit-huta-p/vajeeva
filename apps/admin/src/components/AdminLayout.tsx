@@ -5,14 +5,14 @@ import { Link, NavLink, Outlet, useLocation, useSearchParams } from 'react-route
 type Theme = 'light' | 'dark';
 
 function getInitialTheme(): Theme {
-  const stored = localStorage.getItem('vajeeva-theme');
+  const stored = localStorage.getItem('vajeepurna-theme');
   if (stored === 'light' || stored === 'dark') return stored;
   return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 }
 
 function applyTheme(t: Theme) {
   document.documentElement.setAttribute('data-theme', t);
-  localStorage.setItem('vajeeva-theme', t);
+  localStorage.setItem('vajeepurna-theme', t);
 }
 
 function useTheme() {
@@ -144,7 +144,7 @@ const PAGE_TITLES: Record<string, string> = {
 
 function pageTitle(pathname: string): string {
   if (pathname.startsWith('/recipes/') && pathname.endsWith('/edit')) return 'Edit Recipe';
-  return PAGE_TITLES[pathname] ?? 'Vajeeva';
+  return PAGE_TITLES[pathname] ?? 'Vajeepurna';
 }
 
 export function AdminLayout() {
@@ -192,7 +192,7 @@ export function AdminLayout() {
             V
           </div>
           <div className="flex-1 min-w-0">
-            <div className="font-serif text-[14.5px] font-semibold text-ink leading-tight tracking-tight">Vajeeva</div>
+            <div className="font-serif text-[14.5px] font-semibold text-ink leading-tight tracking-tight">Vajeepurna</div>
             <div className="text-[10px] font-bold text-ink/50 uppercase tracking-[0.07em]">Admin</div>
           </div>
           {/* Theme toggle */}

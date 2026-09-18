@@ -19,7 +19,7 @@ import { Recipe } from '../models/Recipe';
 const MONGO_URI = process.env.MONGO_URI;
 if (!MONGO_URI) throw new Error('MONGO_URI not set in .env');
 
-// ─── Canonical data from vajeeva-recipes.md S-24 ─────────────────────────────
+// ─── Canonical data from vajeepurna-recipes.md S-24 ─────────────────────────────
 const SUBRECIPES = [
   {
     name: 'Aromatic Powder Blend',

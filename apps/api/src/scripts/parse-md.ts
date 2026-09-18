@@ -2,7 +2,7 @@
 /**
  * parse-md.ts
  * ─────────────────────────────────────────────────────────────────────────────
- * Reads   content/vajeeva-recipes.md  (the audited source of truth)
+ * Reads   content/vajeepurna-recipes.md  (the audited source of truth)
  * Writes  content/recipes-parsed.json (83 draft recipe objects, ready to seed)
  *
  * Run:  npm run parse:md   (from apps/api)
@@ -388,7 +388,7 @@ function parseRecipes(content: string, indexMap: Map<string, string>): RecipePar
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const MD_PATH  = path.resolve(__dirname, '../../../../../content/vajeeva-recipes.md');
+const MD_PATH  = path.resolve(__dirname, '../../../../../content/vajeepurna-recipes.md');
 const OUT_PATH = path.resolve(__dirname, '../../../../../content/recipes-parsed.json');
 
 if (!fs.existsSync(MD_PATH)) {
@@ -422,7 +422,7 @@ const totalIngs  = recipes.reduce((n, r) => n + r.ingredients.length, 0);
 const totalSteps = recipes.reduce((n, r) => n + r.steps.length, 0);
 const flagged    = recipes.filter(r => r.healthFlags.length > 0).length;
 
-console.log('\n── Vajeeva MD Parser ──────────────────────────────────');
+console.log('\n── Vajeepurna MD Parser ──────────────────────────────────');
 console.log(`   Recipes:     ${recipes.length}`);
 console.log(`   Solid:       ${counts.solid}  · Liquid: ${counts.liquid}  · Semi-solid: ${counts['semi-solid']}`);
 console.log(`   Ingredients: ${totalIngs} rows`);
