@@ -6,6 +6,7 @@ import { useRouter, useLocalSearchParams } from 'expo-router';
 import { fonts, type Colors } from '../theme/tokens';
 import { useTheme, useThemedStyles } from '../theme/ThemeContext';
 import { ContraCard } from '../components/shared/ContraCard';
+import { SuitableCard } from '../components/shared/SuitableCard';
 import { IngredientTable } from '../components/shared/IngredientTable';
 import { StepList } from '../components/shared/StepList';
 import { SourcePill } from '../components/shared/SourcePill';
@@ -28,6 +29,11 @@ import type { RecipeDoc, RecipeImage, RecipeListItem } from '../api/recipes';
 import { getRecipe } from '../offline/catalog';
 import { recordRecentlyViewed } from '../hooks/useRecentlyViewed';
 import { scaledSheet, sc } from '../theme/scale';
+
+// Converts a condition code to a readable label: "lactose-intolerance" → "Lactose Intolerance".
+function conditionLabel(code: string): string {
+  return code.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+}
 
 // Matches the API's Source slug scheme (lowercase, non-alphanumeric -> '-').
 function toSourceSlug(name: string): string {
@@ -55,6 +61,7 @@ interface DetailView {
   yield: string;
   shelfLife: string;
   contraConditions: string[];
+  suitableConditions: string[];
   ingredients: { name: string; quantityG?: string; quantityMl?: string; quantityCup?: string; note?: string }[];
   steps: { phase?: string; text: string }[];
 }
@@ -71,7 +78,10 @@ function toDetailView(doc: RecipeDoc): DetailView {
     shelfLife: doc.shelfLife ?? '',
     contraConditions: (doc.healthFlags ?? [])
       .filter(f => f.severity === 'caution')
-      .map(f => f.condition.charAt(0).toUpperCase() + f.condition.slice(1)),
+      .map(f => conditionLabel(f.condition)),
+    suitableConditions: (doc.healthFlags ?? [])
+      .filter(f => f.severity === 'safe' || f.severity === 'indication')
+      .map(f => conditionLabel(f.condition)),
     // Display-ready strings, not numbers — some carry qualitative text like
     // "a pinch" or "to taste" (see docs/specs/2026-08-30-ingredient-fields.md).
     // Do not parseInt() these; a lossy 0 fallback would silently mislead.
@@ -226,8 +236,9 @@ export function RecipeDetailScreen() {
             {recipe.shelfLife ? <View style={s.badge}><Text style={s.badgeText}>📅 {recipe.shelfLife}</Text></View> : null}
           </View>
 
-          {/* Contra */}
+          {/* Health flags — caution first (red), then suitable/indication (green) */}
           <ContraCard conditions={recipe.contraConditions} />
+          <SuitableCard conditions={recipe.suitableConditions} />
 
           {/* Ingredients */}
           <View>

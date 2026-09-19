@@ -29,7 +29,7 @@ export function RecipeGridCard({ recipe, onPress, saved, onToggleSave }: {
   // Caution specifically is suppressed on cards (still fine to show Safe) —
   // a warning on every tile in a scrolling grid reads as alarming/cluttered;
   // FitBadge itself is untouched, so nothing else that might show it changes.
-  const showFit = FEATURES.fitBadge && recipe.fit != null && recipe.fit !== 'caution';
+  const showFit = FEATURES.fitBadge && recipe.fit != null;
   const time = recipe.cookTimeMin > 0 ? `${recipe.cookTimeMin} min` : 'No-cook';
 
   return (
