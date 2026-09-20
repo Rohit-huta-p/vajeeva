@@ -95,8 +95,8 @@ export const savedApi = {
 };
 
 export interface PhotoRef { url: string; publicId: string; caption?: string; order?: number }
-export interface CookMake { recipe: string; madeAt?: string; rating?: number; note?: string; photos?: PhotoRef[] }
-export interface CookLogEntry { slug: string; madeAt: string; rating: number | null; note: string; photos: PhotoRef[] }
+export interface CookMake { recipe: string; madeAt?: string; rating?: number; note?: string; photos?: PhotoRef[]; slot?: 'morning' | 'afternoon' | 'night'; localDate?: string }
+export interface CookLogEntry { slug: string; madeAt: string; rating: number | null; note: string; photos: PhotoRef[]; slot: 'morning' | 'afternoon' | 'night' | null; localDate: string | null }
 
 export const cookLogApi = {
   // Append-only "I made this" log. Client batches makes (offline makes flush
@@ -106,6 +106,15 @@ export const cookLogApi = {
   // Remove one prepared-dish photo, owner-scoped. See docs/specs/2026-09-09-prepared-photos.md.
   deletePhoto: (p: { recipe: string; madeAt: string; publicId: string }) =>
     api.delete('/api/sync/cooked/photo', { data: p }),
+};
+
+export interface DiaryDayInput { date: string; adherence?: string; remarks?: string }
+export interface DiaryDayEntry { date: string; adherence: 'followed' | 'partial' | 'deviated' | null; remarks: string }
+
+export const diaryApi = {
+  // Per-day adherence + remarks; offline-batched like makes. See docs/specs/2026-09-20-dietary-diary.md.
+  list: () => api.get<DiaryDayEntry[]>('/api/sync/diary').then(r => r.data ?? []),
+  record: (days: DiaryDayInput[]) => api.post('/api/sync/diary', { days }),
 };
 
 // Prepared-dish photo upload (patient). React Native multipart differs from the

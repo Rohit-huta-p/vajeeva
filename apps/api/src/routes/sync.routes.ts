@@ -5,6 +5,7 @@ import { Recipe } from '../models/Recipe';
 import { SavedRecipe } from '../models/SavedRecipe';
 import { CookLog } from '../models/CookLog';
 import { destroyFromCloudinary } from '../lib/cloudinary';
+import { DiaryDay } from '../models/DiaryDay';
 
 export const syncRouter = Router();
 syncRouter.use(requireAuth);
@@ -73,7 +74,8 @@ syncRouter.post('/saved', async (req, res, next) => {
 // See docs/specs/2026-09-03-admin-outcomes.md.
 
 interface PhotoInput { url?: string; publicId?: string; caption?: string; order?: number }
-interface MakeInput { recipe: string; madeAt?: string; rating?: number; note?: string; photos?: PhotoInput[] }
+interface MakeInput { recipe: string; madeAt?: string; rating?: number; note?: string; photos?: PhotoInput[]; slot?: string; localDate?: string }
+const isYMD = (s: unknown): s is string => typeof s === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(s);
 
 const MAX_PHOTOS = 5; // per make — see docs/specs/2026-09-09-prepared-photos.md
 
@@ -114,6 +116,8 @@ syncRouter.post('/cooked', async (req, res, next) => {
       if (typeof m.rating === 'number') set.rating = Math.min(5, Math.max(1, Math.round(m.rating)));
       if (typeof m.note === 'string') set.note = m.note.slice(0, 500);
       if (Array.isArray(m.photos)) set.photos = sanitizePhotos(m.photos);
+      if (m.slot === 'morning' || m.slot === 'afternoon' || m.slot === 'night') set.slot = m.slot;
+      if (isYMD(m.localDate)) set.localDate = m.localDate;
 
       return {
         updateOne: {
@@ -144,6 +148,8 @@ syncRouter.get('/cooked', async (req, res, next) => {
           madeAt: l.madeAt,
           rating: l.rating ?? null,
           note: l.note ?? '',
+          slot: (l as { slot?: string }).slot ?? null,
+          localDate: (l as { localDate?: string }).localDate ?? null,
           photos: ((l.photos ?? []) as { url: string; publicId: string; caption?: string; order?: number }[])
             .map(p => ({ url: p.url, publicId: p.publicId, caption: p.caption ?? '', order: p.order ?? 0 })),
         })),
@@ -171,5 +177,45 @@ syncRouter.delete('/cooked/photo', async (req, res, next) => {
     await CookLog.updateOne({ _id: log._id }, { $pull: { photos: { publicId } } });
     await destroyFromCloudinary(publicId);
     res.json({ ok: true });
+  } catch (err) { next(err); }
+});
+
+// ── Dietary diary (per-day adherence + remarks) ──────────────────────────────
+// Self-reported once a day, offline-batched like makes; keyed by patient-local day.
+// The dietitian may later amend a day (admin route). See docs/specs/2026-09-20-dietary-diary.md.
+interface DiaryInput { date?: string; adherence?: string; remarks?: string }
+const ADHERENCE = ['followed', 'partial', 'deviated'];
+
+syncRouter.get('/diary', async (req, res, next) => {
+  try {
+    const userId = (req as any).user.userId;
+    const days = await DiaryDay.find({ userId }).sort({ date: -1 }).lean();
+    res.json(days.map(d => ({ date: d.date, adherence: d.adherence ?? null, remarks: d.remarks ?? '' })));
+  } catch (err) { next(err); }
+});
+
+syncRouter.post('/diary', async (req, res, next) => {
+  try {
+    const userId = (req as any).user.userId;
+    const days = Array.isArray((req.body as { days?: DiaryInput[] }).days)
+      ? (req.body as { days: DiaryInput[] }).days
+      : [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const ops = days
+      .filter(d => isYMD(d.date))
+      .map(d => {
+        const set: Record<string, unknown> = {};
+        if (typeof d.adherence === 'string' && ADHERENCE.includes(d.adherence)) set.adherence = d.adherence;
+        if (typeof d.remarks === 'string') set.remarks = d.remarks.slice(0, 500);
+        return {
+          updateOne: {
+            filter: { userId, date: d.date },
+            update: Object.keys(set).length ? { $set: set } : { $setOnInsert: { remarks: '' } },
+            upsert: true,
+          },
+        };
+      }) as any[];
+    if (ops.length) await DiaryDay.bulkWrite(ops);
+    res.json({ ok: true, count: ops.length });
   } catch (err) { next(err); }
 });

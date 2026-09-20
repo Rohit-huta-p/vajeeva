@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { get, set } from '../offline/storage';
 import { cookLogApi, uploadsApi } from '../api/recipes';
 import type { PhotoRef } from '../api/recipes';
+import { localYMD, slotFromDate, type MealSlot } from '../lib/localDay';
 
 const KEY = 'cooklog';
 
@@ -18,6 +19,8 @@ export interface CookEntry {
   note?: string;
   photos?: PhotoRef[];            // uploaded prepared-dish photos (url + publicId)
   pendingPhotos?: PendingPhoto[]; // local URIs awaiting upload — never sent as-is
+  slot?: MealSlot;                // meal slot, defaulted from time, patient-overridable (§ dietary-diary)
+  localDate?: string;             // patient-local 'YYYY-MM-DD' — the diary day bucket
   synced?: boolean; // false until the server has accepted the make (+ its photos)
 }
 
@@ -93,6 +96,7 @@ export function useCookLog() {
         const batch = new Set(pending);
         await cookLogApi.record(pending.map(e => ({
           recipe: e.slug, madeAt: e.madeAt, rating: e.rating, note: e.note, photos: e.photos,
+          slot: e.slot, localDate: e.localDate,
         })));
         persist(ref.current.map(e => (batch.has(e) ? { ...e, synced: true } : e)));
       }
@@ -116,10 +120,13 @@ export function useCookLog() {
 
   /** Record a confirmed make; returns its madeAt — the key photos/rating attach to. */
   const recordMake = useCallback((slug: string, opts?: { rating?: number; note?: string }): string => {
-    const madeAt = new Date().toISOString();
+    const now = new Date();
+    const madeAt = now.toISOString();
     const entry: CookEntry = {
       slug,
       madeAt,
+      slot: slotFromDate(now),
+      localDate: localYMD(now),
       ...(opts?.rating ? { rating: opts.rating } : {}),
       ...(opts?.note ? { note: opts.note } : {}),
       synced: false,
@@ -132,6 +139,12 @@ export function useCookLog() {
   /** Set/replace the rating on an existing make. */
   const rateMake = useCallback((slug: string, madeAt: string, rating: number) => {
     patchEntry(slug, madeAt, e => ({ ...e, rating, synced: false }));
+    void flush();
+  }, [patchEntry, flush]);
+
+  /** Override a make's meal slot (defaults from time; § dietary-diary). */
+  const setSlot = useCallback((slug: string, madeAt: string, slot: MealSlot) => {
+    patchEntry(slug, madeAt, e => ({ ...e, slot, synced: false }));
     void flush();
   }, [patchEntry, flush]);
 
@@ -190,7 +203,7 @@ export function useCookLog() {
     return times.length ? times[times.length - 1] : null;
   }, [entries]);
 
-  return { entries, loading, recordMake, rateMake, attachPhotos, attachUploadedPhotos, removePhoto, madeCount, lastMade };
+  return { entries, loading, recordMake, rateMake, setSlot, attachPhotos, attachUploadedPhotos, removePhoto, madeCount, lastMade };
 }
 
 /** The shape returned by useCookLog — passed to child capture components so a

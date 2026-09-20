@@ -14,6 +14,9 @@ import { recipesApi, toListItem } from '../api/recipes';
 import type { RecipeDoc, RecipeListItem } from '../api/recipes';
 import { PhotoUploadModal } from '../components/shared/PhotoUploadModal';
 import { MadeCelebration } from '../components/shared/MadeCelebration';
+import { DailyCheckIn } from '../components/shared/DailyCheckIn';
+import { useDiary } from '../hooks/useDiary';
+import type { MealSlot } from '../lib/localDay';
 import { scaledSheet, sc } from '../theme/scale';
 
 const CTA_TEXT = '#0c1a10'; // prototype .fin-cta text color
@@ -36,7 +39,8 @@ export function FinishScreen() {
   const { slug } = useLocalSearchParams<{ slug: string }>();
   const { save, isSaved } = useSavedRecipes();
   const cook = useCookLog();
-  const { recordMake, rateMake, madeCount, entries } = cook;
+  const { recordMake, rateMake, setSlot, madeCount, entries } = cook;
+  const diary = useDiary();
   const { clearSession } = useCookSession();
   const { user } = useContext(AuthContext);
   const [recipe, setRecipe] = useState<RecipeListItem>(() => slugFallback(slug ?? ''));
@@ -133,10 +137,27 @@ export function FinishScreen() {
               </TouchableOpacity>
             </>
           ) : (
-            <Text style={s.loggedMsg}>
-              ✓ Added to your cooked list
-              {madeCount(slug ?? '') > 1 ? ` · made ${madeCount(slug ?? '')} times` : ''}
-            </Text>
+            <>
+              <Text style={s.loggedMsg}>
+                ✓ Added to your cooked list
+                {madeCount(slug ?? '') > 1 ? ` · made ${madeCount(slug ?? '')} times` : ''}
+              </Text>
+              {makeMadeAt && (
+                <>
+                  <Text style={s.slotCaption}>Which meal?</Text>
+                  <View style={s.slotRow}>
+                    {(['morning', 'afternoon', 'night'] as MealSlot[]).map(sl => {
+                      const on = entry?.slot === sl;
+                      return (
+                        <TouchableOpacity key={sl} style={[s.slotOpt, on && s.slotOptOn]} onPress={() => setSlot(slug!, makeMadeAt, sl)} activeOpacity={0.85}>
+                          <Text style={[s.slotTxt, on && s.slotTxtOn]}>{sl}</Text>
+                        </TouchableOpacity>
+                      );
+                    })}
+                  </View>
+                </>
+              )}
+            </>
           )}
         </View>
 
@@ -159,6 +180,11 @@ export function FinishScreen() {
             <Text style={s.photoCtaText}>{photos.length > 0 ? '📸  Add another' : '📸  Show off your dish'}</Text>
           </TouchableOpacity>
         </View>
+
+        {/* Daily dietary check-in — once per day (docs/specs/2026-09-20-dietary-diary.md) */}
+        {slug && !diary.today() && (
+          <DailyCheckIn onSubmit={(a, r) => diary.setToday(a, r)} />
+        )}
 
         {/* Save card */}
         <View style={s.saveCard}>
@@ -273,6 +299,12 @@ const s = scaledSheet({
   faceEmoji: { fontSize: 22 },
   logPlain: { fontSize: 11, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmMuted },
   loggedMsg: { fontSize: 13, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmGreen, textAlign: 'center' },
+  slotCaption: { fontSize: 10, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmMuted, textAlign: 'center', marginTop: 2 },
+  slotRow: { flexDirection: 'row', gap: 8, alignSelf: 'stretch' },
+  slotOpt: { flex: 1, alignItems: 'center', paddingVertical: 7, borderRadius: 10, backgroundColor: colors.cmSurf, borderWidth: 1, borderColor: colors.cmLine },
+  slotOptOn: { backgroundColor: 'rgba(92,173,120,0.14)', borderColor: colors.cmGreen },
+  slotTxt: { fontSize: 11, fontFamily: fonts.sans, fontWeight: '700', color: colors.cmMuted },
+  slotTxtOn: { color: colors.cmGreen },
 
   photoCard: {
     alignSelf: 'stretch',

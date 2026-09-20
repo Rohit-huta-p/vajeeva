@@ -20,6 +20,8 @@ const CookLogSchema = new mongoose.Schema({
   rating:   { type: Number, min: 1, max: 5 },   // optional — "how did it go?"
   note:     { type: String, default: '' },
   photos:   { type: [PreparedPhotoSchema], default: [] },  // prepared-dish photos (§ prepared-photos)
+  slot:     { type: String, enum: ['morning', 'afternoon', 'night'] },  // meal slot (§ dietary-diary)
+  localDate:{ type: String },  // patient-local 'YYYY-MM-DD' — the diary day bucket
 });
 
 CookLogSchema.index({ userId: 1, recipeId: 1 }); // history + counts per recipe

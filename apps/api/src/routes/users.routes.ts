@@ -4,6 +4,7 @@ import { User } from '../models/User';
 import { HealthFlagConfig } from '../models/HealthFlagConfig';
 import { SavedRecipe } from '../models/SavedRecipe';
 import { CookLog } from '../models/CookLog';
+import { DiaryDay } from '../models/DiaryDay';
 import { destroyFromCloudinary } from '../lib/cloudinary';
 
 export const usersRouter = Router();
@@ -63,6 +64,7 @@ usersRouter.delete('/me', requireAuth, async (req, res, next) => {
     );
     await Promise.all(publicIds.map(pid => destroyFromCloudinary(pid).catch(() => {})));
     await CookLog.deleteMany({ userId });
+    await DiaryDay.deleteMany({ userId });
     const user = await User.findByIdAndDelete(userId).lean();
     if (!user) { res.status(404).json({ error: 'User not found' }); return; }
     res.status(204).end();

@@ -12,6 +12,7 @@ const UserSchema = new mongoose.Schema({
   age:           { type: Number },
   gender:        { type: String, enum: ['female', 'male', 'other', 'prefer_not_to_say'] },
   healthProfile: { type: [String], default: [] },
+  programStartAt: { type: Date }, // dietitian-set; Day 1 of the dietary diary. See docs/specs/2026-09-20-dietary-diary.md.
 });
 
 export const User = mongoose.model('User', UserSchema);

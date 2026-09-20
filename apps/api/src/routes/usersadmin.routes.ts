@@ -8,6 +8,7 @@ import { HealthFlagConfig } from '../models/HealthFlagConfig';
 import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 import { destroyFromCloudinary } from '../lib/cloudinary';
+import { DiaryDay } from '../models/DiaryDay';
 
 export const usersAdminRouter = Router();
 usersAdminRouter.use(requireAuth, requireAdmin);
@@ -15,6 +16,14 @@ usersAdminRouter.use(requireAuth, requireAdmin);
 function capitalize(s: string | undefined): string | undefined {
   if (!s) return undefined;
   return s.charAt(0).toUpperCase() + s.slice(1).replace(/_/g, ' ');
+}
+
+const ymd = (d: Date | string) => new Date(d).toISOString().slice(0, 10);
+const dayNumber = (startYMD: string, dateYMD: string) =>
+  Math.floor((Date.parse(dateYMD) - Date.parse(startYMD)) / 86400000) + 1;
+function deriveSlot(madeAt: Date): 'morning' | 'afternoon' | 'night' {
+  const h = new Date(madeAt).getUTCHours();
+  return h < 12 ? 'morning' : h < 17 ? 'afternoon' : 'night';
 }
 
 function toDTO(doc: any) {
@@ -168,6 +177,112 @@ usersAdminRouter.delete('/:id/photo', async (req, res, next) => {
 
     await CookLog.updateOne({ _id: log._id }, { $pull: { photos: { publicId } } });
     await destroyFromCloudinary(publicId);
+    res.json({ ok: true });
+  } catch (err) { next(err); }
+});
+
+// GET /api/admin/users/:id/diary — the day-by-day dietary diary: makes bucketed
+// into morning/afternoon/night, joined with the patient's self-reported adherence
+// + remarks, with Day N from programStartAt. See docs/specs/2026-09-20-dietary-diary.md.
+usersAdminRouter.get('/:id/diary', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) { res.status(404).json({ error: 'User not found' }); return; }
+    const user = await User.findById(id).lean();
+    if (!user) { res.status(404).json({ error: 'User not found' }); return; }
+
+    const [cooks, diaryDays, vocab] = await Promise.all([
+      CookLog.find({ userId: id }).lean(),
+      DiaryDay.find({ userId: id }).lean(),
+      HealthFlagConfig.find({}, 'code label').lean(),
+    ]);
+    const recipeIds = [...new Set(cooks.map(c => String(c.recipeId)))];
+    const recipes = await Recipe.find({ _id: { $in: recipeIds } }, 'slug nameEn healthFlags').lean();
+    const recipeById = new Map(recipes.map(r => [String(r._id), r]));
+
+    const conditionSet = new Set((user.healthProfile ?? []) as string[]);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const isFlagged = (r: any) => !!r && ((r.healthFlags ?? []) as { condition: string; severity: string }[])
+      .some(hf => conditionSet.has(hf.condition) && hf.severity === 'caution');
+
+    const startYMD = ymd(user.programStartAt ?? user.createdAt ?? (user._id as mongoose.Types.ObjectId).getTimestamp());
+    const todayYMD = ymd(new Date());
+
+    interface Item { slug: string; nameEn: string; madeAt: Date; rating: number | null; flagged: boolean; photos: { url: string; publicId: string; caption: string }[] }
+    const byDay = new Map<string, { morning: Item[]; afternoon: Item[]; night: Item[]; flagged: boolean }>();
+    const ensure = (date: string) => {
+      let d = byDay.get(date);
+      if (!d) { d = { morning: [], afternoon: [], night: [], flagged: false }; byDay.set(date, d); }
+      return d;
+    };
+    for (const c of cooks) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const cc = c as any;
+      const date = typeof cc.localDate === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(cc.localDate) ? cc.localDate : ymd(c.madeAt);
+      const slot: 'morning' | 'afternoon' | 'night' = (cc.slot === 'morning' || cc.slot === 'afternoon' || cc.slot === 'night') ? cc.slot : deriveSlot(c.madeAt);
+      const r = recipeById.get(String(c.recipeId));
+      const flagged = isFlagged(r);
+      const item: Item = {
+        slug: r?.slug ?? '', nameEn: r?.nameEn ?? '(deleted recipe)',
+        madeAt: c.madeAt, rating: c.rating ?? null, flagged,
+        photos: ((c.photos ?? []) as { url: string; publicId: string; caption?: string }[])
+          .map(p => ({ url: p.url, publicId: p.publicId, caption: p.caption ?? '' })),
+      };
+      const day = ensure(date);
+      day[slot].push(item);
+      if (flagged) day.flagged = true;
+    }
+    const diaryByDate = new Map(diaryDays.map(d => [d.date, d]));
+    for (const d of diaryDays) ensure(d.date); // days with only a diary entry (no make)
+
+    const rows = [...byDay.keys()]
+      .sort((a, b) => (a < b ? 1 : -1))
+      .map(date => {
+        const d = byDay.get(date)!;
+        const diary = diaryByDate.get(date);
+        return {
+          day: dayNumber(startYMD, date),
+          date,
+          morning: d.morning, afternoon: d.afternoon, night: d.night,
+          adherence: diary?.adherence ?? null,
+          remarks: diary?.remarks ?? '',
+          amendedByAdmin: diary?.amendedByAdmin ?? false,
+          flagged: d.flagged,
+        };
+      });
+
+    // startDate = the effective Day-1 anchor (always a date, unlike the nullable
+    // programStartAt); today = server date. The calendar uses both to place cells
+    // and classify each day as logged / missed / not-yet-reached.
+    res.json({ programStartAt: user.programStartAt ?? null, startDate: startYMD, today: todayYMD, rows });
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/admin/users/:id/program-start — set/clear the Day-1 anchor.
+usersAdminRouter.patch('/:id/program-start', async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) { res.status(404).json({ error: 'User not found' }); return; }
+    const { programStartAt } = req.body as { programStartAt?: string | null };
+    const value = programStartAt ? new Date(programStartAt) : null;
+    if (programStartAt && isNaN(value!.getTime())) { res.status(400).json({ error: 'Invalid date' }); return; }
+    const user = await User.findByIdAndUpdate(id, { programStartAt: value }, { new: true }).lean();
+    if (!user) { res.status(404).json({ error: 'User not found' }); return; }
+    res.json({ ok: true, programStartAt: user.programStartAt ?? null });
+  } catch (err) { next(err); }
+});
+
+// PATCH /api/admin/users/:id/diary/:date — dietitian amends a day's adherence/remarks.
+usersAdminRouter.patch('/:id/diary/:date', async (req, res, next) => {
+  try {
+    const { id, date } = req.params;
+    if (!mongoose.Types.ObjectId.isValid(id)) { res.status(404).json({ error: 'User not found' }); return; }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) { res.status(400).json({ error: 'Invalid date' }); return; }
+    const { adherence, remarks } = req.body as { adherence?: string; remarks?: string };
+    const set: Record<string, unknown> = { amendedByAdmin: true };
+    if (adherence === 'followed' || adherence === 'partial' || adherence === 'deviated') set.adherence = adherence;
+    if (typeof remarks === 'string') set.remarks = remarks.slice(0, 500);
+    await DiaryDay.updateOne({ userId: id, date }, { $set: set }, { upsert: true });
     res.json({ ok: true });
   } catch (err) { next(err); }
 });
