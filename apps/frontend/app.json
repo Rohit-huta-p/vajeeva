@@ -38,6 +38,12 @@
           "cameraPermission": "Vajeepurna uses your camera so you can take pictures of dishes you've cooked."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "fd1148b8-918c-42de-a7d6-1696364d5e24"
+      }
+    }
   }
 }

@@ -1,0 +1,4 @@
+# Generated native projects — managed Expo workflow regenerates these via
+# `expo prebuild`; never commit them (Pods, generated code, build output).
+/ios/
+/android/
