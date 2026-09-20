@@ -1,9 +1,9 @@
-# Vajeeva v1 Screen Index
+# Vajeepurna v1 Screen Index
 
 21 screens · 42 flows · 2 source files
 
-- **Hero screens** (4): `vajeeva-hero-flow.html`
-- **Remaining screens** (17) + components: `vajeeva-v1-screens.html`
+- **Hero screens** (4): `vajeepurna-hero-flow.html`
+- **Remaining screens** (17) + components: `vajeepurna-v1-screens.html`
 
 ---
 
@@ -11,7 +11,7 @@
 
 ### Auth — Onboarding & Sign in
 Flows: P1–P5, P30, P35  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -23,7 +23,7 @@ File: `vajeeva-v1-screens.html`
 
 ### Home
 Flows: P6–P7  
-File: `vajeeva-hero-flow.html`
+File: `vajeepurna-hero-flow.html`
 
 | Code | Screen |
 |------|--------|
@@ -33,7 +33,7 @@ File: `vajeeva-hero-flow.html`
 
 ### Browse & Filter
 Flows: P6, P9–P11, P14–P15  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -44,7 +44,7 @@ File: `vajeeva-v1-screens.html`
 
 ### Search
 Flows: P8, P12–P13  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -55,7 +55,7 @@ File: `vajeeva-v1-screens.html`
 
 ### Recipe Detail
 Flows: P16–P22, P42  
-Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
+Files: `vajeepurna-hero-flow.html` · `vajeepurna-v1-screens.html`
 
 | Code | Screen | File |
 |------|--------|------|
@@ -66,7 +66,7 @@ Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
 
 ### Cook Mode
 Flows: P23–P26, P46  
-Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
+Files: `vajeepurna-hero-flow.html` · `vajeepurna-v1-screens.html`
 
 | Code | Screen | File |
 |------|--------|------|
@@ -78,7 +78,7 @@ Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
 
 ### Saved
 Flows: P27–P29, P43  
-Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
+Files: `vajeepurna-hero-flow.html` · `vajeepurna-v1-screens.html`
 
 | Code | Screen | File |
 |------|--------|------|
@@ -89,7 +89,7 @@ Files: `vajeeva-hero-flow.html` · `vajeeva-v1-screens.html`
 
 ### Account & Settings
 Flows: P31–P35, P41  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -101,7 +101,7 @@ File: `vajeeva-v1-screens.html`
 
 ### Reference
 Flows: P39–P40  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -112,7 +112,7 @@ File: `vajeeva-v1-screens.html`
 
 ### Edge & System States
 Flows: P43–P46  
-File: `vajeeva-v1-screens.html`
+File: `vajeepurna-v1-screens.html`
 
 | Code | Screen |
 |------|--------|
@@ -127,6 +127,6 @@ File: `vajeeva-v1-screens.html`
 P22, P36–38, C1–4
 
 ## Files
-- `vajeeva-index.html` — visual index (this document's HTML companion)
-- `vajeeva-hero-flow.html` — 4 hero screens
-- `vajeeva-v1-screens.html` — 17 remaining screens + components
+- `vajeepurna-index.html` — visual index (this document's HTML companion)
+- `vajeepurna-hero-flow.html` — 4 hero screens
+- `vajeepurna-v1-screens.html` — 17 remaining screens + components

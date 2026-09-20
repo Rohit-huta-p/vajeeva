@@ -1,14 +1,14 @@
-# Vajeeva Frontend UI Implementation Plan
+# Vajeepurna Frontend UI Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Migrate `apps/mobile` → `apps/frontend`, wire Expo Router, and implement pixel-perfect UI matching `prototypes/vajeeva-prototype.html` (mobile) and `prototypes/vajeeva-desktop.html` (desktop web).
+**Goal:** Migrate `apps/mobile` → `apps/frontend`, wire Expo Router, and implement pixel-perfect UI matching `prototypes/vajeepurna-prototype.html` (mobile) and `prototypes/vajeepurna-desktop.html` (desktop web).
 
 **Architecture:** Single Expo 54 project serving iOS, Android, and Web from one codebase. `useIsDesktop()` hook (768px breakpoint) switches between bottom TabBar and left Sidebar chrome. All screen content components are layout-agnostic; only `(tabs)/_layout.tsx` branches on the hook. All colours/spacing in `src/theme/tokens.ts`.
 
 **Tech Stack:** Expo 54, Expo Router (file-based), React Native, `@expo-google-fonts/libre-baskerville`, `react-native-mmkv`, `@react-native-community/netinfo`, React Native Gesture Handler + Reanimated (swipe in cook mode)
 
-**Spec:** `docs/superpowers/specs/2026-08-21-vajeeva-ui-implementation-design.md`
+**Spec:** `docs/superpowers/specs/2026-08-21-vajeepurna-ui-implementation-design.md`
 
 ## Global Constraints
 
@@ -25,14 +25,14 @@
 ### Task 1: Rename `apps/mobile` → `apps/frontend` and install Expo Router
 
 **Files:**
-- Modify: `vajeeva/package.json` (workspace path)
-- Modify: `vajeeva/turbo.json` (pipeline references if any)
-- Modify: `vajeeva/apps/frontend/package.json` (name field)
-- Create: `vajeeva/apps/frontend/app/_layout.tsx`
-- Create: `vajeeva/apps/frontend/app/(tabs)/_layout.tsx`
-- Create: `vajeeva/apps/frontend/app/(tabs)/index.tsx` (stub)
-- Create: `vajeeva/apps/frontend/app/(tabs)/saved.tsx` (stub)
-- Create: `vajeeva/apps/frontend/app/(tabs)/more.tsx` (stub)
+- Modify: `vajeepurna/package.json` (workspace path)
+- Modify: `vajeepurna/turbo.json` (pipeline references if any)
+- Modify: `vajeepurna/apps/frontend/package.json` (name field)
+- Create: `vajeepurna/apps/frontend/app/_layout.tsx`
+- Create: `vajeepurna/apps/frontend/app/(tabs)/_layout.tsx`
+- Create: `vajeepurna/apps/frontend/app/(tabs)/index.tsx` (stub)
+- Create: `vajeepurna/apps/frontend/app/(tabs)/saved.tsx` (stub)
+- Create: `vajeepurna/apps/frontend/app/(tabs)/more.tsx` (stub)
 
 **Interfaces:**
 - Produces: working Expo Router shell; `npx expo start --web` renders at least a blank `(tabs)/index` page
@@ -40,13 +40,13 @@
 - [ ] **Step 1: Rename the directory**
 
 ```bash
-cd vajeeva
+cd vajeepurna
 mv apps/mobile apps/frontend
 ```
 
 - [ ] **Step 2: Update workspace config**
 
-In `vajeeva/package.json`, change `"apps/mobile"` → `"apps/frontend"` in the `workspaces` array.
+In `vajeepurna/package.json`, change `"apps/mobile"` → `"apps/frontend"` in the `workspaces` array.
 
 - [ ] **Step 3: Update `apps/frontend/package.json` name**
 
@@ -55,7 +55,7 @@ Change `"name": "mobile"` → `"name": "frontend"` (or whatever the current name
 - [ ] **Step 4: Install Expo Router**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo install expo-router @expo/metro-runtime
 ```
 
@@ -138,7 +138,7 @@ export default function MoreScreen() {
 - [ ] **Step 9: Verify it builds**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo start --web --no-dev
 ```
 
@@ -147,7 +147,7 @@ Expected: browser opens, tabs render (blank content OK at this stage).
 - [ ] **Step 10: Commit**
 
 ```bash
-git add vajeeva/
+git add vajeepurna/
 git commit -m "feat: rename apps/mobile → apps/frontend, wire Expo Router shell"
 ```
 
@@ -156,8 +156,8 @@ git commit -m "feat: rename apps/mobile → apps/frontend, wire Expo Router shel
 ### Task 2: Token layer
 
 **Files:**
-- Create: `vajeeva/apps/frontend/src/theme/tokens.ts`
-- Modify: `vajeeva/apps/frontend/src/theme.ts` → re-export from tokens (keep old import paths working during migration)
+- Create: `vajeepurna/apps/frontend/src/theme/tokens.ts`
+- Modify: `vajeepurna/apps/frontend/src/theme.ts` → re-export from tokens (keep old import paths working during migration)
 
 **Interfaces:**
 - Produces: `import { colors, fonts, spacing, shadows } from '../theme/tokens'`
@@ -240,14 +240,14 @@ export * from './theme/tokens';
 - [ ] **Step 3: Install google fonts package**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo install @expo-google-fonts/libre-baskerville expo-font
 ```
 
 - [ ] **Step 4: Verify TypeScript compiles**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx tsc --noEmit
 ```
 
@@ -256,7 +256,7 @@ Expected: 0 errors (ignoring any pre-existing errors from old files).
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/theme/
+git add vajeepurna/apps/frontend/src/theme/
 git commit -m "feat: add token layer (colors, fonts, spacing, shadows)"
 ```
 
@@ -362,7 +362,7 @@ export function Sidebar() {
       <View style={s.logo}>
         <View style={s.logoMark}><Text style={s.logoV}>V</Text></View>
         <View>
-          <Text style={s.brand}>Vajeeva</Text>
+          <Text style={s.brand}>Vajeepurna</Text>
         </View>
       </View>
       {/* Nav */}
@@ -461,7 +461,7 @@ Run `npx expo start` on simulator: bottom tab bar only.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/
+git add vajeepurna/apps/frontend/src/
 git commit -m "feat: useIsDesktop hook + TabBar + Sidebar; layout branches at 768px"
 ```
 
@@ -707,14 +707,14 @@ const s = StyleSheet.create({
 - [ ] **Step 2: Verify TypeScript**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx tsc --noEmit
 ```
 
 - [ ] **Step 3: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/components/shared/
+git add vajeepurna/apps/frontend/src/components/shared/
 git commit -m "feat: shared atomic components (SectionLabel, CTA, FilterChip, SearchBar, etc.)"
 ```
 
@@ -886,7 +886,7 @@ const s = StyleSheet.create({
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/components/shared/
+git add vajeepurna/apps/frontend/src/components/shared/
 git commit -m "feat: RecipeCard, TexturePillar, ContinueCookingCard components"
 ```
 
@@ -932,7 +932,7 @@ export function HomeScreen() {
         {/* Logo row */}
         <View style={s.logoRow}>
           <View style={s.logoMark}><Text style={s.logoV}>V</Text></View>
-          <Text style={s.greeting}>Good morning · Vajeeva</Text>
+          <Text style={s.greeting}>Good morning · Vajeepurna</Text>
           <View style={s.avatar}><Text style={s.avatarInitial}>R</Text></View>
         </View>
 
@@ -1004,7 +1004,7 @@ export default HomeScreen;
 - [ ] **Step 3: Run on simulator and browser, verify layout**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo start
 ```
 
@@ -1013,7 +1013,7 @@ Verify: pillars visible, search bar renders, trust badge at bottom.
 - [ ] **Step 4: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/
+git add vajeepurna/apps/frontend/
 git commit -m "feat: HomeScreen pixel-perfect — pillars, search, greeting, trust badge"
 ```
 
@@ -1149,7 +1149,7 @@ export default function SourceGlossary() { return <View><Text>Source</Text></Vie
 - [ ] **Step 4: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/
+git add vajeepurna/apps/frontend/
 git commit -m "feat: RecipeListScreen + route stubs (recipe, cook, finish, source)"
 ```
 
@@ -1467,7 +1467,7 @@ export default RecipeDetailScreen;
 - [ ] **Step 7: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/
+git add vajeepurna/apps/frontend/src/
 git commit -m "feat: RecipeDetailScreen, ContraCard, IngredientTable, StepList, SourcePill"
 ```
 
@@ -1734,7 +1734,7 @@ Run on simulator; tap "Start Cook Mode" from a recipe detail. Verify dark theme,
 - [ ] **Step 6: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/
+git add vajeepurna/apps/frontend/src/
 git commit -m "feat: CookModeScreen, TimerPill, CookDots — dark theme, swipe, wakeLock"
 ```
 
@@ -1757,7 +1757,7 @@ git commit -m "feat: CookModeScreen, TimerPill, CookDots — dark theme, swipe, 
 - [ ] **Step 1: Install MMKV**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo install react-native-mmkv
 ```
 
@@ -1766,7 +1766,7 @@ npx expo install react-native-mmkv
 ```ts
 import { MMKV } from 'react-native-mmkv';
 
-const store = new MMKV({ id: 'vajeeva' });
+const store = new MMKV({ id: 'vajeepurna' });
 
 export function get<T>(key: string): T | null {
   const v = store.getString(key);
@@ -1965,7 +1965,7 @@ export default SavedScreen;
 - [ ] **Step 7: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/src/
+git add vajeepurna/apps/frontend/src/
 git commit -m "feat: FinishScreen, SavedScreen, offline MMKV storage, useSavedRecipes"
 ```
 
@@ -2079,7 +2079,7 @@ export default function OnboardingScreen() { return <View><Text>Onboarding</Text
 - [ ] **Step 4: Commit**
 
 ```bash
-git add vajeeva/apps/frontend/
+git add vajeepurna/apps/frontend/
 git commit -m "feat: SourceGlossaryScreen + auth screen stubs"
 ```
 
@@ -2093,7 +2093,7 @@ git commit -m "feat: SourceGlossaryScreen + auth screen stubs"
 - [ ] **Step 1: Update any test imports that reference `apps/mobile`**
 
 ```bash
-grep -r "apps/mobile" vajeeva/ --include="*.ts" --include="*.tsx" -l
+grep -r "apps/mobile" vajeepurna/ --include="*.ts" --include="*.tsx" -l
 ```
 
 For each file found, update path to `apps/frontend`.
@@ -2101,7 +2101,7 @@ For each file found, update path to `apps/frontend`.
 - [ ] **Step 2: Run admin tests (must stay green)**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- --passWithNoTests
 ```
 
@@ -2110,7 +2110,7 @@ Expected: 17/17 pass.
 - [ ] **Step 3: Run frontend type check**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx tsc --noEmit
 ```
 
@@ -2119,7 +2119,7 @@ Expected: 0 errors.
 - [ ] **Step 4: Run on web and resize to verify breakpoint**
 
 ```bash
-cd vajeeva/apps/frontend
+cd vajeepurna/apps/frontend
 npx expo start --web
 ```
 
@@ -2130,6 +2130,6 @@ Resize browser window through 768px:
 - [ ] **Step 5: Final commit**
 
 ```bash
-git add vajeeva/
-git commit -m "feat: Vajeeva frontend UI complete — pixel-perfect mobile + desktop, Expo Router"
+git add vajeepurna/
+git commit -m "feat: Vajeepurna frontend UI complete — pixel-perfect mobile + desktop, Expo Router"
 ```

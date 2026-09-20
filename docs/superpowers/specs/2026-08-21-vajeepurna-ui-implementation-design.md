@@ -1,19 +1,19 @@
-# Vajeeva UI Implementation Design
+# Vajeepurna UI Implementation Design
 **Date:** 2026-08-21  
 **Status:** Approved  
 **Scope:** Pixel-perfect UI implementation across `apps/frontend` (Expo — iOS, Android, Web) and `apps/admin` (Vite + TailwindCSS 4), matching the three prototype files exactly.
 
 **Prototype references:**
-- `prototypes/vajeeva-prototype.html` — mobile phone layout
-- `prototypes/vajeeva-desktop.html` — desktop/web layout
-- `prototypes/vajeeva-admin-mockup.html` — admin panel
+- `prototypes/vajeepurna-prototype.html` — mobile phone layout
+- `prototypes/vajeepurna-desktop.html` — desktop/web layout
+- `prototypes/vajeepurna-admin-mockup.html` — admin panel
 
 ---
 
 ## 1. Monorepo Structure
 
 ```
-vajeeva/
+vajeepurna/
   apps/
     frontend/    ← renamed from mobile; Expo 54, iOS + Android + Web
     admin/       ← Vite + TailwindCSS 4, unchanged structure
@@ -213,7 +213,7 @@ src/
 | Element | Spec |
 |---|---|
 | Status bar area | `sbar`: time left, signal right, `11px bold` |
-| Logo row | 30×30 rounded square (green-soft + sprout icon) + serif 15px "Good morning / Vajeeva" + 34×34 avatar circle |
+| Logo row | 30×30 rounded square (green-soft + sprout icon) + serif 15px "Good morning / Vajeepurna" + 34×34 avatar circle |
 | Search bar | Cream pill, 1px line border, shadow, search icon + 11.5px muted placeholder |
 | Continue cooking card | Green bg, 38×38 rounded tile (recipe illustration), bold name, "Step N of N", 3px progress bar (25% fill), 26×26 white play btn |
 | Section heading | Serif 16px bold "What would you like today?" |
@@ -308,7 +308,7 @@ At `≥ 768px`, the root layout renders `<Sidebar>` instead of `<TabBar>`. Scree
 
 ### Sidebar (all pages)
 - 240px width, sand bg, 1px ink3 right border
-- Logo: 32×32 green square "V" + serif "Vajeeva" + "Admin" sub
+- Logo: 32×32 green square "V" + serif "Vajeepurna" + "Admin" sub
 - Nav items: 17px icons + text labels, 9px radius hover, green-bg active
 - Footer: 32×32 amber avatar (initials) + name + "Admin" role
 
@@ -349,7 +349,7 @@ At `≥ 768px`, the root layout renders `<Sidebar>` instead of `<TabBar>`. Scree
 
 ### LoginPage (admin)
 - Centred card on bone bg
-- Vajeeva logo + "Admin" label
+- Vajeepurna logo + "Admin" label
 - Email + password inputs
 - Green "Sign in" btn
 

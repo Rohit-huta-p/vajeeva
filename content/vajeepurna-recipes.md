@@ -1,4 +1,4 @@
-# Vajeeva Recipe Compendium
+# Vajeepurna Recipe Compendium
 
 **83 recipes · 3 texture sections · classical Ayurvedic sources + ICMR-NIN 2024**
 
@@ -2133,4 +2133,4 @@ Once it reaches to the creamy thickness then switch off the flame and have it.
 
 ---
 
-*End of Vajeeva Recipe Compendium — 83 recipes · Sources: classical Ayurvedic texts, ICMR-NIN 2024*
+*End of Vajeepurna Recipe Compendium — 83 recipes · Sources: classical Ayurvedic texts, ICMR-NIN 2024*

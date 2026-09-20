@@ -1,6 +1,6 @@
 # Standalone screen references
 
-Each file here is ONE screen from `../vajeeva-prototype.html`, lifted out of the
+Each file here is ONE screen from `../vajeepurna-prototype.html`, lifted out of the
 centered desktop device mock and re-hosted as a true full-viewport phone canvas
 (edge-to-edge, no bezel, no desktop wrapper, no centering offsets). Every
 margin / padding / type / color value in these files **is** the phone's actual

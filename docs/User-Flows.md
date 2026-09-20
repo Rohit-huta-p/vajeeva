@@ -1,6 +1,6 @@
-# User Flows — Vajeeva
+# User Flows — Vajeepurna
 
-**App:** Vajeeva — Ayurvedic *Vajikarana Āhāra* dietary app
+**App:** Vajeepurna — Ayurvedic *Vajikarana Āhāra* dietary app
 **Companion to:** [Design-Brief.md](Design-Brief.md)
 **Date:** 2026-08-17 · **Status:** ✅ **v1 cut locked** (2026-08-17) — defer `C*`, `P22`, `P36–P38`
 

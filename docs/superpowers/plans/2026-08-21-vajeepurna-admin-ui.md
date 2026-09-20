@@ -1,14 +1,14 @@
-# Vajeeva Admin UI Implementation Plan
+# Vajeepurna Admin UI Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Pixel-perfect admin panel matching `prototypes/vajeeva-admin-mockup.html` — extend existing `apps/admin` with Dashboard, Sources, SubRecipes, Users, and HealthFlags pages while keeping the 17 existing tests green.
+**Goal:** Pixel-perfect admin panel matching `prototypes/vajeepurna-admin-mockup.html` — extend existing `apps/admin` with Dashboard, Sources, SubRecipes, Users, and HealthFlags pages while keeping the 17 existing tests green.
 
 **Architecture:** Vite + React + TailwindCSS 4 + React Router (already set up). New pages added as routes; shared layout chrome (Sidebar + Topbar) already exists or is extended. All new pages follow the `grid-template-columns` values from the prototype exactly.
 
 **Tech Stack:** Vite, React 18, TailwindCSS 4, React Router, existing `apps/admin/src/api/client.ts`
 
-**Spec:** `docs/superpowers/specs/2026-08-21-vajeeva-ui-implementation-design.md`
+**Spec:** `docs/superpowers/specs/2026-08-21-vajeepurna-ui-implementation-design.md`
 
 ## Global Constraints
 
@@ -37,7 +37,7 @@
 - [ ] **Step 1: Read existing router file to understand current routes**
 
 ```bash
-cat vajeeva/apps/admin/src/App.tsx
+cat vajeepurna/apps/admin/src/App.tsx
 ```
 
 Note the existing `<Route>` structure.
@@ -45,7 +45,7 @@ Note the existing `<Route>` structure.
 - [ ] **Step 2: Read existing Sidebar to understand its nav item structure**
 
 ```bash
-cat vajeeva/apps/admin/src/components/*.tsx 2>/dev/null || find vajeeva/apps/admin/src -name "Sidebar*"
+cat vajeepurna/apps/admin/src/components/*.tsx 2>/dev/null || find vajeepurna/apps/admin/src -name "Sidebar*"
 ```
 
 - [ ] **Step 3: Add new routes to router**
@@ -83,7 +83,7 @@ Find the sidebar nav list and add (following existing item shape exactly):
 - [ ] **Step 5: Run existing tests to confirm nothing broke**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test
 ```
 
@@ -92,7 +92,7 @@ Expected: 17/17 pass.
 - [ ] **Step 6: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/
+git add vajeepurna/apps/admin/src/
 git commit -m "feat(admin): add new routes + sidebar nav items"
 ```
 
@@ -126,7 +126,7 @@ test('renders dashboard heading and stat card', () => {
 - [ ] **Step 2: Run the test to verify it fails**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- DashboardPage --no-coverage
 ```
 
@@ -209,7 +209,7 @@ export function DashboardPage() {
 - [ ] **Step 4: Run test to confirm pass**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- DashboardPage --no-coverage
 ```
 
@@ -218,7 +218,7 @@ Expected: PASS.
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/pages/DashboardPage*
+git add vajeepurna/apps/admin/src/pages/DashboardPage*
 git commit -m "feat(admin): DashboardPage — 3-col grid, stat card, bar chart, recent edits"
 ```
 
@@ -257,7 +257,7 @@ test('opens modal on new source click', () => {
 - [ ] **Step 2: Run test to verify it fails**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- SourcesPage --no-coverage
 ```
 
@@ -381,14 +381,14 @@ export function SourcesPage() {
 - [ ] **Step 4: Run test to confirm pass**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- SourcesPage --no-coverage
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/pages/SourcesPage*
+git add vajeepurna/apps/admin/src/pages/SourcesPage*
 git commit -m "feat(admin): SourcesPage — table + CRUD modal"
 ```
 
@@ -426,7 +426,7 @@ test('opens modal on new sub-recipe click', () => {
 - [ ] **Step 2: Run test to verify fail**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- SubRecipesPage --no-coverage
 ```
 
@@ -509,14 +509,14 @@ export function SubRecipesPage() {
 - [ ] **Step 4: Run test to confirm pass**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- SubRecipesPage --no-coverage
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/pages/SubRecipesPage*
+git add vajeepurna/apps/admin/src/pages/SubRecipesPage*
 git commit -m "feat(admin): SubRecipesPage — table + modal"
 ```
 
@@ -550,7 +550,7 @@ test('renders users table without action buttons', () => {
 - [ ] **Step 2: Run test to verify fail**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- UsersPage --no-coverage
 ```
 
@@ -634,14 +634,14 @@ export function UsersPage() {
 - [ ] **Step 4: Run test to confirm pass**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- UsersPage --no-coverage
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/pages/UsersPage*
+git add vajeepurna/apps/admin/src/pages/UsersPage*
 git commit -m "feat(admin): UsersPage — read-only table, no action buttons"
 ```
 
@@ -681,7 +681,7 @@ test('save all button is present', () => {
 - [ ] **Step 2: Run test to verify fail**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- HealthFlagsPage --no-coverage
 ```
 
@@ -755,14 +755,14 @@ export function HealthFlagsPage() {
 - [ ] **Step 4: Run test to confirm pass**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test -- HealthFlagsPage --no-coverage
 ```
 
 - [ ] **Step 5: Commit**
 
 ```bash
-git add vajeeva/apps/admin/src/pages/HealthFlagsPage*
+git add vajeepurna/apps/admin/src/pages/HealthFlagsPage*
 git commit -m "feat(admin): HealthFlagsPage — per-condition card, label + description, save all"
 ```
 
@@ -775,7 +775,7 @@ git commit -m "feat(admin): HealthFlagsPage — per-condition card, label + desc
 - [ ] **Step 1: Run full admin test suite**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm test
 ```
 
@@ -784,12 +784,12 @@ Expected: all tests pass (17 original + new ones).
 - [ ] **Step 2: Start admin dev server and verify visual**
 
 ```bash
-cd vajeeva/apps/admin
+cd vajeepurna/apps/admin
 npm run dev
 ```
 
 Open `http://localhost:5173` and verify:
-- Login page renders (centred card, bone bg, Vajeeva logo, email + password, green "Sign in")
+- Login page renders (centred card, bone bg, Vajeepurna logo, email + password, green "Sign in")
 - Sidebar: 240px sand bg, logo, all 6 nav items
 - Topbar: 58px cream, page title left, search + "New Recipe" right
 - RecipeList table: `2fr 1fr 1fr 80px 110px` columns, filter tabs, stats row
@@ -806,6 +806,6 @@ The existing `components/HealthFlagRows.tsx` (used in RecipeEditorPage) must sti
 - [ ] **Step 4: Final commit**
 
 ```bash
-git add vajeeva/apps/admin/
+git add vajeepurna/apps/admin/
 git commit -m "feat(admin): all new pages integrated — 17+ tests green, prototype-matched"
 ```

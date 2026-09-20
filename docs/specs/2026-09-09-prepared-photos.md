@@ -95,10 +95,10 @@ photos: z.array(z.object({
 })).default([])
 ```
 
-**Phase 1 note (as built):** there is no shared make schema today, and `@vajeeva/shared`
+**Phase 1 note (as built):** there is no shared make schema today, and `@vajeepurna/shared`
 resolves to built `dist`, so Phase 1 keeps the photo shape **API-local** — the Mongoose
 `PreparedPhotoSchema` (§3a) plus a `sanitizePhotos()` guard in the make writer. The Zod
-above is **promoted to `@vajeeva/shared` in Phase 2/3**, when the frontend first imports it.
+above is **promoted to `@vajeepurna/shared` in Phase 2/3**, when the frontend first imports it.
 
 Client mirrors: `CookMake` / `CookEntry` (`apps/frontend/src/api.ts`,
 `apps/frontend/src/hooks/useCookLog.ts`) gain `photos`, plus a **local-only**
@@ -114,7 +114,7 @@ that never leaves the device — it holds `file://` URIs until upload resolves (
   **not** relax it (that would drop patient dishes into the admin recipe folder).
 - **Extract the Cloudinary helper.** Pull `uploadToCloudinary` out of
   `apps/api/src/routes/uploads.routes.ts` into `apps/api/src/lib/cloudinary.ts`; both
-  routes call it with different `folder`s. Patient folder: **`vajeeva/prepared/<userId>`**.
+  routes call it with different `folder`s. Patient folder: **`vajeepurna/prepared/<userId>`**.
 - **Strip EXIF/GPS.** Done by the **client re-encode** (§5, `expo-image-manipulator`)
   before the bytes ever leave the device, so stored originals are already clean — a server
   Cloudinary option would be a no-op on the stored original. (Belt-and-suspenders: deliver
@@ -133,7 +133,7 @@ that never leaves the device — it holds `file://` URIs until upload resolves (
   foreign `publicId` can't be destroyed.
 - **Orphan sweep.** An upload that succeeds but whose make write never arrives (user
   abandons) leaves a Cloudinary asset with no DB ref. A scheduled sweep destroys assets
-  under `vajeeva/prepared/*` older than N days with no matching `CookLog.photos.publicId`.
+  under `vajeepurna/prepared/*` older than N days with no matching `CookLog.photos.publicId`.
 
 ---
 
@@ -280,7 +280,7 @@ Slots into admin-outcomes §8; the visibility decision (§2) makes it binding, n
 
 **Phase 1 — storage + data (api). ✅ Built 2026-09-10.** `PreparedPhotoSchema` + `photos[]`
 on `CookLog` (§3a); `apps/api/src/lib/cloudinary.ts` extract (`uploadToCloudinary` +
-`destroyFromCloudinary`); `POST /api/uploads` (requireAuth, `vajeeva/prepared/<userId>`);
+`destroyFromCloudinary`); `POST /api/uploads` (requireAuth, `vajeepurna/prepared/<userId>`);
 `photos[]` on the `/api/sync/cooked` upsert with merge semantics (§4);
 `DELETE /api/sync/cooked/photo` (owner-scoped). 17 suites / 103 api tests green, incl. a
 new `prepared-photos` suite. Deviations from plan: shape kept **API-local** (shared Zod

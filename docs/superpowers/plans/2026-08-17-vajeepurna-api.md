@@ -1,4 +1,4 @@
-# Vajeeva API — Implementation Plan (1 of 3)
+# Vajeepurna API — Implementation Plan (1 of 3)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -8,7 +8,7 @@
 
 **Tech Stack:** Node 20, TypeScript 5, Express 4, Mongoose 8, Zod 3, jsonwebtoken, bcryptjs, Jest + Supertest, Turborepo, Yarn 4
 
-**Spec:** `docs/specs/2026-08-17-vajeeva-rn-design.md`
+**Spec:** `docs/specs/2026-08-17-vajeepurna-rn-design.md`
 
 ## Global Constraints
 
@@ -26,7 +26,7 @@
 ## File Map
 
 ```
-vajeeva/
+vajeepurna/
 ├── package.json                         ← workspace root (Yarn 4 + Turborepo)
 ├── turbo.json
 ├── .gitignore
@@ -86,13 +86,13 @@ vajeeva/
 - Create: `apps/api/.env.example`
 
 **Interfaces:**
-- Produces: `@vajeeva/shared` importable from `apps/api`
+- Produces: `@vajeepurna/shared` importable from `apps/api`
 
 - [ ] **Step 1: Create root package.json**
 
 ```json
 {
-  "name": "vajeeva",
+  "name": "vajeepurna",
   "private": true,
   "workspaces": ["packages/*", "apps/*"],
   "scripts": {
@@ -135,7 +135,7 @@ dist/
 
 ```json
 {
-  "name": "@vajeeva/shared",
+  "name": "@vajeepurna/shared",
   "version": "0.0.1",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -172,7 +172,7 @@ dist/
 
 ```json
 {
-  "name": "@vajeeva/api",
+  "name": "@vajeepurna/api",
   "version": "0.0.1",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
@@ -181,7 +181,7 @@ dist/
     "test": "jest --runInBand"
   },
   "dependencies": {
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "express": "^4.19.0",
@@ -236,7 +236,7 @@ export default {
 - [ ] **Step 9: Create apps/api/.env.example**
 
 ```
-MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/vajeeva
+MONGO_URI=mongodb+srv://<user>:<pass>@cluster.mongodb.net/vajeepurna
 JWT_SECRET=change-me-32-chars-min
 JWT_REFRESH_SECRET=change-me-different-32-chars-min
 PORT=4000
@@ -267,7 +267,7 @@ git commit -m "chore: monorepo scaffold — Turborepo + Yarn workspaces"
 - Create: `packages/shared/src/index.ts`
 
 **Interfaces:**
-- Produces: `RecipeSchema`, `UserSchema`, `SavedRecipeSchema` and their inferred types (`Recipe`, `User`, `SavedRecipe`) — imported as `import { RecipeSchema, type Recipe } from '@vajeeva/shared'`
+- Produces: `RecipeSchema`, `UserSchema`, `SavedRecipeSchema` and their inferred types (`Recipe`, `User`, `SavedRecipe`) — imported as `import { RecipeSchema, type Recipe } from '@vajeepurna/shared'`
 
 - [ ] **Step 1: Write user.schema.ts**
 
@@ -389,7 +389,7 @@ Expected: `dist/` created with `index.js` and `index.d.ts`.
 
 Create `apps/api/src/_schema-check.ts` temporarily:
 ```ts
-import { RecipeSchema } from '@vajeeva/shared';
+import { RecipeSchema } from '@vajeepurna/shared';
 const r = RecipeSchema.safeParse({});
 console.log(r.success); // false — expected
 ```
@@ -564,7 +564,7 @@ git commit -m "feat(api): Express scaffold + MongoDB connection + health check"
 - Create: `apps/api/src/__tests__/auth.test.ts`
 
 **Interfaces:**
-- Consumes: `RegisterInputSchema`, `LoginInputSchema` from `@vajeeva/shared`
+- Consumes: `RegisterInputSchema`, `LoginInputSchema` from `@vajeepurna/shared`
 - Produces:
   - `requireAuth(req, res, next)` — attaches `req.user: { userId: string; role: 'user' | 'admin' }` or 401
   - `requireAdmin(req, res, next)` — 403 if `req.user.role !== 'admin'`
@@ -723,7 +723,7 @@ export const requireAdmin: RequestHandler = (req, res, next) => {
 import { Router } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { RegisterInputSchema, LoginInputSchema } from '@vajeeva/shared';
+import { RegisterInputSchema, LoginInputSchema } from '@vajeepurna/shared';
 import { User } from '../models/User';
 
 export const authRouter = Router();
@@ -1192,7 +1192,7 @@ git commit -m "feat(api): SavedRecipe model + sync routes (delta pull + saved li
 - Create: `apps/api/src/__tests__/admin.test.ts`
 
 **Interfaces:**
-- Consumes: `requireAuth`, `requireAdmin`; `Recipe` model; `RecipeInputSchema` from `@vajeeva/shared`
+- Consumes: `requireAuth`, `requireAdmin`; `Recipe` model; `RecipeInputSchema` from `@vajeepurna/shared`
 - Produces:
   - `GET    /api/admin/recipes` → `Recipe[]` (all, incl. drafts) [admin]
   - `POST   /api/admin/recipes` body: `RecipeInput` → `Recipe` [admin]
@@ -1317,7 +1317,7 @@ import { Router } from 'express';
 import { requireAuth } from '../middleware/requireAuth';
 import { requireAdmin } from '../middleware/requireAdmin';
 import { Recipe } from '../models/Recipe';
-import { RecipeInputSchema } from '@vajeeva/shared';
+import { RecipeInputSchema } from '@vajeepurna/shared';
 
 export const adminRouter = Router();
 adminRouter.use(requireAuth, requireAdmin);

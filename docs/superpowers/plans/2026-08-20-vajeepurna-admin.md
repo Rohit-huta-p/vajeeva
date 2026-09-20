@@ -1,16 +1,16 @@
-# Vajeeva Admin CMS — Implementation Plan (3 of 3)
+# Vajeepurna Admin CMS — Implementation Plan (3 of 3)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the React + Vite admin SPA (recipe CMS) that admins use to create, edit, publish, and delete the 83 Vajeeva recipes via the `/api/admin/*` routes from Plan 1.
+**Goal:** Build the React + Vite admin SPA (recipe CMS) that admins use to create, edit, publish, and delete the 83 Vajeepurna recipes via the `/api/admin/*` routes from Plan 1.
 
 **Architecture:** Single-page app in `apps/admin/` of the existing monorepo. Access token lives in memory; refresh token is the httpOnly cookie the API sets. All requests go to same-origin `/api/*` — Vite proxies to the local API in dev, a Vercel rewrite proxies to Render in prod, so there is no CORS config and the `SameSite=strict` cookie keeps working. Recipe forms validate with the shared Zod `RecipeInputSchema` before submitting; the server stays the source of truth.
 
-**Tech Stack:** React 18, Vite 5, TypeScript 5, React Router 6, TailwindCSS 4 (`@tailwindcss/vite`), Vitest + React Testing Library, `@vajeeva/shared` (Zod schemas from Plan 1)
+**Tech Stack:** React 18, Vite 5, TypeScript 5, React Router 6, TailwindCSS 4 (`@tailwindcss/vite`), Vitest + React Testing Library, `@vajeepurna/shared` (Zod schemas from Plan 1)
 
-**Spec:** `docs/specs/2026-08-17-vajeeva-rn-design.md` (§ Admin Panel). UX reference: `prototypes/vajeeva-admin-mockup.html` (visual guide only — the schema is the contract, see Self-Review).
+**Spec:** `docs/specs/2026-08-17-vajeepurna-rn-design.md` (§ Admin Panel). UX reference: `prototypes/vajeepurna-admin-mockup.html` (visual guide only — the schema is the contract, see Self-Review).
 
-**Assumes:** Plan 1 (`docs/superpowers/plans/2026-08-17-vajeeva-api.md`) is built: the monorepo root, `@vajeeva/shared`, and the API with `/api/auth/*` and `/api/admin/*` exist and pass their tests.
+**Assumes:** Plan 1 (`docs/superpowers/plans/2026-08-17-vajeepurna-api.md`) is built: the monorepo root, `@vajeepurna/shared`, and the API with `/api/auth/*` and `/api/admin/*` exist and pass their tests.
 
 ## Global Constraints
 
@@ -19,9 +19,9 @@
 - Access token: 15 min TTL, kept in a module variable only — never localStorage/sessionStorage. Refresh token: 30 day httpOnly cookie; every fetch uses `credentials: 'include'`
 - On any 401, the client silently calls `POST /api/auth/refresh` once and retries; if refresh fails, the user lands on `/login`
 - All API calls target same-origin `/api/*` (dev proxy + Vercel rewrite). Never hardcode an API host in app code
-- Client-side validation = `RecipeInputSchema` from `@vajeeva/shared` before every POST/PUT (slug `/^[a-z0-9-]+$/`, `illColor` `/^#[0-9a-fA-F]{6}$/`, timer `MM:SS`, ≥1 ingredient, ≥1 step)
+- Client-side validation = `RecipeInputSchema` from `@vajeepurna/shared` before every POST/PUT (slug `/^[a-z0-9-]+$/`, `illColor` `/^#[0-9a-fA-F]{6}$/`, timer `MM:SS`, ≥1 ingredient, ≥1 step)
 - No pagination — 83 recipes fits in one response (Plan 1 constraint)
-- Runtime deps limited to: `react`, `react-dom`, `react-router-dom`, `@vajeeva/shared`. No axios, no react-query, no form library
+- Runtime deps limited to: `react`, `react-dom`, `react-router-dom`, `@vajeepurna/shared`. No axios, no react-query, no form library
 
 ---
 
@@ -38,7 +38,7 @@ apps/admin/
     ├── main.tsx                   ← ReactDOM root
     ├── App.tsx                    ← router (all routes live here)
     ├── App.test.tsx
-    ├── index.css                  ← Tailwind + Vajeeva palette tokens
+    ├── index.css                  ← Tailwind + Vajeepurna palette tokens
     ├── auth.tsx                   ← RequireAuth protected-route wrapper
     ├── test/
     │   └── setup.ts               ← jest-dom matchers
@@ -80,13 +80,13 @@ No root/monorepo changes needed — `apps/*` is already in the Yarn workspaces g
 
 **Interfaces:**
 - Consumes: monorepo root from Plan 1 Task 1 (Yarn workspaces + Turborepo)
-- Produces: `@vajeeva/admin` workspace runnable via `cd apps/admin && yarn dev` / `yarn test` / `yarn build`; `App` component that Task 2 replaces with the router
+- Produces: `@vajeepurna/admin` workspace runnable via `cd apps/admin && yarn dev` / `yarn test` / `yarn build`; `App` component that Task 2 replaces with the router
 
 - [ ] **Step 1: Create apps/admin/package.json**
 
 ```json
 {
-  "name": "@vajeeva/admin",
+  "name": "@vajeepurna/admin",
   "version": "0.0.1",
   "private": true,
   "type": "module",
@@ -96,7 +96,7 @@ No root/monorepo changes needed — `apps/*` is already in the Yarn workspaces g
     "test": "vitest run"
   },
   "dependencies": {
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "react": "^18.3.0",
     "react-dom": "^18.3.0",
     "react-router-dom": "^6.23.0"
@@ -162,7 +162,7 @@ The `/api` proxy is what lets the httpOnly refresh cookie work in dev with zero 
 ```json
 {
   "rewrites": [
-    { "source": "/api/(.*)", "destination": "https://vajeeva-api.onrender.com/api/$1" },
+    { "source": "/api/(.*)", "destination": "https://vajeepurna-api.onrender.com/api/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
@@ -178,7 +178,7 @@ Same trick in prod: Vercel proxies `/api/*` to Render (adjust the hostname to th
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vajeeva Admin</title>
+    <title>Vajeepurna Admin</title>
   </head>
   <body>
     <div id="root"></div>
@@ -224,7 +224,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 
 ```tsx
 export function App() {
-  return <h1 className="p-6 font-serif text-xl text-ink">Vajeeva Admin</h1>;
+  return <h1 className="p-6 font-serif text-xl text-ink">Vajeepurna Admin</h1>;
 }
 ```
 
@@ -243,7 +243,7 @@ import { App } from './App';
 
 it('renders the app shell', () => {
   render(<App />);
-  expect(screen.getByText('Vajeeva Admin')).toBeInTheDocument();
+  expect(screen.getByText('Vajeepurna Admin')).toBeInTheDocument();
 });
 ```
 
@@ -254,7 +254,7 @@ yarn install
 cd apps/admin && yarn test
 ```
 
-Expected: 1 test PASS. Also verify `yarn dev` starts and http://localhost:5173 shows "Vajeeva Admin", then stop it.
+Expected: 1 test PASS. Also verify `yarn dev` starts and http://localhost:5173 shows "Vajeepurna Admin", then stop it.
 
 - [ ] **Step 12: Commit**
 
@@ -345,7 +345,7 @@ Expected: FAIL — `Cannot find module './client'` (or equivalent resolve error)
 - [ ] **Step 3: Write apps/admin/src/api/client.ts**
 
 ```ts
-import type { Recipe } from '@vajeeva/shared';
+import type { Recipe } from '@vajeepurna/shared';
 
 // A Recipe as the API returns it over JSON: Mongo _id, Date fields serialized.
 export type RecipeDoc = Omit<Recipe, 'createdAt' | 'updatedAt'> & {
@@ -561,7 +561,7 @@ export function LoginPage() {
   return (
     <main className="min-h-screen bg-cream flex items-center justify-center">
       <form onSubmit={onSubmit} className="bg-white border border-ink/20 rounded-lg p-8 w-80 space-y-4">
-        <h1 className="font-serif text-xl font-semibold text-ink">Vajeeva Admin</h1>
+        <h1 className="font-serif text-xl font-semibold text-ink">Vajeepurna Admin</h1>
         {error && <p role="alert" className="text-clay text-sm">{error}</p>}
         <label className="block text-xs font-semibold uppercase text-ink/55">
           Email
@@ -846,7 +846,7 @@ git commit -m "feat(admin): recipe list page with status filter"
 - Test: `apps/admin/src/pages/RecipeEditorPage.test.tsx`
 
 **Interfaces:**
-- Consumes: `RecipeInputSchema`, `type RecipeInput` from `@vajeeva/shared`; `api`, `RecipeDoc` from `../api/client`; `GET /api/admin/recipes`, `POST /api/admin/recipes` (create), `PUT /api/admin/recipes/:id` (full replace)
+- Consumes: `RecipeInputSchema`, `type RecipeInput` from `@vajeepurna/shared`; `api`, `RecipeDoc` from `../api/client`; `GET /api/admin/recipes`, `POST /api/admin/recipes` (create), `PUT /api/admin/recipes/:id` (full replace)
 - Produces:
   - `RecipeEditorPage` — create mode at `/recipes/new` (no `:id` param), edit mode at `/recipes/:id/edit`. Covers every `RecipeInput` field. "Save draft" / "Publish" buttons set `status` (this is the status toggle)
   - Section components, all with the same contract `{ value: X[]; onChange(next: X[]): void }`: `IngredientRows`, `StepRows` (also exports `EMPTY_STEP: RecipeInput['steps'][number]`), `HealthFlagRows`, `SourceRows`
@@ -966,7 +966,7 @@ Expected: FAIL — `Cannot find module './RecipeEditorPage'`
 - [ ] **Step 3: Write apps/admin/src/components/IngredientRows.tsx**
 
 ```tsx
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type Ingredient = RecipeInput['ingredients'][number];
 
@@ -1030,7 +1030,7 @@ export function IngredientRows({ value, onChange }: {
 Reordering uses ↑/↓ buttons and renumbers `order` on every change; `illColor` uses the native `<input type="color">`; `stepIngredients` is a comma-separated text field with an exact `join(',')`/`split(',')` round-trip so typing never fights the cursor — blanks are trimmed at save time by the page.
 
 ```tsx
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type Step = RecipeInput['steps'][number];
 
@@ -1138,7 +1138,7 @@ export function StepRows({ value, onChange }: {
 - [ ] **Step 5: Write apps/admin/src/components/HealthFlagRows.tsx**
 
 ```tsx
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type HealthFlag = RecipeInput['healthFlags'][number];
 
@@ -1203,7 +1203,7 @@ export function HealthFlagRows({ value, onChange }: {
 - [ ] **Step 6: Write apps/admin/src/components/SourceRows.tsx**
 
 ```tsx
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 type Source = RecipeInput['sources'][number];
 
@@ -1260,7 +1260,7 @@ export function SourceRows({ value, onChange }: {
 ```tsx
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { RecipeInputSchema, type RecipeInput } from '@vajeeva/shared';
+import { RecipeInputSchema, type RecipeInput } from '@vajeepurna/shared';
 import { api, type RecipeDoc } from '../api/client';
 import { IngredientRows } from '../components/IngredientRows';
 import { StepRows, EMPTY_STEP } from '../components/StepRows';
@@ -1710,7 +1710,7 @@ Expected: FAIL — no element with role "complementary"
 - [ ] **Step 3: Write apps/admin/src/components/AppPreviewCard.tsx**
 
 ```tsx
-import type { RecipeInput } from '@vajeeva/shared';
+import type { RecipeInput } from '@vajeepurna/shared';
 
 const CATEGORY_LABEL = { solid: 'Solid', liquid: 'Liquid', 'semi-solid': 'Semi-solid' } as const;
 

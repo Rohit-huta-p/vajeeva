@@ -2,9 +2,9 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "vajeeva-web",
+      "name": "vajeepurna-web",
       "runtimeExecutable": "sh",
-      "runtimeArgs": ["-c", "cd vajeeva/apps/frontend && npx expo start --web --port 8085"],
+      "runtimeArgs": ["-c", "cd vajeepurna/apps/frontend && npx expo start --web --port 8085"],
       "port": 8085
     }
   ]

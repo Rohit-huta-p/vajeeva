@@ -33,7 +33,7 @@ can already pull.
 
 ---
 
-## 1. The three outcomes, defined for Vajeeva
+## 1. The three outcomes, defined for Vajeepurna
 
 | Outcome | What it means for a *patient* | Signal it needs | Exists today | Gap |
 |---|---|---|---|---|
@@ -113,7 +113,7 @@ This is the model the rest of the spec leans on, and it is deliberately **not**
 "instrument the reading surface".
 
 ### 4a. Reading is not engagement — implicit read-depth is ruled out
-Vajeeva recipes average **4–5 steps**, and the recipe detail page shows the full
+Vajeepurna recipes average **4–5 steps**, and the recipe detail page shows the full
 method inline. The moment the page opens, every step is visible — there is no
 scroll, no dwell gradient, nothing to measure. A "scrolled all steps / dwell"
 signal is therefore **worthless here and is explicitly not built.** More

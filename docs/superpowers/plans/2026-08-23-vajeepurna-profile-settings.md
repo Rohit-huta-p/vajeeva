@@ -1,9 +1,9 @@
-# Vajeeva — Profile / Settings (production) implementation plan
+# Vajeepurna — Profile / Settings (production) implementation plan
 
 **Date:** 2026-08-23
 **Status:** Approved (layout signed off)
 **Scope:** Mobile `apps/frontend` — turn the More tab into a production settings hub
-**Design ref:** `prototypes/explorations/vajeeva-profile-production.html` (signed-in top + continuation + guest)
+**Design ref:** `prototypes/explorations/vajeepurna-profile-production.html` (signed-in top + continuation + guest)
 **Fills:** audit gap #3 (health-profile edit) — and grows it into the full profile surface
 
 ---
@@ -62,7 +62,7 @@ The big visible jump; everything here works against today's API.
   - Health-profile card (unchanged — reuse built component).
   - **Guest banner** when `isGuest` → routes to `/auth/opening`; hide Account/Delete for guests.
   - **About & trust:** Sources & method, Medical disclaimer.
-  - **Support:** Send feedback (`Linking` mailto), Rate Vajeeva (`Linking` store URL — placeholder const).
+  - **Support:** Send feedback (`Linking` mailto), Rate Vajeepurna (`Linking` store URL — placeholder const).
   - **Account:** Sign out; **app version** footer via `Constants.expoConfig?.version`.
 - **Name editing:** `AuthContext.updateProfile` + `NameEditSheet` (reuse sheet grammar).
 - **New content screens:** `app/more/about.tsx`, `app/more/sources.tsx` (list from `GET /api/sources`,

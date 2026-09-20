@@ -1,4 +1,4 @@
-# Vajeeva — Full Product Design
+# Vajeepurna — Full Product Design
 **Date:** 2026-08-21  
 **Status:** Approved  
 **Scope:** Mobile (iOS + Android + Web), Admin panel, API — complete execution from current partial state
@@ -7,14 +7,14 @@
 
 ## 1. Product Overview
 
-Vajeeva is an Ayurvedic recipe app grounded in classical Sanskrit texts (Ksemakutūhalam, ICMR-NIN 2024) and modern nutritional science. It helps users browse, cook, and save traditional Indian recipes with personalised health guidance.
+Vajeepurna is an Ayurvedic recipe app grounded in classical Sanskrit texts (Ksemakutūhalam, ICMR-NIN 2024) and modern nutritional science. It helps users browse, cook, and save traditional Indian recipes with personalised health guidance.
 
 **Three surfaces:**
 - **Mobile** — Expo 54 (React Native), iOS + Android + Web
 - **Admin** — React 18 + Vite 5 + TailwindCSS 4 (content editors)
 - **API** — Express + MongoDB + Zod (shared backend)
 
-**Monorepo:** Yarn workspaces + Turborepo at `vajeeva/`
+**Monorepo:** Yarn workspaces + Turborepo at `vajeepurna/`
 
 ---
 
@@ -274,7 +274,7 @@ Bottom Sheet overlay:
 ### Screen specs
 
 #### HomeScreen
-- Greeting: "Good morning · Vajeeva" (serif)
+- Greeting: "Good morning · Vajeepurna" (serif)
 - Search bar → RecipeListScreen with query pre-filled
 - "Continue cooking" card (visible if `cookSession` exists) → CookModeScreen at saved step
 - Three texture pillars: Solid / Liquid / Semi-solid → TextureListScreen
@@ -346,7 +346,7 @@ Bottom Sheet overlay:
 - On success → OnboardingScreen (first time) or Home
 
 #### OnboardingScreen
-- Step 1: Welcome (Vajeeva logo + brief copy)
+- Step 1: Welcome (Vajeepurna logo + brief copy)
 - Step 2: "Do any of these apply to you?" — checkbox grid of ConditionCode labels
 - Step 3: "You're all set" → Home
 - Skippable ("Skip for now" — can edit in Settings)

@@ -1,15 +1,15 @@
-# Vajeeva Mobile — Implementation Plan (2 of 3)
+# Vajeepurna Mobile — Implementation Plan (2 of 3)
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** Build the React Native / Expo mobile app that consumes the Vajeeva API (Plan 1). Offline-first: WatermelonDB holds all recipe data locally; sync engine pulls delta updates from the API and pushes the user's saved list.
+**Goal:** Build the React Native / Expo mobile app that consumes the Vajeepurna API (Plan 1). Offline-first: WatermelonDB holds all recipe data locally; sync engine pulls delta updates from the API and pushes the user's saved list.
 
-**Architecture:** Expo managed workflow inside the existing `vajeeva/` monorepo (`apps/mobile`). React Navigation for tab + stack navigation. WatermelonDB (SQLite) for local storage. Access token held in memory; refresh token in SecureStore. Sync on foreground / login / pull-to-refresh.
+**Architecture:** Expo managed workflow inside the existing `vajeepurna/` monorepo (`apps/mobile`). React Navigation for tab + stack navigation. WatermelonDB (SQLite) for local storage. Access token held in memory; refresh token in SecureStore. Sync on foreground / login / pull-to-refresh.
 
 **Tech Stack:** React Native 0.74, Expo SDK 51, TypeScript 5, React Navigation 6, WatermelonDB 0.28, Expo SecureStore, Expo Font, NetInfo, React Native Reanimated 3, Jest + React Native Testing Library
 
-**Spec:** `docs/specs/2026-08-17-vajeeva-rn-design.md`  
-**UX reference:** `prototypes/vajeeva-cook-mode.html`
+**Spec:** `docs/specs/2026-08-17-vajeepurna-rn-design.md`  
+**UX reference:** `prototypes/vajeepurna-cook-mode.html`
 
 ## Global Constraints
 
@@ -105,7 +105,7 @@ apps/mobile/
 
 ```json
 {
-  "name": "@vajeeva/mobile",
+  "name": "@vajeepurna/mobile",
   "version": "0.0.1",
   "main": "src/index.ts",
   "scripts": {
@@ -118,7 +118,7 @@ apps/mobile/
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",
-    "@vajeeva/shared": "*",
+    "@vajeepurna/shared": "*",
     "axios": "^1.7.2",
     "expo": "~51.0.0",
     "expo-font": "~12.0.10",
@@ -153,7 +153,7 @@ apps/mobile/
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@vajeeva/shared": ["../../packages/shared/src/index.ts"]
+      "@vajeepurna/shared": ["../../packages/shared/src/index.ts"]
     }
   }
 }
@@ -199,14 +199,14 @@ module.exports = config;
 ```json
 {
   "expo": {
-    "name": "Vajeeva",
-    "slug": "vajeeva",
+    "name": "Vajeepurna",
+    "slug": "vajeepurna",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": { "image": "./assets/splash.png", "resizeMode": "contain", "backgroundColor": "#F2EDE1" },
-    "ios": { "supportsTablet": false, "bundleIdentifier": "com.vajeeva.app" },
-    "android": { "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#F2EDE1" }, "package": "com.vajeeva.app" }
+    "ios": { "supportsTablet": false, "bundleIdentifier": "com.vajeepurna.app" },
+    "android": { "adaptiveIcon": { "foregroundImage": "./assets/adaptive-icon.png", "backgroundColor": "#F2EDE1" }, "package": "com.vajeepurna.app" }
   }
 }
 ```
@@ -511,7 +511,7 @@ export const database = new Database({
 // apps/mobile/src/db/models/Recipe.ts
 import { Model } from '@nozbe/watermelondb';
 import { field, readonly, date, json } from '@nozbe/watermelondb/decorators';
-import type { Ingredient, Step, HealthFlag, Source } from '@vajeeva/shared';
+import type { Ingredient, Step, HealthFlag, Source } from '@vajeepurna/shared';
 
 const sanitize = (v: unknown) => (Array.isArray(v) ? v : []);
 
@@ -767,7 +767,7 @@ export default function LoginScreen({ navigation }: LoginScreenProps) {
 
   return (
     <View style={s.root}>
-      <Text style={s.title}>Vajeeva</Text>
+      <Text style={s.title}>Vajeepurna</Text>
       <TextInput style={s.input} placeholder="Email" placeholderTextColor={colors.muted}
         value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
       <TextInput style={s.input} placeholder="Password" placeholderTextColor={colors.muted}
@@ -1084,7 +1084,7 @@ export default function HomeScreen({ navigation }: HomeScreenProps) {
   const database = useDatabase();
   return (
     <View style={s.root}>
-      <Text style={s.heading}>Vajeeva</Text>
+      <Text style={s.heading}>Vajeepurna</Text>
       <CategoryFilter selected={category} onSelect={setCategory} />
       <HomeScreenObs navigation={navigation} category={category} database={database} />
     </View>
@@ -1256,7 +1256,7 @@ git commit -m "feat(mobile): Home/Saved/Profile screens + RecipeCard + CategoryF
 // apps/mobile/src/components/IngredientTable.tsx
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import type { Ingredient } from '@vajeeva/shared';
+import type { Ingredient } from '@vajeepurna/shared';
 import { colors } from '../theme';
 
 export default function IngredientTable({ ingredients }: { ingredients: Ingredient[] }) {
@@ -1308,7 +1308,7 @@ const s = StyleSheet.create({
 // apps/mobile/src/components/HealthFlagList.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { HealthFlag } from '@vajeeva/shared';
+import type { HealthFlag } from '@vajeepurna/shared';
 import { colors } from '../theme';
 
 const severityColor: Record<string, string> = {
@@ -1349,7 +1349,7 @@ const s = StyleSheet.create({
 // apps/mobile/src/components/SourceList.tsx
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import type { Source } from '@vajeeva/shared';
+import type { Source } from '@vajeepurna/shared';
 import { colors } from '../theme';
 
 export default function SourceList({ sources }: { sources: Source[] }) {
@@ -1591,7 +1591,7 @@ const s = StyleSheet.create({
 // apps/mobile/src/components/StepCard.tsx
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
-import type { Step } from '@vajeeva/shared';
+import type { Step } from '@vajeepurna/shared';
 import TimerPill from './TimerPill';
 import { colors } from '../theme';
 
@@ -2099,7 +2099,7 @@ git commit -m "feat(mobile): sync engine — delta pull, saved-list push, seed d
 - Push notifications, search, ratings
 
 **Type consistency check:**
-- `Ingredient`, `Step`, `HealthFlag`, `Source` types imported from `@vajeeva/shared` in model decorators ✅
+- `Ingredient`, `Step`, `HealthFlag`, `Source` types imported from `@vajeepurna/shared` in model decorators ✅
 - `step.illColor` (#RRGGBB) used as hex with `22` alpha suffix for background tint ✅
 - `step.timerStr` ("MM:SS") parsed by `TimerPill.parseMMSS()` ✅
 - `serverId` in `RecipeModel` maps to MongoDB `_id`; used in sync upsert lookup ✅

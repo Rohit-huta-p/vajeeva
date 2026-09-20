@@ -1,6 +1,6 @@
-# Vajeeva fidelity spec — corrections from prototype pixel-match
+# Vajeepurna fidelity spec — corrections from prototype pixel-match
 
-Source of truth: `prototypes/vajeeva-prototype.html` (stage is 272px wide; we mirror
+Source of truth: `prototypes/vajeepurna-prototype.html` (stage is 272px wide; we mirror
 its exact px values at any device width). Home is the reference implementation:
 `apps/frontend/src/screens/HomeScreen.tsx` (commit dee8cfe).
 
@@ -62,7 +62,7 @@ its exact px values at any device width). Home is the reference implementation:
 
 ## Copy corrections (prototype wording)
 
-- Greet: "Good morning" + small "Vajeeva" (two lines).
+- Greet: "Good morning" + small "Vajeepurna" (two lines).
 - Pillars: Solid / Liquid / Semi-solid with subs "Breads · sweets · snacks",
   "Drinks · soups · buttermilk", "Porridge · puddings · chutneys".
 - Trust: "grounded in classical texts + ICMR-NIN 2024" (leaf icon).
@@ -82,12 +82,12 @@ this spec + icons.tsx; don't fork styles.
 
 | Port | What | Start with |
 | --- | --- | --- |
-| 4000 | apps/api (seeded, 15 recipes) | `cd vajeeva/apps/api && npm start` (check first — often already running) |
-| 8081 | expo web | `cd vajeeva/apps/frontend && npx expo start --web` (ditto) |
+| 4000 | apps/api (seeded, 15 recipes) | `cd vajeepurna/apps/api && npm start` (check first — often already running) |
+| 8081 | expo web | `cd vajeepurna/apps/frontend && npx expo start --web` (ditto) |
 | 8090 | static server for prototype + harness | `cd recipe-app && python3 -m http.server 8090` (repo parent root, so both share one origin) |
 
-**1. Side-by-side harness** — `vajeeva/tools/fidelity-harness.html`, open
-<http://localhost:8090/vajeeva/tools/fidelity-harness.html?screen=list>.
+**1. Side-by-side harness** — `vajeepurna/tools/fidelity-harness.html`, open
+<http://localhost:8090/vajeepurna/tools/fidelity-harness.html?screen=list>.
 Renders the app (left) and the prototype (right) in two 390px iframes, so the
 comparison is viewport-independent — works at any Chrome window size (macOS
 fullscreen windows refuse `resize_window`; the harness sidesteps that). The
@@ -98,7 +98,7 @@ eyeball structure and copy here, don't measure it.
 
 **2. Computed-style probes — the PRIMARY evidence.** Screenshots are for
 structure; px fidelity is proven by comparing `getComputedStyle` values on the
-app against the prototype's CSS (this spec + `vajeeva-prototype.html`'s
+app against the prototype's CSS (this spec + `vajeepurna-prototype.html`'s
 `<style>` block are the reference numbers). In the browser console (or the
 `javascript_tool` MCP tool on the app tab/iframe), locate elements by their
 distinguishing computed value and dump the properties under test, e.g.:

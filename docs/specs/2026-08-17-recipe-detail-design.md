@@ -17,7 +17,7 @@ The remaining 12 fields have no UI home.
 
 ## 2. Data Field Inventory
 
-Every field present in `vajeeva-recipes.md`, mapped to its design home.
+Every field present in `vajeepurna-recipes.md`, mapped to its design home.
 
 | # | Field | Example | Design home |
 |---|-------|---------|-------------|
@@ -190,7 +190,7 @@ For recipes with multiple ingredient stages (Dough / Filling / Syrup / Frying / 
 - Background: transparent (no alternating tint)
 - Padding: `10px 15px 3px` (extra top space, tight bottom)
 
-Stage names come from the recipe data (Section header in `vajeeva-recipes.md`). There is no fixed vocabulary — render whatever label the data provides.
+Stage names come from the recipe data (Section header in `vajeepurna-recipes.md`). There is no fixed vocabulary — render whatever label the data provides.
 
 ### 6.3 Shared sub-recipe — Aromatic Powder bottom sheet
 
