@@ -39,9 +39,14 @@ export class ApiError extends Error {
   }
 }
 
+// In production the admin is a static bundle — Vite's dev proxy is gone, so
+// relative `/api` calls would hit the admin's own host. VITE_API_URL points
+// them at the real backend (e.g. https://vajeeva-backend.onrender.com).
+const API_BASE = (import.meta as any).env?.VITE_API_URL ?? '';
+
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const doFetch = () =>
-    fetch(path, {
+    fetch(`${API_BASE}${path}`, {
       ...init,
       credentials: 'include',
       headers: {
